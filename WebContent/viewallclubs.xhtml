@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:b="http://bootsfaces.net/ui">
+	
+<ui:define name="content">
+<b:container>
+	<b:row>
+		<b:column>
+			<b:form>
+				<b:messages id="loimessage" showDetail="true" autoUpdate="true" closable="false" />
+				<b:panel id ="panel" collapsible="false" look="primary">
+					<f:facet name="heading">
+						<h:outputText value="SCAHA Clubs" />
+					</f:facet>
+					<b:dataTable 
+						id="listofclubs2" 
+						var="club"
+						value="#{scahaBean.getScahaClubList()}" 
+						editable="false" 
+						select="false"
+						paginated="false" 
+						border="false"
+						searching="true"
+						striped="false"
+						>
+						
+						<b:dataTableColumn orderable="false">
+				            <f:facet name="header">
+						         <h:outputText pull="right" value="Use the Search Field to Filter by any of the columns." />
+						         
+						    </f:facet>
+					            
+				            <b:panel id ="panel" collapsible="false" look="info">
+				            	<f:facet name="heading">
+									<p:graphicImage id="logoimage1" value="#{clubBean.getClubLogoByParmId()}"  width="30" height="30" >
+					            		<f:param id = "target" name="target" value="#{club.getClubID()}" />
+							 		</p:graphicImage> 
+									 <b:commandLink actionListener="#{clubBean.Viewclubdetail(club)}">
+										<h:outputText style="color: white;" value=" #{club.getClubname()}" />
+									</b:commandLink>
+					            	<h:outputText value=" " />
+					            	<!-- (<i><h:outputLink value="#{club.getWebSite()}">#{club.getWebSite()}</h:outputLink></i>) -->
+					            	
+					            </f:facet>
+					            <b:panelGrid colSpans="2,2,2,2,2,2" id="moreinfogrid" style="padding: 10;">
+						            	<h:outputText value=" " />
+						            	<h:outputText value=" " />
+						            	<h:outputText value=" " />
+						            	<h:outputText value=" " />
+						            	<h:outputText value=" " />
+						            	<b:commandButton id="moreinfo" value="More Info" actionListener="#{clubBean.Viewclubdetail(club)}" look="success" 
+									    	large-screen="full-width"
+									    	medium-screen="full-width"
+									    	small-screen="full-width"
+									    	tiny-screen="full-width"
+									    />
+					            	</b:panelGrid>
+					             
+					            
+				   		       	<b:dataTable 
+									id="openings" 
+									var="peep"
+									value="#{club.getCal()}" 
+									editable="false" 
+									select="false"
+									selectionMode="false" 
+									rows="25"
+									border="true"
+									paginated="false"
+									searching="false"
+									striped="true"
+									column-visibility="true" 
+									>
+									<b:dataTableColumn >
+							            <f:facet name="header">
+									         <h:outputText value="Position" />
+									    </f:facet>
+									    <h:outputText value="#{peep.getMyRole().getDesc()}" />
+									</b:dataTableColumn>
+									<b:dataTableColumn >
+							            <f:facet name="header">
+									         <h:outputText value="Contact" />
+									    </f:facet>
+									    <h:outputText value="#{peep.getsFirstName()} #{peep.getsLastName()}" />
+									</b:dataTableColumn> 
+									<b:dataTableColumn >
+							            <f:facet name="header">
+									         <h:outputText value="Phone" />
+									    </f:facet>
+									    <h:outputText value="#{peep.getsPhone()}" />
+									</b:dataTableColumn>
+									<b:dataTableColumn >
+							            <f:facet name="header">
+									         <h:outputText value="Email" />
+									    </f:facet>
+									    <h:outputLink value="mailto:#{peep.getsEmail()}?subject=Scaha%20Related">
+					   						 <h:outputText style="font-size: 12px;" value=" #{peep.getsEmail()}" />
+										</h:outputLink>
+									</b:dataTableColumn> 
+								</b:dataTable>
+							</b:panel>
+				        </b:dataTableColumn> 
+			        </b:dataTable>
+				</b:panel>
+			</b:form>
+		</b:column>
+	</b:row>
+</b:container>
+</ui:define>
+</ui:composition>

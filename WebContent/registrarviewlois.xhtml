@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:b="http://bootsfaces.net/ui">
+
+<f:metadata>
+<f:event type="preRenderView" listener="#{profileBean.verifyUserLogin()}" />
+</f:metadata>
+
+<ui:composition template="/WEB-INF/templates/layoutadmin.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+<ui:define name="content">
+<b:container>
+	<b:row>
+		<b:column>
+			<b:form>
+				<b:panel id ="panel" collapsible="false" look="primary">
+					<f:facet name="heading">
+						<h:outputText value="View Player Loi's:" />
+					</f:facet>
+					<b:panelGrid colSpans="1,2,9" id="teams" style="padding: 5;">
+						<h:outputText style="font-weight: bold;" value="Select Team:"/>
+						<b:selectOneMenu value="#{registrarloiBean.selectedteam}" onchange="ajax:registrarloiBean.playersDisplay()" update="listofplayers">
+					    	<f:selectItem itemLabel="Select All" itemValue="0"/>
+					    	<f:selectItems value="#{registrarloiBean.getListofTeams()}" var="team" itemLabel="#{team.getTeamname()}" itemValue="#{team.getIdteam()}"/>
+					    </b:selectOneMenu>
+					    <h:outputText style="font-weight: bold;" value=" "/>
+						<!-- <b:commandButton value="Load Loi's" 
+						                       action="#{registrarloiBean.playersDisplay()}" look="info">
+					       <f:ajax execute="@this" process="@form" render="@form" />
+					    </b:commandButton> -->
+					</b:panelGrid>
+				<!-- h:commandLink>
+			            <p:graphicImage value="/images/excel.png" />
+			            <p:dataExporter type="xls" target="hiddenlistofplayers" fileName="loilist" />
+			        </h:commandLink>
+			 
+			        <h:commandLink>
+			            <p:graphicImage value="/images/pdf.png" />
+			            <p:dataExporter type="pdf" target="hiddenlistofplayers" fileName="loilist"/>
+			        </h:commandLink>
+			          -->
+			        <b:dataTable 
+						id="listofplayers" 
+						var="player" 
+						value="#{registrarloiBean.getPlayerdatamodel()}" 
+						editable="true" 
+						select="true"
+						selection="#{registrarloiBean.selectedplayer}" 
+						selectionMode="single" 
+						paginator="true"
+						searching="true" 
+						border="true"
+						excel="true"
+			            csv="true"
+			            pdf="true"
+						column-visibility="true"
+						>
+			   			<b:dataTableColumn >
+				            <f:facet name="header">
+						        First Name
+						    </f:facet>
+							<h:outputText value="#{player.getFirstname()}" />    
+				        </b:dataTableColumn>
+				        <b:dataTableColumn >
+				            <f:facet name="header">
+						        Last Name
+						    </f:facet>
+							<h:outputText value="#{player.getLastname()}" />    
+				        </b:dataTableColumn>
+				        <b:dataTableColumn >
+				            <f:facet name="header">
+						        <h:outputText value="#{registrarloiBean.getCurrentyear()} Team" />
+						    </f:facet>
+							<h:outputText value="#{player.getCurrentteam()}" />    
+				        </b:dataTableColumn>
+				        <b:dataTableColumn >
+				            <f:facet name="header">
+						        <h:outputText value="#{registrarloiBean.getPrioryear()} Team" />
+						    </f:facet>
+							<h:outputText value="#{player.getPreviousteam()}" />    
+				        </b:dataTableColumn>
+				        <b:dataTableColumn >
+				            <f:facet name="header">
+						        <h:outputText value="DOB" />
+						    </f:facet>
+							<h:outputText value="#{player.getDob()}" />    
+				        </b:dataTableColumn>
+				        <b:dataTableColumn >
+				            <f:facet name="header">
+						        <h:outputText value="Plyr Up" />
+						    </f:facet>
+							<h:outputText value="#{player.getPlayerup()}" />    
+				        </b:dataTableColumn>
+				        <b:dataTableColumn >
+				            <f:facet name="header">
+						        <h:outputText value="LOI Date" />
+						    </f:facet>
+							<h:outputText value="#{player.getLoidate()}" />    
+				        </b:dataTableColumn>
+				        <b:dataTableColumn >
+				            <f:facet name="header">
+						        <h:outputText value="USA Mem #" />
+						    </f:facet>
+							<h:outputText value="#{player.getUsamembership()}" />    
+				        </b:dataTableColumn>
+				        <b:dataTableColumn >
+				            <f:facet name="header">
+						        <h:outputText value="18U Safesport" />
+						    </f:facet>
+							<h:outputText value="#{player.getSafesport()}"/>    
+				        </b:dataTableColumn>
+				        <b:dataTableColumn >
+				            <f:facet name="header">
+						        <h:outputText value="Cit. ship" />
+						    </f:facet>
+							<h:outputText value="#{player.citizenshiplabel}" rendered="#{player.ctverified}" />    
+				        </b:dataTableColumn>
+				        <b:dataTableColumn >
+				            <f:facet name="header">
+						        <h:outputText value="Bith Cert." />
+						    </f:facet>
+							<h:outputText value="#{player.birthcertificate}" />    
+				        </b:dataTableColumn>
+				        <b:dataTableColumn hidden="lg md sm xs">
+				            <f:facet name="header">
+						        <h:outputText value="Email 1" />
+						    </f:facet>
+							<h:outputText value="#{player.getEmail1()}" />
+						</b:dataTableColumn>
+				        <b:dataTableColumn hidden="lg">
+				            <f:facet name="header">
+						        <h:outputText value="Email 2" />
+						    </f:facet>
+							<h:outputText value="#{player.getEmail2()}" />
+				        </b:dataTableColumn>
+				        
+				        <b:dataTableColumn >
+				            <f:facet name="header">
+						        <h:outputText value="Notes" />
+						    </f:facet>
+							<h:outputText value="#{player.notes}" />    
+				        </b:dataTableColumn>
+				        <b:dataTableColumn >
+				            <f:facet name="header">
+						        <h:outputText value="Option" />
+						    </f:facet>
+							<b:commandButton icon="info-circle" value="View" 
+						                       action="#{registrarloiBean.viewLoi(player)}" look="info"/>
+						</b:dataTableColumn> 
+					</b:dataTable>
+					<p:spacer width="10" height="5" />
+					<b:panelGrid colSpans="3,2,2,2,3">
+						<h:outputText value=" "/>
+						<h:outputText value=" "/>
+						<b:commandButton value="Close" id="close" look="info" ajax="false" actionListener="#{registrarloiBean.closePage()}"
+							large-screen="full-width"
+	    					medium-screen="full-width"
+	    					small-screen="full-width"
+	    					tiny-screen="full-width"
+						/>
+						<h:outputText value=" "/>
+						<h:outputText value=" "/>
+					</b:panelGrid>
+				</b:panel>
+			</b:form>
+		</b:column>
+	</b:row>		
+</b:container>
+</ui:define>
+</ui:composition>
+</html>

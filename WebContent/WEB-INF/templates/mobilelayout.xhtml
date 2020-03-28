@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<f:view contentType="text/html">
+	<h:head>
+		<meta http-equiv="cache-control" content="max-age=1" />
+		<meta http-equiv="cache-control" content="no-cache" />
+		<meta http-equiv="expires" content="1" />
+		<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+		<meta http-equiv="pragma" content="no-cache" />
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+		<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<!-- Enable IE9 Standards mode -->
+		<meta http-equiv="X-UA-Compatible" content="IE=9" />
+		<title>SCAHA</title>
+		<link rel="shortcut icon" href="images/favicon.ico" />
+		<script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+		
+	</h:head>
+	<h:body>
+		<link rel="stylesheet" type="text/css" href="/scaha/style/mobile.css" />
+		<div id="div-body">
+			<p:growl id="msg" showDetail="true" globalOnly="true" life="3000" />
+			<ui:insert name="menu">
+				<ui:include src="mobilemenu.xhtml" />
+			</ui:insert>
+			<ui:insert name="header">
+				<ui:include src="mobileheader.xhtml" />
+			</ui:insert>
+			<ui:insert name="content" >Put default content here, if any.</ui:insert>
+		</div>
+	</h:body>
+</f:view>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<f:metadata>
+<f:event type="preRenderView" listener="#{profileBean.verifyUserLogin()}" />
+</f:metadata>
+
+<ui:composition template="/WEB-INF/templates/layoutadmin.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://bootsfaces.net/ui">
+	
+<ui:define name="content">
+<b:container>
+	<b:row>
+		<b:column>
+			<b:form>
+				<b:panel id ="panel" collapsible="false" look="primary">
+					<f:facet name="heading">
+						<h:outputText value="SCAHA COACH/MANAGER LETTER OF INTENT AND MEMBERSHIP REGISTRATION #{coachloiBean.getCurrentyear()}" />
+					</f:facet>
+					<b:panelGrid colSpans="3,3,3,3" id="loimain" style="padding: 5;">
+						<h:outputText style="font-weight: bold;" value="#{coachloiBean.getCurrentyear()} Club:"/>
+						<h:outputText value="#{coachloiBean.getClubname()}"/>
+						<h:outputText value=" "/>
+						<h:outputText value=" "/>
+						<b:dataTable 
+							id="boysteamresult" 
+							var="team"
+							value="#{coachloiBean.boysteams}" 
+							editable="false" 
+							select="false"
+							paginated="false" 
+							border="false"
+							searching="false"
+							custom-options="ordering: false;bInfo : false;"
+							>
+							<b:dataTableColumn >
+								<f:facet name="header">
+							        #{coachloiBean.getCurrentyear()} Boys Team(s):
+							    </f:facet>
+						        <h:outputText value="#{team}" />
+					        </b:dataTableColumn> 
+						</b:dataTable>
+						<h:outputText value=" "/>
+						<b:dataTable 
+							id="girlsteamresult" 
+							var="team"
+							value="#{coachloiBean.girlsteams}" 
+							editable="false" 
+							select="false"
+							paginated="false" 
+							border="false"
+							searching="false"
+							custom-options="ordering: false;bInfo : false;"
+							>
+							<b:dataTableColumn >
+								<f:facet name="header">
+							        #{coachloiBean.getCurrentyear()} Girls Team(s):
+							    </f:facet>
+					            <h:outputText value="#{team}" />
+					        </b:dataTableColumn> 
+						</b:dataTable>
+						<h:outputText value=" "/>
+						<h:outputText value=" " />
+						<h:outputText value=" " />
+						<h:outputText value=" " />
+						<p:spacer width="10" height="3" />
+						<h:outputText style="font-weight: bold;" value="Name(Last,First):"/>
+						<h:outputText value="#{coachloiBean.lastname}, #{coachloiBean.firstname}" />
+						<h:outputText style="font-weight: bold;" value="Address:"/>
+						<h:outputText value="#{coachloiBean.address}" />
+						<h:outputText style="font-weight: bold;" value="City:"/>
+						<h:outputText value="#{coachloiBean.city}" />
+						<h:outputText style="font-weight: bold;" value="State:"/>
+						<h:outputText value="#{coachloiBean.state}" />
+						<h:outputText style="font-weight: bold;" value="Zip:"/>
+						<h:outputText value="#{coachloiBean.zip}" />
+						<h:outputText style="font-weight: bold;" value="Home Number:"/>
+						<h:outputText value="#{coachloiBean.homenumber}" />
+						<h:outputText style="font-weight: bold;" value="Email:"/>
+						<h:outputText value="#{coachloiBean.email}" />
+						<h:outputText value=" " />
+						<h:outputText value=" " />
+						<h:outputText value=" " />
+						<h:outputText value=" " />
+						<p:spacer width="10" height="10" />
+						<h:outputText value=" " />
+						<h:outputText value=" " />
+						<h:outputText style="font-weight: bold;" value="Coach/Manager Credentials"/>
+						<h:outputText value=" " />
+						<h:outputText value=" " />
+						<h:outputText value=" " />
+						<h:outputText value=" " />
+						<p:spacer width="10" height="10" />
+						<h:outputText value=" " />
+						<h:outputText style="font-weight: bold;" value="CEP#:" rendered="#{coachloiBean.displaycoachcredentials}"/>
+						<h:outputText value="#{coachloiBean.cepnumber}" rendered="#{coachloiBean.displaycoachcredentials}"/>
+						<h:outputText style="font-weight: bold;" value="CEP Level:" rendered="#{coachloiBean.displaycoachcredentials}"/>
+						<h:outputText value="#{coachloiBean.cepleveldisplay}" rendered="#{coachloiBean.displaycoachcredentials}"/>
+						<h:outputText style="font-weight: bold;" value="CEP Expires:" rendered="#{coachloiBean.displaycoachcredentials}"/>
+						<h:outputText value="#{coachloiBean.cepexpires}" rendered="#{coachloiBean.displaycoachcredentials}"/>
+						<h:outputText style="font-weight: bold;" value="CEP Module:" rendered="#{coachloiBean.displaycoachcredentials}"/>
+						<h:outputText value="#{coachloiBean.cepmoduledisplaystring}" rendered="#{coachloiBean.displaycoachcredentials}"/>
+						<h:outputText style="font-weight: bold;" value="Safe Sport Certification:" />
+						<h:outputText value="#{coachloiBean.displaysafesport}"/>
+						<h:outputText style="font-weight: bold;" value="CAHA Screening Expires:" />
+						<h:outputText value="#{coachloiBean.screeningexpires}" />
+					</b:panelGrid>	
+					<p:spacer width="10" height="10" />
+					<b:panelGrid colSpans="4,2,2,2,2">
+						<h:outputText style="font-weight: bold;" value=" "/>
+						<h:outputText value=" "/>
+						<h:outputText value=" "/>
+						<b:commandButton value="Print LOI" id="printloi" look="info" onclick="window.print(); return false;" ajax="false" 
+							large-screen="full-width"
+	    					medium-screen="full-width"
+	    					small-screen="full-width"
+	    					tiny-screen="full-width"
+	    				/>
+						<b:commandButton value="Close LOI" id="close" look="info" ajax="false" actionListener="#{registrarcoachloiBean.CloseLoi()}"
+							large-screen="full-width"
+	    					medium-screen="full-width"
+	    					small-screen="full-width"
+	    					tiny-screen="full-width"
+						/>
+					</b:panelGrid>
+			    </b:panel>
+			</b:form>
+		</b:column>
+	</b:row>
+</b:container>
+</ui:define>
+</ui:composition>
+</html>

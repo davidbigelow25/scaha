@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+
+<ui:define name="content">
+	<h:form id="form1">
+ 	<div class="NewsTitle">Master Game Schedule</div>
+	  <div class="NewsDate">All the games for all the divsions</div>  
+	<p:panel header="Export Clubs Master Slots">
+     	 <div class="NewsText">
+			  Click any icon to download the master schedule in excel or cvs.
+			  <p/>
+			  Thanks - the iScaha Development Team
+  		</div>
+  		<p:separator />
+  		<h:commandLink update="masterlist">
+          	<p:graphicImage value="/images/excel.png" />
+        	<p:dataExporter type="xls" target="lahoasched" fileName="ClubIceSlots" />
+     	</h:commandLink>
+     	<p:spacer width="20px" />
+     	<h:commandLink>
+         	<p:graphicImage update="masterlist" value="/images/csv.png" />
+        	 <p:dataExporter type="csv" target="lahoasched" fileName="ClubIceSlots" />
+    	</h:commandLink>
+    		
+	</p:panel>	
+		<p:dataTable 
+ 			id="lahoasched" 
+ 			var="myrow" 
+ 			value="#{lahoaBean.mydata}" 
+ 			rowStyleClass="#{myrow.get(4) == 'Cancelled' ? 'gamecancelled' : null}"
+ 			>
+
+			<p:column  id="gamerow" width="7%" styleClass="mtrxColumn">
+           			<f:facet name="header">
+            		<h:outputText value="#{lahoaBean.mydata.rheader.get(0)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(0)}" />  
+	        </p:column>  
+			<p:column styleClass="mtrxColumn">
+           		<f:facet name="header">
+            		<h:outputText value="#{lahoaBean.mydata.rheader.get(1)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(1)}" />  
+	        </p:column>  
+ 			<p:column styleClass="mtrxColumn">
+           		<f:facet name="header">
+            		<h:outputText value="#{lahoaBean.mydata.rheader.get(2)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(2)}" />  
+	        </p:column>  
+ 			<p:column styleClass="mtrxColumn">
+           		<f:facet name="header">
+            		<h:outputText value="#{lahoaBean.mydata.rheader.get(3)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(3)}" />  
+	        </p:column>  
+			<p:column styleClass="mtrxColumn">
+           		<f:facet name="header">
+            		<h:outputText value="#{lahoaBean.mydata.rheader.get(4)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(4)}" />  
+	        </p:column>  
+ 			<p:column styleClass="mtrxColumn">
+           		<f:facet name="header">
+            		<h:outputText value="#{lahoaBean.mydata.rheader.get(5)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(5)}" />  
+	        </p:column>  
+ 			<p:column styleClass="mtrxColumn">
+           		<f:facet name="header">
+            		<h:outputText value="#{lahoaBean.mydata.rheader.get(6)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(6)}" />  
+	        </p:column>  
+ 			<p:column styleClass="mtrxColumn">
+           		<f:facet name="header">
+            		<h:outputText value="#{lahoaBean.mydata.rheader.get(7)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(7)}" />  
+	        </p:column>  
+ 			<p:column styleClass="mtrxColumn">
+           		<f:facet name="header">
+            		<h:outputText value="#{lahoaBean.mydata.rheader.get(8)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(8)}" />  
+	        </p:column>  
+ 			<p:column styleClass="mtrxColumn">
+           		<f:facet name="header">
+            		<h:outputText value="#{lahoaBean.mydata.rheader.get(9)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(9)}" />  
+	        </p:column>  
+ 			<p:column styleClass="mtrxColumn">
+           		<f:facet name="header">
+            		<h:outputText value="#{lahoaBean.mydata.rheader.get(10)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(10)}" />  
+	        </p:column>  
+ 			<p:column styleClass="mtrxColumn">
+           		<f:facet name="header">
+            		<h:outputText value="#{lahoaBean.mydata.rheader.get(11)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(11)}" />  
+	        </p:column>  
+	    </p:dataTable>
+</h:form>
+</ui:define>
+</ui:composition>
+</html>

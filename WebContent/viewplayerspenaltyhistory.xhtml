@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<!-- <f:metadata>
+	<f:event type="preRenderView" listener="#{profileBean.verifyHasRoles('S-VICE;S-PRES')}" />
+</f:metadata>
+ -->
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:define name="content">
+	
+<h:form>
+	<p:messages id="loimessage" showDetail="true" autoUpdate="true" closable="false" />	
+	<p:fieldset>	
+	<p:panel id ="panel" header="Search for Player:">
+		<h:panelGrid columns="2" cellpadding="5">
+			<p:inputText id="searchforplayer" style="width:150px;" value="#{playerhistoryBean.searchcriteria}" required="false" requiredMessage="Enter a minimum of 5 characters to execute search."/>
+			<p:commandButton id="executesearch" value="Search" actionListener="#{playerhistoryBean.playerSearch()}" ajax="true" update="playersearchresult"/>
+		</h:panelGrid>
+		<br></br>	
+		<p:dataTable id="playersearchresult" var="result" value="#{playerhistoryBean.listofplayers}" selection="#{playerhistoryBean.selectedplayer}"  paginator="true" rows="7" >
+	  		<f:facet name="header">  
+	            Select a Player from the List  
+	        </f:facet> 
+			<p:column selectionMode="single" style="width:2%" />
+			<p:column headerText="Player Name">  
+				<h:outputText value="#{result.getPlayername()}" />  
+			</p:column>  
+			<p:column headerText="Date of Birth">  
+				<h:outputText value="#{result.getDob()}" />  
+			</p:column>
+			<p:column headerText="Current Team">  
+				<h:outputText value="#{result.getAddress()}" />  
+			</p:column>
+		</p:dataTable>
+	</p:panel>
+	</p:fieldset>
+	<p:fieldset>
+		<div align="center"><p:commandButton id="loadhistory" value="Load Penalty History" actionListener="#{playerhistoryBean.generateHistory('penalty')}" ajax="true" update="historypanel" oncomplete="PF('msgdlg').show();"/></div>
+	</p:fieldset>
+	<br></br>
+	<p:dialog id="historypanel"  header="History for #{playerhistoryBean.playername}:" widgetVar="msgdlg" modal="false" >
+		<p:dataTable id="playerhistory" var="playerstat" value="#{playerhistoryBean.getPlayerstats()}" rows="10" >
+	  		<p:column headerText="Team Name">  
+				<div align="center">
+				<h:outputText value="#{playerstat.getTeamname()}" />
+				</div>  
+			</p:column>  
+			<p:column headerText="GP">  
+				<div align="center">
+				<h:outputText value="#{playerstat.getGp()}" />
+				</div>  
+			</p:column>
+			<p:column headerText="Penalties">  
+				<div align="center">
+				<h:outputText value="#{playerstat.getPenalties()}" />
+				</div>  
+			</p:column>
+			<p:column headerText="PIMS">  
+				<div align="center">
+				<h:outputText value="#{playerstat.getPims()}" />
+				</div>  
+			</p:column>
+			<p:column headerText="# of Game Misconducts">  
+				<div align="center">
+				<h:outputText value="#{playerstat.getGmcount()}" />
+				</div>  
+			</p:column>
+		</p:dataTable>
+		<br></br>
+		<div align="center"><p:commandButton value="Close" oncomplete="msgdlg.hide();" /></div>    
+	</p:dialog>
+	<p:fieldset>
+		<div align="center"><p:commandButton value="Close" id="close" ajax="false" actionListener="#{playerhistoryBean.searchClose()}"/></div>
+	</p:fieldset>
+
+</h:form>
+</ui:define>
+</ui:composition>
+</html>

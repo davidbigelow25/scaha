@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui" 
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
+<f:view contentType="text/html">
+<h:head>
+	 <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+     </f:facet>
+	<f:metadata>
+		<f:event type="preRenderView" listener="#{profileBean.verifySU()}" />
+	</f:metadata>
+</h:head>
+<h:body >	
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+<ui:define name="content">
+
+		
+			<ui:fragment id="edit-transfers" >
+					<p:panel id ="changerequestpanel" header="Change Requests">
+					<h:form id="changerequestform">
+					<p:dataTable id="requests" paginator="true" var="GameRequest" value="#{changerequestBean.getRequests()}"  rows="10" autoupdate="false">
+			            <f:facet name="header">  
+				        	2015-2016 CHANGE REQUESTS SUBMITTED
+				        </f:facet> 
+				        <p:column headerText="Requesting Team/President">  
+				            <h:outputText value="#{GameRequest.getTeamname()}" />  
+				        </p:column>  
+				        <p:column headerText="Game Details">  
+				            <h:outputText value="#{GameRequest.getGamedetails()}" />  
+				        </p:column>  
+				        <p:column headerText="Reason">  
+				            <h:outputText value="#{GameRequest.getReason()}" />  
+				        </p:column>
+				        <p:column headerText="Notes">  
+				            <h:outputText value="#{GameRequest.getNotes()}" />  
+				        </p:column>
+				    </p:dataTable>
+				    </h:form>
+				    </p:panel>
+			</ui:fragment>
+			
+		
+	
+</ui:define>
+</ui:composition>
+</h:body>
+</f:view>
+</html>

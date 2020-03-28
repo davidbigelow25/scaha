@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+<f:metadata>
+	<f:event type="preRenderView" listener="#{profileBean.verifyHasRoles('C-REG;C-PRES')}" />
+</f:metadata>
+
+<ui:composition template="/WEB-INF/templates/layoutadmin.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://bootsfaces.net/ui">
+	
+<ui:define name="content">
+<b:container>
+	<b:row>
+		<b:column>
+			<b:form>
+				<b:messages id="loimessage" showDetail="true" autoUpdate="true" closable="false" />
+				<b:panel id ="panel" collapsible="false" look="primary">
+					<f:facet name="heading">
+						<h:outputText value="Search for Coach:" />
+					</f:facet>
+					<b:panelGrid colSpans="2,10" id="coachsearchform">
+						<b:inputText id="searchforcoach" placeholder="Enter First or Last Name" value="#{draftcoachesBean.searchcriteria}" required="false" style="width:250px;padding:0px;" >
+							<f:facet name="append">
+								<b:commandButton id="executesearch"  value="Search" type="button" actionListener="#{draftcoachesBean.loidcoachSearch()}" look="success" update="coachsearchresult"/>	
+							</f:facet>
+						</b:inputText>
+					</b:panelGrid>
+					<b:dataTable 
+							id="coachsearchresult" 
+							var="result"
+							value="#{draftcoachesBean.listofcoaches}" 
+							editable="true" 
+							select="true"
+							selection="#{draftcoachesBean.selectedcoach}" 
+							selectionMode="single" 
+							paginator="true" 
+							rows="10"
+							border="true"
+							searching="false"
+							>
+							<b:dataTableColumn custom-options="'width':'50px'">
+					            <f:facet name="header">
+							        Edit
+							    </f:facet>
+							    <b:commandButton value="Select" 
+							                       action="#{draftcoachesBean.AddtoTeam(result)}" look="success">
+							       <f:ajax execute="@this" render="@form" />
+							    </b:commandButton>
+					        </b:dataTableColumn> 
+							<b:dataTableColumn >
+					            <f:facet name="header">
+							        Coach Name
+							    </f:facet>
+					            <h:outputText value="#{result.getCoachname()}" />
+					        </b:dataTableColumn> 
+				        </b:dataTable>	
+				</b:panel>
+			</b:form>
+		</b:column>
+	</b:row>
+</b:container>
+	</ui:define>
+</ui:composition>
+</html>

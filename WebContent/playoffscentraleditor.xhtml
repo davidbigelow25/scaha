@@ -1,0 +1,251 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui" 
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
+<f:view contentType="text/html">
+<h:head>
+	 <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+     </f:facet>
+	
+</h:head>
+<h:body >	
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+<ui:define name="content">
+	<h:form id="form">
+	<p:panel header="Playoff Central" >
+		<f:facet name="footer">
+	        Copyright 2014.  Website maintained by <a href="mailto:lahockeyfan2@yahoo.com;dbigelow@the-rinks.com?subject=SCAHA Website">Rob Foster/Dave Bigelow</a>
+	    </f:facet>
+	
+	<table cellpadding="2">
+		<tr>
+		<td width="100">
+			<p:selectOneMenu value="#{playoffsBean.selectedseasonid}" style="min-width:200px;overflow:hidden !important;">
+			   <f:selectItem itemLabel="Select a Playoff Season" itemValue="0"/>
+			   <f:selectItems value="#{playoffsBean.getSeasonlist()}" var="season"  itemLabel="#{season.getDescription()}" itemValue="#{season.getTag()}"/>
+			   <p:ajax process="@this" listener="#{playoffsBean.loadDivisions()}" event="change" update=":form"  />
+			</p:selectOneMenu>
+		</td>
+		<td width="100">
+			<p:selectOneMenu styleClass="ddlistbox"  id="myschedules" value="#{playoffsBean.selectedschedule}" >
+		    	<f:selectItem style="font-size:10pt;" itemLabel="Select a Playoff Schedule..." itemValue="0" />
+		      	<f:selectItems  value="#{playoffsBean.getSchedulelist()}" var="schedule" itemLabel="#{schedule.getDescription()}" itemValue="#{schedule.getKey()}" />
+		      	<p:ajax listener="#{playoffsBean.onScheduleChange()}" process="@this" update="@this @form"/>
+		    </p:selectOneMenu>
+    	</td>
+    	<td width="200">&nbsp;</td>
+		<td width="70"><b>Champions:</b></td>
+		<td width="70"><i><h:outputText value="#{playoffsBean.getChampion()}"/></i></td>
+		<td width="100">&nbsp;</td>
+		<td width="70"><b>Runner Up:</b></td>
+		<td width="70"><i><h:outputText value="#{playoffsBean.getRunnerup()}" /></i></td>
+		</tr>
+	</table>
+			
+    <p:layout id="layout" style="min-height:990px;overflow:hidden !important;">
+ 		<p:layoutUnit id="left" position="west" size="525" resizable="false" closable="false" collapsible="false" >
+			<p:dataTable id="playoffinformation" var="playoff" value="#{playoffsBean.getPlayoffdetails()}" >
+                <f:facet name="header">
+			        Playoff Format
+			    </f:facet>
+                <p:column headerText="Division" style="width:80px;">  
+	                <h:outputText value="#{playoff.getDivision()}" />
+	            </p:column>  
+		        <p:column headerText="Dates" style="width:40px;">  
+		        	<h:outputText value="#{playoff.getStartdate()}-#{playoff.getEnddate()}" />  
+		        </p:column>
+		        <p:column headerText="Teams" style="width:20px;">  
+		        	<h:outputText value="#{playoff.getNumberteams()}" />  
+		        </p:column>
+		        <p:column headerText="Format" >  
+		        	<b><h:outputText value="#{playoff.getFormatheader()}" /></b><br></br>
+		        	<h:outputText value="#{playoff.getFormatgroups()}" /><br></br>
+		        	<h:outputText value="#{playoff.getFormatadvancement()}" />  
+		        </p:column>
+		        <p:column headerText="Location">  
+		        	<h:outputText value="#{playoff.getLocation()}" />  
+		        </p:column>
+		        
+		     </p:dataTable>
+			 <br></br>
+			<!-- lets put playoff bracket1 here -->
+			<p:dataTable id="playoffbracket1" var="playoffbracket" value="#{playoffsBean.getPlayoffbracket1datamodel()}" editable="true" editMode="cell" selectionMode="single">
+                <f:facet name="header">
+			        Bracket 1
+			    </f:facet>
+                <p:column headerText="Team Name" style="width:80px;">  
+	                <h:outputText value="#{playoffbracket.getTeamname()}" />
+	            </p:column>  
+		        <p:column headerText="Game 1" style="width:40px;">  
+		        	<p:cellEditor>  
+	                   	<f:facet name="output"><h:outputText value="#{playoffbracket.getGame1()}" /></f:facet>  
+	                   	<f:facet name="input"><p:inputText id="game1bracket1Input" value="#{playoffbracket.newgame1}" style="width:25px"/></f:facet>  
+               		</p:cellEditor>  
+	        	
+	        	  
+		        </p:column>
+		        <p:column headerText="Game 2" style="width:40px;">  
+		        	<p:cellEditor>  
+	                   	<f:facet name="output"><h:outputText value="#{playoffbracket.getGame2()}" /></f:facet>  
+	                   	<f:facet name="input"><p:inputText id="game2bracket1Input" value="#{playoffbracket.newgame2}" style="width:25px"/></f:facet>  
+               		</p:cellEditor>  
+	        	</p:column>
+		        <p:column headerText="Game 3" style="width:40px;">  
+		        	<p:cellEditor>  
+	                   	<f:facet name="output"><h:outputText value="#{playoffbracket.getGame3()}" /></f:facet>  
+	                   	<f:facet name="input"><p:inputText id="game3bracket1Input" value="#{playoffbracket.newgame3}" style="width:25px"/></f:facet>  
+               		</p:cellEditor>  
+	        	</p:column>
+		        <p:column headerText="Total" style="width:40px;">  
+		        	<p:cellEditor>  
+	                   	<f:facet name="output"><h:outputText value="#{playoffbracket.getGametotal()}" /></f:facet>  
+	                   	<f:facet name="input"><p:inputText id="totalbracket1Input" value="#{playoffbracket.newgametotal}" style="width:25px"/></f:facet>  
+               		</p:cellEditor>  
+		        </p:column>
+		        <p:column headerText="Place" style="width:40px;">  
+		        	<p:cellEditor>  
+	                   	<f:facet name="output"><h:outputText value="#{playoffbracket.getPlace()}" /></f:facet>  
+	                   	<f:facet name="input"><p:inputText id="placebracket1Input" value="#{playoffbracket.newplace}" style="width:25px"/></f:facet>  
+               		</p:cellEditor>  
+		        </p:column>
+		        
+		     </p:dataTable>
+			 <br></br>
+			<!-- lets put playoff bracket2 here -->
+			<p:dataTable id="playoffbracket2" var="playoffbracket" value="#{playoffsBean.getPlayoffbracket2datamodel()}" editable="true" editMode="cell" selectionMode="single">
+                <f:facet name="header">
+			        Bracket 2
+			    </f:facet>
+                <p:column headerText="Team Name" style="width:80px;">  
+	                <h:outputText value="#{playoffbracket.getTeamname()}" />
+	            </p:column>  
+		        <p:column headerText="Game 1" style="width:40px;">  
+		        	<p:cellEditor>  
+	                   	<f:facet name="output"><h:outputText value="#{playoffbracket.getGame1()}" /></f:facet>  
+	                   	<f:facet name="input"><p:inputText id="game1bracket1Input" value="#{playoffbracket.newgame1}" style="width:25px"/></f:facet>  
+               		</p:cellEditor>  
+	        	
+	        	  
+		        </p:column>
+		        <p:column headerText="Game 2" style="width:40px;">  
+		        	<p:cellEditor>  
+	                   	<f:facet name="output"><h:outputText value="#{playoffbracket.getGame2()}" /></f:facet>  
+	                   	<f:facet name="input"><p:inputText id="game2bracket1Input" value="#{playoffbracket.newgame2}" style="width:25px"/></f:facet>  
+               		</p:cellEditor>  
+	        	</p:column>
+		        <p:column headerText="Game 3" style="width:40px;">  
+		        	<p:cellEditor>  
+	                   	<f:facet name="output"><h:outputText value="#{playoffbracket.getGame3()}" /></f:facet>  
+	                   	<f:facet name="input"><p:inputText id="game3bracket1Input" value="#{playoffbracket.newgame3}" style="width:25px"/></f:facet>  
+               		</p:cellEditor>  
+	        	</p:column>
+		        <p:column headerText="Total" style="width:40px;">  
+		        	<p:cellEditor>  
+	                   	<f:facet name="output"><h:outputText value="#{playoffbracket.getGametotal()}" /></f:facet>  
+	                   	<f:facet name="input"><p:inputText id="totalbracket1Input" value="#{playoffbracket.newgametotal}" style="width:25px"/></f:facet>  
+               		</p:cellEditor>  
+		        </p:column>
+		        <p:column headerText="Place" style="width:40px;">  
+		        	<p:cellEditor>  
+	                   	<f:facet name="output"><h:outputText value="#{playoffbracket.getPlace()}" /></f:facet>  
+	                   	<f:facet name="input"><p:inputText id="placebracket1Input" value="#{playoffbracket.newplace}" style="width:25px"/></f:facet>  
+               		</p:cellEditor>  
+		        </p:column>
+		        
+		     </p:dataTable>
+			
+			
+	    </p:layoutUnit>
+		<p:layoutUnit id="center" position="center" >
+			<p:dataTable id="playoffgames" var="TempGame" value="#{playoffsBean.getTempGamedatamodel()}" editable="true" editMode="cell" selectionMode="single" paginator="true" rows="10" autoupdate="false" >
+		        <f:facet name="header">
+			        Game Results
+			    </f:facet>
+                <p:column headerText="Date">  
+		            <h:outputText value="#{TempGame.getDate()}" />  
+		        </p:column>  
+		        <p:column headerText="Visiting Team">  
+		        	<h:outputText value="#{TempGame.getVisitor()}" />  
+		        </p:column>
+		        <p:column headerText="Score">
+		           <p:cellEditor>  
+                   	<f:facet name="output"><h:outputText value="#{TempGame.awayscore}" /></f:facet>  
+                   	<f:facet name="input"><p:inputText id="awayscoreInput" value="#{TempGame.awayscore}" style="width:25px"/></f:facet>  
+               </p:cellEditor>    
+	            </p:column>
+		        <p:column headerText="Home Team">  
+		        	<h:outputText value="#{TempGame.getHome()}" />  
+		        </p:column>
+		        <p:column headerText="Score">  
+		        	<p:cellEditor>  
+                   	<f:facet name="output"><h:outputText value="#{TempGame.homescore}" /></f:facet>  
+                   	<f:facet name="input"><p:inputText id="homescoreInput" value="#{TempGame.homescore}" style="width:25px"/></f:facet>  
+               </p:cellEditor>
+		        </p:column>
+		        <p:column headerText="Time">  
+		            <h:outputText value="#{TempGame.getTime()}" />  
+		        </p:column>
+		        <p:column headerText="Location">  
+		            <h:outputText value="#{TempGame.getLocation()}" />  
+		        </p:column>
+		    </p:dataTable>
+			<br></br>	
+			<p:dataTable  id= "parts" var="part" value="#{playoffsBean.getPartlist()}"
+				sortBy="place" 				
+				rowStyleClass="#{part.isHasdropped() ? 'rostermia' : null}"
+				>
+  		        <f:facet name="header">
+			        Regular Season Standings
+			    </f:facet>
+                  <p:column  styleClass="mtrxColumn" width="5%" headerText=" " style="font-size: 10px;">
+   	    	         <h:outputText style="font-size: 10px;" value="#{part.getPlace()}" />
+         	   	  </p:column >
+    		      <p:column headerText="Team Name " style="font-size: 10px;">
+   	    	         <h:outputText style="font-size: 10px;" value="#{part.getTeam().getTeamname()} " />
+	         	  </p:column >
+    	          <p:column  styleClass="mtrxColumn" width="8%" headerText="Games Played" style="font-size: 10px;">
+   	    	         <h:outputText style="font-size: 10px;" value="#{part.getGamesplayed()} " />
+	         	   </p:column >
+    	          <p:column  styleClass="mtrxColumn" width="8%" headerText="Wins " style="font-size: 10px;">
+   	    	         <h:outputText style="font-size: 10px;" value="#{part.getWins()} " />
+	         	   </p:column >
+    	          <p:column  styleClass="mtrxColumn" width="8%" headerText="Loses " style="font-size: 10px;">
+   	    	         <h:outputText style="font-size: 10px;" value="#{part.getLoses()} " />
+	         	   </p:column >
+    	          <p:column  styleClass="mtrxColumn" width="8%" headerText="Ties" style="font-size: 10px;">
+   	    	         <h:outputText style="font-size: 10px;" value="#{part.getTies()} " />
+	         	   </p:column >
+     	          <p:column  styleClass="mtrxtotColumn" width="5%" headerText="Points" style="font-size: 10px;">
+   	    	         <h:outputText style="font-size: 10px;" value="#{part.getPoints()} " />
+	         	   </p:column >
+	         	    <p:column  styleClass="mtrxtotColumn" width="5%" headerText="GF" style="font-size: 10px;">
+   	    	         <h:outputText style="font-size: 10px;" value="#{part.getGf()} " />
+	         	   </p:column >
+	         	    <p:column  styleClass="mtrxtotColumn" width="5%" headerText="GA" style="font-size: 10px;">
+   	    	         <h:outputText style="font-size: 10px;" value="#{part.getGa()} " />
+	         	   </p:column >
+	         	    <p:column  styleClass="mtrxtotColumn" width="5%" headerText="GD" style="font-size: 10px;">
+   	    	         <h:outputText style="font-size: 10px;" value="#{part.getGd()} " />
+	         	   </p:column >
+				</p:dataTable>
+		</p:layoutUnit>
+		
+		
+	</p:layout>
+	 
+	
+	</p:panel>
+	</h:form>
+</ui:define>
+</ui:composition>
+</h:body>
+</f:view>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:b="http://bootsfaces.net/ui" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://bootsfaces.net/ui">
+	
+<ui:define name="content">
+<b:container>
+	<b:form>
+	<b:row>
+		<b:column span="12">
+			<b:panel id="panelgames" collapsible="false" look="primary" 
+				large-screen="full-width"
+		    	medium-screen="full-width"
+		    	small-screen="one-third"
+		    	tiny-screen="one-third"
+			>
+				<f:facet name="heading">
+					<h:outputText value="Rosters"/> 
+		        </f:facet>
+		        <b:panelGrid colSpans="3,3,3,3" id="playoffgrid" style="padding: 5;">
+					<b:selectOneMenu value="#{rosterBean.selectedseason}" onchange="ajax:rosterBean.onSeasonChange()" update="@form"
+						large-screen="full-width"
+    					medium-screen="full-width"
+    					small-screen="full-width"
+    					tiny-screen="full-width"
+						>
+				    	<f:selectItem itemLabel="Select Season..." itemValue="0"/>
+					    <f:selectItems value="#{rosterBean.getSeasons()}" var="season" itemLabel="#{season.getSeasonname()}" itemValue="#{season.getSeasonid()}"/><!-- <p:ajax process="@this" listener="#{loiBean.checkDOB('M')}" event="change" update=":form:loicodemessage,form:playeruppanel"  /> -->
+				    </b:selectOneMenu>
+					<b:selectOneMenu value="#{rosterBean.selecteddivision}" onchange="ajax:rosterBean.onDivisionChange()" update="@form"
+						large-screen="full-width"
+    					medium-screen="full-width"
+    					small-screen="full-width"
+    					tiny-screen="full-width"
+						>
+				    	<f:selectItem itemLabel="Select Division..." itemValue="0"/>
+					    <f:selectItems value="#{rosterBean.getDivisions()}" var="division" itemLabel="#{division.getDivisionname()}" itemValue="#{division.getTag()}"/>
+					</b:selectOneMenu>
+					<b:selectOneMenu value="#{rosterBean.selectedteam}" onchange="ajax:rosterBean.onTeamChange()" update="@form"
+						large-screen="full-width"
+    					medium-screen="full-width"
+    					small-screen="full-width"
+    					tiny-screen="full-width"
+						>
+				    	<f:selectItem itemLabel="Select Team..." itemValue="0"/>
+					    <f:selectItems value="#{rosterBean.getTeams()}" var="team" itemLabel="#{team.getTeamname()}" itemValue="#{team.getIdteam()}"/>
+					</b:selectOneMenu>
+				</b:panelGrid>
+				<br></br>
+				<b:dataTable 
+					id="playersearchresult" 
+					var="rosteredit"
+					value="#{rosterBean.getPlayers()}" 
+					editable="false" 
+					select="false"
+					paginated="false" 
+					border="true"
+					searching="true"
+					>
+					<b:dataTableColumn styleClass="mtrxColumn" >
+			            <f:facet name="header">
+					         #
+					    </f:facet>
+					    <h:outputText value="#{rosteredit.jerseynumber}" />
+			        </b:dataTableColumn>
+			        <b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Last Name
+					    </f:facet>
+			            <h:outputText value="#{rosteredit.getLastname()}" />
+			        </b:dataTableColumn>
+					<b:dataTableColumn styleClass="mtrxColumn" >
+			            <f:facet name="header">
+					        First Name
+					    </f:facet>
+			            <h:outputText value="#{rosteredit.getFirstname()}" />
+			        </b:dataTableColumn>
+			    </b:dataTable>
+			    <b:dataTable 
+					id="coachesresult" 
+					var="rosteredit"
+					value="#{rosterBean.getCoaches()}" 
+					editable="false" 
+					select="false"
+					paginated="false" 
+					border="true"
+					searching="true"
+					>
+					<b:dataTableColumn styleClass="mtrxColumn" >
+			            <f:facet name="header">
+					         #
+					    </f:facet>
+					    <h:outputText value="#{rosteredit.jerseynumber}" />
+			        </b:dataTableColumn>
+			        <b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Last Name
+					    </f:facet>
+			            <h:outputText value="#{rosteredit.getLastname()}" />
+			        </b:dataTableColumn>
+					<b:dataTableColumn styleClass="mtrxColumn" >
+			            <f:facet name="header">
+					        First Name
+					    </f:facet>
+			            <h:outputText value="#{rosteredit.getFirstname()}" />
+			        </b:dataTableColumn>
+			    </b:dataTable>
+			</b:panel>
+		</b:column>
+	</b:row>
+	</b:form>
+</b:container>
+<!-- 			
+	<h:form>
+			<p:panel id ="panel" header="Rosters" >
+				<h:panelGrid columns="3" cellpadding="5" >
+					<h:column>
+						<p:selectOneMenu value="#{rosterBean.selectedseason}" >
+					    	<f:selectItem itemLabel="Select Season..." itemValue="0"/>
+					    	<f:selectItems value="#{rosterBean.getSeasons()}" var="season" itemLabel="#{season.getSeasonname()}" itemValue="#{season.getSeasonid()}"/>
+					    	<p:ajax listener="#{rosterBean.onSeasonChange()}" process="@this" update="@form"/>
+					    </p:selectOneMenu>
+					</h:column>
+					<h:column>
+						<p:selectOneMenu value="#{rosterBean.selecteddivision}" id="divisionmenu">
+					    	<f:selectItem itemLabel="Select Division..." itemValue="0"/>
+					    	<f:selectItems value="#{rosterBean.getDivisions()}" var="division" itemLabel="#{division.getDivisionname()}" itemValue="#{division.getTag()}"/>
+					    	<p:ajax listener="#{rosterBean.onDivisionChange()}" process="@this" update="@form"/>
+					    </p:selectOneMenu>
+					</h:column>
+					<h:column>
+						<p:selectOneMenu value="#{rosterBean.selectedteam}" id="teammenu">
+					    	<f:selectItem itemLabel="Select Team..." itemValue="0"/>
+					    	<f:selectItems value="#{rosterBean.getTeams()}" var="team" itemLabel="#{team.getTeamname()}" itemValue="#{team.getIdteam()}"/>
+					    	<p:ajax listener="#{rosterBean.onTeamChange()}" process="@this" update="@form"/>
+					    </p:selectOneMenu>
+					</h:column>
+				</h:panelGrid>
+				<br></br>
+				<p:dataTable id="playersearchresult" var="rosteredit" value="#{rosterBean.getPlayers()}" style="width:70%;" >
+                
+            	<p:column headerText="#" style="width:10%;">  
+	               <h:outputText value="#{rosteredit.jerseynumber}" />  
+	            </p:column>  
+		        <p:column headerText="Last Name" style="width:45%;">  
+		        	<h:outputText value="#{rosteredit.getLastname()}" />  
+		        </p:column>
+		        <p:column headerText="First Name" style="width:45%;">  
+		        	<h:outputText value="#{rosteredit.getFirstname()}" />  
+		        </p:column>
+			          
+			 </p:dataTable>
+			 <p:dataTable id="coachesresult" var="rosteredit" value="#{rosterBean.getCoaches()}" style="width:70%;">
+                <p:column style="width:10%;">  
+	                   	<h:outputText value="#{rosteredit.jerseynumber}" />  
+	            </p:column>  
+		        <p:column style="width:45%;">  
+		        	<h:outputText value="#{rosteredit.getLastname()}" />  
+		        </p:column>
+		        <p:column style="width:45%;">  
+		        	<h:outputText value="#{rosteredit.getFirstname()}" />  
+		        </p:column>
+			 </p:dataTable> 
+			</p:panel>
+			    
+	</h:form>-->
+	</ui:define>
+</ui:composition>
+</html>

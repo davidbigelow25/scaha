@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui" 
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
+    
+ <h:head>
+	 <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+     </f:facet>
+	<f:metadata>
+		<f:event type="preRenderView" listener="#{profileBean.verifySU()}" />
+	</f:metadata>
+</h:head>	    
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+<ui:define name="content">
+    
+<div id="page-div">
+	<h:form id="form">
+        <p:menubar>
+               <p:submenu label="File" icon="ui-icon-document">
+                   <p:submenu label="New" icon="ui-icon-contact">
+                       <p:menuitem value="Project" url="#" />
+                       <p:menuitem value="Other" url="#" />
+                   </p:submenu>
+                   <p:menuitem value="Open" url="#" />
+                   <p:menuitem value="Quit" url="#" />
+               </p:submenu>
+
+               <p:submenu label="Edit" icon="ui-icon-pencil">
+                   <p:menuitem value="Undo" url="#" icon="ui-icon-arrowreturnthick-1-w"></p:menuitem>
+                   <p:menuitem value="Redo" url="#" icon="ui-icon-arrowreturnthick-1-e"></p:menuitem>
+               </p:submenu>
+
+               <p:submenu label="Help" icon="ui-icon-help">
+                   <p:menuitem value="Contents" url="#" />
+                   <p:submenu label="Search" icon="ui-icon-search">
+                       <p:submenu label="Text">
+                           <p:menuitem value="Workspace" url="#" />
+                       </p:submenu>
+                       <p:menuitem value="File" url="#" />
+                   </p:submenu>
+               </p:submenu>
+           </p:menubar>
+	  	<p:growl id="messages" showDetail="true" escape="false"/>  
+	  	<div style="float:left;text-align:top;">
+		<p:panel id="ap" style="width:425px;font-size:10pt;">
+	        	<p:tab id="t1" title="Application Options">
+	            	<p:commandButton id="basic" ajax="true" value="Refresh App" actionListener="#{scahaBean.refreshBean()}" update="@([id$=dlg])" oncomplete="dlg.show();"/>
+	            	<br/>
+  	            	<p:commandButton id="dbtest" ajax="true" value="Test DB" actionListener="#{scahaBean.testDB(10)}" />
+  	            	<p:commandButton id="syncgameMatrix" ajax="true" value="Gen Game Matrix" actionListener="#{scahaBean.syncGameMatrix()}" update="@([id$=dlg])" oncomplete="dlg.show();"/>
+  	            	<p:commandButton id="syncslot" ajax="true" value="Gen Slot Matrix" actionListener="#{scahaBean.syncClubSlots()}" update="@([id$=dlg])" oncomplete="dlg.show();"/>
+	            	<br/>
+   	            	<p:commandButton id="schedule" value="Gen Schedules" actionListener="#{scahaBean.schedule()}" update="@([id$=dlg])" oncomplete="dlg.show();"/>
+	     		</p:tab>
+	            <p:tab id="t2" title="Messaging Center">
+					 <p:tree  id ="mailtree" value="#{mailTreeBean.root}" var="node" style="width:375px;" selectionMode="checkbox" selection="#{mailTreeBean.selectedNodes}">  
+ 					      	<p:treeNode>  
+           					<h:outputText value="#{node}" />  
+       					</p:treeNode>  
+   					</p:tree>  
+   					
+  					<p:commandButton value="Reset Choices" update="mailtree" process="@this" actionListener="#{mailTreeBean.resetTree()}">
+  					 <p:resetInput target="mailtree" />
+  					</p:commandButton>  
+	            	<p:commandButton id="msgbtn" ajax="true" value="New Message"  update="@([id$=messages]),@([id$=msgdlg])" oncomplete="msgdlg.show();">
+						 <p:resetInput target="msgdlg" />
+					</p:commandButton>
+	          	</p:tab>
+			</p:panel>
+		</div>
+		<div style="float:right;text-align:top;">
+			Stuff 
+		</div>
+	</h:form>
+	<p:dialog id="msgdlg"  header="Create a New Message" widgetVar="msgdlg" modal="false" >
+	<h:form id ="mailmsg">
+		<h:panelGrid columns="3" cellpadding="3" id="emailgrid">  
+			<p:outputLabel for="subject" value="Subject:"/>
+			<p:inputText id="subject" style="width:300px;" value="#{mailTreeBean.subject}" required="true"/>
+			<p:message id="m_subject" closable="true" for="subject"/>
+			<p:outputLabel for="ccemail" value="CC:"/>
+			<p:inputText id="ccemail" style="width:300px;" value="#{mailTreeBean.ccemail}"/>
+		</h:panelGrid>
+		<p:separator />
+   		<p:editor  id="editor" widgetVar="edit#{newsitem.getIDStr()}" value="#{mailTreeBean.body}" rendered="true"/>
+		<p:separator />
+  		<p:commandButton value="Send Mail" id="sendmail" ajax="true" update="@([id$=messages]),subject" action="#{mailTreeBean.sendMail()}" oncomplete="msgdlg.hide();"/>
+		<p:spacer height="10" width="10" />
+		<p:commandButton value="Cancel" update="emailgrid" process="@this" oncomplete="msgdlg.hide();" >  
+        	<p:resetInput target="emailgrid" />  
+	    </p:commandButton> 
+	</h:form>
+	</p:dialog>
+	<p:dialog  header="Basic Dialog" widgetVar="dlg" modal="true">
+		<h:outputText value="All the Application Level Objects have been refreshed!" />
+	</p:dialog>
+</div>
+	
+</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/templates/mobilelayout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+     xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+<ui:define name="content">
+<h:body>
+<table border="0" width="100%">
+		<tr>
+			<td valign="top" width="100%">
+				<div id="page-div" width="100%">
+					  	<h:form id="form">
+				   			<div align="center" draggable="false" >
+								<p:commandButton value="Schedule" id="schedulestandings" ajax="false" onclick="window.location.href='scoreboard.xhtml'; return false;" style="width: 90%;font-size: 24px;"/>
+							</div>
+							<p:spacer height="10" width="10" />
+							<div align="center" draggable="false" >
+								<p:commandButton value="Rosters" id="leagueinfo" ajax="false" onclick="window.location.href='roster.xhtml'; return false;" style="width: 90%;font-size: 24px;"/>
+							</div>
+							<p:spacer height="10" width="10" />
+							<div align="center" draggable="false" >
+								<p:commandButton value="Suspensions" id="clubinfo" ajax="false" onclick="window.location.href='suspensions.xhtml'; return false;" style="width: 90%;font-size: 24px;"/>
+							</div>
+							<p:spacer height="10" width="10" />
+							<div align="center" draggable="false" >
+								<p:commandButton value="Playoffs" id="playoffs" ajax="false" onclick="window.location.href='playoffs.xhtml'; return false;" style="width: 90%;font-size: 24px;"/>
+							</div>
+							<p:spacer height="10" width="10" />
+							<div align="center" draggable="false" >
+								<p:commandButton value="Select Camp" id="selectcamp" ajax="false" onclick="window.location.href='selectcamp.xhtml'; return false;" style="width: 90%;font-size: 24px;"/>
+							</div>
+							<p:spacer height="10" width="10" />
+						  </h:form>
+					
+				</div>
+			</td>
+		</tr>
+	</table>
+</h:body>
+</ui:define>
+</ui:composition>

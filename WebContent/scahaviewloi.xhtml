@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:b="http://bootsfaces.net/ui">
+
+<f:metadata>
+<f:event type="preRenderView" listener="#{profileBean.verifyUserLogin()}" />
+</f:metadata>
+
+<ui:composition template="/WEB-INF/templates/layoutadmin.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+<ui:define name="content">
+<b:container>
+	<b:row>
+		<b:column>
+			<b:form>
+			<b:panel id ="panel" collapsible="false" look="primary">
+				<f:facet name="heading">
+					<h:outputText value="SCAHA LETTER OF INTENT AND MEMBERSHIP REGISTRATION #{loiBean.getCurrentyear()}" />
+				</f:facet>
+				<b:panelGrid colSpans="3,3,3,3" id="loimain" style="padding: 5;">
+					<h:outputText style="font-weight: bold;" value="#{loiBean.getCurrentyear()} Boys Team:"/>
+					<h:outputText value="#{loiBean.getThisYearBoysTeam()}" />
+					<h:outputText style="font-weight: bold;" value="#{loiBean.getCurrentyear()} Girls Team:" rendered="#{loiBean.displaygirlteam}"/>
+					<h:outputText value="#{loiBean.getThisYearGirlsTeam()}" rendered="#{loiBean.displaygirlteam}"/>
+					<h:outputText style="font-weight: bold;" value="Name(Last,First):" />
+					<h:outputText value="#{loiBean.lastname}, #{loiBean.firstname}" />
+					<h:outputText style="font-weight: bold;" value="Date of Birth:" />
+					<h:outputText value="#{loiBean.dob}" />
+					<h:outputText style="font-weight: bold;" value="Citizenship:" />
+					<h:outputText value="#{loiBean.citizenship}" />
+					<h:outputText style="font-weight: bold;" value="Gender:" />
+					<h:outputText value="#{loiBean.displaygender}" />
+					<h:outputText style="font-weight: bold;" value="Address:" />
+					<h:outputText value="#{loiBean.address}" />
+					<h:outputText style="font-weight: bold;" value="City:" />
+					<h:outputText value="#{loiBean.city}" />
+					<h:outputText style="font-weight: bold;" value="State:" />
+					<h:outputText value="#{loiBean.state}" />
+					<h:outputText style="font-weight: bold;" value="Zip:" />
+					<h:outputText value="#{loiBean.zip}" />
+					<h:outputText style="font-weight: bold;" value="#{loiBean.getPrioryear()} Club:" />
+					<h:outputText value="#{loiBean.lastyearclub}" />
+					<h:outputText style="font-weight: bold;" value="Team:" />
+					<h:outputText value="#{loiBean.lastyearteam}" />
+				</b:panelGrid>
+				<p:spacer width="10" height="10" />
+				<b:dataTable 
+					id="playersearchresult" 
+					var="FamilyRow"
+					value="#{loiBean.getParents()}" 
+					editable="false" 
+					select="false"
+					paginated="false" 
+					border="false"
+					searching="false"
+					>
+					<b:dataTableColumn >
+			            <f:facet name="header">
+					        Parent/Guardian Name
+					    </f:facet>
+					    <h:outputText value="#{FamilyRow.getLastname()}" />, <h:outputText value="#{FamilyRow.getFirstname()}" />
+			        </b:dataTableColumn> 
+					<b:dataTableColumn >
+			            <f:facet name="header">
+					        E-Mail
+					    </f:facet>
+					    <h:outputText value="#{FamilyRow.getEmail()}" />
+			        </b:dataTableColumn>
+			        <b:dataTableColumn >
+			            <f:facet name="header">
+					        Phone
+					    </f:facet>
+					    <h:outputText value="#{FamilyRow.getPhone()}"/>
+			        </b:dataTableColumn> 
+				</b:dataTable>
+				<p:spacer width="10" height="10" />
+				<b:panelGrid colSpans="2,10" id="loisuspend" style="padding: 5;">
+					<h:outputText value="Suspend:"/>
+					<b:selectOneMenu id="suspendloi" value="#{loiBean.suspendloi}" >
+				    	<f:selectItem itemLabel="No" itemValue="0"/>
+				    	<f:selectItem itemLabel="Yes" itemValue="1"/>
+				    </b:selectOneMenu>
+				    <h:outputText value="Note:"/>
+				    <b:inputTextarea value="#{loiBean.notes}" rows="3" cols="100"/>
+				</b:panelGrid>
+				<p:spacer width="10" height="10" />
+				<b:panelGrid colSpans="2,2,2,2,2,2" id="loibuttons" style="padding: 5;">
+					<h:outputText value=" "/>
+					<b:commandButton id="sendnote" value="Send Note"  actionListener="#{loiBean.SendNote()}" look="success"
+						large-screen="full-width"
+    					medium-screen="full-width"
+    					small-screen="full-width"
+    					tiny-screen="full-width"/>
+					<b:commandButton id="updatenote" value="Update Note Only"  actionListener="#{loiBean.UpdateNote()}" look="success"
+						large-screen="full-width"
+    					medium-screen="full-width"
+    					small-screen="full-width"
+    					tiny-screen="full-width"/>
+					<b:commandButton id="confirmloi" value="Confirm Loi"  actionListener="#{reviewloiBean.confirmLoifromview(loiBean.getRosteridforconfirm(),loiBean.getPage(),loiBean.getSearch())}" look="success"
+						large-screen="full-width"
+    					medium-screen="full-width"
+    					small-screen="full-width"
+    					tiny-screen="full-width"/>
+					<b:commandButton id="printloi" value="Print LOI" onclick="window.print(); return false;" look="info"
+						large-screen="full-width"
+    					medium-screen="full-width"
+    					small-screen="full-width"
+    					tiny-screen="full-width"/>
+					<b:commandButton id="closeloi" value="Close LOI"  actionListener="#{reviewloiBean.CloseLoi(loiBean.getPage(),loiBean.getSearch())}" look="info"
+						large-screen="full-width"
+    					medium-screen="full-width"
+    					small-screen="full-width"
+    					tiny-screen="full-width"/>
+									
+				</b:panelGrid>
+			</b:panel>
+			</b:form>
+		</b:column>
+	</b:row>
+</b:container>	
+		
+<!-- 
+		<div id="page-div">
+		<ui:fragment id="edit-loi">
+		<h:form>
+			<p:fieldset id="fs1" toggleable="false" toggleSpeed="500">
+				<p:panel id ="panel" header="SCAHA LETTER OF INTENT AND MEMBERSHIP REGISTRATION #{loiBean.getCurrentyear()}">
+					<h:panelGrid columns="2" cellpadding="5" width="50%" >
+						<f:facet name="header">
+								<h:column colspan="2"><b>Club Information</b></h:column>
+						</f:facet>	
+						<h:column><b>#{loiBean.getCurrentyear()} Boys Team:</b></h:column>
+						<h:column><h:outputText value="#{loiBean.getThisYearBoysTeam()}" /></h:column>
+						<h:column><b><h:outputText value="#{loiBean.getCurrentyear()} Girls Team:" rendered="#{loiBean.displaygirlteam}"/></b></h:column>
+						<h:column ><h:outputText value="#{loiBean.getThisYearGirlsTeam()}" rendered="#{loiBean.displaygirlteam}"/></h:column>
+					</h:panelGrid>
+					<p:spacer width="10" height="10" />
+					<table cellpadding="5" cellspacing="0" width="90%">
+						<tr>
+							<th colspan="6" align="center"><b>Player Information</b></th>
+						</tr>
+						<tr>
+							<td width="20%"><b>Name(Last,First):</b></td>
+							<td align="left" colspan="5"><h:outputText value="#{loiBean.lastname}" />,<p:spacer width="1"/><h:outputText value="#{loiBean.firstname}" /></td>
+						</tr>
+						<tr>
+							<td width="20%"><b>Date of Birth (mm/dd/yyyy):</b></td>
+							<td><h:outputText value="#{loiBean.dob}" /></td>
+							<td><b>Citenzenship:</b></td>
+							<td><h:outputText value="#{loiBean.citizenship}" /></td>
+							<td><b>Gender:</b></td>
+							<td><h:outputText value="#{loiBean.displaygender}" /></td>
+						</tr>
+						<tr>
+							<td width="20%"><b>Address:</b></td>
+							<td align="left" colspan="5"><h:outputText value="#{loiBean.address}" /></td>
+						</tr>
+						<tr>
+							<td width="20%"><b>City:</b></td>
+							<td><h:outputText value="#{loiBean.city}" /></td>
+							<td><b>State:</b></td>
+							<td><h:outputText value="#{loiBean.state}" /></td>
+							<td><b>Zip:</b></td>
+							<td><h:outputText value="#{loiBean.zip}" /></td>
+						</tr>
+						<tr>
+							<td><b>#{loiBean.getPrioryear()} Club:</b></td>
+							<td colspan="2"><h:outputText value="#{loiBean.lastyearclub}" /></td>
+							<td><b>Team:</b></td>
+							<td colspan="2"><h:outputText value="#{loiBean.lastyearteam}" /></td>
+						</tr>
+					</table>
+				</p:panel>
+				<p:spacer width="10" height="10" />
+				<p:dataTable var="FamilyRow" value="#{loiBean.getParents()}" border="1">  
+			        <p:column headerText="Parent/Guardian Name">  
+			            <h:outputText value="#{FamilyRow.getLastname()}" />, <h:outputText value="#{FamilyRow.getFirstname()}" />  
+			        </p:column>  
+			        <p:column headerText="E-Mail">  
+			            <h:outputText value="#{FamilyRow.getEmail()}" />  
+			        </p:column>  
+			        <p:column headerText="Phone">  
+			            <h:outputText value="#{FamilyRow.getPhone()}"/>
+			        </p:column>  
+				</p:dataTable>
+			</p:fieldset> 
+			<p:fieldset>
+				<div align="center" valign="top">
+					<table cellpadding="5" cellspacing="0" width="90%">
+						<tr>
+							<td valign="top"><b>Notes:</b></td>
+							<td><p:inputTextarea value="#{loiBean.notes}" rows="3" cols="100"/></td>
+						</tr>
+					</table>
+				 </div>
+			</p:fieldset>
+			<div align="center"><p:commandButton id="printloi" value="Print LOI" onclick="window.print(); return false;"/><p:spacer width="5"/><p:commandButton id="closeloi" value="Close LOI"  actionListener="#{reviewloiBean.CloseLoi(loiBean.getPage(),loiBean.getSearch())}"/><p:spacer width="5"/><p:commandButton id="sendnote" value="Send Note"  actionListener="#{loiBean.SendNote()}"/><p:spacer width="5"/><p:commandButton id="updatenote" value="Update Note Only"  actionListener="#{loiBean.UpdateNote()}"/><p:spacer width="5"/><p:commandButton id="confirmloi" value="Confirm Loi"  actionListener="#{reviewloiBean.confirmLoifromview(loiBean.getRosteridforconfirm(),loiBean.getPage(),loiBean.getSearch())}"/></div>
+		</h:form>
+		</ui:fragment>
+		</div> -->
+	</ui:define>
+</ui:composition>
+</html>

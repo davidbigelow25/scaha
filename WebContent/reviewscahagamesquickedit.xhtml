@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui" 
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
+<f:view contentType="text/html">
+<h:head>
+	 <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+     </f:facet>
+	<!-- <f:metadata>
+		<f:event type="preRenderView" listener="#{profileBean.verifySU()}" />
+	</f:metadata> -->
+</h:head>
+<h:body >	
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+<ui:define name="content">
+
+<h:form id="rosterform">		
+
+	<p:panel id ="panel" header="Review Played SCAHA GAMES">
+		<p:selectOneMenu styleClass="ddlistbox" id="myseasons" value="#{scoreboardBean.selectedseasonid}" >
+  			<f:selectItem style="font-size:10pt;" itemLabel="Select a Season..." itemValue="0" />
+  			<f:selectItems value="#{scoreboardBean.getSeasonlist()}"  var="season"  itemLabel="#{season.getDescription()}" itemValue="#{season.getKey()}"/>
+  			<p:ajax listener="#{scoreboardBean.onSeasonChange()}" process="@this" update="myschedules scahagames "/>
+     	</p:selectOneMenu>
+		<p:selectOneMenu styleClass="ddlistbox"  id="myschedules" value="#{scoreboardBean.selectedscheduleid}" >
+       		<f:selectItem style="font-size:10pt;" itemLabel="Select a Schedule..." itemValue="0" />
+        	<f:selectItems  value="#{scoreboardBean.getSchedulelist()}" var="schedule" itemLabel="#{schedule.getDescription()}" itemValue="#{schedule.getKey()}" />
+        	<p:ajax listener="#{reviewscahagamesBean.onScheduleChange()}" process="@this" update="@this scahagames"/>
+      	</p:selectOneMenu>	
+		<!-- <p:selectOneMenu styleClass="ddlistbox"  id="myteams" value="#{scoreboardBean.selectedpartid}" >
+   			<f:selectItem style="font-size:10pt;" itemLabel="Schedule For All Teams..." itemValue="0" />
+    		<f:selectItems  value="#{scoreboardBean.getPartpicklist()}" var="part" itemLabel="#{part.getTeam().getTeamname()}" itemValue="#{part.getKey()}" />
+    		<p:ajax listener="#{scoreboardBean.onPartChange()}" process="@this" update="@this scahagames"/>
+      	</p:selectOneMenu> -->	
+		<p:separator />
+		<p:dataTable id="scahagames" var="TempGame" value="#{reviewscahagamesBean.getTempGamedatamodel()}" selection="#{reviewscahagamesBean.selectedgame}" editable="true" editMode="cell" selectionMode="single" paginator="true" rows="10" autoupdate="false">
+	           <f:facet name="header">  
+	        	SCAHA GAMES
+	        </f:facet> 
+	         <p:column headerText="Date">  
+	            <h:outputText value="#{TempGame.getDate()}" />  
+	        </p:column>  
+	        <p:column headerText="Visiting Team">  
+	        	<h:outputText value="#{TempGame.getVisitor()}" />  
+	        </p:column>
+	        <p:column headerText="Score">
+	        	<p:cellEditor>  
+                   	<f:facet name="output"><h:outputText value="#{TempGame.awayscore}" /></f:facet>  
+                   	<f:facet name="input"><p:inputText id="awayscoreInput" value="#{TempGame.awayscore}" style="width:25px"/></f:facet>  
+               </p:cellEditor>  
+	        	  
+	        </p:column>
+	        <p:column headerText="Home Team">  
+	        	<h:outputText value="#{TempGame.getHome()}" />  
+	        </p:column>
+	        <p:column headerText="Score">  
+	        	<p:cellEditor>  
+                   	<f:facet name="output"><h:outputText value="#{TempGame.homescore}" /></f:facet>  
+                   	<f:facet name="input"><p:inputText id="homescoreInput" value="#{TempGame.homescore}" style="width:25px"/></f:facet>  
+               </p:cellEditor>  
+	        	  
+	        </p:column>
+	        <p:column headerText="Time">  
+	            <h:outputText value="#{TempGame.getTime()}" />  
+	        </p:column>
+	        <p:column headerText="Location">  
+	            <h:outputText value="#{TempGame.getLocation()}" />  
+	        </p:column>
+	        <p:column headerText="Status">  
+	            <h:outputText value="#{TempGame.getStatus()}" />  
+	        </p:column>
+	        <p:column headerText="Scoresheet">  
+	            <h:outputText value="#{TempGame.getScoresheet()}" />  
+	        </p:column>
+	        <p:column headerText="">
+	        	<p:splitButton id="game" icon="ui-icon-folder-open"  >
+			        <p:menuitem value="Add Details" action="#{reviewscahagamesBean.editLiveGame(TempGame)}" />
+			        <p:menuitem target="_blank" value="Manage Scoresheet(s)" immediate="true" action="#{reviewscahagamesBean.uploadSCAHAScoresheet(TempGame)}" ajax="false"  />
+			    </p:splitButton>
+	        </p:column>  
+	    </p:dataTable>
+	</p:panel>
+</h:form>	
+	
+	
+	
+</ui:define>
+</ui:composition>
+</h:body>
+</f:view>
+</html>

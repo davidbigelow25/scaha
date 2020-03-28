@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+     xmlns:pe="http://primefaces.org/ui/extensions"
+     xmlns:b="http://bootsfaces.net/ui"
+>
+
+	<!-- 
+	
+	This view is designed to manage USA Hockey memberships.   A single account can manage several memberships (in the family).
+	The only way to create a membership is to first start with a USA hockey number for the given master season.
+	You then import the membernumber, and we attempt to marry it with an existing member record
+	
+	 -->  
+
+	<!-- we will be creating our own custom wizard concept here using panels and hiding/display combinations
+		1. panel is for collecting and submitting usa hockey membership number
+		2. panel is for selecting a member already existing in system or creating a new one
+		3. panel is for selecting a role for the member 
+		4. panel is for displaying final result.
+	
+	 -->
+<f:view contentType="text/html">
+    
+ <h:head>
+	 <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+     </f:facet>
+ 	<!-- <f:metadata>
+		<f:event type="preRenderView" listener="#{profileBean.verifyUserLogin()}" />
+	</f:metadata> -->
+</h:head>	    
+
+<h:body>  
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+<ui:define name="content">
+<b:container>
+	<b:row>
+		<b:column>
+			<b:form id="form">
+			<b:messages id="messages" showDetail="true" autoUpdate="true" closable="false" />
+ 			<b:panel id="usahockeypanel" collapsible="false" look="primary" rendered="#{memberBean.displayusanumber}">
+				<f:facet name="heading">
+					Register A Player, Coach, or Manager for SCAHA
+				</f:facet>
+				<b:panelGrid colSpans="12" id="usahockeyninformation">
+					<h:outputText style="font-weight: bold;" value="Please Enter The USA Hockey Membership Number:" />
+					<b:inputText id="usah-reg" binding="#{memberBean.mcomponent}" value="#{memberBean.regnumber}" required="true" requiredMessage="Usa Hockey Number cannot be blank." 
+						large-screen="half"
+				    	medium-screen="half"
+				    	small-screen="full-width"
+				    	tiny-screen="full-width"
+					>
+						<f:validateLength minimum="14" maximum="14" />
+			 			<f:validator validatorId="validateUSAHRegistration" />  
+					</b:inputText>
+ 				</b:panelGrid>
+ 				<b:panelGrid colSpans="3,2,2,2,3" id="buttongrid">
+					<!-- <b:commandButton value="Back to USA Hockey Entry" id="selectmemberbacktousahockey"
+				                       actionListener="#{memberBean.registrationwizard('usahockeynumber')}" look="info">
+				       <f:ajax execute="@form" render="@form" />
+				    </b:commandButton> -->
+				    <h:outputText value=" " />
+				    <h:outputText value=" " />
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<b:commandButton value="Goto Select A Member" id="btnUSAfetch"
+				        actionListener="#{memberBean.registrationwizard('selectmember')}" look="success"
+				        large-screen="full-width"
+				    	medium-screen="full-width"
+				    	small-screen="full-width"
+				    	tiny-screen="full-width">
+				       <f:ajax execute="@form" render="@form" />
+				    </b:commandButton>
+				</b:panelGrid>
+ 				<p:spacer width="10" height="10" />
+ 				<b:panelGrid colSpans="12" id="usahockeylink">
+					<h:outputText value=" " />
+ 					<h:outputText style="font-weight: bold;" value="Don't have your USA Hockey Membership?" />
+					<p:spacer width="10" height="10" />
+					<a href="https://www.usahockeyregistration.com/login_input.action" target="_blank">
+ 						<b:button size="xs" id="btnUSAOpen"  value="Get USA Hockey Membership" look="info" 
+ 							large-screen="full-width"
+					    	medium-screen="full-width"
+					    	small-screen="full-width"
+					    	tiny-screen="full-width"/>
+ 					</a>
+ 					<p:spacer width="10" height="10" />
+					<h:outputText value="Note:  Please allow up to 5 minutes between USA Hockey Membership creation and entering the USA Hockey Number on this page to allow USA Hockey's database to populate.  USA Hockey's process is immediate, but it takes a couple
+					of minutes for their site to make your number available to our system." />
+ 				</b:panelGrid>
+			</b:panel>
+ 			<b:panel id="selectmemberpanel" collapsible="false" look="primary" rendered="#{memberBean.displayselectmember}">
+				<f:facet name="heading">
+					Step 2: Select A Member
+				</f:facet>
+				<b:panelGrid colSpans="12" id="selectmemberentry">
+					<h:outputText style="font-weight:bold;" value="Member Candidate list for #{memberBean.getUsar().getFirstName()} #{memberBean.getUsar().getLastName()}" />
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<h:outputText value="Find and select the record that matches.  If there is NOT a record that matches select the Create New record option." />
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+				</b:panelGrid>
+				<p:spacer width="10" height="10" />
+				<b:dataTable 
+					id="listofpeopleout" 
+					var="person" 
+					value="#{memberBean.getPersons()}" 
+					dynamic="false"
+					editable="false" 
+					select="false"
+					paginated="false" 
+					border="false"
+					searching="false"
+					custom-options="ordering: false;bInfo : false;"
+					>
+					<b:dataTableColumn >
+						<f:facet name="header">
+					        Name
+					    </f:facet>
+				        <h:outputText value="#{person.getsFirstName()} #{person.getsLastName()}"/>
+			        </b:dataTableColumn>
+			        <b:dataTableColumn >
+						<f:facet name="header">
+					        Birth Day
+					    </f:facet>
+				        <h:outputText value="#{person.getDob()}"/>
+			        </b:dataTableColumn>
+			        <b:dataTableColumn >
+						<f:facet name="header">
+					        Family Information
+					    </f:facet>
+				        <h:outputText value="#{person.getXFamilyName()} #{person.getXRelType()}"/>
+			        </b:dataTableColumn>
+			        <b:dataTableColumn >
+						<f:facet name="header">
+					        Last Year Team
+					    </f:facet>
+				        <h:outputText style="font-size:12px;text-align:left;" value="#{person.getNotes()}" escape = "false"/>
+			        </b:dataTableColumn>
+			        <b:dataTableColumn >
+			            <f:facet name="header">
+					        Edit
+					    </f:facet>
+					    <b:commandButton value="Select" icon="ok-circle"
+					                       action="#{memberBean.selectMember(person)}" look="success"
+					                       large-screen="full-width"
+									       medium-screen="full-width"
+									       small-screen="full-width"
+									       tiny-screen="full-width">
+					       <f:ajax execute="@this" render="@form" />
+					    </b:commandButton>
+			        </b:dataTableColumn> 
+				</b:dataTable>
+				<b:panelGrid colSpans="3,2,2,2,3" id="panel2nav">
+					<b:commandButton value="Back to USA Hockey Entry" id="selectmemberbacktousahockey"
+				                       actionListener="#{memberBean.registrationwizard('usahockeynumber')}" look="info"
+				                       large-screen="full-width"
+				    					medium-screen="full-width"
+				    					small-screen="full-width"
+				    					tiny-screen="full-width">
+				       <f:ajax execute="@form" render="@form" />
+				    </b:commandButton>
+				    <h:outputText value=" " />
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<!-- <b:commandButton value="Goto Select a Role" id="selectmembergotoselectrole"
+				                       actionListener="#{memberBean.registrationwizard('selectrole')}" look="success">
+				       <f:ajax execute="@form" render="@form" />
+				    </b:commandButton> -->
+				    <h:outputText value=" " />
+				</b:panelGrid>
+			</b:panel>
+			<b:panel id="selectrolepanel" collapsible="false" look="primary" rendered="#{memberBean.displayselectrole}">
+				<f:facet name="heading">
+					Step 3: Select A Role
+				</f:facet>
+				<b:panelGrid colSpans="12" id="selectroleentry">
+					<h:outputText style="font-weight:bold;" value="Role options for #{memberBean.getUsar().getFirstName()} #{memberBean.getUsar().getLastName()}" />
+					<p:spacer width="10" height="10" />
+					<h:outputText value="Select All Roles That Apply for this season:" />
+					<h:outputText value=" " />
+				</b:panelGrid>
+				<b:panelGrid colSpans="2,2,2,2,2,2" id="selectroles">
+					<b:selectBooleanCheckbox value="#{memberBean.playerskater}" caption="Player-Skater" />
+	 	   			<b:selectBooleanCheckbox value="#{memberBean.playergoalie}" caption="Player-Goalie" />
+	 	   			<b:selectBooleanCheckbox value="#{memberBean.coach}" caption="Coach" />
+	 	   			<b:selectBooleanCheckbox value="#{memberBean.manager}" caption="Manager" />
+	 	   			<!-- <b:selectManyCheckbox  id="member" value="#{memberBean.membertype}" required="true" requiredMessage="need to select a role." >    
+	          			<f:selectItem itemLabel="" itemValue="Player-Skater" />  
+	          			<f:selectItem itemLabel="" itemValue="Player-Goalie" />  
+	          			<f:selectItem itemLabel="" itemValue="Coach"/>  
+	         			<f:selectItem itemLabel="" itemValue="Manager"/>
+	  				</b:selectManyCheckbox> -->
+	  			</b:panelGrid>
+	  			<p:spacer width="10" height="10" />
+	  			<b:panelGrid colSpans="3,2,2,2,3" id="selectrolebuttons">
+					<b:commandButton value="Back to Select a Member" id="selectrolebacktoselectmember"
+				                       actionListener="#{memberBean.registrationwizard('selectmember')}" look="info"
+				                       large-screen="full-width"
+				    					medium-screen="full-width"
+				    					small-screen="full-width"
+				    					tiny-screen="full-width">
+				       <f:ajax execute="@form" render="@form" />
+				    </b:commandButton>
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<b:commandButton value="Goto Get Season Pass" id="selectroletoseasonpass" icon="ok-circle"
+				                       actionListener="#{memberBean.registrationwizard('displayseasonpass')}" look="success"
+				                       large-screen="full-width"
+				    					medium-screen="full-width"
+				    					small-screen="full-width"
+				    					tiny-screen="full-width">
+				       <f:ajax execute="@form" render="@form" />
+				    </b:commandButton>
+				</b:panelGrid>
+			
+			</b:panel>
+			<b:panel id="finalmembership" collapsible="false" look="primary" rendered="#{memberBean.displayseasonpass}">
+				<f:facet name="heading">
+					Step 4: View Season Pass
+				</f:facet>
+				<b:panelGrid colSpans="12" id="labelgrid">
+					<h:outputText style="font-weight:bold;" value="Below is the SCAHA Season Pass for #{memberBean.getUsar().getFirstName()} #{memberBean.getUsar().getLastName()}" />
+				</b:panelGrid>
+				<p:spacer width="10" height="10" />
+				<b:panelGrid colSpans="2,9,1" id="viewseasonpasssmallscreen" visible="sm,xs" hidden="md,lg">
+					<h:outputText style="font-weight:bold;" value="Name:"/>
+					<h:outputText value="#{memberBean.selectedPerson.getsFirstName()} #{memberBean.selectedPerson.getsLastName()}"/>
+					<p:spacer width="10" height="10" />
+					<h:outputText style="font-weight:bold;" value="DOB:"/>
+					<h:outputText value="#{memberBean.usar.getDOB()}"/>
+					<p:spacer width="10" height="10" />
+					<h:outputText style="font-weight:bold;" value="#{profileBean.getCurrentUSAHockeySeason()}:"/>
+					<h:outputText value="#{memberBean.usar.getUSAHnum()}"/>
+					<p:spacer width="10" height="10" />
+					<h:outputText style="font-weight:bold;" value="#{profileBean.getCurrentSCAHAHockeySeason()} Season Pass:"/>
+					<h:outputText value="#{memberBean.getScahanumber()}"/>
+				</b:panelGrid>
+				<b:panelGrid colSpans="3,3,3,3" id="viewseasonpass" hidden="sm,xs" visible="md,lg">
+					<h:outputText style="font-weight:bold;" value="Name"/>
+					<h:outputText style="font-weight:bold;" value="DOB"/>
+					<h:outputText style="font-weight:bold;" value="#{profileBean.getCurrentUSAHockeySeason()}"/>
+					<h:outputText style="font-weight:bold;" value="#{profileBean.getCurrentSCAHAHockeySeason()} Season Pass"/>
+					<h:outputText value="#{memberBean.selectedPerson.getsFirstName()} #{memberBean.selectedPerson.getsLastName()}"/>
+					<h:outputText value="#{memberBean.usar.getDOB()}"/>
+					<h:outputText value="#{memberBean.usar.getUSAHnum()}"/>
+					<h:outputText value="#{memberBean.getScahanumber()}"/>
+				</b:panelGrid>
+				<p:spacer width="10" height="10" />
+	  			<b:panelGrid colSpans="3,2,2,2,3" id="viewseasonpassbuttons">
+					<!-- <b:commandButton value="Back to Select a Role" id="viewpassbacktoselectarole"
+				                       actionListener="#{memberBean.registrationwizard('selectrole')}" look="success">
+				       <f:ajax execute="@form" render="@form" />
+				    </b:commandButton> -->
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<b:commandButton value="Goto Home Page" id="viewpassleavewizard" icon="ok-circle"
+				                       actionListener="#{memberBean.registrationwizard('leavewizard')}" look="success"
+				                       large-screen="full-width"
+				    					medium-screen="full-width"
+				    					small-screen="full-width"
+				    					tiny-screen="full-width">
+				       <f:ajax execute="@form" render="@form" />
+				    </b:commandButton>
+				</b:panelGrid>
+			
+			</b:panel>
+			<h:outputText value="Note: If you are having technical difficulties with the registration process please contact Rob Foster - lahockeyfan2@yahoo.com" />
+			</b:form>
+		</b:column>
+	</b:row>
+</b:container>
+<script type="text/javascript">
+    function hideOrShow(show) {
+        // Get the panel using its ID
+        var obj = document.getElementById("form:p1");
+        var obj2 = document.getElementById("form:p2");
+        if (show) {
+            obj.style.display = "block";
+            obj2.style.display = "none";
+        } else {
+            obj.style.display = "none";
+            obj2.style.display = "block";
+        }
+    }
+</script>
+</ui:define>
+</ui:composition>
+</h:body>
+</f:view>
+</html>

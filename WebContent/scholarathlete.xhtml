@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+>
+<ui:define name="content">
+<h:body>
+<div id="calendar-div">
+    <p:panel header="SCAHA Scholar Athletes Program #{scahaBean.getScahaSeasonList().getCurrentSeason().getDescription()}" footer="brought to you by iScaha">  
+ 		<table id="subpage" style="border-collapse: collapse;">
+			<tr>
+				<td>
+					Dear SCAHA Membership, 
+<br></br>
+<br></br>
+The 2015 SCAHA Scholar Athlete program is open for registration.  To qualify for the Scholar Athlete program the player must have a 3.0 or equivalent GPA or a minimum of "S" (satisfactory) in citizenship and effort.
+<br></br>
+<br></br>
+To register complete the following steps:
+<br></br>
+<br></br>
+1.  Login to your account on www.SCAHA.com<br></br>
+2.  Select the Scholar Athlete link.<br></br>
+3.  Select the Upload Report Card button.<br></br>
+4.  Select File and select Upload button to upload the selected report card to the site.<br></br>
+5.  Once report card is uploaded select Submit Scholar Athlete Application button.<br></br>
+<br></br>
+<br></br>
+The applications will be reviewed by SCAHA staff, once approved the players name will appear on the Scholar Athlete page of the site and the player will receive a Scholar Athlete patch in the mail.
+<br></br>
+<br></br>
+All scholar athlete recognition patches are awarded at the sole discretion of the chairperson in conjunction with the SCAHA Executive Committee. There will be no appeals and all decisions on awards are final.
+					<!-- Complete the following instructions to participate in the Scholar Athlete Program.<br></br><br></br>
+
+					<u>Instructions</u>
+					<br></br>
+					<br></br>
+					
+					1.Print and complete form.<br></br> 
+					2. Send the form, along with a self-addressed stamped envelope to the address on the form.<br></br> 
+					3. Send a copy of the report card which clearly indicates the final grade for the end of the *First Semester (*1st and 2nd quarter grades combined) or the end of the *Second Trimester if on the trimester system (* 1st and 2nd trimester grades together)<br></br> 
+					<br></br>
+					<br></br>
+					Download the <a href="http://www.scaha.com/scaha/downloads/scholarathlete/SCAHA_SCHOLAR_ATHLETE_APPLICATION.pdf" target="_blank">Application Form</a>
+					<br></br> -->
+					
+					<p>&nbsp;</p>
+				</td>
+			</tr>
+		</table>
+ 		<p:dataTable var="result" value="#{scholarathleteBean.getListofplayers()}" paginator="true" rows="12" >
+ 		    <p:column headerText="Name" style="text-align: center">  
+	            <h:outputText value="#{result.getPlayername()}" />  
+	        </p:column>  
+	        <p:column headerText="Club" style="text-align: center">  
+	            <h:outputText value="#{result.getCurrentteam()}" />  
+	        </p:column>  
+	        <p:column headerText="Division" style="text-align: center">  
+	            <h:outputText value="#{result.getDob()} #{result.getAddress()}"/>
+	        </p:column>  
+		</p:dataTable>
+ 	</p:panel>
+</div>
+</h:body>
+</ui:define>
+</ui:composition>

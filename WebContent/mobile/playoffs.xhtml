@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/templates/mobilelayout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+     xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+<ui:define name="content">
+<h:body>
+<h:form>
+#{playoffsBean.setSelectedseasonid('SCAHA-1617')}
+
+<h:outputText value="Playoffs" style="font-size: 18px; font-weight: bold;"/>
+<table border="0" width="100%">
+		<tr>
+			<td>
+				<h:outputText value="Age Group:" style="font-size: 14px; "/>
+				<p:spacer height="3" width="4" />
+		        <p:selectOneButton id="division" value="#{playoffsBean.agegroup}">
+		            <f:selectItem itemLabel="Squirt" itemValue="squirt" />
+		            <f:selectItem itemLabel="Peewee" itemValue="peewee" />
+		            <f:selectItem itemLabel="Bantam" itemValue="bantam" />
+		            
+		        </p:selectOneButton>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<h:outputText value="Skill Level:" style="font-size: 14px; "/>
+				<p:spacer height="3" width="4" />
+		        <p:selectOneButton id="skilllevel" value="#{playoffsBean.skillgroup}">
+		            <f:selectItem itemLabel="A" itemValue="A" />
+		            <f:selectItem itemLabel="BB" itemValue="BB" />
+		            <f:selectItem itemLabel="B" itemValue="B" />
+		        </p:selectOneButton>
+		    </td>
+		</tr>
+		<tr>
+			<td>
+				<p:commandButton value="Load Playoffs" id="loadplayoffsbutton" ajax="true" action="#{playoffsBean.setPlayoffs()}" update="@form" />
+			</td>
+		</tr>
+		<tr>
+			<Td><p:spacer height="3" width="1" />
+			</Td>
+		</tr>
+		<tr>
+			<Td><h:outputText value="#{playoffsBean.scheduletitle} " style="font-size: 14px; font-weight: bold;"/>
+			</Td>
+		</tr>
+		<tr>
+			<td valign="top" width="100%">
+				<p:dataTable id="playoffinformation" var="playoff" value="#{playoffsBean.getPlayoffdetails()}" >
+	                <f:facet name="header">
+				        Playoff Format
+				    </f:facet>
+	                <p:column headerText="Division" style="width:80px;">  
+		                <h:outputText value="#{playoff.getDivision()}" />
+		            </p:column>  
+			        <p:column headerText="Dates" style="width:40px;">  
+			        	<h:outputText value="#{playoff.getStartdate()}-#{playoff.getEnddate()}" />  
+			        </p:column>
+			        <p:column headerText="Teams" style="width:20px;">  
+			        	<h:outputText value="#{playoff.getNumberteams()}" />  
+			        </p:column>
+			        <p:column headerText="Format" >  
+			        	<b><h:outputText value="#{playoff.getFormatheader()}" /></b><br></br>
+			        	<h:outputText value="#{playoff.getFormatgroups()}" /><br></br>
+			        	<h:outputText value="#{playoff.getFormatadvancement()}" />  
+			        </p:column>
+			        <p:column headerText="Location">  
+			        	<h:outputText value="#{playoff.getLocation()}" />  
+			        </p:column>
+			        
+			     </p:dataTable>
+				  <br></br>
+				<!-- lets put playoff bracket1 here -->
+				<p:dataTable id="playoffbracket1" var="playoffbracket" value="#{playoffsBean.getPlayoffbrackets1()}" >
+	                <f:facet name="header">
+				        Bracket 1
+				    </f:facet>
+	                <p:column headerText="Team Name" style="width:80px;">  
+		                <h:outputText value="#{playoffbracket.getTeamname()}" />
+		            </p:column>  
+			        <p:column headerText="Game 1" style="width:40px;">  
+			        	<h:outputText value="#{playoffbracket.getGame1()}" />  
+			        </p:column>
+			        <p:column headerText="Game 2" style="width:40px;">  
+			        	<h:outputText value="#{playoffbracket.getGame2()}" />  
+			        </p:column>
+			        <p:column headerText="Game 3" style="width:40px;">  
+			        	<h:outputText value="#{playoffbracket.getGame3()}" />  
+			        </p:column>
+			        <p:column headerText="Total" style="width:40px;">  
+			        	<h:outputText value="#{playoffbracket.getGametotal()}" />  
+			        </p:column>
+			        <p:column headerText="Place" style="width:40px;">  
+			        	<h:outputText value="#{playoffbracket.getPlace()}" />  
+			        </p:column>
+			        
+			     </p:dataTable>
+				 <br></br>
+				<!-- lets put playoff bracket2 here -->
+				<p:dataTable id="playoffbracket2" var="playoffbracket" value="#{playoffsBean.getPlayoffbrackets2()}" >
+	                <f:facet name="header">
+				        Bracket 2
+				    </f:facet>
+	                <p:column headerText="Team Name" style="width:80px;">  
+		                <h:outputText value="#{playoffbracket.getTeamname()}" />
+		            </p:column>  
+			        <p:column headerText="Game 1" style="width:40px;">  
+			        	<h:outputText value="#{playoffbracket.getGame1()}" />  
+			        </p:column>
+			        <p:column headerText="Game 2" style="width:40px;">  
+			        	<h:outputText value="#{playoffbracket.getGame2()}" />  
+			        </p:column>
+			        <p:column headerText="Game 3" style="width:40px;">  
+			        	<h:outputText value="#{playoffbracket.getGame3()}" />  
+			        </p:column>
+			        <p:column headerText="Total" style="width:40px;">  
+			        	<h:outputText value="#{playoffbracket.getGametotal()}" />  
+			        </p:column>
+			        <p:column headerText="Place" style="width:40px;">  
+			        	<h:outputText value="#{playoffbracket.getPlace()}" />  
+			        </p:column>
+			        
+			     </p:dataTable>
+				<p:dataTable id="playoffgames" var="TempGame" value="#{playoffsBean.getTempGamedatamodel()}"  autoupdate="false" >
+			        <f:facet name="header">
+				        Game Results
+				    </f:facet>
+	                <p:column headerText="Date">  
+			            <h:outputText value="#{TempGame.getDate()}" />  
+			        </p:column>  
+			        <p:column headerText="Visiting Team">  
+			        	<h:outputText value="#{TempGame.getVisitor()}" />  
+			        </p:column>
+			        <p:column headerText="Score">
+			           <h:outputText value="#{TempGame.awayscore}" />  
+		            </p:column>
+			        <p:column headerText="Home Team">  
+			        	<h:outputText value="#{TempGame.getHome()}" />  
+			        </p:column>
+			        <p:column headerText="Score">  
+			        	<h:outputText value="#{TempGame.homescore}" />
+			        </p:column>
+			        <p:column headerText="Time">  
+			            <h:outputText value="#{TempGame.getTime()}" />  
+			        </p:column>
+			        <p:column headerText="Location">  
+			            <h:outputText value="#{TempGame.getLocation()}" />  
+			        </p:column>
+			    </p:dataTable>
+				
+			</td>
+		</tr>
+	</table>
+</h:form>
+</h:body>
+</ui:define>
+</ui:composition>
+

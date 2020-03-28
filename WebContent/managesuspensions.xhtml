@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+>
+<h:head>
+	 <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+     </f:facet>
+	<!-- <f:metadata>
+		<f:event type="preRenderView" listener="#{profileBean.verifySU()}" />
+	</f:metadata> -->
+</h:head>
+<ui:define name="content">
+<h:body>
+<h:form>
+<div id="calendar-div">
+    <p:panel header="SCAHA Suspensions" footer="brought to you by iScaha">  
+ 		<!-- <table id="subpage" style="border-collapse: collapse;">
+			<tr>
+				<td>
+					Congratulations to those who qualified as SCAHA Scholar Athletes! We are proud to honor the following players who have earned our new Scholar Athlete patch.
+				</td>
+			</tr>
+		</table> -->
+ 		<p:commandButton  id="addsuspension" value="Add Suspension" icon="ui-icon-search"  ajax="true" onclick="msgdlg.show();"/>
+ 		<p:dataTable id="suspensionlist" var="suspension" value="#{suspensionBean.getAllSuspensions()}" paginator="true" rows="10" >
+ 		    <p:column headerText="Date" style="text-align: center">  
+	            <h:outputText value="#{suspension.getSuspensiondate()}" />  
+	        </p:column> 
+ 		    <p:column headerText="Name" style="text-align: center">  
+	            <h:outputText value="#{suspension.getPlayername()}" />  
+	        </p:column>  
+	        <p:column headerText="Team" style="text-align: center">  
+	            <h:outputText value="#{suspension.getTeam()}"/>
+	        </p:column>
+	        <p:column headerText="Infraction" style="text-align: center">  
+	            <h:outputText value="#{suspension.getInfraction()}"/>
+	        </p:column>  
+	        <p:column headerText="Match" style="text-align: center">  
+	            <h:outputText value="#{suspension.getMatch()}" />  
+	        </p:column>  
+	        <p:column headerText="# of Games" style="text-align: center">  
+	            <h:outputText value="#{suspension.getGames()}"/>
+	        </p:column>
+	        <p:column headerText="Eligibility" style="text-align: center">  
+	            <h:outputText value="#{suspension.getEligibility()}"/>
+	        </p:column>
+	        <p:column headerText="Served" style="text-align: center">  
+	            <h:outputText value="#{suspension.getServed()}"/>
+	        </p:column>
+	        <p:column headerText="">
+	        	<p:splitButton id="susp" icon="ui-icon-folder-open"  >
+			        <p:menuitem value="Mark Served" action="#{suspensionBean.markServed(suspension)}" update="suspensionlist"/>
+			        <p:menuitem value="Manage" immediate="true" action="#{suspensionBean.manageSuspension(suspension)}" ajax="false" />
+			    </p:splitButton>
+	        </p:column> 
+		</p:dataTable>
+		<p:dialog id="suspensiondialog"  style="width:450px;" header="Add Suspension Information:" widgetVar="msgdlg" modal="false" >
+			<h:panelGrid columns="2" cellpadding="5">
+				<p:inputText id="searchforplayer" style="width:150px;" value="#{playerhistoryBean.searchcriteria}" required="false" requiredMessage="Enter a minimum of 5 characters to execute search."/>
+				<p:commandButton id="executesearch" value="Search" actionListener="#{playerhistoryBean.playerSearch()}" ajax="true" update="playersearchresult"/>
+			</h:panelGrid>
+			<br></br>	
+			<p:dataTable id="playersearchresult" style="width:400px;" var="result" value="#{playerhistoryBean.listofplayers}" selection="#{suspensionBean.selectedplayer}"  paginator="true" rows="5" >
+		  		<f:facet name="header">  
+		            Select a Player from the List  
+		        </f:facet> 
+				<p:column selectionMode="single" style="width:2%" />
+				<p:column headerText="Player Name">  
+					<h:outputText value="#{result.getPlayername()}" />  
+				</p:column>  
+				<p:column headerText="Date of Birth">  
+					<h:outputText value="#{result.getDob()}" />  
+				</p:column>
+				<p:column headerText="Current Team">  
+					<h:outputText value="#{result.getAddress()}" />  
+				</p:column>
+			</p:dataTable>
+			<br></br>
+			<h:panelGrid columns="2" cellpadding="5" cellspacing="0" border="0" width="100%">
+				<h:column width="10%"># of Games:</h:column>
+				<h:column >
+					<p:inputText id="numbergames" value="#{suspensionBean.numberofgames}" required="false"/>
+				</h:column>
+				<h:column width="10%">Infraction:</h:column>
+				<h:column >
+					<p:inputText id="infraction" value="#{suspensionBean.infraction}" required="false"/>
+				</h:column>
+				<h:column width="10%">Match: </h:column>
+				<h:column >
+					<p:selectOneMenu id="match" value="#{suspensionBean.match}" >
+				    	<f:selectItem itemLabel="No" itemValue="0"/>
+				    	<f:selectItem itemLabel="Yes" itemValue="1"/>
+				    </p:selectOneMenu>
+				</h:column>
+				<h:column width="10%">Served:</h:column>
+				<h:column >
+					<p:selectOneMenu id="served" value="#{suspensionBean.served}" >
+				    	<f:selectItem itemLabel="No" itemValue="0"/>
+				    	<f:selectItem itemLabel="Yes" itemValue="1"/>
+				    </p:selectOneMenu>
+				</h:column>
+				<h:column width="10%">Suspension Date:</h:column>
+				<h:column >
+					<p:inputText id="suspensiondate" value="#{suspensionBean.suspdate}" required="false"/>
+				</h:column>
+			</h:panelGrid>
+			 <div align="center"><p:commandButton value="Add Suspension" oncomplete="msgdlg.hide();" actionListener="#{suspensionBean.Addsuspension()}" ajax="true" update="@form" />&nbsp;&nbsp;<p:commandButton value="Close" oncomplete="msgdlg.hide();" /></div>    
+		</p:dialog>	
+ 	</p:panel>
+ 	
+</div>
+</h:form>
+</h:body>
+</ui:define>
+</ui:composition>

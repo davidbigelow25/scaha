@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+          xmlns:b="http://bootsfaces.net/ui"
+>
+<ui:define name="content">
+<b:container>
+	<b:form>
+	<b:row>
+		<b:column span="12">
+			<b:panel id="panelgames" collapsible="false" look="primary" 
+				large-screen="full-width"
+		    	medium-screen="full-width"
+		    	small-screen="one-third"
+		    	tiny-screen="one-third"
+			>
+				<f:facet name="heading">
+					<h:outputText value="SCAHA Board of Directors"/> 
+		        </f:facet> 
+		        <b:panel id="panelstandings" collapsible="false" look="primary" 
+					large-screen="full-width"
+			    	medium-screen="full-width"
+			    	small-screen="one-third"
+			    	tiny-screen="one-third"
+					>
+				
+					<f:facet name="heading">
+						<h:outputText value="Executie Committee"/> 
+			        </f:facet> 
+			        
+			        
+					<b:dataTable 
+						id="parts" 
+						var="member"
+						value="#{scahaBean.getScahaboardmemberlist()}" 
+						editable="false" 
+						select="false"
+						paginated="false" 
+						border="true"
+						searching="false"
+						>
+				   		<b:dataTableColumn styleClass="mtrxColumn">
+				            <f:facet name="header">
+						         <h:outputText value=" " />
+						    </f:facet>
+				            <h:outputText value="#{member.getMembername()}" style="font-weight:bold;"/> <br></br>
+	            			<h:outputText value="#{member.getMemberrole()}" style="font-style:italic;"/>
+	            		</b:dataTableColumn>
+				        <b:dataTableColumn styleClass="mtrxColumn">
+				            <f:facet name="header">
+						        <h:outputText value=" " />
+						    </f:facet>
+				            <a href="mailto:#{member.getMemberemail()}" target="_blank">#{member.getMemberemail()}</a><ui:fragment rendered="#{member.renderaddress}"><br /></ui:fragment>
+				            <h:outputText value="#{member.getMemberaddress()}" rendered="#{member.renderaddress}"/><ui:fragment rendered="#{member.renderphone}"><br /></ui:fragment>
+				            <h:outputText value="#{member.getMemberphone()}"  rendered="#{member.renderphone}"/>
+				            <p:spacer width="30px" />
+	            
+				        </b:dataTableColumn>
+						<b:dataTableColumn styleClass="mtrxColumn" rendered="#{member.getMemberemail()==profileBean.getProfile().getUserName()}">
+				            <f:facet name="header">
+						        <h:outputText value=" " />
+						    </f:facet>
+				            <b:commandButton iconAwesome="phone"
+						                       action="#{scahaBean.setDisplay(member,'Phone')}" look="info" >
+						       <f:ajax execute="@this" render="@form" update="@form"/>
+						    </b:commandButton>
+						    <p:spacer width="5px" />
+				            <b:commandButton iconAwesome="envelope"
+						                       action="#{scahaBean.setDisplay(member,'Address')}" look="info" >
+						       <f:ajax execute="@this" render="@form" update="@form"/>
+						    </b:commandButton>
+						</b:dataTableColumn>
+			    	</b:dataTable>
+			    </b:panel>
+			    <br></br>
+			    <b:panel id="panelprogram" collapsible="false" look="primary" 
+					large-screen="full-width"
+			    	medium-screen="full-width"
+			    	small-screen="one-third"
+			    	tiny-screen="one-third"
+					>
+				
+					<f:facet name="heading">
+						<h:outputText value="Program Directors"/> 
+			        </f:facet> 
+					<b:dataTable 
+						id="programdirectors" 
+						var="member"
+						value="#{scahaBean.getScahaprogramdirectorlist()}" 
+						editable="false" 
+						select="false"
+						paginated="false" 
+						border="true"
+						searching="false"
+						>
+				   		<b:dataTableColumn styleClass="mtrxColumn">
+				            <f:facet name="header">
+						         <h:outputText value=" " />
+						    </f:facet>
+						    <h:outputText value="#{member.getMembername()}" style="font-weight:bold;"/> <br></br>
+	            			<h:outputText value="#{member.getMemberrole()}" style="font-style:italic;"/>
+	            		</b:dataTableColumn>
+				        <b:dataTableColumn styleClass="mtrxColumn">
+				            <f:facet name="header">
+						        <h:outputText value=" " />
+						    </f:facet>
+							<a href="mailto:#{member.getMemberemail()}" target="_blank">#{member.getMemberemail()}</a><ui:fragment rendered="#{member.renderaddress}"><br /></ui:fragment>
+				            <h:outputText value="#{member.getMemberaddress()}" rendered="#{member.renderaddress}"/><ui:fragment rendered="#{member.renderphone}"><br /></ui:fragment>
+				            <h:outputText value="#{member.getMemberphone()}"  rendered="#{member.renderphone}"/>
+				            <p:spacer width="30px" />
+	                    </b:dataTableColumn>
+	                    <b:dataTableColumn styleClass="mtrxColumn" rendered="#{member.getMemberemail()==profileBean.getProfile().getUserName()}">
+				            <f:facet name="header">
+						        <h:outputText value=" " />
+						    </f:facet>
+				            <b:commandButton iconAwesome="phone"
+						                       action="#{scahaBean.setDisplay(member,'Phone')}" look="info" >
+						       <f:ajax execute="@this" render="@form" update="@form"/>
+						    </b:commandButton>
+						    <p:spacer width="5px" />
+				            <b:commandButton iconAwesome="envelope"
+						                       action="#{scahaBean.setDisplay(member,'Address')}" look="info" >
+						       <f:ajax execute="@this" render="@form" update="@form"/>
+						    </b:commandButton>
+						</b:dataTableColumn>
+					</b:dataTable>
+				</b:panel>
+				
+		    </b:panel>
+		</b:column>
+	</b:row>
+	</b:form>
+</b:container>
+</ui:define>
+</ui:composition>

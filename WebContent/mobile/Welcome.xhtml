@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/templates/mobilelayout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+     xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+<ui:define name="content" >
+<h:body>
+<table border="0" width="100%">
+		<tr>
+			<td valign="top" width="100%">
+				<div id="page-div" width="100%">
+					
+				  	  	<h:form id="form">
+				   				<br></br>
+								<div align="center" draggable="false" >
+								
+								<p:commandButton value="Season Info" id="seasoninfo" ajax="false" onclick="window.location.href='seasoninfo.xhtml'; return false;" style="width: 90%;font-size: 24px;"/>
+								</div>
+								<br></br>
+								<p:spacer height="10" width="10" />
+								<br></br>
+								<div align="center" draggable="false" >
+								<p:commandButton value="League Info" id="leagueinfo" ajax="false" onclick="window.location.href='leagueinfo.xhtml'; return false;" style="width: 90%;font-size: 24px;"/>
+								</div>
+								<br></br>
+								<p:spacer height="10" width="10" />
+								<br></br>
+								<div align="center" draggable="false" >
+								<p:commandButton value="Club Info" id="clubinfo" ajax="false" onclick="window.location.href='clubinfo.xhtml'; return false;" style="width: 90%;font-size: 24px;"/>
+								</div>
+								<br></br>
+								<p:spacer height="10" width="10" />
+								<br></br>
+								<div align="center" draggable="false" >
+								<p:commandButton value="Guidebook" id="guidebook" ajax="false" onclick="window.location.href='/scaha/downloads/SCAHA-Guidebook.pdf'; return false;" style="width: 90%;font-size: 24px;"/>
+								</div>
+								<br></br>
+								<div align="center" draggable="false" >
+								<p:commandButton value="Login" id="login" ajax="false" onclick="window.location.href='login.xhtml'; return false;" style="width: 90%;font-size: 24px;"/>
+								</div>
+								 
+						</h:form>
+					
+				</div>
+			</td>
+		</tr>
+	</table>
+</h:body>
+</ui:define>
+</ui:composition>

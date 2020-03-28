@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:define name="content">
+		<!-- <p:panel header="2014-15 Mite Program" footer="brought to you by iScaha">
+			<p>Season Schedule - Coming August 2014.</p>
+			<br></br>
+		    <p>Download the <a href="downloads/Sign-In_Sheet_2014.pdf" target="_blank">Sign-in Sheet</a></p>
+		    
+		-	Track 1 West Division
+		<ul>
+			<li><a href="downloads/mites/Track_1-West_Division-5_teams_at_Valencia-9-6-14.pdf" target="_blank">Valencia - 9/6/14</a></li>
+			<li><a href="downloads/mites/Track_1-West_Division-5_Teams_at_Valencia-9-20-14.pdf" target="_blank">Valencia - 9/20/14</a></li>
+			<li><a href="downloads/mites/Track_1-West_Interdivision_Play-5_Teams_at_TSC-10-5-14.pdf" target="_blank">Toyota Center - 10/5/14</a></li>
+			<li><a href="downloads/mites/Track_1-West_Division-5_Teams_at_Bakersfield-10-18-14.pdf" target="_blank">Bakersfield - 10/18/14</a></li>
+			<li><a href="downloads/mites/Track_1-West_Division-5_Teams_at_Valencia-11-1-14.pdf" target="_blank">Valencia - 11/1/14</a></li>
+			<li><a href="downloads/mites/Track_1-West_Interdivision_Play-5_Teams_at_Burbank-11-16-14.pdf" target="_blank">Burbank - 11/16/14</a></li>
+			<li><a href="downloads/mites/Track_1-West_Division-5_Teams_at_TSC-12-7-14.pdf" target="_blank">Toyota Center - 12/7/14</a></li>
+			<li><a href="downloads/mites/Track_1-West_Division-5_Teams_at_Valencia-12-20-14.pdf" target="_blank">Valencia - 12/20/14</a></li>
+			
+		</ul>
+		<bR></bR>
+		Track 1 Midway Division
+		<ul>
+			<li><a href="downloads/mites/Track_1-Midway_Division-5_Team_at_Lakewood_Ice-9-7-14.pdf" target="_blank">Lakewood - 9/7/14</a></li>
+			<li><a href="downloads/mites/Track_1-Midway_Division-5_Team_at_Lakewood_Ice-9-21-14.pdf" target="_blank">Lakewood - 9/21/14</a></li>
+			<li><a href="downloads/mites/Track_1-Midway_Interdivision_Play-5_Team_at_Lakewood_Ice-10-5-14.pdf" target="_blank">Lakewood - 10/5/14</a></li>
+			<li><a href="downloads/mites/Track_1-Midway_Division-5_Team_at_Lakewood_Ice-10-19-14.pdf" target="_blank">Lakewood - 10/19/14</a></li>
+			<li><a href="downloads/mites/Track_1-Midway_Division-5_Team_at_Lakewood_Ice-11-2-14.pdf" target="_blank">Lakewood - 11/2/14</a></li>
+			<li><a href="downloads/mites/Track_1-Midway_Interdivision_Play-5_Teams_at_Lakewood-11-16-14.pdf" target="_blank">Lakewood - 11/16/14</a></li>
+			<li><a href="downloads/mites/Track_1-Midway_Division-5_Team_at_Anaheim_Ice-12-7-14.pdf" target="_blank">Anaheim Ice - 12/7/14</a></li>
+			<li><a href="downloads/mites/Track_1-Midway_Division-5_Team_at_KHS-12-21-14.pdf" target="_blank">KHS - 12/21/14</a></li>
+			
+		</ul>
+		<br></br>
+		Track 1 East Division
+		<ul>
+			<li><a href="downloads/mites/Track_1-East_Division-5_Teams_at_Center_Ice_Arena_in_Ontario-9-6-14.pdf" target="_blank">Ontario - 9/6/14</a></li>
+			<li><a href="downloads/mites/Track_1-East_Division-5_Teams_at_Icetown_Riverside-9-20_or_21-14.pdf" target="_blank">Riverside - 9/20/14</a></li>
+			<li><a href="downloads/mites/Track_1-East_Interdivision_Play-5_Teams_at_Center_Ice_Arena_in_Ontario-10-4-14.pdf" target="_blank">Ontario - 10/4/14</a></li>
+			<li><a href="downloads/mites/Track_1-East_Division-5_Teams_at_Center_Ice_Arena_in_Ontario-10-18-14.pdf" target="_blank">Ontario - 10/18/14</a></li>
+			<li><a href="downloads/mites/Track_1-East_Division-5_Teams_at_Icetown_Riverside-11-1-14.pdf" target="_blank">Riverside - 11/1/14</a></li>
+			<li><a href="downloads/mites/Track_1-East_Interdivision_Play-5_Teams_at_Center_Ice_Arena-11-15-14.pdf" target="_blank">Ontario - 11/15/14</a></li>
+			<li><a href="downloads/mites/Track_1-East_Division-5_Teams_at_Center_Ice_Arena_in_Ontario-12-6-14.pdf" target="_blank">Ontario - 12/6/14</a></li>
+			<li><a href="downloads/mites/Track_1-East_Division-5_Teams_at_Icetown_Riverside-12-20-14.pdf" target="_blank">Riverside - 12/20/14</a></li>
+			
+		</ul>
+		<br></br>    
+		Track 2 Pacific Division
+		<ul>
+			<li><a href="downloads/mites/Track_2-Pacific_Division-5_Teams_at_Channel_Islands_Ice_Center-9-13-14.pdf" target="_blank">Oxnard - 9/13/14</a></li>
+			<li><a href="downloads/mites/Track_2-Pacific_Division-5_Teams_at_Iceoplex_Simi-10-25-14.pdf" target="_blank">Riverside - 10/25/14</a></li>
+			<li><a href="downloads/mites/Track_2-Pacific_Division-5_Teams_at_Valencia-10-4-14.pdf" target="_blank">Valencia - 10/4/14</a></li>
+			<li><a href="downloads/mites/Track_2-Pacific_Interdivision_Play-5_Teams_at_Valencia-11-15-14.pdf" target="_blank">Valencia - 11/15/14</a></li>
+		</ul>
+		            
+		Track 2 North Division
+		<ul>
+			<li><a href="downloads/mites/Track_2-North_Division-5_Teams_at_Pickwick-9-14-14.pdf" target="_blank">Burbank - 9/14/14</a></li>
+			<li><a href="downloads/mites/Track_2-North_Division-5_Teams_at_Pasadena-10-5-14.pdf" target="_blank">Pasadena - 10/5/14</a></li>
+			<li><a href="downloads/mites/Track_2-North_Division-5_Teams_at_Pasadena-10-26-14.pdf" target="_blank">Pasadena - 10/26/14</a></li>
+			<li><a href="downloads/mites/Track_2-North_Interdivision_Play-5_Teams_at_Valley_Ice-11-15-14.pdf" target="_blank">Panorama City - 11/15/14</a></li>
+		</ul>
+		
+		Track 2 Central Division
+		<ul>
+			<li><a href="downloads/mites/Track_2-Central_Division-5_Teams_at_TSC-9-13-14.pdf" target="_blank">Toyota Center - 9/13/14</a></li>
+			<li><a href="downloads/mites/Track_2-Central_Division-5_Teams_at_KHS-10-5-14.pdf" target="_blank">KHS - 10/5/14</a></li>
+			<li><a href="downloads/mites/Track_2-Central_Division-5_Teams_at_KHS-10-26-14.pdf" target="_blank">KHS - 10/26/14</a></li>
+			<li><a href="downloads/mites/Track_2-Central_Interdivision_Play-6_Teams_at_TSC-11-16-14.pdf" target="_blank">Toyota Center- 11/16/14</a></li>
+		</ul>
+		
+		Track 2 South Division
+		<ul>
+			<li><a href="downloads/mites/Track_2-South_Division-5_Teams_at_Center_Ice_Arena_in_Ontario-9-13-14.pdf" target="_blank">Ontario - 9/13/14</a></li>
+			<li><a href="downloads/mites/Track_2-South_Division-5_Teams_at_Desert_Ice_Castle-10-4-14.pdf" target="_blank">Palm Desert - 10/4/14</a></li>
+			<li><a href="downloads/mites/Track_2-South_Division-5_Teams_at_Icetown_Riverside-10-25-14.pdf" target="_blank">Riverside - 10/25/14</a></li>
+			<li><a href="downloads/mites/Track_2-South_Interdivision_Play-4_Teams_at_Ontario_Ice_Skating_Center-11-16-14.pdf" target="_blank">Ontario - 11/16/14</a></li>
+		</ul>
+		
+		</p:panel> -->
+		
+		
+		<h:form id="form">
+		<p:panel header="Mite Program" footer="brought to you by iScaha">
+			<div class="NewsText"><h:outputText value="#{miteBean.getBody()}" escape="false" /></div>
+		</p:panel>
+		<p:panel header="Edit The Manager Content" widgetVar="panelwv#" rendered="#{profileBean.hasRoleList('S-MITE')}" toggleable="true">	
+   			
+   			<p:editor  id="editor" widgetVar="edit" value="#{miteBean.body}" rendered="true"/>
+			<p:separator />
+  			<p:commandButton value="Update Mite Program" id="update" ajax="false" action="#{miteBean.updateMiteprogram()}" update="@form"/>
+			
+		  
+		</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>
