@@ -1,21 +1,11 @@
 /**
- * 
+ *
  */
 package com.gbli.common;
 
-import java.security.MessageDigest;
-import java.security.spec.KeySpec;
-import java.util.Arrays;
-
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.DESedeKeySpec;
-import javax.crypto.spec.IvParameterSpec;
-
-import org.apache.commons.codec.binary.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
+
 import javax.crypto.spec.SecretKeySpec;
 
 public class Simple3Des {
