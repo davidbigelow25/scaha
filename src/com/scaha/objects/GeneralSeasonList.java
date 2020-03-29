@@ -67,7 +67,7 @@ public class GeneralSeasonList extends ListDataModel<GeneralSeason> implements S
 			}
 			rs.close();
 			}
-		//LOGGER.info("Finished all the General Season List Loading!!");
+		LOGGER.info("Finished all the General Season List Loading!!");
 		GeneralSeasonList gcl = new GeneralSeasonList(data);
 		gcl.setCurrentSeason(current);
 		return gcl;

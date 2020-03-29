@@ -5,8 +5,8 @@ package com.gbli.common;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
-
 import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
 
 public class Simple3Des {
 
@@ -30,11 +30,11 @@ public class Simple3Des {
 		c3des.init(Cipher.ENCRYPT_MODE, myKey, ivspec);
 		byte[] cipherText = c3des.doFinal(plaintext);
 
-		return new sun.misc.BASE64Encoder().encode(cipherText);
+		return Base64.getEncoder().encodeToString(cipherText);
 	}
 
 	public String decryptText(String cipherText) throws Exception {
-		byte[] encData = new sun.misc.BASE64Decoder().decodeBuffer(cipherText);
+		byte[] encData =  Base64.getDecoder().decode(cipherText);
 		Cipher decipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
 		byte[] tdesKeyData = key.getBytes();
 		SecretKeySpec myKey = new SecretKeySpec(tdesKeyData, "DESede");
