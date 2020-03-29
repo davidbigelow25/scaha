@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:define name="content">
+		<div id="page-div">
+		<h:form>
+		<ui:fragment id="edit-exhibition">
+			<p:fieldset id="fs1" toggleable="false" toggleSpeed="500">
+				<p:panel id ="panel" header="Update Exhibition Game">
+					<h:panelGrid columns="2" cellpadding="5" cellspacing="0" border="0" width="100%">
+						<h:column width="10%">Game Date:</h:column>
+						<h:column >
+							<p:inputText id="gamedate" style="width:80px;" value="#{nonscahagameBean.gamedate}" /> (MM/DD/YYYY)
+						</h:column>
+						<h:column width="10%">Game Time:</h:column>
+						<h:column >
+							<p:inputText id="gametime" style="width:80px;" value="#{nonscahagameBean.gametime}" />
+						</h:column>
+						<h:column width="10%">Opponent:</h:column>
+						<h:column >
+							<p:inputText id="opponent" style="width:200px;" value="#{nonscahagameBean.opponent}" />
+						</h:column>
+						<h:column width="10%">Location:</h:column>
+						<h:column >
+							<p:inputText id="exhibitiongamelocation" style="width:200px;" value="#{nonscahagameBean.location}" />
+						</h:column>
+					</h:panelGrid>
+				</p:panel>
+			</p:fieldset>
+			<p:spacer width="10" height="10" />
+			<p:fieldset id="fs6" toggleable="false" toggleSpeed="500">		
+			<div align="center"><p:commandButton id="completeExhibition" value="Update" actionListener="#{nonscahagameBean.updateExhibitionGame()}" ajax="false"/></div>
+		</p:fieldset>
+		</ui:fragment>
+		</h:form>
+		<p:spacer width="10" height="10" />
+		<p:fieldset id="fs7" toggleable="false" toggleSpeed="500">
+			<h:form>
+				<div align="center"><p:commandButton value="Close" id="close" ajax="false" action="managerportal.xhtml"/></div>
+			</h:form>
+		</p:fieldset>
+				
+		</div>
+	</ui:define>
+</ui:composition>

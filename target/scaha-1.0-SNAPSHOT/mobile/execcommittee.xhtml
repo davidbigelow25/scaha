@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/templates/mobilelayout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+     xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+<ui:define name="content">
+<h:body>
+<h:form>
+<h:outputText value="SCAHA Board of Directors" style="font-size: 18px; font-weight: bold;"/>
+<table border="0" width="100%">
+		<tr>
+			<td>
+				<p:panel header="SCAHA Executive Committee" style="align:center;">  
+			 		<p:dataTable var="member" value="#{scahaBean.getScahaboardmemberlist()}" border="1" >  
+				        <p:column style="text-align: left;vertical-align:top;">  
+				            <h:outputText value="#{member.getMembername()}" style="font-weight:bold;"/> <br></br>
+				            <h:outputText value="#{member.getMemberrole()}" style="font-style:italic;"/>
+				            
+				        </p:column>
+				        <p:column style="text-align: left;vertical-align:top;">
+				            <a href="mailto:#{member.getMemberemail()}" target="_blank">#{member.getMemberemail()}</a><ui:fragment rendered="#{member.renderaddress}"><br /></ui:fragment>
+				            <h:outputText value="#{member.getMemberaddress()}" rendered="#{member.renderaddress}"/><ui:fragment rendered="#{member.renderphone}"><br /></ui:fragment>
+				            <h:outputText value="#{member.getMemberphone()}"  rendered="#{member.renderphone}"/>
+				            <p:spacer width="30px" />
+				            <p:splitButton id="setfieldstodisplay" icon="ui-icon-wrench" rendered="#{member.getMemberemail()==profileBean.getProfile().getUserName()}" >
+						        <p:menuitem value="#{member.getActionrenderphonemessage()}" action="#{scahaBean.setDisplay(member,'Phone')}" update="@form" />
+						        <p:menuitem value="#{member.getActionrenderaddressmessage()}" action="#{scahaBean.setDisplay(member,'Address')}" update="@form"/>
+						    </p:splitButton>
+				        </p:column>  
+				    </p:dataTable>
+			 	</p:panel>
+			 	<br></br>
+			 	<p:panel header="Program Directors" footer="brought to you by iScaha" style="align:center;">  
+			 		<p:dataTable var="member" value="#{scahaBean.getScahaprogramdirectorlist()}" border="1" >  
+				        <p:column style="text-align: left;vertical-align:top;">  
+				            <h:outputText value="#{member.getMembername()}" style="font-weight:bold;"/> <br></br>
+				            <h:outputText value="#{member.getMemberrole()}" style="font-style:italic;"/>
+				            
+				        </p:column>
+				        <p:column style="text-align: left;vertical-align:top;">
+				            <a href="mailto:#{member.getMemberemail()}" target="_blank">#{member.getMemberemail()}</a><ui:fragment rendered="#{member.renderaddress}"><br /></ui:fragment>
+				            <h:outputText value="#{member.getMemberaddress()}" rendered="#{member.renderaddress}"/><ui:fragment rendered="#{member.renderphone}"><br /></ui:fragment>
+				            <h:outputText value="#{member.getMemberphone()}"  rendered="#{member.renderphone}"/>
+				            <p:spacer width="30px" />
+				            <p:splitButton id="setfieldstodisplay" icon="ui-icon-wrench" rendered="#{member.getMemberemail()==profileBean.getProfile().getUserName()}" >
+						        <p:menuitem value="#{member.getActionrenderphonemessage()}" action="#{scahaBean.setDisplay(member,'Phone')}" update="@form" />
+						        <p:menuitem value="#{member.getActionrenderaddressmessage()}" action="#{scahaBean.setDisplay(member,'Address')}" update="@form"/>
+						    </p:splitButton>
+				        </p:column>  
+				    </p:dataTable>
+			 	</p:panel>
+			</td>
+		</tr>
+	</table>
+</h:form>
+</h:body>
+</ui:define>
+</ui:composition>

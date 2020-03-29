@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui" 
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
+<f:view contentType="text/html">
+<h:head>
+	 <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+     </f:facet>
+	<!-- <f:metadata>
+		<f:event type="preRenderView" listener="#{profileBean.verifySU()}" />
+	</f:metadata> -->
+</h:head>
+<h:body >	
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+<ui:define name="content">
+
+		
+			<ui:fragment id="edit-transfers" >
+					<p:panel id ="exhibitionpanel" header="Exhibition Games">
+					<h:form id="exhibitionform">
+					<p:dataTable id="exhibitiongames" var="exhibitiongame" value="#{reviewexhibitionresultsBean.getExhibitiongamedatamodel()}" selection="#{reviewexhibitionresultsBean.selectedexhibitiongame}" paginator="true" rows="10" autoupdate="false">
+			            <f:facet name="header">  
+				        	2014-2015 Exhibition GAMES
+				        </f:facet> 
+				        <p:column filterBy="requestingteam" filterMatchMode="contains" filterStyle="width:100px" headerText="Requesting Team">  
+				            <h:outputText value="#{exhibitiongame.getRequestingteam()}" />  
+				        </p:column>
+				        <p:column headerText="Date">  
+				            <h:outputText value="#{exhibitiongame.getDate()}" />  
+				        </p:column>
+				        <p:column headerText="Time">  
+				        	<h:outputText value="#{exhibitiongame.getTime()}" />  
+				        </p:column>
+				        <p:column headerText="Opponent">  
+				        	<h:outputText value="#{exhibitiongame.getOpponent()}" />  
+				        </p:column>
+				        <p:column headerText="Location">  
+				        	<h:outputText value="#{exhibitiongame.getLocation()}" />  
+				        </p:column>
+				        <p:column headerText="Status">  
+				        	<h:outputText value="#{exhibitiongame.getStatus()}" />  
+				        </p:column>
+				        <p:column headerText="Scoresheet(s)">  
+				        	<h:outputText value="Yes" rendered="#{exhibitiongame.getScoresheetrendered()}"/>  
+				        </p:column>
+				        
+				         <p:column headerText="">
+				        	<p:splitButton id="exhibitiongameoptions#{exhibitiongame.idgame}" icon="ui-icon-folder-open"  >
+						        <p:menuitem value="Edit Game Detail" immediate="true" action="#{reviewexhibitionresultsBean.editExhibitionGameDetail(exhibitiongame)}" rendered="#{exhibitiongame.rendered}"/>
+						        <p:menuitem value="Delete Game" immediate="true" action="#{reviewexhibitionresultsBean.deleteExhibitionTournamentGame(exhibitiongame)}" ajax="true" update="@form" rendered="#{exhibitiongame.rendered}"/>
+						        <p:menuitem value="Manage Scoresheet(s)" immediate="true" action="#{reviewexhibitionresultsBean.uploadExhibitionScoresheet(exhibitiongame)}" ajax="false" />
+						    </p:splitButton>
+						</p:column>  
+				    </p:dataTable>
+				    </h:form>
+				    </p:panel>
+				    
+				    
+					
+			</ui:fragment>
+			
+		
+	
+</ui:define>
+</ui:composition>
+</h:body>
+</f:view>
+</html>

@@ -16,7 +16,6 @@ import javax.sql.rowset.serial.SerialBlob;
 
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
-import org.primefaces.model.UploadedFile;
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
 
@@ -150,8 +149,7 @@ public class MultiMedia extends ScahaObject implements Serializable {
 	
 	/**
 	 * Lets get from database if there is one! 
-	 * @param _db
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
 	public void get(PreparedStatement ps) throws SQLException {
 		

@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<f:metadata>
+	<f:event type="preRenderView" listener="#{profileBean.verifyHasRoles('S-REG')}" />
+</f:metadata>
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+<ui:define name="content">
+
+<div id="page-div">			
+<h:form id="form">
+	<div style="height:px;diplay:block;">
+	<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />    
+	</div>
+		<p:panel header="Add to Safesport List">
+	    	<p:commandButton id="addpersontolist" value="Add Person to List" ajax="true" />
+	    	<p:overlayPanel style="width:500px" id="addpersonpanel" widgetVar="addpersongoverlay" for="addpersontolist" hideEffect="fade" dynamic="false">  
+		    	<p:fieldset>
+		    	<h:panelGrid columns="3" cellpadding="5">
+					<h:outputText value="Enter First or Last Name - " />
+					<p:inputText id="searchforplayer" style="width:150px;" value="#{safesportBean.searchcriteria}" required="false" />
+					<p:commandButton id="executesearch" value="Search" actionListener="#{safesportBean.LoadSelectionToAddList()}" ajax="true" update="listtoselectfrom"/>
+				</h:panelGrid>
+				</p:fieldset>
+		    	<p:fieldset>
+		    	<p:dataTable 
+		 			id="listtoselectfrom" 
+		 			widgetVar="safesports"
+		 			editable="false"
+		 			var="player" 
+		 			value="#{safesportBean.getPersonlist()}" 
+		 			paginator="true" 
+		 			rows="5" 
+		 			headerText="Select Person to Add To Safesport List"
+		 			selection="#{safesportBean.selectedsearchperson}"
+		 			>
+		 			<p:column selectionMode="single" style="width:2%;" />
+		           	<p:column filterBy="firstname" filterMatchMode="contains" filterStyle="width:100px" style="width:100px;">
+		           		<f:facet name="header">
+		            		<h:outputText value="First Name" />
+				        </f:facet>
+			            <h:outputText value="#{player.firstname}" />  
+			        </p:column>  
+			        <p:column sortBy="lastname" filterBy="lastname" filterMatchMode="contains" filterStyle="width:100px" style="width:100px;">  
+				        <f:facet name="header">
+		            		<h:outputText value="Last Name" />
+				        </f:facet>
+			            <h:outputText value="#{player.lastname}" />  
+			        </p:column>  
+			    </p:dataTable>
+			    <h:panelGrid columns="2" cellpadding="5">
+					<h:column>
+						<p:commandButton id="updatedisplay" value="Add Person to Safesport List" actionListener="#{safesportBean.addPersontolist()}" ajax="true" update="@form" oncomplete="PF('addpersongoverlay').hide();"/>
+					</h:column>
+				</h:panelGrid>
+				</p:fieldset>
+			</p:overlayPanel> 
+		</p:panel>		
+		
+		<p:panel id ="panel" header="Safesport Certified List:">
+	 		<p:dataTable 
+ 			id="listofsafesportcertified" 
+ 			widgetVar="safesports"
+ 			editable="false"
+ 			var="player" 
+ 			value="#{safesportBean.getPlayerlist()}" 
+ 			paginator="true" 
+ 			rows="10" 
+ 			>
+ 			
+           	<p:column filterBy="firstname" filterMatchMode="contains" filterStyle="width:100px" >
+           		<f:facet name="header">
+            		<h:outputText value="First Name" />
+		        </f:facet>
+	            <h:outputText value="#{player.firstname}" />  
+	        </p:column>  
+	        <p:column sortBy="lastname" filterBy="lastname" filterMatchMode="contains" filterStyle="width:100px">  
+		        <f:facet name="header">
+            		<h:outputText value="Last Name" />
+		        </f:facet>
+	            <h:outputText value="#{player.lastname}" />  
+	        </p:column>  
+	        <p:column headerText="Confirmed by SCAHA" sortBy="eligibility" >
+	        	<h:outputText value="#{player.eligibility}" />  
+	        </p:column>
+        	<p:column headerText="Option" >  
+	             <p:splitButton id="setsafesport" value="Set Safesport To: "  >
+			        <p:menuitem value="Confirmed" action="#{safesportBean.setSafesport(player,1)}" update="listofsafesportcertified"/>
+			        <p:menuitem value="Not Confirmed" action="#{safesportBean.setSafesport(player,0)}" update="listofsafesportcertified" />
+			    </p:splitButton>
+			</p:column>  
+	        
+	        
+	    </p:dataTable>
+		</p:panel>
+		<p:panel header="Export Safesport List Options">
+	        <h:commandLink>
+	            <p:graphicImage value="/images/excel.png" />
+	            <p:dataExporter type="xls" target="listofsafesportcertified" fileName="safesportlist" />
+	        </h:commandLink>
+	 
+	        <h:commandLink>
+	            <p:graphicImage value="/images/pdf.png" />
+	            <p:dataExporter type="pdf" target="listofsafesportcertified" fileName="safesportlist"/>
+	        </h:commandLink>
+	         
+	  </p:panel>
+		
+		<p:separator id="customSeparator" style="width:800px;height:2px" />    
+ 		<div align="center">
+			<p:commandButton id="closeaddteams" value="Close" ajax="false" actionListener="#{safesportBean.closePage()}"/>
+		</div>
+		
+    </h:form>
+	</div>
+	</ui:define>
+</ui:composition>
+</html>

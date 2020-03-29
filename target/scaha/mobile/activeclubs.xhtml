@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/templates/mobilelayout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+     xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+     xmlns:pe="http://primefaces.org/ui/extensions"
+>
+<ui:define name="content">
+<h:body>
+<h:form>
+<h:outputText value="Active Clubs" style="font-size: 18px; font-weight: bold;"/>
+<table border="0" width="100%">
+		<tr>
+			<td>
+				<pe:masterDetail id="masterDetail" > 
+  	
+			    <pe:masterDetailLevel level="1" levelLabel="SCAHA Clubs" showAllBreadcrumbItems="true">  
+			
+			  		<p:dataTable id="listofclubs" var="club" value="#{scahaBean.getScahaClubList()}" >
+						<p:subTable var="peep" value="#{club.getCal()}" tableStyle="width:auto">
+				            <f:facet name="header">
+				            	<div style="float:left;vertical-align:middle;width:75px;font-size: 12px;">
+				            	<p:graphicImage id="logoimage1" value="#{clubBean.getClubLogoByParmId()}"  width="45" >
+				            		<f:param id = "target" name="target" value="#{club.getClubID()}" />
+						 		</p:graphicImage> 
+								</div>
+				            	<div style=	"float:left;margin-top:15px;margin-left:10px;vertical-align:middle;width:100%px;">
+				            	<p:commandLink style="font-size: 12px;" value="#{club.getClubname()} - (#{club.getCahaNumber()})">  
+			    	                <pe:selectDetailLevel contextValue="#{club}"/>  
+			   		            </p:commandLink>
+			   		            </div>
+			   		            
+			        		</f:facet>
+			 	            <p:column style="font-size: 12px;">
+			    	            #{peep.getMyRole().getDesc()}
+			   	            </p:column >
+				            <p:column style="font-size: 12px;">
+			    	            #{peep.getsFirstName()} #{peep.getsLastName()}
+			        	    </p:column>
+				            <p:column style="font-size: 12px;">
+			    	            #{peep.getsPhone()}
+			        	    </p:column>
+				            <p:column>
+								<h:outputLink value="mailto:#{peep.getsEmail()}?subject=Scaha%20Related">
+			   						 <h:outputText style="font-size: 12px;" value=" #{peep.getsEmail()}" />
+								</h:outputLink>
+			        	    </p:column>
+			        	    <f:facet name="footer">
+			        	    	<div style="float:left;margin-top:15px;margin-left:10px;text-align:right;vertical-align:middle;width:200px;">
+				            	  (<i><h:outputLink value="#{club.getWebSite()}">#{club.getWebSite()}</h:outputLink></i>)
+			   		      	</div>
+			        		</f:facet>
+						</p:subTable>
+			   		</p:dataTable>
+				</pe:masterDetailLevel>
+				<pe:masterDetailLevel level="2" contextVar="club" levelLabel="#{club.getClubname()} ">
+					#{clubBean.setClub(club.getClubID())}
+					<table width="100%">
+					<tr>
+					<td valign="top">
+					<div style="float:left">
+					<p:panelGrid id="clublevel" columns="1">  
+			           <div class="NewsTitle">#{club.getClubname()}</div> 
+			            <div class="NewsDate">
+			            	<i><a href="#{club.getWebSite()}" target="_blank">#{club.getWebSite()}</a></i>
+			        	</div> 
+			        </p:panelGrid>
+			        </div>
+			        </td>
+			    	</tr>
+			    	<tr>
+			    	<td valign="middle" >
+					<p:graphicImage id="logoimage" value="#{clubBean.getClubLogo()}" cache="false" width="60">
+			 			<f:param name="aaa" value="#{scahaBean.getDate()}"/>
+			 		</p:graphicImage> 
+					</td>
+					</tr>
+					<tr> 
+					<td valign="top" >
+						<div style="float:left;width=100%;">
+						<div class="NewsTitle">Club Personnel:
+						  <p:commandButton rendered="#{profileBean.isSuperUser()}" id="editButton" icon="ui-icon-search"  actionListener="#{clubBean.setUpStaffEditing()}" update="dialog" oncomplete="PF('peepdlg').show()"/>     
+			   			</div> 
+			  		 	<div style="float:right;width:100%;">
+						<p:dataTable  id="peeps" var="peep" value="#{clubBean.selectedclub.getCal()}" >
+				            <p:column headerText="Position" style="font-size: 10px;">
+			    	             <h:outputText style="font-size: 10px;" value="#{peep.getMyRole().getDesc()}" />
+			   	            </p:column >
+				            <p:column headerText="Name" style="font-size: 10px;">
+			    	            <h:outputText style="font-size: 10px;" value="#{peep.getsFirstName()} #{peep.getsLastName()}" />
+			        	    </p:column>
+				            <p:column headerText="Phone" style="font-size: 10px;">
+			    	            <h:outputText style="font-size: 10px;" value="#{peep.getsPhone()}" />
+			        	    </p:column>
+				            <p:column headerText="e-mail" style="font-size: 10px;">
+								<h:outputLink value="mailto:#{peep.getsEmail()}?subject=Scaha%20Related">
+			   						 <h:outputText style="font-size: 10px;" value=" #{peep.getsEmail()}" />
+								</h:outputLink>
+			        	    </p:column>
+						</p:dataTable>
+						</div>
+						</div>
+					</td>
+			        </tr>
+			        <tr>
+			        <td valign="top" >
+			        <div class="NewsTitle">Rink Venues:</div> 
+						<ui:repeat var="venue" value="#{clubBean.selectedclub.getVenues()}">
+							#{mapBean.setCurrentvenue(venue)}
+			    	        <div class="NewsDate">
+			               	<p:panelGrid id="venues" columns="2">
+					        	#{venue.getDescription()}<br/>
+				            	#{venue.getAddress()}, #{venue.getCity()} #{venue.getState()}, #{venue.getZipcode()} <br/>
+				            	#{venue.getPhone()} - <i><a href="#{venue.getWebsite()}" target="_blank">#{venue.getWebsite()}</a></i>
+			               		<p:graphicImage id="img" value="/images/marker.png" style="cursor:pointer" title="Location Map" width="30px"/> 
+			 	    			<p class="GeneralGap" />
+				    	    </p:panelGrid>
+					   		</div> 
+			 				<p:overlayPanel id="imgPanel" for="img" showEffect="blind" hideEffect="explode" showEvent="mousedown" hideEvent="mousedown" dismissable="false" showCloseIcon="true">
+			  		    		<p:gmap id="mymap" center="#{venue.gmapparms}" zoom="15" type="HYBRID" style="width:600px;height:400px" model="#{mapBean.getMapModel()}" />
+			       	        </p:overlayPanel> 
+						</ui:repeat>
+			        </td>
+			        </tr>
+			        </table>
+			        <div style="width:100%;text-align:right;">
+			         <p:commandButton value="Back to Clubs" icon="ui-icon-arrowthickstop-1-w">  
+			                <pe:selectDetailLevel level="1"/>  
+			         </p:commandButton>  
+			         </div>
+			        <p:separator />
+					<div class="NewsTitle">Teams for the #{scahaBean.getScahaSeasonList().getCurrentSeason().getDescription()}:</div> 
+					<p/>
+					<p:dataTable  var="team" value="#{clubBean.getTeams()}" >
+			            <p:column headerText="Division" style="font-size: 12px;">
+			   	             <h:outputText style="font-size: 11px;" value="#{team.getDivisiontag()} #{team.getSkillleveltag()}" />
+			            </p:column >
+			            <p:column headerText="Team Name " style="font-size: 12px;">
+			   	             <h:outputText style="font-size: 12px;" value="#{team.getTeamdivision().divisionname} #{team.getTeamskilllevel().skilllevelname} - #{team.getTeamname()} " />
+			            </p:column >
+			            <p:column headerText="Head Coach/Manager" style="font-size: 12px;">
+			   	             <h:outputText style="font-size: 12px;" value="#{empty team.getHeadCoach()  ? 'No Head Coach Set' : team.getHeadCoach().getsFirstName()} #{empty team.getHeadCoach() ? '' : team.getHeadCoach().getsLastName()}" />/<br></br>
+			   	             <h:outputText style="font-size: 12px;" value="#{empty team.getManager()  ? 'No Manager Set' : team.getManager().getsFirstName()} #{empty team.getManager() ? '' : team.getManager().getsLastName()}" />
+			            </p:column >
+			            <p:column headerText="e-mail" style="font-size: 12px;">
+			   	             <h:outputText style="font-size: 11px;" value="#{empty team.getHeadCoach()  ? 'No e-mail found' : team.getHeadCoach().getsEmail()}" />/<br></br>
+			   	             <h:outputText style="font-size: 11px;" value="#{empty team.getManager()  ? 'No e-mail found' : team.getManager().getsEmail()}" />
+			            </p:column >
+			            <!-- <p:column headerText="Manager" style="font-size: 12px;">
+			    	         <h:outputText style="font-size: 12px;" value="#{empty team.getManager()  ? 'No Manager Set' : team.getManager().getsFirstName()} #{empty team.getManager() ? '' : team.getManager().getsLastName()}" />
+			            </p:column >
+			            <p:column headerText="e-mail" style="font-size: 12px;">
+			  	             <h:outputText style="font-size: 11px;" value="#{empty team.getManager()  ? 'No e-mail found' : team.getManager().getsEmail()}" />
+			             </p:column >
+						 -->		         
+					</p:dataTable>
+			        <p:separator />
+			        
+			        
+				  </pe:masterDetailLevel>	
+				</pe:masterDetail>
+		
+			</td>
+		</tr>
+	</table>
+</h:form>
+</h:body>
+</ui:define>
+</ui:composition>

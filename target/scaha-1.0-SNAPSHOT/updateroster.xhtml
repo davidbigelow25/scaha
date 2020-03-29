@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:define name="content">
+	
+	<h:form>
+			<p:panel id ="panel" header="Rosters" >
+				<div>
+				<h:panelGrid columns="3" cellpadding="5" >
+					<h:column>
+						<p:selectOneMenu value="#{rosterBean.selectedseason}" >
+					    	<f:selectItem itemLabel="Select Season..." itemValue="0"/>
+					    	<f:selectItems value="#{rosterBean.getSeasons()}" var="season" itemLabel="#{season.getSeasonname()}" itemValue="#{season.getSeasonid()}"/>
+					    	<p:ajax listener="#{rosterBean.onSeasonChange()}" process="@this" update="@form"/>
+					    </p:selectOneMenu>
+					</h:column>
+					<h:column>
+						<p:selectOneMenu value="#{rosterBean.selecteddivision}" id="divisionmenu">
+					    	<f:selectItem itemLabel="Select Division..." itemValue="0"/>
+					    	<f:selectItems value="#{rosterBean.getDivisions()}" var="division" itemLabel="#{division.getDivisionname()}" itemValue="#{division.getTag()}"/>
+					    	<p:ajax listener="#{rosterBean.onDivisionChange()}" process="@this" update="@form"/>
+					    </p:selectOneMenu>
+					</h:column>
+					<h:column>
+						<p:selectOneMenu value="#{rosterBean.selectedteam}" id="teammenu">
+					    	<f:selectItem itemLabel="Select Team..." itemValue="0"/>
+					    	<f:selectItems value="#{rosterBean.getTeams()}" var="team" itemLabel="#{team.getTeamname()}" itemValue="#{team.getIdteam()}"/>
+					    	<p:ajax listener="#{rosterBean.onTeamChange()}" process="@this" update="@form"/>
+					    </p:selectOneMenu>
+					</h:column>
+				</h:panelGrid>
+				<br></br>
+				<p:dataTable id="playersearchresult" var="rosteredit" value="#{rosterBean.getPlayers()}" selection="#{rosterBean.selectedplayer}" style="width:70%;" editable="true" editMode="cell">
+                
+            	
+            	<p:column headerText="#" style="width:10%;">  
+	               <p:cellEditor>  
+	                   	<f:facet name="output"><h:outputText value="#{rosteredit.jerseynumber}" /></f:facet>  
+	                   	<f:facet name="input"><p:inputText id="jerseyInput" value="#{rosteredit.jerseynumber}" style="width:25px"/></f:facet>  
+	               </p:cellEditor>
+	            </p:column>  
+		        <p:column headerText="Last Name" style="width:45%;">  
+		        	<h:outputText value="#{rosteredit.getLastname()}" />  
+		        </p:column>
+		        <p:column headerText="First Name" style="width:45%;">  
+		        	<h:outputText value="#{rosteredit.getFirstname()}" />  
+		        </p:column>
+			          
+			 </p:dataTable>
+			 <p:dataTable id="coachesresult" var="rosteredit" value="#{rosterBean.getCoaches()}" style="width:70%;">
+                <p:column style="width:10%;">  
+	                   	<h:outputText value="#{rosteredit.jerseynumber}" />  
+	            </p:column>  
+		        <p:column style="width:45%;">  
+		        	<h:outputText value="#{rosteredit.getLastname()}" />  
+		        </p:column>
+		        <p:column style="width:45%;">  
+		        	<h:outputText value="#{rosteredit.getFirstname()}" />  
+		        </p:column>
+			 </p:dataTable> 
+			 </div>
+			</p:panel>
+			    
+	</h:form>
+	</ui:define>
+</ui:composition>
+</html>

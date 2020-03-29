@@ -1,0 +1,506 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://bootsfaces.net/ui">
+	
+<!-- <f:view contentType="text/html"> -->
+
+	<b:container>
+	
+            <b:row style="margin-top: 0px !important; margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;">
+            
+ 				<b:column >
+					<b:navBar brandImg="../scaha/images/pages/scaha_logo_navbar.png" brandStyle="padding-top: 5px;padding-bottom: 5px;" brandImgStyle="height:39px;width:60px;" brandImgStyleClass="hidden-md hidden-lg"   inverse="true" fluid="true" position="top" sticky="false">
+				            
+				            <b:navbarLinks pull="left">
+				                <b:navLink icon="home" href="Welcome.xhtml"></b:navLink>
+				                <!-- <b:navLink icon="time" value="Tryouts" href="viewalltryouts.xhtml"></b:navLink> -->
+				                <b:navLink icon="calendar" value="Sched./Standings" href="scoreboard.xhtml"></b:navLink>
+				                <b:navLink icon="stats" value="Stats" href="statscentral.xhtml"></b:navLink>
+				                <b:navLink icon="list-alt" value="Scoreboard" href="gamecentral.xhtml?season=SCAHA-1819&amp;initial=yes"></b:navLink>
+				                <b:navLink iconAwesome="trophy" value="Playoffs" href="playoffscentral.xhtml"></b:navLink> -->
+				                <b:navLink icon="eye-open" value="Suspensions" href="suspensions.xhtml"></b:navLink>
+				                <b:navLink icon="glyphicon-modal-window" value="Register for SCAHA" href="manageUSAHockey.xhtml" rendered="#{not empty profileBean.getProfile()}"></b:navLink>
+				                <br></br><b:navLink icon="list" value="Manager Portal" href="managerportal.xhtml" rendered="#{profileBean.getProfile().getScahamanager().getIsmanager()}"></b:navLink>
+				            	<!-- displays only when user is logged in -->
+				                
+				            </b:navbarLinks>
+							<h:form styleClass="navbar-form navbar-right">
+				                <!-- displays only when user is logged out -->
+				                <div class="form-group">
+				                    <b:inputText placeholder="Email" fieldSize="sm" value="#{profileBean.name}" tabindex="1" rendered="#{empty profileBean.getProfile()}" />
+				                </div>
+				                <div class="form-group">
+				                    <b:inputSecret placeholder="Password" fieldSize="sm" value="#{profileBean.live_password}" tabindex="2" rendered="#{empty profileBean.getProfile()}" />
+				                </div> 
+				                <!-- #{' '} -->
+				                <b:commandButton id="login" value="login"
+						 			ajax="false" tabindex="3" action="#{profileBean.login}" look="success" iconAlign="right" rendered="#{empty profileBean.getProfile()}" />
+						 		<h:outputText value="Welcome #{profileBean.getNickName()}      " style="color: white;font-style: italic;" rendered="#{not empty profileBean.getProfile()}"></h:outputText>
+					            <b:commandButton id="logout" value="Logout"
+							 		ajax="false" tabindex="4" action="#{profileBean.logout}" look="success" rendered="#{not empty profileBean.getProfile()}"/>
+							 	<br/>
+						 		<div class="form-group navbar-right" >
+						 			<b:navbarLinks pull="right" class="navbar-right">
+							 			<b:navLink icon="glyphicon-user" value="Create Account" href="register.xhtml" rendered="#{empty profileBean.getProfile()}">
+							 				<!-- <b:iconAwesome value="user-circle" /> -->
+							 			</b:navLink>
+						                <b:navLink icon="glyphicon-eye-close" value="Forgot Password" href="forgotpassword.xhtml" rendered="#{empty profileBean.getProfile()}">
+						                	<!-- <b:iconAwesome value="unlock-alt" /> -->
+						                </b:navLink>
+						                <b:navLink icon="glyphicon-user" value="Manage Profile" href="manageprofile.xhtml" rendered="#{not empty profileBean.getProfile()}"/>
+						                <b:navLink icon="glyphicon-eye-open" value="Change Password" href="changepassword.xhtml" rendered="#{not empty profileBean.getProfile()}"/>
+						                <p:spacer width="10px" />
+						            </b:navbarLinks>
+					            </div>
+				            </h:form>
+				            
+					</b:navBar>
+				</b:column>
+			</b:row>
+			<b:row style="margin-top: 0px !important; margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;" rendered="#{profileBean.hasRoleList('S-REG')}">
+				<b:column >
+ 					<b:navBar brand="SCAHA Registrar" inverse="false" position="top" sticky="false" fluid="true" >
+						<b:navbarLinks>
+		                <b:navLink value="Player LOI Hot List" href="quickplayerloiconfirmnew.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
+		                <b:navLink value="Coach LOI Hot List" href="quickcoachloiconfirm.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
+		                <b:navLink value="Fix Player LOI" href="workwithbirthcertificate.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
+		                <b:navLink value="Fix Coach LOI" href="workwithcoaches.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
+		                <b:navLink value="Manage Rosters" href="managerosters.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
+		                <b:navLink value="Delinquency List" href="viewdelinquencylist.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
+		                <b:navLink value="Add Delinquency" href="addplayerdelinquent.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
+		                <b:navLink value="Releases" href="confirmrelease.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
+		                <b:navLink value="LOI Form" icon="ui-icon-arrowthickstop-1-s" href="downloads/SCAHA_LOI_AUTHORIZATION.docx" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
+		            </b:navbarLinks>
+		            </b:navBar>
+				</b:column>
+			</b:row>
+			<b:row style="margin-top: 0px !important; margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;" rendered="#{profileBean.hasRoleList('C-REG') and not(profileBean.hasRoleList('S-REG'))}" > 
+				<b:column >
+ 					
+ 					<b:navBar brand="Club Registrar" inverse="false" position="top" sticky="false" fluid="true">
+							<b:navbarLinks>
+				                <b:navLink value="8U Ice Reimbursement" href="https://docs.google.com/forms/d/e/1FAIpQLSee-ri9prgsrvTadmO65vmlsJ70dx0NayxOywa4wMZD0WotiQ/viewform" target="_blank" rendered="#{profileBean.hasRoleList('C-REG;C-PRES;S-STATS')}"></b:navLink>
+				                <b:navLink value="Manage Teams" href="addteams.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES;S-STATS')}"></b:navLink>
+				                <b:navLink value="Player LOI" href="addplayerstoteam.xhtml" rendered="#{profileBean.hasRoleList('C-REG')}"></b:navLink>
+				                <b:navLink value="Coach LOI" href="addcoachestoteam.xhtml" rendered="#{profileBean.hasRoleList('C-REG')}"></b:navLink>
+				                <b:navLink value="Add Coach to Teams" href="addcoachtoadditionalteams.xhtml" rendered="#{profileBean.hasRoleList('C-REG')}"></b:navLink>
+				                <b:navLink value="Review LOI's" href="registrarviewlois.xhtml" rendered="#{profileBean.hasRoleList('C-REG')}"></b:navLink>
+				                <b:navLink value="Review Coach LOI's" href="registrarcoachlois.xhtml" rendered="#{profileBean.hasRoleList('C-REG')}"></b:navLink>
+				                <b:navLink value="Release Player" href="startplayerrelease.xhtml" rendered="#{profileBean.hasRoleList('C-REG')}"></b:navLink>
+				            	<b:navLink value="View Club D-List" href="clubviewdelinquencylist.xhtml" rendered="#{profileBean.hasRoleList('C-PRES;C-DLIST')}" ></b:navLink>
+				            	<b:navLink value="View Releases Status" href="clubviewrelease.xhtml" rendered="#{profileBean.hasRoleList('C-REG')}" ></b:navLink>
+				            	<b:navLink value="LOI Form" icon="ui-icon-arrowthickstop-1-s" href="downloads/SCAHA_LOI_AUTHORIZATION.docx" rendered="#{profileBean.hasRoleList('C-REG')}"></b:navLink>
+				            	<b:navLink value="View Club Ice" href="clubice.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES')}"></b:navLink>
+				            	<b:navLink value="View Team Tournaments" href="clubreviewtournaments.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES')}"></b:navLink>
+		                    </b:navbarLinks>
+		            </b:navBar>
+				</b:column>
+			</b:row>
+			<b:row style="margin-top: 0px !important; margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;" rendered="#{profileBean.hasRoleList('C-ICE') and not(profileBean.hasRoleList('S-ICE'))}" > 
+				<b:column >
+ 					
+ 					<b:navBar brand="Club Ice Convenor" inverse="false" position="top" sticky="false" fluid="true">
+							<b:navbarLinks>
+				                <b:navLink value="View Club Ice" href="clubice.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES')}"></b:navLink>
+		                    </b:navbarLinks>
+		            </b:navBar>
+				</b:column>
+			</b:row>
+			<b:row style="margin-top: 0px !important; margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;" rendered="#{profileBean.isSuperUser()}">
+				<b:column >
+ 					<b:navBar brand="SCAHA Admin" inverse="false" position="top" sticky="false" fluid="true" >
+						<b:navbarLinks>
+		                	<b:navLink value="Admin Portal" href="adminportal.xhtml" rendered="#{profileBean.isSuperUser()}"></b:navLink>
+		                	<b:navLink value="View Club Ice" href="clubice.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES')}"></b:navLink>
+		            	</b:navbarLinks>
+		            </b:navBar>
+				</b:column>
+			</b:row>
+			<b:row style="margin-top: 0px !important; margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;" rendered="#{profileBean.hasRoleList('S-STATS')}" > 
+				<b:column >
+ 					
+ 					<b:navBar brand="SCAHA Statistician" inverse="false" position="top" sticky="false" fluid="true">
+							<b:navbarLinks>
+				                <b:navLink value="Review SCAHA Games" href="reviewscahagames.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>
+				                <b:navLink value="Review Exhibition Requests" href="approveexhibitiongames.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>
+		         				<b:navLink value="Review Tournaments" href="approvetournaments.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>
+		         				<b:navLink value="Add Tournament" href="addtournament.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>
+		         				<b:navLink value="Review Exhibition Games" href="reviewexhibitiongamesresults.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>
+		         				<b:navLink value="Manage Suspensions" href="managesuspensionslist.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>
+		         				<b:navLink value="Quick Score" href="reviewscahagamesquickedit.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>
+		         				
+		                    </b:navbarLinks>
+		            </b:navBar>
+				</b:column>
+			</b:row>
+			<b:row style="margin-top: 0px !important; margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;" rendered="#{profileBean.hasRoleList('S-VICE')}" > 
+				<b:column >
+ 					
+ 					<b:navBar brand="SCAHA Deputy Commissioner" inverse="false" position="top" sticky="false" fluid="true">
+							<b:navbarLinks>
+				        		<b:navLink value="Team Penalty Counts" href="viewteampenaltycount.xhtml" rendered="#{profileBean.hasRoleList('S-VICE')}"></b:navLink>
+				        		<b:navLink value="Manage Rosters" href="managerosters.xhtml" rendered="#{profileBean.hasRoleList('S-VICE')}"></b:navLink>
+				        		<b:navLink value="Manage Suspensions" href="managesuspensionslist.xhtml" rendered="#{profileBean.hasRoleList('S-VICE')}"></b:navLink>        
+		         			</b:navbarLinks>
+		            </b:navBar>
+				</b:column>
+			</b:row>
+			
+			<b:row style="margin-top: 0px !important; margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;" rendered="#{profileBean.hasRoleList('R-ADM')}">
+				<b:column >
+ 					<b:navBar brand="Rink Admin" inverse="false" position="top" sticky="false" fluid="true" >
+						<b:navbarLinks>
+		                <b:navLink value="Print Scoresheet for Venue" href="printscoresheetsforvenue.xhtml" rendered="#{profileBean.hasRoleList('R-ADM')}"></b:navLink>
+		                
+		            </b:navbarLinks>
+		            </b:navBar>
+				</b:column>
+			</b:row>
+			
+			
+			<p:menuitem style="font-size: 10pt;width:225px;"
+							value="" 
+							url=""
+							rendered="" />
+			
+			<!-- <b:row style="padding:0;" rendered="#{profileBean.hasRoleList('S-REG')}">
+ 				<b:column span="14">
+ 			
+					<b:navBar brand="Member Services" inverse="false" position="inline" sticky="false" >
+			            <b:navbarLinks>
+			                <b:navLink value="Player LOI Hot List" href="quickplayerloiconfirm.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
+			                <b:navLink value="Coach LOI Hot List" href="quickcoachloiconfirm.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
+			                <b:navLink value="Fix Player LOI" href="workwithbirthcertificate.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
+			                <b:navLink value="Fix Coach LOI" href="workwithcoaches.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
+			                <b:navLink value="Manage Rosters" href="managerosters.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
+			                <b:navLink value="Delinquency List" href="viewdelinquencylist.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
+			                <b:navLink value="Add Delinquency" href="addplayerdelinquent.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
+			                <b:navLink value="Releases" href="confirmrelease.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
+			            </b:navbarLinks>
+					</b:navBar>
+				</b:column>
+			</b:row>
+			<b:row style="padding:0;" rendered="#{profileBean.hasRoleList('C-REG')}">
+ 				<b:column span="14">
+				
+					<b:navBar brand="Registrars" inverse="false" position="inline" sticky="false" >
+			            <b:navbarLinks>
+			                <b:navLink value="Manage Your Teams" href="addteams.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES;S-STATS')}"></b:navLink>
+			                <b:navLink value="Create Player LOI" href="addplayerstoteam.xhtml" rendered="#{profileBean.hasRoleList('C-REG')}"></b:navLink>
+			                <b:navLink value="Create Coach LOI" href="addcoachestoteam.xhtml" rendered="#{profileBean.hasRoleList('C-REG')}"></b:navLink>
+			                <b:navLink value="Add Coach to Teams" href="addcoachtoadditionalteams.xhtml" rendered="#{profileBean.hasRoleList('C-REG')}"></b:navLink>
+			                <b:navLink value="Review LOI's" href="registrarviewlois.xhtml" rendered="#{profileBean.hasRoleList('C-REG')}"></b:navLink>
+			                <b:navLink value="Review Coach LOI's" href="registrarcoachlois.xhtml" rendered="#{profileBean.hasRoleList('C-REG')}"></b:navLink>
+			                <b:navLink value="Release Player" href="startplayerrelease.xhtml" rendered="#{profileBean.hasRoleList('C-REG')}"></b:navLink>
+			            	<b:navLink value="View Club D-List" href="clubviewdelinquencylist.xhtml" rendered="#{profileBean.hasRoleList('C-PRES;C-DLIST')}" ></b:navLink>
+			            	<b:navLink value="View Releases Status" href="clubviewrelease.xhtml" rendered="#{profileBean.hasRoleList('C-REG')}" ></b:navLink>
+			                
+			            </b:navbarLinks>
+					</b:navBar>
+				</b:column>
+			</b:row>
+			<b:row style="padding:0;" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES')}">
+ 				<b:column span="14">
+				
+					<b:navBar brand="Ice Convenor" inverse="false" position="inline" sticky="false" >
+			            <b:navbarLinks>
+			                <b:navLink value="View Club Ice" href="clubice.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES')}"></b:navLink>
+			            </b:navbarLinks>
+					</b:navBar>
+				</b:column>
+			</b:row>
+			 -->
+	</b:container>
+	
+
+		<!-- <p:focus for="login"/> -->
+	
+			<!--<div
+			<h:form  >
+			style="text-align: right; width: 100%; font-weight: normal; font-size: 9pt; font-family: Verdana;">
+
+
+		 
+			<p:toolbar >
+				
+				<p:toolbarGroup align="left">
+					<b:button look="primary" href="Welcome.xhtml" icon="home" iconAlign="left"/>
+					<p:separator />
+					<b:button look="primary" value="Declarations" href="declarations.xhtml" icon="tags" iconAlign="left"/>
+					<p:spacer width="2px" />
+					<b:button look="primary" value="Schedule/Standings" href="scoreboard.xhtml" icon="calendar" iconAlign="left"/>
+					<p:spacer width="2px" />
+					<b:button look="primary" value="Stats" href="statscentral.xhtml" icon="list-alt" iconAlign="left"/>  
+					<p:spacer width="2px" />
+					<b:dropButton look="info" value="Info" icon="cog" iconAlign="left">
+					  <b:navLink value="Calendar of Events"
+							href="calendar.xhtml"></b:navLink>
+					  <b:navLink value="Executive Committee"
+							href="boardofdirectors.xhtml"></b:navLink>
+					  <b:navLink value="Coaches Certification"
+							href="coachesinfo.xhtml" />
+						<b:navLink value="Manager Tools"
+							href="managertools.xhtml" />
+						<b:navLink value="Meeting Minutes"
+							href="viewmeetingminutes.xhtml" />
+						<b:navLink value="Rinks"
+							href="scaharinks.xhtml" />
+						<b:navLink value="Safe Sport"
+							href="safesport.xhtml" />
+						<b:navLink value="Tournaments"
+							href="viewtournamentform.xhtml" />
+					  <b:navLink></b:navLink>
+					  <b:navLink header="Club Info"></b:navLink>
+					  <b:navLink value="Active Clubs"
+							href="viewallclubs.xhtml" />
+						<b:navLink value="Declarations"
+							href="declarations.xhtml" />
+						<b:navLink value="Openings"
+							href="viewallopenings.xhtml" />
+						<b:navLink value="Tryouts"
+							href="viewalltryouts.xhtml" />
+						<b:navLink></b:navLink>
+					  <b:navLink header="Season Info"></b:navLink>
+					  <b:navLink value="Guidebook"
+							href="downloads/SCAHA-Guidebook.pdf" target="_blank"/>
+						<b:navLink value="Playoffs"
+							href="playoffscentral.xhtml" />
+						<b:navLink value="Rosters"
+							href="roster.xhtml" />
+						<b:navLink value="Select Camp"
+							href="selectcamp.xhtml" />
+						<b:navLink value="Standings"
+							href="scoreboard.xhtml" />
+						<b:navLink value="Stats"
+							href="statscentral.xhtml" />
+						<b:navLink value="Suspensions"
+							href="suspensions.xhtml" />
+							<b:navLink></b:navLink>
+						  <b:navLink header="Season Info"></b:navLink>
+						  
+							
+						<b:navLink value="Download It"
+							href="lahoa.xhtml" />
+					</b:dropButton>
+					<p:spacer width="2px" />
+					<p:menuButton id="clubs" style="width:125px;" value="Club info">
+						<p:menuitem style="font-size: 12px;" value="Active Clubs"
+							url="/viewallclubs.xhtml" />
+						<p:menuitem style="font-size: 12px;" value="Declarations"
+							url="/declarations.xhtml" />
+						<p:menuitem style="font-size: 12px;" value="Openings"
+							url="/viewallopenings.xhtml" />
+						<p:menuitem style="font-size: 12px;" value="Tryouts"
+							url="/viewalltryouts.xhtml" />
+							
+					</p:menuButton>
+					<p:spacer width="2px" />
+					<p:menuButton id="menu2" style="width:125px;" value="Season Info"
+						type="button">
+						<p:menuitem style="font-size: 12px;" value="Guidebook"
+							url="downloads/SCAHA-Guidebook.pdf" id="guidebook" target="_blank"/>
+						<p:separator /> -->
+						<!-- <p:menuitem style="font-size: 12px;" value="Mite Program"
+							url="miteprogram.xhtml" /> -->
+						<!-- <p:menuitem style="font-size: 10pt;" value="Playoffs"
+							url="playoffscentral.xhtml" />
+						<p:menuitem style="font-size: 10pt;" value="Rosters"
+							url="roster.xhtml" /> -->
+						<!-- <p:menuitem style="font-size: 10pt;"
+							value="Scholar Athlete Program" url="scholarathlete.xhtml" /> -->
+						<!-- <p:menuitem style="font-size: 10pt;" value="Select Camp"
+							url="selectcamp.xhtml" />
+						<p:menuitem style="font-size: 10pt;" value="Standings"
+							url="scoreboard.xhtml" />
+						<p:menuitem style="font-size: 10pt;" value="Stats"
+							url="statscentral.xhtml" />
+						<p:menuitem style="font-size: 10pt;" value="Suspensions"
+							url="suspensions.xhtml" />	
+					</p:menuButton>
+					<p:spacer width="2px" />
+					<p:menuButton id="menusched" style="width:125px;" value="Schedule Info"
+						type="button">
+						<p:menuitem style="font-size: 12px;" value="Change Request List"
+							url="schedulechangerequestlist.xhtml" id="changerequest" rendered="#{profileBean.isSuperUser()}"/>
+						<p:menuitem style="font-size: 12px;" value="Schedule"
+							url="scoreboard.xhtml" id="scoreboard" />
+						<p:menuitem style="font-size: 12px;" value="Download It"
+							url="lahoa.xhtml" />
+					</p:menuButton>
+					<p:spacer width="2px" />
+					<p:commandButton value="Scoreboard"
+						actionListener="#{profileBean.scoreboard}" ajax="false"/>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="left" rendered="#{not empty profileBean.getProfile()}">
+					<p:menuButton id="customer" style="width:125px;" value="My Actions" type="button">
+						<p:menuitem style="font-size: 10pt;width:225px;"
+							value="Manage Profile" url="manageprofile.xhtml"
+							icon="ui-icon-extlink"
+							rendered="#{not empty profileBean.getProfile()}" />
+						 <p:menuitem style="font-size: 10pt;width:225px;"
+							value="Register For Scaha" icon="ui-icon-extlink"
+							url="manageUSAHockey.xhtml"
+							rendered="#{not empty profileBean.getProfile()}"
+							 />  -->
+						  <!-- <p:menuitem style="font-size: 10pt;width:225px;"
+							value="Scholar Athlete" icon="ui-icon-extlink"
+							url="scholarathleteapplication.xhtml"
+							rendered="#{not empty profileBean.getProfile()}"
+							 /> -->
+						<!-- <p:separator />
+						<p:menuitem style="font-size: 10pt;width:225px;"
+							value="Admin Portal" 
+							url="adminportal.xhtml"
+							rendered="#{profileBean.isSuperUser()}" />
+						<p:menuitem style="font-size: 10pt;width:225px;"
+							value="CAHA Tier II Data" 
+							url="cahatieriiplayers.xhtml"
+							rendered="#{profileBean.isSuperUser()}" />
+						<p:separator />
+						<p:menuitem style="font-size: 10pt;width:225px;"
+							value="Player History" 
+							url="viewplayerspenaltyhistory.xhtml"
+							rendered="#{profileBean.hasRoleList('S-STATS;S-VICE;S-PRES')}" />
+						<p:menuitem style="font-size: 10pt;width:225px;"
+							value="Team Penalty Counts" 
+							url="viewteampenaltycount.xhtml"
+							rendered="#{profileBean.hasRoleList('S-STATS;S-VICE;S-PRES')}" />
+						<p:separator />
+						<p:menuitem style="font-size: 10pt;width:225px;"
+							value="Manager Portal" 
+							url="managerportal.xhtml"
+							rendered="#{profileBean.getProfile().getScahamanager().getIsmanager()}" />
+						<p:menuitem style="font-size: 10pt;width:225px;"
+							value="Edit Playoffs" 
+							url="playoffscentraleditor.xhtml"
+							rendered="#{profileBean.hasRoleList('S-STATS')}" />
+						<p:menuitem style="font-size: 10pt;width:225px;"
+							value="Change Jersey #" 
+							url="updateroster.xhtml"
+							rendered="#{profileBean.hasRoleList('S-STATS')}" />
+						<p:menuitem style="font-size: 10pt;width:225px;"
+							value="Manage Suspensions" 
+							url="managesuspensions.xhtml"
+							rendered="#{profileBean.hasRoleList('S-STATS;S-VICE')}" />
+						<p:menuitem style="font-size: 10pt;width:225px;"
+							value="Review SCAHA Games" 
+							url="reviewscahagames.xhtml"
+							rendered="#{profileBean.hasRoleList('S-STATS;S-VICE;S-REG')}" />
+						<p:menuitem style="font-size: 10pt;width:225px;"
+							value="Approve Tourney Req" 
+							url="approvetournaments.xhtml"
+							rendered="#{profileBean.hasRoleList('S-STATS')}" />
+						<p:menuitem style="font-size: 10pt;width:225px;"
+							value="Approve Exhibition Req" 
+							url="approveexhibitiongames.xhtml"
+							rendered="#{profileBean.hasRoleList('S-STATS')}" />
+						<p:menuitem style="font-size: 10pt;width:225px;"
+							value="Review Exhibition Gms" 
+							url="reviewexhibitiongamesresults.xhtml"
+							rendered="#{profileBean.hasRoleList('S-STATS;S-VICE;S-REG')}" />
+						<p:menuitem style="font-size: 10pt;width:225px;"
+							value="Review Tourny Gms" 
+							url="reviewtournamentgamesresults.xhtml"
+							rendered="#{profileBean.hasRoleList('S-STATS;S-VICE;S-REG')}" />
+						<p:menuitem style="font-size: 10pt;width:225px;"
+							value="Patch Recipients" 
+							url="awardpatcheslist.xhtml"
+							rendered="#{profileBean.hasRoleList('S-STATS')}" />
+						<p:menuitem style="font-size: 10pt;width:225px;"
+							value="Add Tourneys" 
+							url="addtournament.xhtml"
+							rendered="#{profileBean.hasRoleList('S-STATS')}" />
+						<p:separator />
+						<p:menuitem style="font-size: 10pt;width:225px;"
+							value="Review Club Ice"
+							url="clubice.xhtml"
+							rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES')}" />
+						<p:separator /> -->
+						<!-- <p:menuitem style="font-size: 10pt;width:225px;"
+							value="View Safesport List"
+							url="registrarviewsafesport.xhtml"
+							rendered="#{profileBean.hasRoleList('C-REG;S-SAFE')}" /> -->
+						<!-- 
+						<p:menuitem style="font-size: 10pt;width:225px;"
+							value="Review SA Applications"
+							url="approvescholarathlete.xhtml"
+							rendered="#{profileBean.hasRoleList('SUSER;S-SAC')}" />
+					</p:menuButton>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="left" rendered="#{profileBean.hasRoleList('C-REG')}">
+					<p:menuButton id="cregistrars" style="width:125px;" value="Registrar Support" type="button">
+						 --><!-- 
+						<p:menuitem style="font-size: 10pt;width:225px;"
+							icon="ui-icon-arrowthickstop-1-s"
+							value="Club Master List"
+							url="mlistforclubs.xhtml"
+							rendered="#{profileBean.hasRoleList('C-REG')}"
+							/>							
+					</p:menuButton>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right"
+					rendered="#{not empty profileBean.getProfile()}">
+					<h:outputText value="Welcome #{profileBean.getNickName()}" rendered="#{not empty profileBean.getProfile()}"></h:outputText>
+					<p:separator />
+					<p:menuButton value="Options" iconPos="right">
+						<p:menuitem 
+							style="font-size:9pt;width:225px;"
+							value="Manage Profile" url="manageprofile.xhtml"
+							icon="ui-icon-extlink"  />
+						<p:menuitem 
+							style="font-size:9pt;width:225px;"
+							value="Register For Scaha" icon="ui-icon-extlink"
+							url="manageUSAHockey.xhtml" /> 
+						<p:menuitem 
+						 	style="font-size:9pt;width:225px;" 
+							value="Change Password"
+							url="changepassword.xhtml" icon="ui-icon-extlink" />
+						<p:separator />
+						<p:menuitem 
+							style="font-size:9pt;width:225px;"
+							value="Logout"
+							actionListener="#{profileBean.logout}" 
+							ajax="false" />
+					</p:menuButton>
+				</p:toolbarGroup>
+				
+			</p:toolbar> -->
+			<!-- #{gamecentralBean.setSelectedseason('SCAHA-1516')}
+			#{gamecentralBean.loadScrollingGamesfordate()} -->
+			<!-- #{scoreboardBean.setSelectedscheduleid(360)}
+			#{scoreboardBean.onScheduleChange()} -->
+			<!-- <ui:fragment style="font-size:9pt;font-family:Verdana;"
+				rendered="#{empty profileBean.getProfile()}"> -->
+				<!-- <h:outputLink id="findme" value="/scaha/findme.xhtml" style="font-size:9pt;font-family:Verdana;">
+					<h:outputText style="font-size: 9pt;font-family: Verdana;"
+						value="Help! Find My Account" />
+				</h:outputLink> 
+				<h:outputText style="font-size: 9pt;font-family: Verdana;"
+					value=" / " />-->
+				<!-- <h:outputLink id="reglink" value="/scaha/register.xhtml" style="font-size:9pt;font-family:Verdana;">
+					<h:outputText style="font-size:9pt;font-family:Verdana;"
+						value="Create New Account" />
+				</h:outputLink>
+				<h:outputText style="font-size: 9pt;font-family: Verdana;"
+					value=" / " />
+				<h:outputLink id="fpasslink" value="/scaha/forgotpassword.xhtml">
+					<h:outputText
+						style="font-weight: normal;font-size: 9pt;font-family: Verdana;"
+						value="Forgot Password?" />
+				</h:outputLink>
+			</ui:fragment>
+			<ui:fragment rendered="#{not empty profileBean.getProfile()}">
+				<p:spacer height="15px" width="20px" />
+			</ui:fragment> 
+	</h:form>
+		</div>-->
+
+
+<!-- </f:view> -->
+</html>

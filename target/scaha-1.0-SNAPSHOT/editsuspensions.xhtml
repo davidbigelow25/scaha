@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/templates/layoutadmin.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+     xmlns:b="http://bootsfaces.net/ui"
+>
+<h:head>
+	 <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+     </f:facet>
+	<f:metadata>
+		<f:event type="preRenderView" listener="#{profileBean.hasRoleList('S-STATS;S-VICE')}" />
+	</f:metadata>
+
+</h:head>
+<ui:define name="content">
+<b:container>
+	<b:row>
+		<b:column>
+			<b:form>
+			<b:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+			<b:panel id ="panel" collapsible="false" look="primary">
+				<f:facet name="heading">
+					<h:outputText value="SCAHA Suspensions" />
+				</f:facet>
+				<b:panelGrid colSpans="3,3,3,3">
+					<h:outputText value="Player Name:"/>
+					<b:inputText value="#{editsuspensionBean.playername}"/>
+					<h:outputText value="Team:"/>
+					<b:inputText value="#{editsuspensionBean.team}"/>
+					<h:outputText value="# of Games:"/>
+					<b:inputText value="#{editsuspensionBean.numberofgames}"/>
+					
+					<h:outputText value="Match: "/>
+					<b:selectOneMenu id="match" value="#{editsuspensionBean.match}" >
+				    	<f:selectItem itemLabel="No" itemValue="0"/>
+				    	<f:selectItem itemLabel="Yes" itemValue="1"/>
+				    </b:selectOneMenu>
+					<h:outputText value="Served:"/>
+					<b:selectOneMenu value="#{editsuspensionBean.served}" >
+				    	<f:selectItem itemLabel="No" itemValue="0"/>
+				    	<f:selectItem itemLabel="Yes" itemValue="1"/>
+				    </b:selectOneMenu>
+					
+					<h:outputText value="Suspension Date (YYYY-MM-DD):"/>
+					<b:inputText value="#{editsuspensionBean.suspdate}" />
+					<h:outputText value="Infraction:"/>
+					<b:inputTextarea value="#{editsuspensionBean.infraction}" rows="3" span="100" />
+					
+					
+					<h:outputText value="Eligibility:"/>
+					<b:inputTextarea value="#{editsuspensionBean.eligibility}" rows="3" span="100" />
+						
+					<h:outputText value=" "/>
+					<h:outputText value=" "/>
+					<b:commandButton value="Close" action="managesuspensionslist.xhtml" look="info"/>
+					<b:commandButton value="Update Suspension" actionListener="#{editsuspensionBean.Updatesuspension()}" look="success"/>
+				</b:panelGrid>
+			</b:panel>
+			</b:form>
+		</b:column>
+	</b:row>
+</b:container>
+</ui:define>
+</ui:composition>

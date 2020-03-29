@@ -1,0 +1,477 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui" 
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
+<f:view contentType="text/html">
+<h:head>
+	 <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+     </f:facet>
+</h:head>
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+<ui:define name="content">
+<!-- <p:carousel value="#{gamecentralBean.listofgames}" var="game" itemStyle="width:100%">
+	<h:outputText style="font-size: 10px;" value="#{game.getAwayteam()}" /> <h:outputText style="font-size: 10px;" value="#{game.getAwayscore()}" />
+	<h:outputText style="font-size: 10px;" value="#{game.getHometeam()}" /> <h:outputText style="font-size: 10px;" value="#{game.getHomescore()}" />
+</p:carousel> -->
+<p:separator />
+		<p:panel >
+		
+		<f:facet name="footer">
+			Copyright 2015.  Website maintained by <a href="mailto:lahockeyfan2@yahoo.com;dbigelow@the-rinks.com?subject=SCAHA Website">Rob Foster/Dave Bigelow</a>
+		</f:facet>
+	  
+		<h:form id="scheduleform">
+			<div align="center" width="100%"><p:commandButton id="closetransfers" value="Back to Scoreboard" ajax="false" actionListener="#{boxscoreBean.closePage()}"/></div>				
+			  
+			  <p:outputPanel id="testContainer" style="width:100%">
+			  		<table border="0" width="100%"  cellpadding="0" cellspacing="0" >
+						<tr>
+							<td width="50%" >
+								<div align="center">
+									<p:graphicImage value="#{clubBean.getClubLogoByParmId()}"  width="45" height="45">
+						            	<f:param id="target" name="target" value="#{boxscoreBean.getAwayclubid()}" />
+								 	</p:graphicImage><br></br>		
+									<p:spacer width="5" /><b><h:outputText style="font-size: 20px;float:center;display: inline-block;text-align: center;vertical-align: middle;line-height: normal;" value="#{boxscoreBean.getAwayteam()}" /></b>
+									<p:spacer width="5" />
+									<b><h:outputText style="font-size: 20px;float:center;vertical-align: middle;" value="#{boxscoreBean.getAwayscore()}" /></b>
+									<br></br>
+									<br></br>
+								</div>
+							</td>
+							<td>
+								<div align="center">
+								<p:graphicImage value="#{clubBean.getClubLogoByGameObject(game,'Home')}"  width="45" height="45">
+					            	<f:param id="targethome" name="targethome" value="#{boxscoreBean.getHomeclubid()}" />
+							 	</p:graphicImage><br></br>
+							 	<p:spacer width="5" /><b><h:outputText style="font-size: 20px;float:center;display: inline-block;vertical-align: middle;line-height: normal;" value="#{boxscoreBean.getHometeam()}" /></b>
+							 	<p:spacer width="5" />
+								<b><h:outputText style="font-size: 20px;float:center;vertical-align: middle;" value="#{boxscoreBean.getHomescore()}" /></b>
+								<br></br>
+								<br></br>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<div align="center">
+									<h:outputText style="font-size: 13px;float:center;" value="#{boxscoreBean.getTypetag()}, " />
+									<p:spacer width="5" />
+									<h:outputText style="font-size: 13px;float:center;" value="#{boxscoreBean.getLocation()} - " />
+									<p:spacer width="5" />
+									<h:outputText style="font-style:italic;font-size: 13px;float:center;" value="#{boxscoreBean.getStatetag()}" />
+								</div>
+							</td>
+						</tr>
+					</table>
+  					<br></br>
+  					<!-- shot and goal totals sections -->
+					<p:panel padding="0" style="width:100%">
+						<f:facet name="header">
+							Game Details
+						</f:facet>
+						<table cellpadding="5" cellspacing="0" border="0" width="100%">
+							<tr>
+								<!-- this column is scoring by period column -->
+								<td style="width:50%" bgcolor="#ffffff">
+									<b>Scoring</b>
+									<table cellpadding="5" cellspacing="0" border="1" style="border-color:#00ffff #00ffff #00ffff #00ffff;border-width: thin;" width="100%">
+											
+											<tr>
+												<th></th>
+												<th><div align="center">1</div></th>
+												<th><div align="center">2</div></th>
+												<th><div align="center">3</div></th>
+												<th><div align="center">OT</div></th>
+												<th><div align="center">Totals</div></th>
+											</tr>
+										<ui:repeat var="score" value="#{boxscoreBean.getGamescores()}" varStatus="loop">
+											<tr>
+												<td width="60%"><h:outputText style="float:left;" value="#{score.getTeamname()}" /></td>
+												<td><div align="center"><h:outputText style="float:center;" value="#{score.getPeriod1goals()}" /></div></td>
+												<td><div align="center"><h:outputText style="float:center;" value="#{score.getPeriod2goals()}" /></div></td>
+												<td><div align="center"><h:outputText style="float:center;" value="#{score.getPeriod3goals()}" /></div></td>
+												<td><div align="center"><h:outputText style="float:center;" value="#{score.getPeriodOTgoals()}" /></div></td>
+												<td><div align="center"><h:outputText style="float:center;" value="#{score.getTotalgoals()}" /></div></td>
+											</tr>			
+										</ui:repeat>
+									</table>
+								</td>
+								<!-- this column is the shots by period column -->
+								<td style="width:50%" bgcolor="#ffffff">
+									<b>Shots</b>
+									<table cellpadding="5" cellspacing="0" border="1" style="border-color:#00ffff #00ffff #00ffff #00ffff;border-width: thin;" width="100%">
+											<tr>
+												<th></th>
+												<th><div align="center">1</div></th>
+												<th><div align="center">2</div></th>
+												<th><div align="center">3</div></th>
+												<th><div align="center">OT</div></th>
+												<th><div align="center">Totals</div></th>
+											</tr>
+										<ui:repeat var="score" value="#{boxscoreBean.getGamescores()}" varStatus="loop">
+											<tr>
+												<td width="60%"><h:outputText style="float:center;" value="#{score.getTeamname()}" /></td>
+												<td><div align="center"><h:outputText style="float:center;" value="#{score.getPeriod1shots()}" /></div></td>
+												<td><div align="center"><h:outputText style="float:center;" value="#{score.getPeriod2shots()}" /></div></td>
+												<td><div align="center"><h:outputText style="float:center;" value="#{score.getPeriod3shots()}" /></div></td>
+												<td><div align="center"><h:outputText style="float:center;" value="#{score.getPeriod4shots()}" /></div></td>
+												<td><div align="center"><h:outputText style="float:center;" value="#{score.getTotalshots()}" /></div></td>
+											</tr>			
+										</ui:repeat>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</p:panel>
+					<br></br>
+					<!-- power play totals -->
+					<p:panel padding="0" style="width:100%">
+						<f:facet name="header">
+							Powerplays
+						</f:facet>
+						<table cellpadding="5" cellspacing="0" border="0" width="100%">
+							<tr>
+								<!-- this column is away team-->
+								<td style="width:50%" bgcolor="#ffffff">
+								 	<table cellpadding="1">
+								 		<tr>
+								 			<td ><b><h:outputText style="float:left;" value="#{boxscoreBean.getAwayteam()}" /></b></td>
+								 			<td><h:outputText style="float:left;" value="#{boxscoreBean.getAwayppgoalcount()}" /></td>
+								 			<td><h:outputText style="float:left;" value="of" /></td>
+								 			<td><h:outputText style="float:left;" value="#{boxscoreBean.getAwayppcount()}" /></td>
+								 		</tr>
+								 	</table>
+								</td>
+								<!-- this column is the home team-->
+								<td style="width:50%" bgcolor="#ffffff">
+									<table cellpadding="1">
+								 		<tr>
+								 			<td ><b><h:outputText style="float:left;" value="#{boxscoreBean.getHometeam()}" /></b></td>
+								 			<td><h:outputText style="float:left;" value="#{boxscoreBean.getHomeppgoalcount()}" /></td>
+								 			<td><h:outputText style="float:left;" value="of" /></td>
+								 			<td><h:outputText style="float:left;" value="#{boxscoreBean.getHomeppcount()}" /></td>
+								 		</tr>
+								 	</table>
+								</td>
+							</tr>
+						</table>
+					</p:panel>
+					<br></br>
+					<p:panel padding="0" style="width:100%">
+						<f:facet name="header">
+							Scoring Summary
+						</f:facet>
+						<table cellpadding="5" cellspacing="0" border="0" width="100%">
+							
+							<tr>
+								<td style="width:100%" bgcolor="#c6deff">
+								Period 1
+								</td>
+							</tr>
+							<ui:repeat var="scoresummary" value="#{boxscoreBean.getSummaryscoring()}" varStatus="loop">
+								<ui:fragment rendered="#{scoresummary.getPeriod() eq 1}">
+									<tr>
+										<td style="width:100%" bgcolor="#ffffff">
+										 	<h:outputText style="font-weight: bold;font-style: bold;" value="#{scoresummary.getTeamname()}" />
+										 	<p:spacer width="10" />
+										 	<h:outputText value="-" />
+										 	<p:spacer width="10" />
+										 	<a href="playerdetail.xhtml?id=#{scoresummary.getGoalscorerpersonid()}"><h:outputText  value="#{scoresummary.getGoalscorer()}" /></a>
+										 	<p:spacer width="5" />
+										 	<h:outputText  value="(unassisted)" rendered="#{scoresummary.getAssist1() eq null and scoresummary.getAssist2() eq null}"/>
+										 	<a href="playerdetail.xhtml?id=#{scoresummary.getAssist1personid()}"><h:outputText  value="(#{scoresummary.getAssist1()})" rendered="#{scoresummary.getAssist1() ne null and scoresummary.getAssist2() eq null}"/></a>
+										 	<a href="playerdetail.xhtml?id=#{scoresummary.getAssist2personid()}"><h:outputText  value="(#{scoresummary.getAssist1()}" rendered="#{scoresummary.getAssist1() ne null and scoresummary.getAssist2() ne null}"/></a>,&nbsp;<a href="playerdetail.xhtml?id=#{scoresummary.getAssist2personid()}"><h:outputText  value="#{scoresummary.getAssist2()})" rendered="#{scoresummary.getAssist1() ne null and scoresummary.getAssist2() ne null}"/></a>
+										 	<p:spacer width="5" />
+										 	<h:outputText style="font-style:italic;" value="(#{scoresummary.getGoaltype()})" />
+										 	<p:spacer width="5" />
+										 	<h:outputText  value="#{scoresummary.getGoaltime()}" />
+										</td>
+									</tr>
+								</ui:fragment>
+							</ui:repeat>
+							<ui:fragment rendered="#{boxscoreBean.getNoperiod1goals()}">
+							<tr>
+								<td>(No Scoring)</td>
+							</tr>
+							</ui:fragment>
+							<tr>
+								<td style="width:100%" bgcolor="#c6deff">
+								Period 2
+								</td>
+							</tr>
+							<ui:repeat var="scoresummary" value="#{boxscoreBean.getSummaryscoring()}" varStatus="loop">
+								<ui:fragment rendered="#{scoresummary.getPeriod() eq 2}">
+									<tr>
+										<td style="width:100%" bgcolor="#ffffff">
+										 	<h:outputText style="font-weight: bold;font-style: bold;" value="#{scoresummary.getTeamname()}" />
+										 	<p:spacer width="10" />
+										 	<h:outputText  value="-" />
+										 	<p:spacer width="10" />
+										 	<a href="playerdetail.xhtml?id=#{scoresummary.getGoalscorerpersonid()}"><h:outputText  value="#{scoresummary.getGoalscorer()}" /></a>
+										 	<p:spacer width="5" />
+										 	<h:outputText  value="(unassisted)" rendered="#{scoresummary.getAssist1() eq null and scoresummary.getAssist2() eq null}"/>
+										 	<a href="playerdetail.xhtml?id=#{scoresummary.getAssist1personid()}"><h:outputText  value="(#{scoresummary.getAssist1()})" rendered="#{scoresummary.getAssist1() ne null and scoresummary.getAssist2() eq null}"/></a>
+										 	<a href="playerdetail.xhtml?id=#{scoresummary.getAssist2personid()}"><h:outputText  value="(#{scoresummary.getAssist1()}" rendered="#{scoresummary.getAssist1() ne null and scoresummary.getAssist2() ne null}"/></a>,&nbsp;<a href="playerdetail.xhtml?id=#{scoresummary.getAssist2personid()}"><h:outputText  value="#{scoresummary.getAssist2()})" rendered="#{scoresummary.getAssist1() ne null and scoresummary.getAssist2() ne null}"/></a>
+										 	<p:spacer width="5" />
+										 	<h:outputText style="font-style:italic;" value="(#{scoresummary.getGoaltype()})" />
+										 	<p:spacer width="5" />
+										 	<h:outputText  value="#{scoresummary.getGoaltime()}" />
+										</td>
+									</tr>
+								</ui:fragment>
+							</ui:repeat>
+							<ui:fragment rendered="#{boxscoreBean.getNoperiod2goals()}">
+							<tr>
+								<td>(No Scoring)</td>
+							</tr>
+							</ui:fragment>
+							<tr>
+								<td style="width:100%" bgcolor="#c6deff">
+								Period 3
+								</td>
+							</tr>
+							<ui:repeat var="scoresummary" value="#{boxscoreBean.getSummaryscoring()}" varStatus="loop">
+								<ui:fragment rendered="#{scoresummary.getPeriod() eq 3}">
+									<tr>
+										<td style="width:100%" bgcolor="#ffffff">
+										 	<h:outputText style="font-weight: bold;font-style: bold;" value="#{scoresummary.getTeamname()}" />
+										 	<p:spacer width="10" />
+										 	<h:outputText  value="-" />
+										 	<p:spacer width="10" />
+										 	<a href="playerdetail.xhtml?id=#{scoresummary.getGoalscorerpersonid()}"><h:outputText  value="#{scoresummary.getGoalscorer()}" /></a>
+										 	<p:spacer width="5" />
+										 	<h:outputText  value="(unassisted)" rendered="#{scoresummary.getAssist1() eq null and scoresummary.getAssist2() eq null}"/>
+										 	<a href="playerdetail.xhtml?id=#{scoresummary.getAssist1personid()}"><h:outputText  value="(#{scoresummary.getAssist1()})" rendered="#{scoresummary.getAssist1() ne null and scoresummary.getAssist2() eq null}"/></a>
+										 	<a href="playerdetail.xhtml?id=#{scoresummary.getAssist2personid()}"><h:outputText  value="(#{scoresummary.getAssist1()}" rendered="#{scoresummary.getAssist1() ne null and scoresummary.getAssist2() ne null}"/></a>,&nbsp;<a href="playerdetail.xhtml?id=#{scoresummary.getAssist2personid()}"><h:outputText  value="#{scoresummary.getAssist2()})" rendered="#{scoresummary.getAssist1() ne null and scoresummary.getAssist2() ne null}"/></a>
+										 	<p:spacer width="5" />
+										 	<h:outputText style="font-style:italic;" value="(#{scoresummary.getGoaltype()})" />
+										 	<p:spacer width="5" />
+										 	<h:outputText  value="#{scoresummary.getGoaltime()}" />
+										</td>
+									</tr>
+								</ui:fragment>
+							</ui:repeat>
+							<ui:fragment rendered="#{boxscoreBean.getNoperiod3goals()}">
+							<tr>
+								<td>(No Scoring)</td>
+							</tr>
+							</ui:fragment>
+						</table>
+					</p:panel>
+					<br></br>
+					<p:panel padding="0" style="width:100%">
+						<f:facet name="header">
+							Penalties Summary
+						</f:facet>
+						<table cellpadding="5" cellspacing="0" border="0" width="100%">
+							
+							<tr>
+								<td style="width:100%" bgcolor="#c6deff">
+								Period 1
+								</td>
+							</tr>
+							<ui:repeat var="penalty" value="#{boxscoreBean.getGamepenalties()}" varStatus="loop">
+								<ui:fragment rendered="#{penalty.getPeriod() eq 1}">
+									<tr>
+										<td style="width:100%" bgcolor="#ffffff">
+										 	<h:outputText style="font-weight: bold;font-style: bold;" value="#{penalty.getTeamname()}" />
+										 	<p:spacer width="10" />
+										 	<h:outputText  value="-" />
+										 	<p:spacer width="10" />
+										 	<h:outputText  value="#{penalty.getPlayername()}" />
+										 	<p:spacer width="5" />
+										 	<h:outputText  value="(#{penalty.getPenaltytype()})"/>
+										 	<p:spacer width="5" />
+										 	<h:outputText style="font-style:italic;" value="(#{penalty.getMinutes()})" />
+										 	<p:spacer width="5" />
+										 	<h:outputText  value="#{penalty.getTimeofpenalty()}" />
+										</td>
+									</tr>
+								</ui:fragment>
+							</ui:repeat>
+							<ui:fragment rendered="#{boxscoreBean.getNoperiod1penalties()}">
+							<tr>
+								<td>(No Penalties)</td>
+							</tr>
+							</ui:fragment>
+							<tr>
+								<td style="width:100%" bgcolor="#c6deff">
+								Period 2
+								</td>
+							</tr>
+							<ui:repeat var="penalty" value="#{boxscoreBean.getGamepenalties()}" varStatus="loop">
+								<ui:fragment rendered="#{penalty.getPeriod() eq 2}">
+									<tr>
+										<td style="width:100%" bgcolor="#ffffff">
+										 	<h:outputText style="font-weight: bold;font-style: bold;" value="#{penalty.getTeamname()}" />
+										 	<p:spacer width="10" />
+										 	<h:outputText  value="-" />
+										 	<p:spacer width="10" />
+										 	<h:outputText  value="#{penalty.getPlayername()}" />
+										 	<p:spacer width="5" />
+										 	<h:outputText  value="(#{penalty.getPenaltytype()})"/>
+										 	<p:spacer width="5" />
+										 	<h:outputText style="font-style:italic;" value="(#{penalty.getMinutes()})" />
+										 	<p:spacer width="5" />
+										 	<h:outputText  value="#{penalty.getTimeofpenalty()}" />
+										</td>
+									</tr>
+								</ui:fragment>
+							</ui:repeat>
+							<ui:fragment rendered="#{boxscoreBean.getNoperiod2penalties()}">
+							<tr>
+								<td>(No Penalties)</td>
+							</tr>
+							</ui:fragment>
+							<tr>
+								<td style="width:100%" bgcolor="#c6deff">
+								Period 3
+								</td>
+							</tr>
+							<ui:repeat var="penalty" value="#{boxscoreBean.getGamepenalties()}" varStatus="loop">
+								<ui:fragment rendered="#{penalty.getPeriod() eq 3}">
+									<tr>
+										<td style="width:100%" bgcolor="#ffffff">
+										 	<h:outputText style="font-weight: bold;font-style: bold;" value="#{penalty.getTeamname()}" />
+										 	<p:spacer width="10" />
+										 	<h:outputText  value="-" />
+										 	<p:spacer width="10" />
+										 	<h:outputText  value="#{penalty.getPlayername()}" />
+										 	<p:spacer width="5" />
+										 	<h:outputText  value="(#{penalty.getPenaltytype()})"/>
+										 	<p:spacer width="5" />
+										 	<h:outputText style="font-style:italic;" value="(#{penalty.getMinutes()})" />
+										 	<p:spacer width="5" />
+										 	<h:outputText  value="#{penalty.getTimeofpenalty()}" />
+										</td>
+									</tr>
+								</ui:fragment>
+							</ui:repeat>
+							<ui:fragment rendered="#{boxscoreBean.getNoperiod3penalties()}">
+							<tr>
+								<td>(No Penalties)</td>
+							</tr>
+							</ui:fragment>
+							
+						</table>
+					</p:panel>
+					<br></br>
+					<p:panel padding="0" style="width:100%">
+						<f:facet name="header">
+							Player Stats
+						</f:facet>
+						<table cellpadding="5" cellspacing="0" border="0" width="100%">
+							
+							<tr>
+								<!--  this is the away team player stats -->
+								<td style="width:50%" bgcolor="#ffffff" valign="top">
+									<b><h:outputText style="float:left;" value="#{boxscoreBean.getAwayteam()}" /></b>
+									<table cellpadding="5" cellspacing="0" style="border-color:#00ffff #00ffff #00ffff #00ffff;border-width: thin;" width="100%" border="1">
+										<tr>
+											<th>#</th>
+											<th>Name</th>
+											<th>G</th>
+											<th>A</th>
+											<th>Pts</th>
+											<th>Pim</th>
+										</tr>
+										<ui:repeat var="stat" value="#{boxscoreBean.getGameawaystats()}" varStatus="loop">
+											<tr>
+												<td><h:outputText value="#{stat.getJersey()}" /></td>
+												<td width="50%"><h:outputText value="#{stat.getPlayername()}" /></td>
+												<td><div align="center"><h:outputText value="#{stat.getGoals()}" /></div></td>
+												<td><div align="center"><h:outputText value="#{stat.getAssists()}" /></div></td>
+												<td><div align="center"><h:outputText value="#{stat.getPoints()}" /></div></td>
+												<td><div align="center"><h:outputText value="#{stat.getPims()}" /></div></td>
+											</tr>
+										
+										</ui:repeat>
+									</table>
+									<br></br>
+									<b>Goalies</b>
+									<table cellpadding="5" cellspacing="0" style="border-color:#00ffff #00ffff #00ffff #00ffff;border-width: thin;" width="100%" border="1">
+										<tr>
+											<th>#</th>
+											<th>Name</th>
+											<th>Shots</th>
+											<th>Saves</th>
+										</tr>
+										<ui:repeat var="stat" value="#{boxscoreBean.getGameawaygoaliestats()}" varStatus="loop">
+											<tr>
+												<td><h:outputText value="#{stat.getJersey()}" /></td>
+												<td width="50%"><h:outputText value="#{stat.getPlayername()}" /></td>
+												<td><div align="center"><h:outputText value="#{stat.getShots()}" /></div></td>
+												<td><div align="center"><h:outputText value="#{stat.getSaves()}" /></div></td>
+											</tr>
+										
+										</ui:repeat>
+									</table>
+								</td>
+								<!--  this is the Home team player stats -->
+								<td style="width:50%" bgcolor="#ffffff" valign="top">
+									<b><h:outputText style="float:left;" value="#{boxscoreBean.getHometeam()}" /></b>
+									<table cellpadding="5" cellspacing="0" style="border-color:#00ffff #00ffff #00ffff #00ffff;border-width: thin;" width="100%" border="1">
+										<tr>
+											<th>#</th>
+											<th>Name</th>
+											<th>G</th>
+											<th>A</th>
+											<th>Pts</th>
+											<th>Pim</th>
+										</tr>
+										<ui:repeat var="stat" value="#{boxscoreBean.getGamehomestats()}" varStatus="loop">
+											<tr>
+												<td><h:outputText value="#{stat.getJersey()}" /></td>
+												<td width="50%"><h:outputText value="#{stat.getPlayername()}" /></td>
+												<td><div align="center"><h:outputText value="#{stat.getGoals()}" /></div></td>
+												<td><div align="center"><h:outputText value="#{stat.getAssists()}" /></div></td>
+												<td><div align="center"><h:outputText value="#{stat.getPoints()}" /></div></td>
+												<td><div align="center"><h:outputText value="#{stat.getPims()}" /></div></td>
+											</tr>
+										
+										</ui:repeat>
+									</table>
+									<br></br>
+									<b>Goalies</b>
+									<table cellpadding="5" cellspacing="0" width="100%" style="border-color:#00ffff #00ffff #00ffff #00ffff;border-width: thin;" border="1">
+										<tr>
+											<th>#</th>
+											<th>Name</th>
+											<th>Shots</th>
+											<th>Saves</th>
+										</tr>
+										<ui:repeat var="stat" value="#{boxscoreBean.getGamehomegoaliestats()}" varStatus="loop">
+											<tr>
+												<td><h:outputText value="#{stat.getJersey()}" /></td>
+												<td width="50%"><h:outputText value="#{stat.getPlayername()}" /></td>
+												<td><div align="center"><h:outputText value="#{stat.getShots()}" /></div></td>
+												<td><div align="center"><h:outputText value="#{stat.getSaves()}" /></div></td>
+											</tr>
+										
+										</ui:repeat>
+									</table>
+								</td>
+							</tr>
+												
+						</table>
+					</p:panel>
+					<f:facet name="footer">
+				        Copyright 2015.  Website maintained by <a href="mailto:lahockeyfan2@yahoo.com;dbigelow@the-rinks.com?subject=SCAHA Website">Rob Foster/Dave Bigelow</a>
+				        
+				    </f:facet>								
+				</p:outputPanel>
+		</h:form>
+		</p:panel>
+</ui:define>
+</ui:composition>
+</f:view>
+</html>

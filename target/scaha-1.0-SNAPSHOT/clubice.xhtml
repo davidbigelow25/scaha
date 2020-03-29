@@ -1,0 +1,288 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:b="http://bootsfaces.net/ui">
+<f:metadata>
+	<f:event type="preRenderView" listener="#{profileBean.verifyHasRoles('C-REG;C-ICE;C-PRES')}" />
+</f:metadata>
+
+<ui:composition template="/WEB-INF/templates/layoutadmin.xhtml">
+<ui:define name="content">
+<style>
+td {
+	font-size: 10px;
+}
+
+
+	
+	
+
+</style>
+<b:container>
+	<b:row>
+		<b:column>
+			<b:form>
+				<b:panel id ="panel" collapsible="false" look="primary">
+					<f:facet name="heading">
+						<h:outputText value="Your Club's Master List Of Ice " />
+					</f:facet>
+					<b:panelGrid colSpans="12" id="info" style="padding: 5;">
+						<h:outputText value="Click any icon to download your master ice slots list in excel or cvs."/>
+						<h:outputText value=" "/>
+						<h:outputText value="This table is pretty straight forward.  Please use this to verify what slots you have used, and 
+						  what you have open.   The open Slots are highlighted in Blue.
+						  "/>
+						<h:outputText value=" "/>
+						<h:outputText value="We assembled this to allow your club to quickly review ice assignments and to make sure there 
+						  are no errors.
+						  "/>
+						 <h:outputText value=" "/>
+						 <h:outputText value="Blue means open ice (for now) - It is not available until all schedules are complete."/>
+						 <h:outputText value="Red means that slot is tied to a double header game and has to stay put.
+						  "/>
+						 <h:outputText value=" "/>
+						 <h:outputText value="Thanks - the iScaha Development Team"/>
+					</b:panelGrid>
+					<b:dataTable 
+						id="newicemap" 
+			 			var="myrow" 
+			 			value="#{iceBean.mydata}" 
+			 			rowStyleClass="#{myrow.get(4) == 0 ? 'openice' : null} #{myrow.get(14) == 'S' ? 'doubleice' : null} "
+			 			striped="false"
+			 			editable="false"
+			 			row-highlight="false" 
+						paginated="false"
+						searching="true" 
+						border="true"
+						excel="true"
+			            csv="true"
+			            pdf="true"
+						column-visibility="true"
+						>
+			   			<b:dataTableColumn styleClass="mtrxColumn">
+				            <f:facet name="header">
+						        <h:outputText value="Club" />
+						    </f:facet>
+							<h:outputText value="#{myrow.get(0)}" />
+							<!-- <p:draggable for="gamerow" revert="true" helper="clone"/> -->
+							<f:facet name="footer">
+						        <h:outputText value="Ice Totals Totals:" />
+						    </f:facet>    
+				        </b:dataTableColumn>
+				        <b:dataTableColumn styleClass="mtrxColumn">
+				            <f:facet name="header">
+						        <h:outputText value="A/S" />
+						    </f:facet>
+							<h:outputText value="#{myrow.get(14)}" />
+							<f:facet name="footer">
+						        <h:outputText value="#{iceBean.mydata.getRowCount()}" />
+						    </f:facet>    
+				        </b:dataTableColumn>
+				        <b:dataTableColumn styleClass="mtrxColumn">
+				            <f:facet name="header">
+						        <h:outputText value="#{iceBean.mydata.rheader.get(2)}" />
+						    </f:facet>
+							<h:outputText value="#{myrow.get(2)}" />    
+				        </b:dataTableColumn>
+				        <b:dataTableColumn styleClass="mtrxColumn">
+				            <f:facet name="header">
+						        <h:outputText value="#{iceBean.mydata.rheader.get(3)}" />
+						    </f:facet>
+							<h:outputText value="#{myrow.get(3)}" />    
+				        </b:dataTableColumn>
+				        <b:dataTableColumn styleClass="mtrxColumn">
+				            <f:facet name="header">
+						        <h:outputText value="#{iceBean.mydata.rheader.get(15)}" />
+						    </f:facet>
+							<h:outputText value="#{myrow.get(15)}" />    
+				        </b:dataTableColumn>
+				        <b:dataTableColumn styleClass="mtrxColumn">
+				            <f:facet name="header">
+						        <h:outputText value="#{iceBean.mydata.rheader.get(4)}" />
+						    </f:facet>
+							<h:outputText value="#{myrow.get(4)}" />    
+				        </b:dataTableColumn>
+				        <b:dataTableColumn styleClass="mtrxColumn">
+				            <f:facet name="header">
+						        <h:outputText value="#{iceBean.mydata.rheader.get(5)}" />
+						    </f:facet>
+							<h:outputText value="#{myrow.get(5)}" />    
+				        </b:dataTableColumn>
+				        <b:dataTableColumn styleClass="mtrxColumn">
+				            <f:facet name="header">
+						        <h:outputText value="#{iceBean.mydata.rheader.get(6)}" />
+						    </f:facet>
+							<h:outputText value="#{myrow.get(6)}" />    
+				        </b:dataTableColumn>
+				        <b:dataTableColumn styleClass="mtrxColumn">
+				            <f:facet name="header">
+						        <h:outputText value="#{iceBean.mydata.rheader.get(7)}" />
+						    </f:facet>
+							<h:outputText value="#{myrow.get(7)}" />    
+				        </b:dataTableColumn>
+				        <b:dataTableColumn styleClass="mtrxColumn">
+				            <f:facet name="header">
+						        <h:outputText value="#{iceBean.mydata.rheader.get(8)}" />
+						    </f:facet>
+							<h:outputText value="#{myrow.get(8)}" />    
+				        </b:dataTableColumn>
+				        <b:dataTableColumn styleClass="mtrxColumn">
+				            <f:facet name="header">
+						        <h:outputText value="#{iceBean.mydata.rheader.get(9)}" />
+						    </f:facet>
+							<h:outputText value="#{myrow.get(9)}" />
+						</b:dataTableColumn>
+				        <b:dataTableColumn styleClass="mtrxColumn">
+				            <f:facet name="header">
+						        <h:outputText value="#{iceBean.mydata.rheader.get(11)}" />
+						    </f:facet>
+							<h:outputText value="#{myrow.get(11)} - #{myrow.get(12)}" />
+				        </b:dataTableColumn>
+				        <b:dataTableColumn styleClass="mtrxColumn">
+				            <f:facet name="header">
+						        <h:outputText value="#{iceBean.mydata.rheader.get(11)}" />
+						    </f:facet>
+							<h:outputText value="#{myrow.get(11)} - #{myrow.get(12)}" />    
+				        </b:dataTableColumn>
+				    </b:dataTable>
+				</b:panel>
+			</b:form>
+		</b:column>
+	</b:row>		
+</b:container>
+<!-- 
+	<h:form id="form1">
+ 	<div class="NewsTitle">Your Club's Master List Of Ice </div>
+	  <div class="NewsDate">Reviewing and Verifying Your Ice Slots for the year</div>  
+	<p:panel header="Export Clubs Master Slots">
+     	 <div class="NewsText">
+			  Click any icon to download your master ice slots list in excel or cvs.
+			  <p/>
+			  This table is pretty straight forward.  Please use this to verify what slots you have used, and 
+			  what you have open.   The open Slots are highlighted in Blue.
+			  <p/>
+			  We assembled this to allow your club to quickly review ice assignments and to make sure there 
+			  are no errors.
+			  <p/>
+			  Blue means open ice (for now) - It is not available until all schedules are complete. <br/>
+			  Red means that slot is tied to a double header game and has to stay put.
+			  <p/>
+			  Thanks - the iScaha Development Team
+			  
+  		</div>
+  		<p:separator />
+  		<h:commandLink update="masterlist">
+          	<p:graphicImage value="/images/excel.png" />
+        	<p:dataExporter type="xls" target="icemap" fileName="ClubIceSlots" />
+     	</h:commandLink>
+     	<p:spacer width="20px" />
+     	<h:commandLink>
+         	<p:graphicImage update="masterlist" value="/images/csv.png" />
+        	 <p:dataExporter type="csv" target="icemap" fileName="ClubIceSlots" />
+    	</h:commandLink>
+    		
+	</p:panel>	
+		<p:dataTable style="width:1200px;"
+ 			id="icemap" 
+ 			var="myrow" 
+ 			value="#{iceBean.mydata}" 
+ 			rowStyleClass="#{myrow.get(4) == 0 ? 'openice' : null} #{myrow.get(14) == 'S' ? 'doubleice' : null} ">
+
+
+			<p:column  id="gamerow" width="7%" styleClass="mtrxColumn">
+           		<f:facet name="header">
+            		<h:outputText value="Club" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(0)}" />  
+	             <p:draggable for="gamerow" revert="true" helper="clone"/>
+	        </p:column>  
+			<p:column styleClass="mtrxColumn">
+           		<f:facet name="header">
+            		<h:outputText value="A/S" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(14)}" />  
+	        </p:column>  
+ 			<p:column styleClass="mtrxColumn">
+           		<f:facet name="header">
+            		<h:outputText value="#{iceBean.mydata.rheader.get(2)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(2)}" />  
+	        </p:column>  
+ 			<p:column styleClass="mtrxColumn">
+           		<f:facet name="header">
+            		<h:outputText value="#{iceBean.mydata.rheader.get(3)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(3)}" />  
+	        </p:column>  
+	        <p:column styleClass="mtrxColumn">
+           		<f:facet name="header">
+            		<h:outputText value="#{iceBean.mydata.rheader.get(15)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(15)}" />  
+	        </p:column> 
+			<p:column styleClass="mtrxColumn">
+           		<f:facet name="header">
+            		<h:outputText value="#{iceBean.mydata.rheader.get(4)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(4)}" />  
+	        </p:column>  
+ 			<p:column styleClass="mtrxColumn">
+           		<f:facet name="header">
+            		<h:outputText value="#{iceBean.mydata.rheader.get(5)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(5)}" />  
+	        </p:column>  
+ 			<p:column styleClass="mtrxColumn">
+           		<f:facet name="header">
+            		<h:outputText value="#{iceBean.mydata.rheader.get(6)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(6)}" />  
+	        </p:column>  
+ 			<p:column styleClass="mtrxColumn">
+           		<f:facet name="header">
+            		<h:outputText value="#{iceBean.mydata.rheader.get(7)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(7)}" />  
+	        </p:column>  
+ 			<p:column styleClass="mtrxColumn">
+           		<f:facet name="header">
+            		<h:outputText value="#{iceBean.mydata.rheader.get(8)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(8)}" />  
+	        </p:column>  
+ 			<p:column styleClass="mtrxColumn">
+           		<f:facet name="header">
+            		<h:outputText value="#{iceBean.mydata.rheader.get(9)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(9)}" />  
+	        </p:column>  
+  			<p:column styleClass="mtrxColumn">
+           		<f:facet name="header">
+            		<h:outputText value="#{iceBean.mydata.rheader.get(11)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(11)} - #{myrow.get(12)}" />  
+	        </p:column> 
+	        <p:column styleClass="mtrxColumn">
+           		<f:facet name="header">
+            		<h:outputText value="#{iceBean.mydata.rheader.get(11)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(11)} - #{myrow.get(12)}" />  
+	        </p:column>
+       		<p:columnGroup type="footer">
+            <p:row>
+                <p:column footerText="Ice Totals Totals:" style="text-align:right"  />
+      -         <p:column footerText="#{iceBean.mydata.getRowCount()}" />
+            </p:row>
+        </p:columnGroup>	    
+	    </p:dataTable>
+</h:form>
+ -->
+</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/templates/layoutadmin.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+     xmlns:b="http://bootsfaces.net/ui"
+>
+<h:head>
+	 <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+     </f:facet>
+	<!-- <f:metadata>
+		<f:event type="preRenderView" listener="#{profileBean.verifySU()}" />
+	</f:metadata> -->
+</h:head>
+<ui:define name="content">
+<b:container>
+	<b:row>
+		<b:column>
+			<b:form>
+			<b:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+			<b:panel id ="panel" collapsible="false" look="primary">
+				<f:facet name="heading">
+					<h:outputText value="SCAHA Suspensions" />
+				</f:facet>
+				<b:panelGrid colSpans="3,2,2,3,2">
+					<h:outputText value=" "/>
+					<h:outputText value=" "/>
+					<h:outputText value=" "/>
+					<h:outputText value=" "/>
+					<b:commandButton value="Add" iconAwesome="plus" id="addsuspension" look="success" actionListener="#{suspensionBean.addSuspension()}"
+						large-screen="full-width"
+    					medium-screen="full-width"
+    					small-screen="full-width"
+    					tiny-screen="full-width"
+					>
+						<f:ajax execute="@this" render="@form" />
+					</b:commandButton>
+				</b:panelGrid>
+				<p:spacer width="10" height="5" />
+				<b:dataTable 
+					id="suspensionlist" 
+					var="suspension" 
+						value="#{suspensionBean.getAllSuspensions()}" 
+						editable="false" 
+					select="false"
+					paginated="true"
+					searching="true" 
+					border="true"
+					excel="true"
+		            pdf="true"
+					
+					>
+					<b:dataTableColumn >
+			            <f:facet name="header">
+					        Date
+					    </f:facet>
+						<h:outputText value="#{suspension.getSuspensiondate()}" />    
+			        </b:dataTableColumn>
+			        <b:dataTableColumn >
+			            <f:facet name="header">
+					        Name
+					    </f:facet>
+						<h:outputText value="#{suspension.getPlayername()}" />    
+			        </b:dataTableColumn>
+			        <b:dataTableColumn >
+			            <f:facet name="header">
+					        Team
+					    </f:facet>
+						<h:outputText value="#{suspension.getTeam()}" />    
+			        </b:dataTableColumn>
+			        <b:dataTableColumn >
+			            <f:facet name="header">
+					        Infraction
+					    </f:facet>
+						<h:outputText value="#{suspension.getInfraction()}" />    
+			        </b:dataTableColumn>
+			        <b:dataTableColumn >
+			            <f:facet name="header">
+					        Match
+					    </f:facet>
+						<h:outputText value="#{suspension.getMatch()}" />    
+			        </b:dataTableColumn>
+			        <b:dataTableColumn >
+			            <f:facet name="header">
+					        Eligibility
+					    </f:facet>
+						<h:outputText value="#{suspension.getEligibility()}"/>    
+			        </b:dataTableColumn>
+			        <b:dataTableColumn >
+			            <f:facet name="header">
+					        # of Games
+					    </f:facet>
+						<h:outputText value="#{suspension.getGames()}"/>    
+			        </b:dataTableColumn>
+			        <b:dataTableColumn >
+			            <f:facet name="header">
+					        Served
+					    </f:facet>
+						<h:outputText value="#{suspension.getServed()}"/>    
+			        </b:dataTableColumn>
+			        <b:dataTableColumn >
+			            <f:facet name="header">
+					        <h:outputText value="Option" />
+					    </f:facet>
+						<b:commandButton value="Served ?" 
+				            action="#{suspensionBean.markServed(suspension)}" look="info"
+				         	large-screen="full-width"
+    						medium-screen="full-width"
+    						small-screen="full-width"
+    						tiny-screen="full-width"
+    					 >
+					       <f:ajax execute="@this" render="@form" />
+					    </b:commandButton>
+					    <p:spacer width="5"  />
+					    <b:commandButton value="Manage" 
+				            action="#{suspensionBean.manageSuspension(suspension)}" look="info"
+				         	large-screen="full-width"
+    						medium-screen="full-width"
+    						small-screen="full-width"
+    						tiny-screen="full-width"
+    					 >
+					       <f:ajax execute="@this" render="@form" />
+					    </b:commandButton>
+					</b:dataTableColumn>
+				</b:dataTable>
+			</b:panel>
+		</b:form>
+		</b:column>
+	</b:row>
+</b:container>
+</ui:define>
+</ui:composition>

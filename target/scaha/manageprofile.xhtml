@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+     xmlns:b="http://bootsfaces.net/ui"
+>
+<f:view contentType="text/html">
+    
+ <h:head>
+	 <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+     </f:facet>
+	<f:metadata>
+		<f:event type="preRenderView" listener="#{profileBean.verifyUserLogin()}" />
+	</f:metadata>
+</h:head>	    
+<h:body>
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+<ui:define name="content">
+#{profileBean.setEditPerson()}
+<b:container>
+	<b:row>
+		<b:column>
+			<b:form id="form">
+			<b:messages id="messages" showDetail="true" autoUpdate="true" closable="false" />
+			<b:panelGrid colSpans="7,5" id="layoutpanelgrid">	
+	 			<b:panel id="panel" collapsible="false" look="primary">
+					<f:facet name="heading">
+						Manage Account Information
+					</f:facet>
+					<b:panelGrid colSpans="2,4,2,4" id="parentaccountgrid">
+						<h:outputText value="User Name (e-mail):" />
+						<b:inputText id="username" value="#{profileBean.chgUserName}"
+							large-screen="full-width"
+					    	medium-screen="full-width"
+					    	small-screen="full-width"
+					    	tiny-screen="full-width"/>
+					    <h:outputText value="First Name:" />
+						<b:inputText id="firstname" value="#{profileBean.chgFirstName}" 
+							large-screen="full-width"
+					    	medium-screen="full-width"
+					    	small-screen="full-width"
+					    	tiny-screen="full-width"/>
+					    <h:outputText value="Last Name:" />
+						<b:inputText id="lastname" value="#{profileBean.chgLastName}"  
+							large-screen="full-width"
+					    	medium-screen="full-width"
+					    	small-screen="full-width"
+					    	tiny-screen="full-width"/>
+					    <h:outputText value="Nick Name:" />
+						<b:inputText id="nickname" value="#{profileBean.chgNickName}"  
+							large-screen="full-width"
+					    	medium-screen="full-width"
+					    	small-screen="full-width"
+					    	tiny-screen="full-width"/>
+					    <h:outputText value="Date of Birth (MM/DD/YYYY):" />
+						<b:inputText id="dob" value="#{profileBean.chgDOB}" required = "true" requiredMessage="Date of Birth cannot be blank."
+							large-screen="full-width"
+					    	medium-screen="full-width"
+					    	small-screen="full-width"
+					    	tiny-screen="full-width"/>
+					    <h:outputText value="Gender:" />
+						<b:selectOneMenu id="gender" value="#{profileBean.chgGender}"
+							large-screen="full-width"
+					    	medium-screen="full-width"
+					    	small-screen="full-width"
+					    	tiny-screen="full-width">
+					        <f:selectItem itemLabel="Male" itemValue="M"></f:selectItem> 
+	           				<f:selectItem itemLabel="Female" itemValue="F"></f:selectItem> 
+	      				</b:selectOneMenu> 		
+	      				<h:outputText value="Primary eMail:" />
+						<b:inputText id="email" value="#{profileBean.chgAltEmail}" 
+							large-screen="full-width"
+					    	medium-screen="full-width"
+					    	small-screen="full-width"
+					    	tiny-screen="full-width"/>
+					    <h:outputText value="Mobile Phone:" />
+						<b:inputText id="phone" value="#{profileBean.chgPhone}" 
+							large-screen="full-width"
+					    	medium-screen="full-width"
+					    	small-screen="full-width"
+					    	tiny-screen="full-width"/>
+					    <h:outputText value="Address:" />
+						<b:inputText id="address" value="#{profileBean.chgAddress}"  
+							large-screen="full-width"
+					    	medium-screen="full-width"
+					    	small-screen="full-width"
+					    	tiny-screen="full-width"/>
+					    <h:outputText value="City:" />
+						<b:inputText id="city" value="#{profileBean.chgCity}"  
+							large-screen="full-width"
+					    	medium-screen="full-width"
+					    	small-screen="full-width"
+					    	tiny-screen="full-width"/>
+					    <h:outputText value="State:" />
+						<b:inputText  id="state" maxlength="2" value="#{profileBean.chgState}"   
+							large-screen="full-width"
+					    	medium-screen="full-width"
+					    	small-screen="full-width"
+					    	tiny-screen="full-width"/>
+					    <h:outputText value="Zip:" />
+						<b:inputText id="zip" maxlength="5" value="#{profileBean.chgZip}"    
+							large-screen="full-width"
+					    	medium-screen="full-width"
+					    	small-screen="full-width"
+					    	tiny-screen="full-width"/>
+					</b:panelGrid>
+					<b:panelGrid colSpans="2,2,2,2,4" id="panelgrid">
+						<h:outputText value=" " />
+						<h:outputText value=" " />
+						<h:outputText value=" " />
+						<h:outputText value=" " />
+						<b:commandButton value="Update Account" id="CreateAccount"
+							actionListener="#{profileBean.updatePersonInfo()}" look="success"
+					        large-screen="full-width"
+					    	medium-screen="full-width"
+					    	small-screen="full-width"
+					    	tiny-screen="full-width">
+					       <f:ajax execute="@form" render="@form" />
+					    </b:commandButton>
+					</b:panelGrid>
+				</b:panel>
+				<!-- <p:spacer width="10" height="20" /> -->
+				<b:panel id="panel2" collapsible="false" look="primary">
+					<f:facet name="heading">
+						Family Registrations
+					</f:facet>
+					<b:dataTable 
+						id="familymembers" 
+						var="familymember"
+						value="#{profileBean.getFamilyMembers()}" 
+						editable="false" 
+						select="false"
+						paginated="false" 
+						border="false"
+						searching="false"
+						>
+						<b:dataTableColumn >
+				            <f:facet name="header">
+						        Name
+						    </f:facet>
+						    <h:outputText style="font-size:10pt;" value="#{familymember.getsFirstName()} #{familymember.getsLastName()}" />
+				        </b:dataTableColumn> 
+						<b:dataTableColumn >
+				            <f:facet name="header">
+						        Relation
+						    </f:facet>
+						    <h:outputText style="font-size:10pt;" value="#{familymember.getRelationship()}" />
+				        </b:dataTableColumn> 
+						<!-- <b:dataTableColumn >
+				            <f:facet name="header">
+						        DOB.
+						    </f:facet>
+						    <h:outputText style="font-size:10pt;" value="#{familymember.getDob()}" />
+				        </b:dataTableColumn> --> 
+						<b:dataTableColumn >
+				            <f:facet name="header">
+						        CMPs
+						    </f:facet>
+						    <h:outputText style="font-size:10pt;" value="#{familymember.getMembertypes()}" />
+				        </b:dataTableColumn> 
+						<b:dataTableColumn >
+				            <f:facet name="header">
+						        <h:outputText style="font-size:10pt;" value="#{profileBean.getCurrentUSAHockeySeason()}" />
+						    </f:facet>
+						    <h:outputText style="font-size:12pt;font-family:monospace;!important" value="#{familymember.getUsaHockeyNumber()}" />
+				        </b:dataTableColumn> 
+						<b:dataTableColumn >
+				            <f:facet name="header">
+						        <h:outputText style="font-size:10pt;" value="#{profileBean.getCurrentSCAHAHockeySeason()}" />
+						    </f:facet>
+						    <h:outputText style="font-size:12pt;font-family:monospace;!important" value="#{familymember.getScahaHockeyNumber()}" />
+				        </b:dataTableColumn> 
+					</b:dataTable>	
+				</b:panel>
+			</b:panelGrid>
+			</b:form>
+		</b:column>
+	</b:row>
+</b:container>
+ <!-- 
+ <p:tabMenu activeIndex="0">  
+    <p:menuitem value="Scaha Membership" url="membermanagement.xhtml" />  
+    <p:menuitem value="Change Password" url="changepassword.xhtml"/>  
+</p:tabMenu> -->  
+</ui:define>
+</ui:composition>
+</h:body>
+</f:view>
+</html>

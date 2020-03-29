@@ -26,13 +26,9 @@ import com.gbli.common.SendMailSSL;
 import com.gbli.common.Utils;
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
-import com.scaha.objects.CalendarItem;
 import com.scaha.objects.MailableObject;
 import com.scaha.objects.Team;
 import com.scaha.objects.TeamDataModel;
-import com.scaha.objects.TempGameDataModel;
-
-//import com.gbli.common.SendMailSSL;
 
 
 public class coachloiBean implements Serializable, MailableObject {

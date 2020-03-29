@@ -44,8 +44,6 @@ import com.scaha.objects.Scoring;
 import com.scaha.objects.ScoringList;
 import com.scaha.objects.Sog;
 import com.scaha.objects.SogList;
-import com.scaha.objects.TeamList;
-
 import net.bootsfaces.utils.FacesMessages;
 
 @ManagedBean

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/templates/mobilelayout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+     xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+<ui:define name="content">
+<h:body>
+<h:form>
+<h:outputText value="Login" style="font-size: 18px; font-weight: bold;"/>
+<p:separator />
+<table border="0" cellpadding="5" width="100%">
+		<tr>
+			<td>
+				
+				Username: <h:inputText style="width:175px;font-size: 10px;" value="#{profileBean.name}" tabindex="1"/>
+					<br></br>
+					
+				Password: <h:inputSecret style="width:125px;font-size: 10px;"
+						value="#{profileBean.password}" tabindex="2"></h:inputSecret>
+					<p:separator />
+					<br></br><p:commandButton id="login" value="login"
+						actionListener="#{profileBean.loginformobile()}" ajax="false" tabindex="3" />
+					<br />
+		
+			</td>
+		</tr>
+	</table>
+</h:form>
+</h:body>
+</ui:define>
+</ui:composition>

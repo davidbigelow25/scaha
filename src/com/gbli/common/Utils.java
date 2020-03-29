@@ -36,10 +36,7 @@ import com.scaha.objects.ScahaPlayer;
 import com.scaha.objects.UsaHockeyRegistration;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import org.krysalis.barcode4j.impl.code128.Code128Bean;
+
 import org.krysalis.barcode4j.impl.code39.Code39Bean;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
 import org.krysalis.barcode4j.tools.UnitConv;
@@ -1231,7 +1228,7 @@ public class Utils {
           //Signal end of generation
           canvas.finish();
         
-          System.out.println("Bar Code is generated successfully…");
+          System.out.println("Bar Code is generated successfully");
           
           bout = out.toByteArray();
           

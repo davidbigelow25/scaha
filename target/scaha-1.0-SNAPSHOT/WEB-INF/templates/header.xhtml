@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://bootsfaces.net/ui">
+<h:body>
+<b:container>
+	<b:row >
+        <b:column hidden="sm,xs" span="1">
+         		<h:outputText value=" "/>	
+        </b:column>
+		<!-- <b:column hidden="sm,xs" span="2">
+          		<b:image width="180px" height="102px"
+			value="../scaha-bootfaces/images/pages/scaha_logo.png" />
+        </b:column> -->
+		<b:column hidden="sm,xs" span="2">
+          		<b:image width="180px" height="102px"
+			value="../scaha/images/pages/scaha_logo.png" />
+        </b:column>
+		
+		
+		<b:column hidden="sm,xs" span="1">
+         		<h:outputText value=" "/>	
+        </b:column>
+		<b:column hidden="sm,xs" span="7">
+				<!-- <b:image width="595px" height="50px" value="../scaha-bootfaces/images/pages/scaha_banner_logo.png" /> -->
+				<b:image width="700px" height="59px" value="../scaha/images/pages/scaha_banner_logo.png" /> 
+				<br/>
+				<h:outputText pull="right" style="font-family: 'Trebuchet MS', Verdana; color: #555555; text-align: right; width: 850px; font-weight: normal; font-size: 10pt;" 
+           		value="Current Season:
+					#{scahaBean.getScahaSeasonList().getCurrentSeason().getDescription()}"/>
+        </b:column>
+    </b:row>
+    <b:row >
+    	<p:spacer width="10px" height="10px"/>
+    </b:row>
+ </b:container>
+	
+</h:body>
+</html>

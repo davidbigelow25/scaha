@@ -1,0 +1,410 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui" 
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+     xmlns:b="http://bootsfaces.net/ui"
+>
+<f:view contentType="text/html">
+<h:head>
+	 <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+     </f:facet>
+	<!-- <f:metadata>
+		<f:event type="preRenderView" listener="#{profileBean.verifySU()}" />
+	</f:metadata> -->
+</h:head>
+<h:body >	
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+<ui:define name="content">
+<b:container>
+<b:form id="form">
+	<script>
+		function printscoresheet(url){
+			window.open(url);
+		}
+		
+		function printmitescoresheet(gameid){
+			window.open("printscoresheetformites.xhtml?id=" + gameid);
+		}
+	
+	</script>
+	<p:notificationBar position="top" effect="slide" widgetVar="bar" styleClass="top">  
+	   	<h:outputText value="SCAHA" style="color:#FFCC00;font-size:36px;" />  
+	</p:notificationBar>
+	
+	<!-- 1st row is for error messages or alerts or warnings -->
+	<b:row>
+		<b:column span="12">
+			
+			<b:messages id="messages" showDetail="true" autoUpdate="true" closable="false" />
+			
+		</b:column>
+	</b:row>
+	<b:row>
+		<b:column span="12">
+			<b:panelGrid colSpans="1,4,3,2,2," id="panelgrid" rendered="#{!managerBean.displaymultiple}">
+					<p:graphicImage id="logoimage1" value="#{clubBean.getClubLogoByParmId()}"  width="40" height="40" >
+	            		<f:param name="target" value="#{managerBean.getIdclub()}" />
+			 		</p:graphicImage> 
+					<h:outputText style="font-weight: bold;font-size: 18px;text-align: left;" value="#{managerBean.teamname}- Manager Portal" />
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+				</b:panelGrid>
+				<b:panelGrid colSpans="1,3,3,2,2,1" id="panelgridmultiple" rendered="#{managerBean.displaymultiple}" >
+					<p:graphicImage id="logoimage2" value="#{clubBean.getClubLogoByParmId()}"  width="60" height="60" >
+	            		<f:param name="target" value="#{managerBean.getIdclub()}" />
+			 		</p:graphicImage> 
+					<b:selectOneMenu value="#{managerBean.teamid}" onchange="ajax:managerBean.loadForSelectedTeam()" update="@form">
+				    	<f:selectItems value="#{managerBean.getManagerteams()}" var="team" itemLabel="#{team.getTeamname()}" itemValue="#{team.getIdteam()}"/>
+				    	<!-- <p:ajax process="@this" listener="#{managerBean.loadForSelectedTeam()}" event="change"   /> -->
+				    </b:selectOneMenu>
+				    <h:outputText value=" " />
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+				</b:panelGrid>
+			
+				<br></br>
+		</b:column>
+	</b:row>
+	<!-- 2nd row is 3 columns, column 1 is scaha games, column 2 is tournament and exhibition games, column 3 is penalty count and jersey numbers-->
+	<b:row>
+		<b:column span="9">
+			<b:panel id="panelteams" collapsible="false" look="primary" 
+				large-screen="full-width"
+		    	medium-screen="half"
+		    	small-screen="one-third"
+		    	tiny-screen="one-third"
+			>
+				<f:facet name="heading">
+					<h:outputText value="#{profileBean.getCurrentSCAHAHockeySeason().toUpperCase()} SCAHA GAMES"/> 
+		        </f:facet> 
+				<b:dataTable 
+					id="scahagamesnew" 
+					var="TempGame"
+					value="#{managerBean.getTempGamedatamodel()}" 
+					editable="true" 
+					select="true"
+					selection="#{managerBean.selectedgame}" 
+					selectionMode="single" 
+					paginated="true" 
+					border="true"
+					searching="false"
+					>
+			   		<b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Date
+					    </f:facet>
+			            <h:outputText value="#{TempGame.getDate()}" />
+			        </b:dataTableColumn>
+			        <b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Visiting Team
+					    </f:facet>
+			            <h:outputText value="#{TempGame.getVisitor()}" />
+			        </b:dataTableColumn>
+			        <b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Home Team
+					    </f:facet>
+					    <h:outputText value="#{TempGame.getHome()}" />
+			        </b:dataTableColumn>
+			        <b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Time
+					    </f:facet>
+					    <h:outputText value="#{TempGame.getTime()}" />
+			        </b:dataTableColumn>
+			        <b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Location
+					    </f:facet>
+					    <h:outputText value="#{TempGame.getLocation()}" />
+			        </b:dataTableColumn>
+			        <b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Edit
+					    </f:facet>
+					    <b:commandButton iconAwesome="edit"
+					                       action="#{managerBean.editLiveGame(TempGame)}" look="success" rendered="#{TempGame.getTeamsstatsstatus()}">
+					       <f:ajax execute="@this" render="@form" update=":form1:messages1,:form1:teamlist"/>
+					    </b:commandButton>
+					    <p:spacer width="5"  />
+					    <b:commandButton iconAwesome="user"
+					                       action="#{managerBean.setCoachesforGame(TempGame,managerBean.teamid)}" look="info" >
+					    </b:commandButton>
+					    <!-- <b:commandButton iconAwesome="user"
+					                       action="#{managerBean.setCoachesforGame(TempGame,managerBean.teamid)}" look="info" rendered="#{not TempGame.homecoachflag and TempGame.printeligibleflag}">
+					    </b:commandButton> -->
+					    <p:spacer width="5"  />
+					    <b:commandButton iconAwesome="print"
+					                       action="#{managerBean.setCoachesforGamePrint(TempGame.printurl)}" look="info" rendered="#{not TempGame.is8u and TempGame.coachcountflag and TempGame.printeligibleflag}">
+					       <!-- <f:ajax execute="@this" render="@form" update=":form1:messages1,:form1:teamlist"/> -->
+					    </b:commandButton>
+					    <b:commandButton iconAwesome="print"
+					                       onclick="javascript: printscoresheet('#{TempGame.printurl}')"  look="info" rendered="#{not TempGame.is8u and not TempGame.coachcountflag and TempGame.printeligibleflag}">
+					       <!-- <f:ajax execute="@this" render="@form" update=":form1:messages1,:form1:teamlist"/> -->
+					    </b:commandButton>
+					    
+					    <b:commandButton iconAwesome="print"
+					                       onclick="javascript: printmitescoresheet('#{TempGame.getIdgame()}')" look="info" rendered="#{TempGame.is8u}">
+					       <!-- <f:ajax execute="@this" render="@form" update=":form1:messages1,:form1:teamlist"/> -->
+					    </b:commandButton>
+					    <p:spacer width="5"  />
+					    <b:commandButton  iconAwesome="upload"
+					                       action="#{managerBean.uploadSCAHAScoresheet(TempGame)}" look="success">
+					       <f:ajax execute="@this" render="@form" update=":form1:messages1,:form1:teamlist"/>
+					    </b:commandButton>
+			        </b:dataTableColumn> 
+				</b:dataTable>
+			</b:panel>
+			<!--  here goes tournament and exhibition games -->
+			<b:panel id ="tourneypanels" collapsible="false" look="primary" 
+				large-screen="full-width"
+		    	medium-screen="half"
+		    	small-screen="one-third"
+		    	tiny-screen="one-third"
+			>
+				<f:facet name="heading" style="margin-bottom: 0;margin-top: 0;">
+					<h:outputText value="#{profileBean.getCurrentSCAHAHockeySeason().toUpperCase()} TOURNAMENTS PLAYING IN"/>
+				</f:facet> 
+				<b:commandButton value="Add Tournament" iconAwesome="plus" 
+		           action="#{managerBean.navigatetoaddtournament()}" look="success" style="float: right;">
+			    </b:commandButton>
+				<b:dataTable 
+					id="tournamentsnew" 
+					var="tournament"
+					value="#{managerBean.getTournamentdatamodel()}" 
+					editable="true" 
+					select="true"
+					selection="#{managerBean.selectedtournament}" 
+					selectionMode="single" 
+					paginated="true" 
+					border="true"
+					searching="false"
+					>
+					<b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Tournament Name
+					    </f:facet>
+			            <h:outputText value="#{tournament.getTournamentname()}" />
+			        </b:dataTableColumn>
+			        <b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Dates
+					    </f:facet>
+			            <h:outputText value="#{tournament.getDates()}" />
+			        </b:dataTableColumn>
+			        <b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Location
+					    </f:facet>
+					    <h:outputText value="#{tournament.getContact()}" />
+			        </b:dataTableColumn>
+			        <b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Status
+					    </f:facet>
+					    <h:outputText value="#{tournament.getStatus()}" />
+			        </b:dataTableColumn>
+			        <b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Edit
+					    </f:facet>
+					    <b:commandButton iconAwesome="edit"
+					                       rendered="#{tournament.rendered}" action="#{managerBean.editTournamentDetail(tournament)}" look="info">
+					       <!-- <f:ajax execute="@this" render="@form" update=":form1:messages1,:form1:teamlist"/> -->
+					    </b:commandButton>
+					    <p:spacer width="5"  />
+					    <b:commandButton  iconAwesome="trash"
+					                       rendered="#{tournament.rendered}" action="#{managerBean.deleteTournament(tournament)}" look="danger">
+					       <!-- <f:ajax execute="@this" render="@form" update=":form1:messages1,:form1:teamlist"/> -->
+					    </b:commandButton>
+			        </b:dataTableColumn> 
+				</b:dataTable>
+			</b:panel>
+			<!-- exhibition -->
+			<b:panel id ="gamespanels" collapsible="false" look="primary" 
+				large-screen="full-width"
+		    	medium-screen="half"
+		    	small-screen="one-third"
+		    	tiny-screen="one-third"
+			>
+				<f:facet name="heading">
+					<h:outputText value="#{profileBean.getCurrentSCAHAHockeySeason().toUpperCase()} TOURNAMENT/EXHIBITION GAMES"/> 
+		        </f:facet> 
+		        <b:commandButton value="Add Tournament/Exhibition Game" iconAwesome="plus"
+		           action="#{managerBean.navigatetoaddgame()}" look="success" style="float: right;">
+			    </b:commandButton>
+				
+				<b:dataTable 
+					id="tournamentgamesnew" 
+					var="tournamentgame"
+					value="#{managerBean.getTournamentgamedatamodel()}" 
+					editable="true" 
+					select="true"
+					selection="#{managerBean.selectedtournament}" 
+					selectionMode="single" 
+					paginated="true" 
+					border="true"
+					searching="false"
+					>
+			   		<b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Game Type
+					    </f:facet>
+			            <h:outputText value="#{tournamentgame.getGametype()}" />
+			        </b:dataTableColumn>
+			        <b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Date
+					    </f:facet>
+			            <h:outputText value="#{tournamentgame.getDate()}" />
+			        </b:dataTableColumn>
+			        <b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Time
+					    </f:facet>
+					    <h:outputText value="#{tournamentgame.getTime()}" />
+			        </b:dataTableColumn>
+			        <b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Opponent
+					    </f:facet>
+					    <h:outputText value="#{tournamentgame.getOpponent()}" />
+			        </b:dataTableColumn>
+			        <b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Location
+					    </f:facet>
+					    <h:outputText value="#{tournamentgame.getLocation()}" />
+			        </b:dataTableColumn>
+			        <b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Edit
+					    </f:facet>
+					    <b:commandButton iconAwesome="edit"
+					                       rendered="#{tournamentgame.rendered}" action="#{managerBean.editGameDetail(tournamentgame)}" look="info">
+					       <!-- <f:ajax execute="@this" render="@form" update=":form1:messages1,:form1:teamlist"/> -->
+					    </b:commandButton>
+					    <p:spacer width="5"  />
+					    <b:commandButton iconAwesome="file"
+					                       action="#{managerBean.uploadTournamentScoresheet(tournamentgame)}" look="info">
+					       <!-- <f:ajax execute="@this" render="@form" update=":form1:messages1,:form1:teamlist"/> -->
+					    </b:commandButton>
+					    <p:spacer width="5"  />
+					    <b:commandButton iconAwesome="trash"
+					                       rendered="#{tournamentgame.rendered}" action="#{managerBean.deleteTournamentGame(tournamentgame)}" look="danger">
+					       <!-- <f:ajax execute="@this" render="@form" update=":form1:messages1,:form1:teamlist"/> -->
+					    </b:commandButton>
+			        </b:dataTableColumn> 
+				</b:dataTable>
+			</b:panel>
+		</b:column>
+		<!--  here goes penalty counts and jersey numbers -->
+		<b:column span="3">
+			
+			<b:panel id ="pimpanelnew" collapsible="false" look="primary" 
+				large-screen="full-width"
+		    	medium-screen="half"
+		    	small-screen="one-third"
+		    	tiny-screen="one-third"
+			>
+				<f:facet name="heading">
+					<h:outputText value="Current Pim Counts"/> 
+		        </f:facet> 
+		        Accumulated <b><h:outputText value="#{managerBean.getCurrentpimcount()}" /></b> penalty minutes towards the maximum <h:outputText value="#{managerBean.getMaxpimcount()}" /> penalty minutes allowed.
+			</b:panel>
+			<b:panel id ="rosternew" collapsible="false" look="primary" 
+				large-screen="full-width"
+		    	medium-screen="half"
+		    	small-screen="one-third"
+		    	tiny-screen="one-third"
+			>
+				<f:facet name="heading">
+					<h:outputText value="Manage Jersey Numbers"/> 
+		        </f:facet>
+		        <b:dataTable 
+					id="playersearchresultnew" 
+					var="rosteredit"
+					value="#{managerBean.getRostereditdatamodel()}" 
+					paginated="false" 
+					border="true"
+					searching="false"
+					>
+					<b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        #
+					    </f:facet>
+			            <b:inputText value="#{rosteredit.jerseynumber}" 
+			            	style="width:40px;" >
+			            	<f:ajax event="change" listener="#{rosteredit.setJerseynumber(rosteredit.jerseynumber)}"/>
+			            	<f:param name="blockui.disabled" value="true"/>
+			            </b:inputText>
+			        </b:dataTableColumn>
+			        <b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Last Name
+					    </f:facet>
+					    <h:outputText value="#{rosteredit.getLastname()}" />
+			        </b:dataTableColumn>
+			        <b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        First Name
+					    </f:facet>
+			            <h:outputText value="#{rosteredit.getFirstname()}" />
+			        </b:dataTableColumn>
+			    </b:dataTable>
+			    <b:dataTable 
+					id="coachesresultnew" 
+					var="rosteredit"
+					value="#{managerBean.getRostercoachdatamodel()}" 
+					paginated="false" 
+					border="true"
+					searching="false"
+					>
+			   		<b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        #
+					    </f:facet>
+			            <h:outputText value="#{rosteredit.jerseynumber}" />
+			        </b:dataTableColumn>
+			        <b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Last Name
+					    </f:facet>
+					    <h:outputText value="#{rosteredit.getLastname()}" />
+			        </b:dataTableColumn>
+			        <b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        First Name
+					    </f:facet>
+			            <h:outputText value="#{rosteredit.getFirstname()}" />
+			        </b:dataTableColumn>
+			    </b:dataTable>
+			</b:panel>
+		</b:column>
+	</b:row>
+	<b:row >
+		
+	</b:row>
+	<b:row>
+		<b:column span="2">
+			
+		</b:column>
+	</b:row>
+</b:form>	
+</b:container>
+ 
+
+</ui:define>
+</ui:composition>
+</h:body>
+</f:view>
+</html>

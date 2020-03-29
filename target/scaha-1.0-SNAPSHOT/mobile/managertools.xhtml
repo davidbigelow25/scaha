@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/templates/mobilelayout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+     xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+<ui:define name="content">
+<h:body>
+<h:form>
+<h:outputText value="Manager Tools" style="font-size: 18px; font-weight: bold;"/>
+<table border="0" width="100%">
+		<tr>
+			<td>
+				<p:panel >
+					<div class="NewsText"><h:outputText value="#{managertoolBean.getBody()}" escape="false" /></div>
+				</p:panel>
+		
+			</td>
+		</tr>
+	</table>
+</h:form>
+</h:body>
+</ui:define>
+</ui:composition>

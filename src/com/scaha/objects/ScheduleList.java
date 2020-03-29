@@ -14,7 +14,6 @@ import org.primefaces.model.SelectableDataModel;
 
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
-import com.mysql.jdbc.CallableStatement;
 
 public class ScheduleList extends ListDataModel<Schedule> implements Serializable, SelectableDataModel<Schedule> {
 	

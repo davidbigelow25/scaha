@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/templates/mobilelayout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+     xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+<ui:define name="content">
+<h:body>
+<h:form>
+<h:outputText value="Club Openings" style="font-size: 18px; font-weight: bold;"/>
+<table border="0" width="100%">
+		<tr>
+			<td>
+				<p:dataTable id="listofclubs" widgetVar="clubsTable" var="club" value="#{scahaBean.getScahaClubList()}" >
+		  			<p:column >
+		            	<f:facet name="header">
+		            		<h:outputText style="font-size: 12px;" value="Division" />
+		            	</f:facet>
+		            </p:column>
+		            <p:column >
+		            	<f:facet name="header">
+		            		<h:outputText style="font-size: 12px;" value="Skill Level" />
+		            	</f:facet>
+		            </p:column>
+		            <p:column >
+		            	<f:facet name="header">
+		            		<h:outputText style="font-size: 12px;" value="Rink Play Out Of" />
+		            	</f:facet>
+		            </p:column>
+		            <p:column >
+		            	<f:facet name="header">
+		            		<h:outputText style="font-size: 12px;" value="# of Openings" />
+		            	</f:facet>
+		            </p:column>
+		            <p:column >
+		            	<f:facet name="header">
+		            		<h:outputText style="font-size: 12px;" value="Contact Name" />
+		            	</f:facet>
+		            </p:column>
+		            <p:column >
+		            	<f:facet name="header">
+		            		<h:outputText style="font-size: 12px;" value="Contact Email" />
+		            	</f:facet>
+		            </p:column>
+		            <p:subTable id="openings" var="peep" value="#{club.getOpeninglist()}" tableStyle="width:auto">
+			            <f:facet name="header">
+			            	<div style="float:left;vertical-align:middle;width:75px;font-size: 12px;">
+			            	<p:graphicImage id="logoimage1" value="#{clubBean.getClubLogoByParmId()}"  width="30" height="30" >
+			            		<f:param id = "target" name="target" value="#{club.getClubID()}" />
+					 		</p:graphicImage> 
+							</div>
+			            	<div style=	"float:left;margin-top:15px;margin-left:10px;vertical-align:middle;width:300px;">
+			            		<h:outputText style="font-size: 12px;" value=" #{club.getClubname()}" />
+			            	</div>
+			            	<!-- <div style=	"float:right;margin-top:5px;margin-left:10px;vertical-align:middle;">
+			            		<p:commandButton id="lnk" update=":form:update" action="#{clubBean.setClubViaParm()}" icon="ui-icon-print" oncomplete="PF('tryoutdlg').show()" >   
+			            		 	<f:setPropertyActionListener target="#{clubBean.clubid}" value="#{club.getClubID()}" /> 
+								</p:commandButton>
+							 	<p:tooltip for="lnk" value="Print The Tryout Information for the #{club.getClubname()}" showEvent="focus" hideEvent="blur"/>  
+			            	</div>
+			            	<div style="float:right;margin-top:15px;margin-left:10px;text-align:right;vertical-align:middle;font-size: 11px;">
+			            	  (<i><h:outputLink value="#{club.getWebSite()}">#{club.getWebSite()}</h:outputLink></i>)
+		   		       		</div>-->
+		        		</f:facet>
+		 	            <p:column style="font-size: 12px;">
+		    	            <p:spacer width="10px" />
+		    	        </p:column >
+		 	            <p:column style="font-size: 12px;" headerText="Division">
+		    	            #{peep.getDivision()}
+		   	            </p:column >
+			            <p:column style="font-size: 12px;" headerText="Skill Levle">
+		    	            #{peep.getSkilllevel()}
+		        	    </p:column>
+			            <p:column style="font-size: 12px;" headerText="Rink Play out Of">
+		    	            #{peep.getRink()}
+		        	    </p:column>
+			            <p:column headerText="# of Openings">
+							#{peep.getOpeningcount()}
+		        	    </p:column>
+		        	    <p:column headerText="Contact Name">
+							#{peep.getContactname()}
+						</p:column>
+		        	    <p:column headerText="Contact Email">
+							#{peep.getContactemail()}
+		        	    </p:column>
+		 			</p:subTable>
+		   		</p:dataTable>
+				
+		
+			</td>
+		</tr>
+	</table>
+</h:form>
+</h:body>
+</ui:define>
+</ui:composition>

@@ -340,7 +340,7 @@ public class clubreviewtournamentBean implements Serializable, MailableObject {
 			db.free();
 		}
 		
-		getTournament();
+	//	TODO: Error getTournament();
 	}
 	
 	public void declineTournament(Tournament tournament){
@@ -400,7 +400,7 @@ public class clubreviewtournamentBean implements Serializable, MailableObject {
 			db.free();
 		}
 		
-		getTournament();
+		// TODO: getTournament();
 	}
 	
 	

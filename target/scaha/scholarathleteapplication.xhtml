@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
+
+	<!-- 
+	
+	This view is designed to start the scholar athlete application.   
+	 -->  
+
+
+<f:view contentType="text/html">
+    
+ <h:head>
+	 <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+     </f:facet>
+ 	<f:metadata>
+		<f:event type="preRenderView" listener="#{profileBean.verifyUserLogin()}" />
+	</f:metadata>
+
+</h:head>	    
+
+<h:body>
+
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+<ui:define name="content">
+<div id="page-div">
+ <p/>
+<h:form id="form">
+<p:messages id = "messages" showDetail="true"/>
+
+<div class="NewsTitle">Start Scholar Athlete Application - #{profileBean.getProfile().getPerson().getFam().getFamilyName()} </div>
+ 	<p/>
+	<p:fieldset id="fs1" style="font-size:10pt;" toggleable="false" toggleSpeed="500">  
+ 		To start the scholar application for your child select the Upload Report Card option for the child below.
+    </p:fieldset>  
+	<p/>
+   	<p:fieldset id="fs2" toggleable="false" toggleSpeed="500"> 
+   	 
+   	<p:dataTable 
+		id="familymembers" 
+		var="familymember" 
+		value="#{profileBean.getFamilyMembers()}" 
+		selectionMode = "single" 
+		selection = "#{familymemberBean.currentFM}"
+		>  
+        <p:column style="font-size:10pt;width:150px;" headerText="Name"><h:outputText style="font-size:10pt;" value="#{familymember.getsFirstName()} #{familymember.getsLastName()}" /></p:column>  
+		<p:column style="font-size:10pt;width:150px;" headerText="Relationship"><h:outputText style="font-size:10pt;" value="#{familymember.getRelationship()}" /></p:column>		
+		<p:column style="font-size:10pt;width:100px;" headerText="DOB."><h:outputText style="font-size:10pt;" value="#{familymember.getDob()}" /></p:column>  
+  		<p:column style="font-size:10pt;width:100px;" headerText="Status"><h:outputText style="font-size:10pt;" value="#{familymember.getScholarathletestatus()}" /></p:column>
+  		<p:column style="font-size:10pt;width:100px;" headerText="Option"><p:commandButton id="wwuploadreport" value="Upload Report Card" action="#{scholarathleteBean.uploadreportcoard(familymember)}" rendered="#{familymember.getScholarathletedisplay()}"/></p:column>
+  		
+    </p:dataTable>  
+    </p:fieldset>
+ 	<p:spacer width="10" height="20" />
+  	
+
+ </h:form>	
+ </div>	
+</ui:define>
+</ui:composition>
+</h:body>
+</f:view>
+</html>

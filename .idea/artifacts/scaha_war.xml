@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="scaha:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>scaha</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="scaha-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="scaha:war exploded" />
+    </root>
+  </artifact>
+</component>

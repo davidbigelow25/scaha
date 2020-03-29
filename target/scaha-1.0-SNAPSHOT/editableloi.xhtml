@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:b="http://bootsfaces.net/ui">
+
+<f:metadata>
+	<f:event type="preRenderView" listener="#{profileBean.verifyHasRoles('C-REG;C-PRES')}" />
+</f:metadata>
+
+
+<ui:composition template="/WEB-INF/templates/layoutadmin.xhtml">
+	
+<ui:define name="content">
+<b:container>
+	<b:row>
+		<b:column>
+			<b:form id="form">
+			<b:messages id="loicodemessage" showDetail="true" autoUpdate="true" closable="false" />
+				<b:panel id ="panel" collapsible="false" look="primary">
+					<f:facet name="heading">
+						<h:outputText value="SCAHA LETTER OF INTENT AND MEMBERSHIP REGISTRATION #{loiBean.getCurrentyear()}" />
+					</f:facet>
+					<b:panelGrid colSpans="3,3,3,3" id="loimain" style="padding: 5;">
+						<h:outputText style="font-weight: bold;" value="#{loiBean.getCurrentyear()} Club:"/>
+						<b:inputText disabled="true" value="#{loiBean.getClubName()}" 
+							large-screen="full-width"
+	    					medium-screen="full-width"
+	    					small-screen="full-width"
+	    					tiny-screen="full-width"/>
+						<h:outputText style="font-weight: bold;" value="#{loiBean.getCurrentyear()}  Boys Team:"/>
+						<b:selectOneMenu value="#{loiBean.selectedteam}" onchange="ajax:loiBean.checkDOB('M')" update="form,form2"
+							large-screen="full-width"
+	    					medium-screen="full-width"
+	    					small-screen="full-width"
+	    					tiny-screen="full-width"
+							>
+					    	<f:selectItem itemLabel="Select One" itemValue="0"/>
+					    	<f:selectItems value="#{loiBean.getListofTeams('M')}" var="team" itemLabel="#{team.getTeamname()}" itemValue="#{team.getIdteam()}"/>
+					    	<!-- <p:ajax process="@this" listener="#{loiBean.checkDOB('M')}" event="change" update=":form:loicodemessage,form:playeruppanel"  /> -->
+					    </b:selectOneMenu>
+					    <h:outputText style="font-weight: bold; height:10%" value="Player Information:" />
+					    <b:inputText disabled="true" value="#{loiBean.lastname}, #{loiBean.firstname}" 
+					    	large-screen="full-width"
+	    					medium-screen="full-width"
+	    					small-screen="full-width"
+	    					tiny-screen="full-width"/>
+					    <h:outputText style="font-weight: bold;" value="#{loiBean.getCurrentyear()} Girls Team:" rendered="#{loiBean.displaygirlteam}"/>
+					    <b:selectOneMenu value="#{loiBean.selectedgirlsteam}" rendered="#{loiBean.displaygirlteam}" onchange="ajax:loiBean.checkDOB('F')" update="form,form2"
+					    	large-screen="full-width"
+	    					medium-screen="full-width"
+	    					small-screen="full-width"
+	    					tiny-screen="full-width">
+					    	<f:selectItem itemLabel="Select One" itemValue="0"/>
+					    	<f:selectItems value="#{loiBean.getListofTeams('F')}" var="team" itemLabel="#{team.getTeamname()}" itemValue="#{team.getIdteam()}"/>
+					    	<!-- <p:ajax process="@this" listener="#{loiBean.checkDOB('F')}" event="change" update=":form"  /> -->
+					    </b:selectOneMenu>
+					    <h:outputText style="font-weight: bold;" value="Date of Birth:" />
+						<b:inputText disabled="true" value="#{loiBean.dob}" 
+							large-screen="full-width"
+	    					medium-screen="full-width"
+	    					small-screen="full-width"
+	    					tiny-screen="full-width"/>
+						<h:outputText style="font-weight: bold;" value="Citizenship:" />
+						<b:inputText disabled="true" value="#{loiBean.citizenship}" 
+							large-screen="full-width"
+	    					medium-screen="full-width"
+	    					small-screen="full-width"
+	    					tiny-screen="full-width"/>
+						<h:outputText style="font-weight: bold;" value="Gender:" />
+						<b:inputText disabled="true" value="#{loiBean.displaygender}" 
+							large-screen="full-width"
+	    					medium-screen="full-width"
+	    					small-screen="full-width"
+	    					tiny-screen="full-width"/>
+						<h:outputText style="font-weight: bold;" value="Address:" />
+					    <b:inputText id="address" value="#{loiBean.address}" required = "true" requiredMessage="Address cannot be blank."
+					    	large-screen="full-width"
+	    					medium-screen="full-width"
+	    					small-screen="full-width"
+	    					tiny-screen="full-width"/>
+					    <h:outputText style="font-weight: bold;" value="City:" />
+					    <b:inputText id="city" value="#{loiBean.city}" required = "true" requiredMessage="City cannot be blank."
+					    	large-screen="full-width"
+	    					medium-screen="full-width"
+	    					small-screen="full-width"
+	    					tiny-screen="full-width"/>
+					    <h:outputText style="font-weight: bold;" value="State:" />
+					    <b:inputText id="state" style="width:50px;" value="#{loiBean.state}" required = "true" requiredMessage="State cannot be blank."/>
+					    <h:outputText style="font-weight: bold;" value="Zip:" />
+					    <b:inputText id="zip" style="width:90px;" value="#{loiBean.zip}" required = "true" requiredMessage="Zip cannot be blank."/>
+					   	<h:outputText value=" " />
+					   	<h:outputText value=" " />
+					   	<h:outputText style="font-weight: bold;" value="#{loiBean.getPrioryear()} Club:" />
+					   	<h:outputText value="#{loiBean.lastyearclub}" />
+					   	<h:outputText style="font-weight: bold;" value="Team:" />
+					   	<h:outputText value="#{loiBean.lastyearteam}" />
+					</b:panelGrid>
+					<p:spacer width="10" height="10" />
+					<b:dataTable 
+					id="playersearchresult" 
+					var="FamilyRow"
+					value="#{loiBean.getParents()}" 
+					editable="false" 
+					select="false"
+					paginated="false" 
+					border="false"
+					searching="false"
+					>
+						<b:dataTableColumn >
+				            <f:facet name="header">
+						        Parent/Guardian Name
+						    </f:facet>
+						    <h:outputText value="#{FamilyRow.getLastname()}" />, <h:outputText value="#{FamilyRow.getFirstname()}" />
+				        </b:dataTableColumn> 
+						<b:dataTableColumn >
+				            <f:facet name="header">
+						        E-Mail
+						    </f:facet>
+						    <h:outputText value="#{FamilyRow.getEmail()}" />
+				        </b:dataTableColumn>
+				        <b:dataTableColumn >
+				            <f:facet name="header">
+						        Phone
+						    </f:facet>
+						    <h:outputText value="#{FamilyRow.getPhone()}"/>
+				        </b:dataTableColumn> 
+					</b:dataTable>
+				</b:panel>
+			</b:form>
+			<b:form id="form2">
+				<p:spacer width="10" height="10" />
+				<b:panel id ="playeruppanel" rendered="#{loiBean.displayplayerup}" collapsible="false" look="primary">
+				
+					<f:facet name="heading">
+						<h:outputText value="Out of Age Division Consent - Acknowledgement and Release (Player Up)" />
+					</f:facet>
+					<b:panelGrid colSpans="12">
+							In consideration of the above mentioned player to play outside of the player’s respective age group, the undersigned parent(s) or guardian(s) of the above player acknowledges and agrees to the following:
+							<ul>
+								<li>Hockey is a contact sport and the age classifications are intended to ensure that players play with those of similar ability and physical development.</li>
+								<li>That the parent(s) or guardian(s) accept all responsibility of allowing the above named player to skate out of their age division.</li>
+								<li>That the parent(s) or guardians(s) have reviewed the applicable SCAHA and CAHA rules and regulations regarding the subject of this request and agree to abide by those rules and regulations.</li>
+								<li>That the parent(s) or guardian(s) agrees to release from responsibility, the member club, SCAHA, CAHA, USA Hockey and their directors, officers and other officials from any action or injury arising out of the player playing outside of their age division.</li>
+								<li>That the parent(s) or guardian(s) agree to release from responsibility and to defend and indemnify, to the fullest extent allowed by law, the member club, SCAHA, CAHA, USA Hockey and their directors, officers and other officials from any action or injury arising out of the player playing outside of their age division.</li>
+								<li>That the parent(s) or guardian(s) understand once a player is rostered out of their age division they cannot return to their age-appropriate division for the remainder of the season.</li>  
+					    	</ul>
+					</b:panelGrid>
+					<p:spacer width="10" height="5" />
+					<b:panelGrid colSpans="4,2,2,2,2">
+						<h:outputText style="font-weight: bold;" value="Parent/Guardian Signature (enter registration code):"/>
+						<b:inputSecret id="playerupcode" style="width:120px;" value="#{loiBean.playerupcode}"/>
+						<h:outputText value="#{loiBean.currentdate}"/>
+					</b:panelGrid>
+				</b:panel>
+				<p:spacer width="10" height="10" />
+				<b:panel id ="panel5" collapsible="false" look="primary">	
+					<f:facet name="heading">
+						<h:outputText value="Notices and Agreements" />
+					</f:facet>
+					
+					<b:panelGrid colSpans="12">
+							This Letter of Intent expresses the above named player’s commitment to the named club for the above season. This commitment begins on the date signed by the player and continues until April 30, 2018. Any contested Letter of Intent shall be subject to the SCAHA Appeal Hearing process as outlined in the SCAHA Guidebook. Once this letter is signed, players may not tryout or participate with any other team/club in SCAHA for the subject season without a permanent or temporary release.
+							<br></br>The signatures below signify that the player and parents understand and agree to the following as conditions of membership in SCAHA and the member club:
+							<ul>
+								<li>I have access to, and agree to be bound by the SCAHA Guidebook that contains the leagues bylaws, rules and regulations. The Guidebook is available at www.scaha.com. If I don’t have Internet access, the club will provide a printed copy of the Guidebook upon request.</li>
+								<li>All participants are subject to the USA Hockey Playing Rules, Bylaws and Codes of Conduct, the SCAHA Guidebook and the CAHA Guidebook.</li>
+								<li>Players, parents, spectators, coaches and all team officials will conduct themselves in a manner conducive to good sportsmanship by refraining from abusive, obscene or threatening language or gestures, physical violence, and any behavior that would be considered unsportsmanlike or would disrespect the game, its players, coaches, or officials.</li>
+								<li>Resolution of disputes shall be in accordance with and subject to the applicable SCAHA, CAHA and USA Hockey bylaws, rules and regulations.</li>
+								<li>Any deposit paid and submitted with this Letter of Intent is non-refundable.</li>
+								<li>Any failure to comply with these conditions could subject the undersigned to immediate suspension from SCAHA subject to a hearing.</li>
+							</ul>
+					</b:panelGrid>
+					<p:spacer width="10" height="5" />
+					
+					<b:panelGrid colSpans="4,2,2,2,2" rendered="#{loiBean.is18safesport}">
+						<h:outputText value="Player will be 18, has safesport been completed?:"/>
+						<b:selectOneMenu value="#{loiBean.safesportfor18}" 
+							large-screen="full-width"
+	    					medium-screen="full-width"
+	    					small-screen="full-width"
+	    					tiny-screen="full-width"
+							>
+					    	<f:selectItem itemLabel="No" itemValue="N"/>
+					    	<f:selectItem itemLabel="Yes" itemValue="Y"/>
+					    </b:selectOneMenu>
+					    <h:outputText value=" "/>
+					    <h:outputText value=" "/>
+					    <h:outputText value=" "/>
+					</b:panelGrid>	
+					<b:panelGrid colSpans="4,2,2,2,2">
+						<h:outputText style="font-weight: bold;" value="Parent/Guardian Signature (enter registration code):"/>
+						<b:inputSecret id="loicode" style="width:120px;" value="#{loiBean.loicode}" required = "true" requiredMessage="Signature code for LOI was not provided."/>
+						<h:outputText value="#{loiBean.currentdate}"/>
+						<b:commandButton value="Complete LOI" id="completeLoi" action="#{loiBean.completeLOI()}" ajax="false" look="success"
+							large-screen="full-width"
+	    					medium-screen="full-width"
+	    					small-screen="full-width"
+	    					tiny-screen="full-width"
+						/>
+						<b:button value="Return to Search" id="close" look="info" ajax="false" href="addplayerstoteam.xhtml"
+							large-screen="full-width"
+	    					medium-screen="full-width"
+	    					small-screen="full-width"
+	    					tiny-screen="full-width"
+						/>
+					</b:panelGrid>
+					
+				</b:panel>
+				<p:spacer width="10" height="10" />
+				
+			</b:form>		
+		</b:column>
+	</b:row>
+</b:container>
+</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui" 
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
+<f:view contentType="text/html">
+
+<h:head>
+	 <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+     </f:facet>
+</h:head>
+<h:body >	
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+<ui:define name="content">
+	<p:separator />
+	<p:panel >
+		
+		<h:form id="form1">	
+		<div align="center" width="100%"><p:commandButton id="closetransfers" value="Back to Scoreboard" ajax="false" actionListener="#{boxscoresheetBean.closePage()}"/></div>
+		<p:layout id="mylayout" style="height:1050px;">
+			<p:layoutUnit height="200px" id="header" position="north" >
+			<f:facet name="header">
+				SCAHA GAMESHEET INFORMATION for  
+			</f:facet>
+			<p:panel id="gameinfo" styleClass="panelNoBorder">
+				<p:panelGrid columns="8">
+			    <p:outputLabel style="font-size:10pt" for="lgtype" value="Game Type:" /><h:outputText id = "lgtype" value= "#{boxscoresheetBean.getTypetag()}, " />
+			    <p:outputLabel style="font-size:10pt" for="lghteam" value="Home Team:" /><h:outputText id = "lghteam" value= "#{boxscoresheetBean.getHometeam()}" />
+			    <p:outputLabel style="font-size:10pt" for="lgateam" value="Away Team:" /><h:outputText id = "lgateam" value= "#{boxscoresheetBean.getAwayteam()}" />
+			    <p:outputLabel style="font-size:10pt" for="lgstate" value="Game State:" /><h:outputText id = "lgstate" value= "#{boxscoresheetBean.getStatetag()}" />
+			    <p:outputLabel style="font-size:10pt" for="lgstartdate" value="Start Date:" /><h:outputText id = "lgstartdate" value= "#{boxscoresheetBean.getStartdate()}" />
+			    <p:outputLabel style="font-size:10pt" for="lgstarttime" value="Start Time:" /><h:outputText id = "lgstarttime" value= "#{boxscoresheetBean.getStarttime()}" />
+			    <p:outputLabel style="font-size:10pt" for="lgvenue" value="Venue Is:" /><h:outputText id = "lgvenue" value= "#{boxscoresheetBean.getLocation()}" />
+			    <p:outputLabel style="font-size:10pt" for="blank" value="" /><h:outputText id = "blank" value= "" />
+			    </p:panelGrid>
+			</p:panel>
+			</p:layoutUnit>
+	 		<p:layoutUnit id="left" position="west" size="225" resizable="false" closable="false" collapsible="false" header="" >
+				<p:panel id = "homeside">
+				<p:dataTable 
+					id="homeroster" 
+					var="spot" 
+					value="#{boxscoresheetBean.getHomeplayers()}" 
+					 >
+	            	<p:column headerText="#" style="width:25px;">  
+		                <h:outputText value= "#{spot.getJerseynumber()}" />
+		            </p:column>  
+			        <p:column headerText="Name">  
+			        	  <h:outputText value= "#{spot.getLastname()}" />, <h:outputText value= "#{spot.getFirstname()}" />
+			        </p:column>
+				 </p:dataTable>
+				</p:panel>
+			</p:layoutUnit>
+			<p:layoutUnit id="right" position="east" size="225" resizable="false" closable="false" collapsible="false" header="" >
+				<p:panel id = "awayside">
+				<p:dataTable 
+					id="awayroster" 
+					var="spot" 
+					value="#{boxscoresheetBean.getAwayplayers()}" 
+					 >
+	            	<p:column headerText="#" style="width:25px;">  
+		                <h:outputText value= "#{spot.getJerseynumber()}" />
+		            </p:column>  
+			        <p:column headerText="Name">  
+			        	  <h:outputText value= "#{spot.getLastname()}" />, <h:outputText value= "#{spot.getFirstname()}" />
+			        </p:column>
+				 </p:dataTable>
+				</p:panel>
+			</p:layoutUnit>
+			<p:layoutUnit id="center" position="center"  header="Game Information"  >
+				<p:panelGrid id="guts" columns="2" columnClasses="alignTop,alignTop" rowClasses="alignTop,alignTop">
+					<p:panelGrid columns="2">
+						<h:outputText value="#{boxscoresheetBean.getHometeam()}" /> 
+						<h:outputText value="" />
+				 		<p:graphicImage width="50" height="50" id="homelogo" value="#{scahaBean.getClubLogoByParmId()}"  >
+							<f:param name="target" value="#{boxscoresheetBean.getHomeclubid()}" />
+						</p:graphicImage>
+						<h:outputText style="font-size:20pt;" value="#{boxscoresheetBean.getHomescore()}" />
+					</p:panelGrid>
+					<p:panelGrid columns="2">
+						<h:outputText value="#{boxscoresheetBean.getAwayteam()}" />
+						<h:outputText value="" />
+	   			 		<p:graphicImage width="50" height="50" id="vistorlogo" value="#{scahaBean.getClubLogoByParmId()}"  >
+							<f:param name="target" value="#{boxscoresheetBean.getAwayclubid()}" />
+						</p:graphicImage>
+						<h:outputText style="font-size:20pt;" value="#{boxscoresheetBean.getAwayscore()}" /> 
+					</p:panelGrid>
+	    			
+	    			<p:dataTable 
+	    				id="homescoring" 
+	    				var="score" 
+	    				value="#{boxscoresheetBean.getHomesummaryscoring()}"
+	    				rowIndexVar="index"
+	    				>
+	                 <f:facet name="header">
+	                  	<p:row>
+	            			<p:column colspan="7">Home Scoring Detail
+	            			</p:column>
+	       				</p:row>
+	                 </f:facet>
+	            	<p:column headerText="No" style="width:25px;"> 	 <h:outputText value="#{index+1}" />
+			        </p:column>  
+			        <p:column headerText="S/P" style="width:30px;">  <h:outputText value="#{score.getGoaltype()}" />
+			        </p:column>
+			        <p:column headerText="Per" style="width:30px;">   <h:outputText value="#{score.getPeriod()}" />
+			        </p:column>
+			        <p:column headerText="Time" style="width:30px;">   <h:outputText value="#{score.getGoaltime()}" />
+			        </p:column>
+			        <p:column headerText="G" style="width:30px;">    <h:outputText value="#{score.getGoalscorer()}" />
+			        </p:column>
+			        <p:column headerText="A" style="width:30px;">     <h:outputText value="#{score.getAssist1()}" />
+			        </p:column>
+			        <p:column headerText="A" style="width:30px;">     <h:outputText value="#{score.getAssist2()}" />
+			        </p:column>
+				          
+				 </p:dataTable>
+				 
+				 <p:dataTable 
+	    				id="awayscoring" 
+	    				var="score" 
+	    				value="#{boxscoresheetBean.getAwaysummaryscoring()}"
+	    				rowIndexVar="index"
+	    				>
+	                 <f:facet name="header">
+	                  	<p:row>
+	            			<p:column colspan="7">Away Scoring Detail
+	            			</p:column>
+	       				</p:row>
+	                 </f:facet>
+	            	<p:column headerText="No" style="width:25px;"> 	 <h:outputText value="#{index+1}" />
+			        </p:column>  
+			        <p:column headerText="S/P" style="width:30px;">  <h:outputText value="#{score.getGoaltype()}" />
+			        </p:column>
+			        <p:column headerText="Per" style="width:30px;">   <h:outputText value="#{score.getPeriod()}" />
+			        </p:column>
+			        <p:column headerText="Time" style="width:30px;">   <h:outputText value="#{score.getGoaltime()}" />
+			        </p:column>
+			        <p:column headerText="G" style="width:30px;">    <h:outputText value="#{score.getGoalscorer()}" />
+			        </p:column>
+			        <p:column headerText="A" style="width:30px;">     <h:outputText value="#{score.getAssist1()}" />
+			        </p:column>
+			        <p:column headerText="A" style="width:30px;">     <h:outputText value="#{score.getAssist2()}" />
+			        </p:column>
+				        
+			        </p:dataTable>
+			    </p:panelGrid>
+	     			
+				<p:panelGrid id="goalieguts" columns="2" style="width:100%">
+				    <f:facet name="header">
+					 Shots On Goal      					
+					</f:facet>
+					<p:dataTable 
+	    				id="homegoalie" 
+	    				var="sog" 
+	    				value="#{boxscoresheetBean.getGamehomegoaliestats()}"
+	   				>
+	  				 <p:column headerText="No"><h:outputText value="#{sog.getJerseynumber()}" /></p:column>
+	     				<p:column headerText="1st"><h:outputText value="#{sog.getShots1()}" /></p:column>
+	   					<p:column headerText="2nd"><h:outputText value="#{sog.getShots2()}" /></p:column>
+	   					<p:column headerText="3rd"><h:outputText value="#{sog.getShots3()}" /></p:column>
+	   					<p:column headerText="OT"><h:outputText value="#{sog.getShots8()}" /></p:column>
+	   					<p:column headerText="Tot" ><h:outputText value="#{sog.getShots9()}" /></p:column>
+	  				 </p:dataTable>
+	    			<p:dataTable 
+	    				id="awaygoalie" 
+	    				var="sog" 
+	    				value="#{boxscoresheetBean.getGameawaygoaliestats()}"
+	   					 
+	 				>
+	  				   <p:column headerText="No"><h:outputText value="#{sog.getJerseynumber()}" /></p:column>
+	     				<p:column headerText="1st"><h:outputText value="#{sog.getShots1()}" /></p:column>
+	   					<p:column headerText="2nd"><h:outputText value="#{sog.getShots2()}" /></p:column>
+	   					<p:column headerText="3rd"><h:outputText value="#{sog.getShots3()}" /></p:column>
+	   					<p:column headerText="OT"><h:outputText value="#{sog.getShots8()}" /></p:column>
+	   					<p:column headerText="Tot" ><h:outputText value="#{sog.getShots9()}" /></p:column>
+	  				 </p:dataTable>
+	               </p:panelGrid>
+	               <p:panelGrid id="penaltyguts" columns="2" style="width:100%">
+				 	<p:dataTable 
+				 		id="homepenalties" 
+				 		var="pen" 
+	    				value="#{boxscoresheetBean.getGamehomepenalties()}"
+	   					>
+	                 <f:facet name="header">
+	                  	<p:row>
+	            			<p:column colspan="5">PENALTIES - HOME
+	            			</p:column>
+	       				</p:row>
+	                 </f:facet>
+			        <p:column headerText="Per" style="width:30px;">   <h:outputText value="#{pen.getPeriod()}" />
+			        </p:column>
+			 		<p:column headerText="Plyr">    <h:outputText value="#{pen.getPlayername()}" />
+			        </p:column>  
+			        <p:column headerText="Penalty" width="40%">  <h:outputText value="#{pen.getPenaltytype()}" />
+			        </p:column>
+			        <p:column headerText="Min" style="width:30px;">    <h:outputText value="#{pen.getMinutes()}" />
+			        </p:column>
+			        <p:column headerText="Time" style="width:30px;">   <h:outputText value="#{pen.getTimeofpenalty()}" />
+			        </p:column>
+			     
+				 </p:dataTable>
+	    		 <p:dataTable 
+				 		id="awaypenalties" 
+				 		var="pen" 
+	    				value="#{boxscoresheetBean.getGameawaypenalties()}"
+	   					>
+	                 <f:facet name="header">
+	                  	<p:row>
+	            			<p:column colspan="5">PENALTIES - AWAY
+	            			</p:column>
+	       				</p:row>
+	                 </f:facet>
+			        <p:column headerText="Per" style="width:30px;">   <h:outputText value="#{pen.getPeriod()}" />
+			        </p:column>
+			 		<p:column headerText="Plyr">    <h:outputText value="#{pen.getPlayername()}" />
+			        </p:column>  
+			        <p:column headerText="Penalty" width="40%">  <h:outputText value="#{pen.getPenaltytype()}" />
+			        </p:column>
+			        <p:column headerText="Min" style="width:30px;">    <h:outputText value="#{pen.getMinutes()}" />
+			        </p:column>
+			        <p:column headerText="Time" style="width:30px;">   <h:outputText value="#{pen.getTimeofpenalty()}" />
+			        </p:column>
+			     
+				 </p:dataTable>
+	              </p:panelGrid>
+	              
+			</p:layoutUnit>
+		</p:layout>
+		
+		</h:form>
+	</p:panel>
+</ui:define>
+</ui:composition>
+</h:body>
+</f:view>
+</html>

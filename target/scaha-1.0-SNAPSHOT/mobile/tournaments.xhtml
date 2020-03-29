@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/templates/mobilelayout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+     xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+     xmlns:pe="http://primefaces.org/ui/extensions"
+>
+<ui:define name="content">
+<h:body>
+<h:form>
+<h:outputText value="SCAHA Tournaments" style="font-size: 18px; font-weight: bold;"/>
+<table border="0" width="100%">
+		<tr>
+			<td>
+				<pe:masterDetail id="masterDetail" > 
+  	
+			    <pe:masterDetailLevel level="1" levelLabel="Tournaments" showAllBreadcrumbItems="true">  
+			
+			  		<p:dataTable id="listoftournaments" var="tournament" value="#{scahatournamentBean.getTournaments()}" >
+						<p:subTable tableStyle="width:auto">
+				            <f:facet name="header">
+				            	<div style="float:left;vertical-align:middle;width:75px;font-size: 12px;">
+				            	</div>
+				            	<div style=	"float:left;margin-top:15px;margin-left:10px;vertical-align:middle;width:100%;">
+				            	<p:commandLink style="font-size: 12px;" value="#{tournament.getTournamentname()} (#{tournament.getStartdate()} - #{tournament.getEnddate()})">  
+			    	                <pe:selectDetailLevel contextValue="#{tournament}"/>  
+			   		            </p:commandLink>
+			   		            </div>
+			   		            <br></br>
+				            	<div style="float:left;margin-top:15px;margin-left:10px;text-align:left;vertical-align:middle;width:100%;font-size: 11px;">
+				            	  <i><h:outputLink value="#{tournament.getWebsite()}">#{tournament.getWebsite()}</h:outputLink></i>
+			   		       		</div>
+			        		</f:facet>
+			 	           
+						</p:subTable>
+			   		</p:dataTable>
+				</pe:masterDetailLevel>
+				<pe:masterDetailLevel level="2" contextVar="tournament" levelLabel="#{tournament.getTournamentname()} ">
+					#{scahatournamentBean.setTournament(tournament.getIdtournament())}
+					<table width="100%">
+						<tr>
+							<td valign="top" colspan="2">
+								<div style="float:left">
+								<div class="NewsTitle">#{tournament.getTournamentname()}</div>
+								<p:panelGrid id="tournamentlevel" columns="1" style="width: 100%;">  
+						            
+						            <div class="NewsDate">
+						            	#{tournament.getStartdate()} - #{tournament.getEnddate()}<br></br>
+						            	Sanction Number: #{tournament.getSanction()}<br></br>
+						            	<i><a href="#{tournament.getWebsite()}" target="_blank">#{tournament.getWebsite()}</a></i>
+						        	</div> 
+						        </p:panelGrid>
+						        </div>
+			        		</td>
+			        	</tr>
+			        	<tr>
+			    			<td valign="top" colspan="2">
+			    				<div style="float:left">
+								<div class="NewsTitle">Tournament Contact:</div>
+								<p:panelGrid id="tournamentcontact" columns="1" style="width: 100%;" >  
+						            
+						            <div class="NewsDate">
+						            	#{tournament.getContact()}<br></br>
+						            	#{tournament.getPhone()}<br></br>
+						            	<i><a href="mailto:#{tournament.getEmail()}?subject=#{tournament.getTournamentname()}%20Related" target="_blank">#{tournament.getEmail()}</a></i>
+						        	</div> 
+						        </p:panelGrid>
+						        </div>
+							</td>
+			        	</tr>
+			        	<tr>
+					        <td valign="top" colspan="2">
+					        <div class="NewsTitle">Tournament Venues:</div> 
+								<ui:repeat var="venue" value="#{tournament.getVenues()}">
+									#{mapBean.setCurrentvenue(venue)}
+					    	        <div class="NewsDate">
+					               	<p:panelGrid id="venues" columns="2" style="width: 100%;">
+							        	#{venue.getDescription()}<br/>
+						            	#{venue.getAddress()}, #{venue.getCity()} #{venue.getState()}, #{venue.getZipcode()} <br/>
+						            	#{venue.getPhone()} - <i><a href="#{venue.getWebsite()}" target="_blank">#{venue.getWebsite()}</a></i>
+					               		<p:graphicImage id="img" value="/images/marker.png" style="cursor:pointer" title="Location Map" width="30px"/> 
+					 	    			<p class="GeneralGap" />
+						    	    </p:panelGrid>
+							   		</div> 
+					 				<p:overlayPanel id="imgPanel" for="img" showEffect="blind" hideEffect="explode" showEvent="mousedown" hideEvent="mousedown" dismissable="false" showCloseIcon="true">
+					  		    		<p:gmap id="mymap" center="#{venue.gmapparms}" zoom="15" type="HYBRID" style="width:600px;height:400px" model="#{mapBean.getMapModel()}" />
+					       	        </p:overlayPanel> 
+								</ui:repeat>
+					        </td>
+				        </tr>
+		        	</table>
+			        <br></br>
+			        <div style="width:100%;text-align:right;">
+			         <p:commandButton value="Back to Tournaments" icon="ui-icon-arrowthickstop-1-w">  
+			                <pe:selectDetailLevel level="1"/>  
+			         </p:commandButton>  
+			         </div>
+			        <p:separator />
+					<div class="NewsTitle">Available Divisions:</div> 
+					<p/>
+					<p:dataTable  var="tournamentdivision" value="#{tournament.getDivisions()}" >
+			            <p:column headerText="Age Group" style="font-size: 12px;">
+			   	             <div align="center"><h:outputText style="font-size: 11px;" value="#{tournamentdivision.getDivisionname()}"/></div>
+			            </p:column >
+			            <p:column headerText="AAA" style="font-size: 12px;">
+			   	             <h:outputText style="font-size: 12px;" value="" rendered="#{tournamentdivision.getAaa()}">
+			   	             	<div class="icon-container" id="ui-icon-check" align="center"><span class="ui-icon ui-icon-check" title="ui-icon-check">&nbsp;</span>&nbsp;</div>
+			   	             </h:outputText>
+			            </p:column >
+			            <p:column headerText="AA" style="font-size: 12px;">
+			   	             <h:outputText style="font-size: 12px;" value="" rendered="#{tournamentdivision.getAa()}">
+			   	             	<div class="icon-container" id="ui-icon-check" align="center"><span class="ui-icon ui-icon-check" title="ui-icon-check">&nbsp;</span>&nbsp;</div>
+			   	             </h:outputText>
+			            </p:column >
+			            <p:column headerText="A" style="font-size: 12px;">
+			   	             <h:outputText style="font-size: 12px;" value="" rendered="#{tournamentdivision.getA()}">
+			   	             	<div class="icon-container" id="ui-icon-check" align="center"><span class="ui-icon ui-icon-check" title="ui-icon-check">&nbsp;</span>&nbsp;</div>
+			   	             </h:outputText>
+			            </p:column >
+			            <p:column headerText="BB" style="font-size: 12px;">
+			   	             <h:outputText style="font-size: 12px;" value="" rendered="#{tournamentdivision.getBb()}">
+			   	             	<div class="icon-container" id="ui-icon-check" align="center"><span class="ui-icon ui-icon-check" title="ui-icon-check">&nbsp;</span>&nbsp;</div>
+			   	             </h:outputText>
+			            </p:column >
+			            <p:column headerText="B" style="font-size: 12px;">
+			   	             <h:outputText style="font-size: 12px;" value="" rendered="#{tournamentdivision.getB()}">
+			   	             	<div class="icon-container" id="ui-icon-check" align="center"><span class="ui-icon ui-icon-check" title="ui-icon-check">&nbsp;</span>&nbsp;</div>
+			   	             </h:outputText>
+			            </p:column >
+			            <p:column headerText="Crossice" style="font-size: 12px;">
+			   	             <h:outputText style="font-size: 12px;" value="" rendered="#{tournamentdivision.getTrack1()}">
+			   	             	<div class="icon-container" id="ui-icon-check" align="center"><span class="ui-icon ui-icon-check" title="ui-icon-check">&nbsp;</span>&nbsp;</div>
+			   	             </h:outputText>
+			            </p:column >
+			            
+					</p:dataTable>
+			        <p:separator />
+			      </pe:masterDetailLevel>	
+				</pe:masterDetail>
+		
+			</td>
+		</tr>
+	</table>
+</h:form>
+</h:body>
+</ui:define>
+</ui:composition>

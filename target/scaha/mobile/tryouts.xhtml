@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/templates/mobilelayout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+     xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+<ui:define name="content">
+<h:body>
+<h:form>
+<h:outputText value="Club Openings" style="font-size: 18px; font-weight: bold;"/>
+<table border="0" width="100%">
+		<tr>
+			<td>
+				<p:dataTable id="listofclubs" var="club" value="#{scahaBean.getScahaClubList()}" >
+		  			<p:column >
+		            	<f:facet name="header">
+		            		<h:outputText style="font-size: 12px;" value="Date" />
+		            	</f:facet>
+		            </p:column>
+		            <p:column >
+		            	<f:facet name="header">
+		            		<h:outputText style="font-size: 12px;" value="Start" />
+		            	</f:facet>
+		            </p:column>
+		            <p:column >
+		            	<f:facet name="header">
+		            		<h:outputText style="font-size: 12px;" value="Division" />
+		            	</f:facet>
+		            </p:column>
+		            <p:column >
+		            	<f:facet name="header">
+		            		<h:outputText style="font-size: 12px;" value="Level" />
+		            	</f:facet>
+		            </p:column>
+		            <p:column >
+		            	<f:facet name="header">
+		            		<h:outputText style="font-size: 12px;" value="Location" />
+		            	</f:facet>
+		            </p:column>
+		            <p:column >
+		            	<f:facet name="header">
+		            		<h:outputText style="font-size: 12px;" value="Coach" />
+		            	</f:facet>
+		            </p:column>
+		            <p:subTable id="tryout" var="peep" value="#{club.getTryoutlist()}" tableStyle="width:auto">
+			            <f:facet name="header">
+			            	<div style="float:left;vertical-align:middle;width:75px;font-size: 12px;">
+			            	<p:graphicImage id="logoimage1" value="#{clubBean.getClubLogoByParmId()}"  width="30" height="30" >
+			            		<f:param id = "target" name="target" value="#{club.getClubID()}" />
+					 		</p:graphicImage> 
+							</div>
+			            	<div style=	"float:left;margin-top:15px;margin-left:10px;vertical-align:middle;width:100%;">
+			            		<h:outputText style="font-size: 12px;" value=" #{club.getClubname()}" />
+			            	</div>
+			            </f:facet>
+		 	            <p:column style="font-size: 12px;" headerText="Date">
+		    	            #{peep.getTryoutdate()}
+		   	            </p:column >
+			            <p:column style="font-size: 12px;" headerText="Start">
+		    	            #{peep.getTryouttime()}
+		        	    </p:column>
+			            <p:column style="font-size: 12px;" headerText="Division">
+		    	            #{peep.getDivision()}
+		        	    </p:column>
+			            <p:column headerText="Level">
+							#{peep.getLevel()}
+		        	    </p:column>
+		        	    <p:column headerText="Location">
+							#{peep.getLocation()}
+							<h:outputText value="See our website for tryout times." rendered="#{peep.getUsewebsite()}" />
+		        	    </p:column>
+		        	    <p:column headerText="Coach">
+							#{peep.getCoach()}
+		        	    </p:column>
+		 			</p:subTable>
+		   		</p:dataTable>
+				
+				
+		
+			</td>
+		</tr>
+	</table>
+</h:form>
+</h:body>
+</ui:define>
+</ui:composition>

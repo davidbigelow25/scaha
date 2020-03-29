@@ -140,7 +140,7 @@ public class playerdetailBean implements Serializable{
 	}
 
 	/**
-	 * @param scaha the scaha to set
+	 * @param club the scaha to set
 	 */
 	public void setClubbean(ClubBean club) {
 		this.clubbean = club;
@@ -150,9 +150,6 @@ public class playerdetailBean implements Serializable{
 		return this.clubbean;
 	}
 
-	/**
-	 * @param scaha the scaha to set
-	 */
 	public void setScoreboard(ScoreboardBean club) {
 		this.scoreboard = club;
 	}
@@ -174,7 +171,7 @@ public class playerdetailBean implements Serializable{
     public void closePage(){
     	FacesContext context = FacesContext.getCurrentInstance();
     	try{
-    		context.getExternalContext().redirect("gamecentral.xhtml?selecteddate=" + this.selectedgame + "&schedule=" + this.selectedschedule + "&season=" + this.selectedseason);
+   // TODO: error		context.getExternalContext().redirect("gamecentral.xhtml?selecteddate=" + this.selectedgame + "&schedule=" + this.selectedschedule + "&season=" + this.selectedseason);
     	} catch (Exception e){
 			e.printStackTrace();
 		}

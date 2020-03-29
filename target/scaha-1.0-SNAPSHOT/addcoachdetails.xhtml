@@ -1,0 +1,250 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<f:metadata>
+<f:event type="preRenderView" listener="#{profileBean.verifyUserLogin()}" />
+</f:metadata>
+
+<ui:composition template="/WEB-INF/templates/layoutadmin.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://bootsfaces.net/ui">
+	
+<ui:define name="content">
+<b:container>
+	<b:row>
+		<b:column>
+			<b:form id="form">
+			<b:messages id="messages" showDetail="true" autoUpdate="true" closable="false" />	
+ 			<b:panel id="panel" collapsible="false" look="primary">
+				<f:facet name="heading">
+					Information for <h:outputText value="#{coachrosteractionBean.coachname}"/>
+				</f:facet>
+				<b:panelGrid colSpans="2,3,3,4" id="playersearchform">
+					<h:outputText value="First Name:" />
+					<b:inputText id="fname" value="#{coachrosteractionBean.firstname}" 
+						large-screen="full-width"
+    					medium-screen="full-width"
+    					small-screen="full-width"
+    					tiny-screen="full-width"/>
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<h:outputText value="Last Name:" />
+					<b:inputText id="lname" value="#{coachrosteractionBean.lastname}" 
+						large-screen="full-width"
+    					medium-screen="full-width"
+    					small-screen="full-width"
+    					tiny-screen="full-width"/>
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<h:outputText value="Team Role:" />
+					<b:selectOneMenu value="#{coachrosteractionBean.coachrole}"
+						large-screen="full-width"
+    					medium-screen="full-width"
+    					small-screen="full-width"
+    					tiny-screen="full-width">
+				    	<f:selectItem itemLabel="Head Coach" itemValue="Head Coach"/>
+				    	<f:selectItem itemLabel="Assistant Coach" itemValue="Assistant Coach"/>
+				    	<f:selectItem itemLabel="Student Coach" itemValue="Student Coach"/>
+				    	<f:selectItem itemLabel="Manager" itemValue="Manager"/>
+				    	<f:selectItem itemLabel="Assistant Coach/Manager" itemValue="Assistant Coach/Manager"/>
+				    	<p:ajax process="@this" listener="#{coachrosteractionBean.checkRole()}" event="change" update="@form"  />
+				    </b:selectOneMenu>
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<h:outputText value="CEP#:" rendered="#{coachrosteractionBean.displaycoachcredentials}"/>
+					<b:inputText id="cepnumber" value="#{coachrosteractionBean.cepnumber}" rendered="#{coachrosteractionBean.displaycoachcredentials}"
+						large-screen="full-width"
+    					medium-screen="full-width"
+    					small-screen="full-width"
+    					tiny-screen="full-width"
+					/>
+					<h:outputText value="CEP Level:" rendered="#{coachrosteractionBean.displaycoachcredentials}"/>
+					<b:selectOneMenu value="#{coachrosteractionBean.ceplevel}" rendered="#{coachrosteractionBean.displaycoachcredentials}"
+						large-screen="full-width"
+    					medium-screen="full-width"
+    					small-screen="full-width"
+    					tiny-screen="full-width"
+					>
+				    	<f:selectItem itemLabel="Select One" itemValue="0"/>
+				    	<f:selectItem itemLabel="Level 1" itemValue="1"/>
+				    	<f:selectItem itemLabel="Level 2" itemValue="2"/>
+				    	<f:selectItem itemLabel="Level 3" itemValue="3"/>
+				    	<f:selectItem itemLabel="Level 4" itemValue="4"/>
+				    	<f:selectItem itemLabel="Level 5" itemValue="5"/>
+				    </b:selectOneMenu>
+					<h:outputText value="CEP Expires:" rendered="#{coachrosteractionBean.displaycoachcredentials}"/>
+					<b:inputText id="cepexpires" value="#{coachrosteractionBean.cepexpires}" rendered="#{coachrosteractionBean.displaycoachcredentials}"
+						large-screen="full-width"
+    					medium-screen="full-width"
+    					small-screen="full-width"
+    					tiny-screen="full-width"
+					/>
+					<h:outputText value="CEP Modules Completed:" rendered="#{coachrosteractionBean.displaycoachcredentials}"/>
+					<b:selectMultiMenu id="cepmodules" style="width: 100%;" includeSelectAllOption="true" value="#{coachrosteractionBean.cepmodulesselectedstring}" rendered="#{coachrosteractionBean.displaycoachcredentials}"
+						large-screen="full-width"
+    					medium-screen="full-width"
+    					small-screen="full-width"
+    					tiny-screen="full-width"
+					>
+				    	<f:selectItem itemLabel="8U" itemValue="8U" />  
+			            <f:selectItem itemLabel="10U" itemValue="10U" />  
+			            <f:selectItem itemLabel="12U" itemValue="12U" />
+			            <f:selectItem itemLabel="14U" itemValue="14U" />
+			            <f:selectItem itemLabel="18U" itemValue="18U" />
+			            <f:selectItem itemLabel="Girls" itemValue="Girls" />
+				    </b:selectMultiMenu>
+					<h:outputText value="Safe Sport Certification:" />
+					<b:selectOneMenu value="#{coachrosteractionBean.safesport}"
+						large-screen="full-width"
+    					medium-screen="full-width"
+    					small-screen="full-width"
+    					tiny-screen="full-width"
+					>
+				    	<f:selectItem itemLabel="No" itemValue="0"/>
+				    	<f:selectItem itemLabel="Yes" itemValue="1"/>
+				    </b:selectOneMenu>
+					<h:outputText value="Safesport Expires:"  />
+					<b:inputText id="sportexpires" value="#{coachrosteractionBean.sportexpires}" 
+						large-screen="full-width"
+    					medium-screen="full-width"
+    					small-screen="full-width"
+    					tiny-screen="full-width"
+					/>
+					<h:outputText value="CAHA Screening Expires:"  />
+					<b:inputText id="screeningexpires" value="#{coachrosteractionBean.screeningexpires}" 
+						large-screen="full-width"
+    					medium-screen="full-width"
+    					small-screen="full-width"
+    					tiny-screen="full-width"
+					/>
+				</b:panelGrid>
+				<b:panelGrid colSpans="2,2,2,2,2,2" id="panelgrid">
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<b:commandButton value="Save" id="save"
+				                       actionListener="#{coachrosteractionBean.completeCoachDetails()}" look="success"
+				                       large-screen="full-width"
+				    					medium-screen="full-width"
+				    					small-screen="full-width"
+				    					tiny-screen="full-width">
+				       <f:ajax execute="@form" render="@form" />
+				    </b:commandButton>
+				    <b:commandButton value="Close" 
+				                       actionListener="#{coachrosteractionBean.Close()}" look="info"
+				                       large-screen="full-width"
+    									medium-screen="full-width"
+    									small-screen="full-width"
+    									tiny-screen="full-width"/>
+				</b:panelGrid>
+				
+			</b:panel>
+			</b:form>
+		</b:column>
+	</b:row>
+</b:container>
+<!-- 
+		<div id="page-div">
+		<p:tabMenu activeIndex="0">  
+		    <p:menuitem value="Certification Information" url="#" icon="ui-icon-star" />  
+		</p:tabMenu>  
+		<h:form id="mess">
+    		<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />    
+		</h:form>
+		<p:spacer width="10" height="10" />
+		<ui:fragment id="edit-transfers" >
+		<h:form>
+			<p:fieldset id="fs1" toggleable="false" toggleSpeed="500">
+			<h:panelGrid columns="2" cellpadding="5" cellspacing="0" border="0" width="90%">
+				<h:column><b>2016 Details for <h:outputText value="#{coachrosteractionBean.coachname}"/></b></h:column>
+			</h:panelGrid>
+			<table cellpadding="5" cellspacing="0" width="90%">
+				<tr>
+					<td width="20%"><b>First Name:</b></td>
+					<td align="left"></td>
+				</tr>
+				<tr>
+					<td width="20%"><b>Last Name:</b></td>
+					<td align="left"><p:inputText id="lname" style="width:100px;" value="#{coachrosteractionBean.lastname}" /></td>
+				</tr>
+				<tr>
+					<td width="20%"><b>Team Role:</b></td>
+					<td align="left" colspan="5">
+						<p:selectOneMenu value="#{coachrosteractionBean.coachrole}">
+					    	<f:selectItem itemLabel="Head Coach" itemValue="Head Coach"/>
+					    	<f:selectItem itemLabel="Assistant Coach" itemValue="Assistant Coach"/>
+					    	<f:selectItem itemLabel="Student Coach" itemValue="Student Coach"/>
+					    	<f:selectItem itemLabel="Manager" itemValue="Manager"/>
+					    	<f:selectItem itemLabel="Assistant Coach/Manager" itemValue="Assistant Coach/Manager"/>
+					    	<p:ajax process="@this" listener="#{coachrosteractionBean.checkRole()}" event="change" update="@form"  />
+					    </p:selectOneMenu>
+					</td>
+				</tr>
+				<tr>
+					<td><b><h:outputText value="CEP#:" rendered="#{coachrosteractionBean.displaycoachcredentials}"/></b></td>
+					<td align="left"><p:inputText id="cepnumber" style="width:100px;" value="#{coachrosteractionBean.cepnumber}" rendered="#{coachrosteractionBean.displaycoachcredentials}"/></td>
+					<td><b><h:outputText value="CEP Level:" rendered="#{coachrosteractionBean.displaycoachcredentials}"/></b></td>
+					<td align="left">
+						<p:selectOneMenu value="#{coachrosteractionBean.ceplevel}" rendered="#{coachrosteractionBean.displaycoachcredentials}">
+					    	<f:selectItem itemLabel="Select One" itemValue="0"/>
+					    	<f:selectItem itemLabel="Level 1" itemValue="1"/>
+					    	<f:selectItem itemLabel="Level 2" itemValue="2"/>
+					    	<f:selectItem itemLabel="Level 3" itemValue="3"/>
+					    	<f:selectItem itemLabel="Level 4" itemValue="4"/>
+					    	<f:selectItem itemLabel="Level 5" itemValue="5"/>
+					    </p:selectOneMenu>
+					</td>
+				</tr>
+				<tr>
+					<td valign="top"><b><h:outputText value="CEP Expires:" rendered="#{coachrosteractionBean.displaycoachcredentials}"/></b></td>
+					<td valign="top" align="left"><p:inputText id="cepexpires" style="width:100px;" value="#{coachrosteractionBean.cepexpires}" rendered="#{coachrosteractionBean.displaycoachcredentials}"/></td>
+					<td valign="top"><b><h:outputText value="CEP Modules Completed:" rendered="#{coachrosteractionBean.displaycoachcredentials}"/></b></td>
+					<td valign="top" align="left" colspan="3">
+						<p:selectManyMenu id="cepmodules" showCheckbox="true" value="#{coachrosteractionBean.cepmodulesselected}" style="width:100px;height:75px" rendered="#{coachrosteractionBean.displaycoachcredentials}">
+					    	<f:selectItem itemLabel="8U" itemValue="8U" />  
+				            <f:selectItem itemLabel="10U" itemValue="10U" />  
+				            <f:selectItem itemLabel="12U" itemValue="12U" />
+				            <f:selectItem itemLabel="14U" itemValue="14U" />
+				            <f:selectItem itemLabel="18U" itemValue="18U" />
+				            <f:selectItem itemLabel="Girls" itemValue="Girls" />
+					    </p:selectManyMenu>
+					</td>
+				</tr>
+				<tr>
+					<td><b>Safe Sport Certification:</b></td>
+					<td align="left">
+						<p:selectOneMenu value="#{coachrosteractionBean.safesport}">
+					    	<f:selectItem itemLabel="No" itemValue="0"/>
+					    	<f:selectItem itemLabel="Yes" itemValue="1"/>
+					    </p:selectOneMenu>
+					</td>
+					<td><b><h:outputText value="CAHA Screening Expires:"  /></b></td>
+					<td align="left"><p:inputText id="screeningexpires" style="width:100px;" value="#{coachrosteractionBean.screeningexpires}" /></td>
+				</tr>
+			</table>	
+			<div align="center"><p:commandButton id="completecoach" value="Save Coaching Certification" actionListener="#{coachrosteractionBean.completeCoachDetails()}" ajax="true"/></div>
+			</p:fieldset>
+		</h:form>
+		</ui:fragment>
+		<p:fieldset id="fs2" toggleable="false" toggleSpeed="500">
+		<h:form>
+			<div align="center"><p:commandButton id="closecoach" value="Close" ajax="false" actionListener="#{coachrosteractionBean.Close()}"/></div>
+		</h:form>
+		</p:fieldset>
+		</div>
+		 -->
+	</ui:define>
+</ui:composition>
+</html>

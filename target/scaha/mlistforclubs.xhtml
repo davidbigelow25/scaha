@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+     xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+<f:metadata>
+	<f:event type="preRenderView" listener="#{profileBean.verifyHasRoles('C-REG;C-PRES')}" />
+</f:metadata>
+
+<ui:define name="content">
+
+<div id="page-div">
+<h:form>
+
+  	<div class="NewsTitle">Downloading your Club's Master List </div>
+	  <div class="NewsDate">getting a snapshot of your currently registered players</div>  
+	<p:panel header="Export Clubs Master List">
+     	 <div class="NewsText">
+			  Click any icon to download your master club list in various formats.  Each Icon will download it in the suggested format. <p/>
+			  This list contains all the information you need to build a contact list for every team.  In addition, It contains the USA Hockey Numbers for you.
+			  You can basically take the first two columns and import them right into Cyber Sport and bypass any/all scanning and manual entry. <p/>
+			  
+			  Currently.. it downloads last year's data.  Once we start the 2014/15 Tryouts.. we will switch this over to the current season so you can start
+			  collecting information on your teams. <p/>
+			  
+			  Once we get through tryouts, we will be able to possibly create one master Excel Workbook and have one team per tab. For now though, give it a shot
+			  and see what you can do with the data once its downloaded into an XL File.
+			  
+  		</div>
+  		<p:separator />
+  		<h:commandLink update="masterlist">
+          	<p:graphicImage value="/images/excel.png" />
+        	<p:dataExporter type="xls" target="masterlist" fileName="ClubMasterList" />
+     	</h:commandLink>
+     	<p:spacer width="20px" />
+     	<h:commandLink>
+         	<p:graphicImage update="masterlist" value="/images/csv.png" />
+        	 <p:dataExporter type="csv" target="masterlist" fileName="ClubMasterList" />
+    	</h:commandLink>
+    		
+	</p:panel>
+	<p:dataTable 
+ 			id="masterlist" 
+ 			var="myrow" 
+ 			value="#{masterListBean.mydata}" 
+ 			filteredValue="#{masterListBean.filter}"
+ 			dynamic="true"
+ 			>
+ 			<p:column>
+           		<f:facet name="header">
+            		<h:outputText value= "#{masterListBean.mydata.rheader.get(0)}"/>
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(0)}" />  
+	        </p:column>  
+ 			<p:column>
+           		<f:facet name="header">
+            		<h:outputText value="#{masterListBean.mydata.rheader.get(1)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(1)}" />  
+	        </p:column>  
+ 			<p:column>
+           		<f:facet name="header">
+            		<h:outputText value="#{masterListBean.mydata.rheader.get(2)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(2)}" />  
+	        </p:column>  
+ 			<p:column>
+           		<f:facet name="header">
+            		<h:outputText value="#{masterListBean.mydata.rheader.get(3)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(3)}" />  
+	        </p:column>  
+			<p:column>
+           		<f:facet name="header">
+            		<h:outputText value="#{masterListBean.mydata.rheader.get(4)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(4)}" />  
+	        </p:column>
+			<p:column>
+           		<f:facet name="header">
+            		<h:outputText value="#{masterListBean.mydata.rheader.get(5)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(5)}" />  
+	        </p:column>
+			<p:column>
+           		<f:facet name="header">
+            		<h:outputText value="#{masterListBean.mydata.rheader.get(6)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(6)}" />  
+	        </p:column>
+			<p:column>
+           		<f:facet name="header">
+            		<h:outputText value="#{masterListBean.mydata.rheader.get(7)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(7)}" />  
+	        </p:column>
+			<p:column>
+           		<f:facet name="header">
+            		<h:outputText value="#{masterListBean.mydata.rheader.get(8)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(8)}" />  
+	        </p:column>
+			<p:column>
+           		<f:facet name="header">
+            		<h:outputText value="#{masterListBean.mydata.rheader.get(9)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(9)}" />  
+	        </p:column>
+			<p:column>
+           		<f:facet name="header">
+            		<h:outputText value="#{masterListBean.mydata.rheader.get(10)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(10)}" />  
+	        </p:column>
+			<p:column>
+           		<f:facet name="header">
+            		<h:outputText value="#{masterListBean.mydata.rheader.get(11)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(11)}" />  
+	        </p:column>	        
+			<p:column>
+           		<f:facet name="header">
+            		<h:outputText value="#{masterListBean.mydata.rheader.get(12)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(12)}" />  
+	        </p:column>	        
+			<p:column>
+           		<f:facet name="header">
+            		<h:outputText value="#{masterListBean.mydata.rheader.get(13)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(13)}" />  
+	        </p:column>	        
+   			<p:column>
+           		<f:facet name="header">
+            		<h:outputText value="#{masterListBean.mydata.rheader.get(14)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(14)}" />  
+	        </p:column>	        
+   			<p:column>
+           		<f:facet name="header">
+            		<h:outputText value="#{masterListBean.mydata.rheader.get(15)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(15)}" />  
+	        </p:column>	        
+   			<p:column>
+           		<f:facet name="header">
+            		<h:outputText value="#{masterListBean.mydata.rheader.get(16)}" />
+		        </f:facet>
+	            <h:outputText value="#{myrow.get(16)}" />  
+	        </p:column>	        
+	        </p:dataTable>
+</h:form>
+</div>
+</ui:define>
+</ui:composition>

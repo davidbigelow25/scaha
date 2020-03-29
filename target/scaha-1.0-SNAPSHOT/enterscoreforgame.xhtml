@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui" 
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
+<f:view contentType="text/html">
+
+
+<f:metadata>
+	<f:event type="preRenderView" listener="#{profileBean.verifyHasRoles('C-REG;T-MAN')}" />
+</f:metadata>
+
+<h:head>
+	 <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+     </f:facet>
+</h:head>
+<h:body >	
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+<ui:define name="content">
+	<h:form id="form1">	
+	<p:layout id="mylayout" style="height:1050px;">
+		<p:layoutUnit height="200px" id="header" position="north" header = "SCAHA GAMESHEET INFORMATION for #{gamesheetBean.livegame.toString()}">
+		<div style="height:40px;">
+			<p:messages id="messages" showDetail="true"/>
+		</div>
+		<p:panel id="gameinfo" styleClass="panelNoBorder">
+		<ui:fragment id="fview" rendered="#{!gamesheetBean.isEditgame()}">
+			<p:panelGrid columns="6">
+		    <p:outputLabel style="font-size:12pt" for="lgtype" value="Game Type:" /><h:outputText id = "lgtype" value= "#{gamesheetBean.lgtype}" />
+		    <p:outputLabel style="font-size:12pt" for="lgvenue" value="Venue Is:" /><h:outputText id = "lgvenue" value= "#{gamesheetBean.lgvenue}" />
+		    <p:outputLabel style="font-size:12pt" for="lgstartdate" value="Start Date:" /><h:outputText id = "lgstartdate" value= "#{gamesheetBean.lgdate}" />
+		    <p:outputLabel style="font-size:12pt" for="lgstate" value="Game State:" /><h:outputText id = "lgstate" value= "#{gamesheetBean.lgstate}" />
+		    <p:outputLabel style="font-size:12pt" for="lgsheet" value="Rink Is:"/><h:outputText id = "lgsheet" value= "#{gamesheetBean.lgsheet}" />
+		    <p:outputLabel style="font-size:12pt" for="lgstarttime" value="Start Time:" /><h:outputText id = "lgstarttime" value= "#{gamesheetBean.lgtime}" />
+		    <p:outputLabel style="font-size:12pt" for="lghteam" value="Home Team:" /><h:outputText id = "lghteam" value= "#{gamesheetBean.lghteam}" />
+		    <p:outputLabel style="font-size:12pt" for="lgateam" value="Away Team:" /><h:outputText id = "lgateam" value= "#{gamesheetBean.lgateam}" />
+		    </p:panelGrid>
+			<p:spacer height="30" />
+			<p:commandButton id="savescore" value="Save Scores" ajax="true"  actionListener="#{gamesheetBean.saveScore()}" />
+			<p:commandButton id="close" value="Close" ajax="true"  actionListener="#{gamesheetBean.gamesheetClose()}" />
+			</ui:fragment >
+		</p:panel>
+		</p:layoutUnit>
+ 		<p:layoutUnit id="left" position="west" size="225" resizable="false" closable="false" collapsible="false" header="#{gamesheetBean.livegame.hometeam.getTeamname()}" >
+			<!-- this used to be the spot for home roster -->
+		</p:layoutUnit>
+		<p:layoutUnit id="right" position="east" size="225" resizable="false" closable="false" collapsible="false" header="#{gamesheetBean.livegame.awayteam.getTeamname()}" >
+			 <!-- this used to be the spot for away roster -->
+		</p:layoutUnit>
+		<p:layoutUnit id="center" position="center"  header="Game Information"  >
+			<p:panelGrid id="guts" columns="2" columnClasses="alignTop,alignTop">
+				<p:panelGrid columns="2">
+					<h:outputText value="#{gamesheetBean.livegame.hometeam.getTeamname()}" /> 
+					<h:outputText value="" />
+			 		<p:graphicImage width="50" height="50" id="homelogo" value="#{scahaBean.getClubLogoByParmId()}"  >
+						<f:param name="target" value="#{gamesheetBean.getHomeClubId()}" />
+					</p:graphicImage>
+					<p:inputText id="homescore" value = "#{gamesheetBean.livegame.homescore}"   maxlength="2" size="3"/>
+					 
+				</p:panelGrid>
+				<p:panelGrid columns="2">
+					<h:outputText value="#{gamesheetBean.livegame.awayteam.getTeamname()}" />
+					<h:outputText value="" />
+   			 		<p:graphicImage width="50" height="50" id="vistorlogo" value="#{scahaBean.getClubLogoByParmId()}"  >
+						<f:param name="target" value="#{gamesheetBean.getAwayClubId()}" />
+					</p:graphicImage>
+					<p:inputText id="awayscore" value = "#{gamesheetBean.livegame.awayscore}"   maxlength="2" size="3"/> 
+				</p:panelGrid>
+    		</p:panelGrid>
+    	</p:layoutUnit>
+    	</p:layout>
+    </h:form>
+   
+</ui:define>
+</ui:composition>
+</h:body>
+</f:view>
+</html>

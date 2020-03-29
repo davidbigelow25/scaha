@@ -1,0 +1,532 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui" 
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
+<f:view contentType="text/html">
+
+<h:head>
+	 <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+     </f:facet>
+</h:head>
+<h:body >	
+<ui:composition template="/WEB-INF/templates/layoutprintonly.xhtml">
+<ui:define name="content">
+<style>
+th {
+  text-align: center;
+  font-size: 16px;
+}
+
+td {
+  font-size: 16px;
+}
+
+</style>
+<ui:repeat value="#{printallscahagamesBean.getTempGamedatamodel()}" var="TempGame">
+	#{gamesheetBean.setLivegameid(TempGame.getIdgame())}
+	#{gamesheetBean.loadLivegame(TempGame.getIdgame())}
+	<center>
+		<!-- game meta data -->
+		<table cellpadding="0" width="1100" border="0" cellspacing="0">
+			<tr>
+				<td>Game Number:</td>
+				<td><h:outputText value= "#{TempGame.getIdgame()}" /></td>
+				<td>Home Team:</td>
+				<td><h:outputText value= "#{TempGame.getHome()}" /></td>
+				<td>Away Team:</td>
+				<td><h:outputText value= "#{TempGame.getVisitor()}" /></td>
+				<td>Division/Level:</td>
+				<td><h:outputText value= "" /></td>
+			</tr>
+			<tr>
+				<td>Start Date:</td>
+				<td><h:outputText value="#{TempGame.getDate()}" /></td>
+				<td>Start Time:</td>
+				<td><h:outputText value="#{TempGame.getTime()}" /></td>
+				<td>Venue:</td>
+				<td><h:outputText value="#{TempGame.getLocation()}" /></td>
+				<td><p:outputLabel value=" " /></td>
+				<td><h:outputText value= " " /></td>
+				
+			</tr>
+		</table>
+		<table cellpadding="0" width="1100" border="1" cellspacing="0">
+			<tr>
+				<td width="20%" valign="top" rowspan="4">
+					<table cellpadding="2" width="100%" border="1" cellspacing="0">
+						<tr>
+							<td colspan="2" align="center">
+								<p:graphicImage width="60" height="60" id="homelogo" value="#{scahaBean.getClubLogoByParmId()}"  >
+									<f:param name="target" value="#{TempGame.getHomeclubid()}" />
+								</p:graphicImage>
+						
+							</td>
+						</tr>
+						<tr>
+							<th align="center">#</th>
+							<th align="center">Name</th>
+						</tr>	
+						<ui:repeat value="#{gamesheetBean.getRosterforPrint('H')}" var="spot">
+						<tr>
+							<td><p:spacer width="1"  /><h:outputText value=" #{spot.jerseynumber}" /></td>
+							<td><p:spacer width="1"  />
+							<!-- these will display if player name is 20 or under -->
+							<h:outputText value=" #{spot.firstname}, #{spot.lastname}" rendered="#{spot.lastname ne ' ' and not spot.playernameislong}" /><h:outputText value=" (G)" rendered="#{spot.isgoalie and not spot.playernameislong}"/>
+								<h:outputText value=" #{spot.lastname} #{spot.firstname}" rendered="#{spot.lastname==' ' and not spot.playernameislong}"  />
+								
+							<!-- these will display if player name is 20 or over -->
+							<h:outputText value=" #{spot.firstname}, #{spot.lastname}" style="font-size: 13px;" rendered="#{spot.lastname ne ' ' and spot.playernameislong}"/>
+							<h:outputText value=" (G)" style="font-size: 13px;" rendered="#{spot.isgoalie and spot.playernameislong}"/>
+								<h:outputText value=" #{spot.lastname} #{spot.firstname}" style="font-size: 13px;" rendered="#{spot.lastname==' ' and spot.playernameislong}"/>
+							</td>
+						</tr>
+						</ui:repeat>
+					</table>
+					<table cellpadding="0" width="100%" border="1" cellspacing="0">
+						<tr>
+							<th align="center"></th>
+							<th align="center">Name</th>
+						</tr>	
+						<ui:repeat value="#{gamesheetBean.getRosterofCoachesforPrint('H')}" var="spot">
+						<tr>
+							<td><p:spacer width="1"  /><h:outputText value= " #{spot.jerseynumber}" /></td>
+							<td> 
+								<p:spacer width="1"  /><h:outputText value=" #{spot.lastname} #{spot.firstname}" /><br></br>
+								<p:spacer width="1"  /><h:outputText value=" #{spot.cepinfo}" />
+								<br></br>
+								<br></br>
+							</td>
+						</tr>
+						</ui:repeat>
+						
+					</table>
+				</td>
+				<td width="30%" valign="top" align="center">
+					<div style="font-size:#{TempGame.getFontsizehome()}px;font-weight: bold;"><h:outputText value="#{TempGame.getHome()}" /> Final Score</div>
+					
+					<br></br>
+					
+					__________
+					
+				</td>
+				<td width="30%" valign="top" align="center">
+					<div style="font-size:#{TempGame.getFontsizevisitor()}px;font-weight: bold;"><h:outputText value="#{TempGame.getVisitor()}" /> Final Score</div>
+					<br></br>
+					
+					_________
+					
+				</td>
+				<td width="20%" valign="top" rowspan="4">
+					<table cellpadding="0" width="100%" border="1" cellspacing="0">
+						<tr>
+							<td colspan="2" align="center">
+								<p:graphicImage width="60" height="60" id="homelogo" value="#{scahaBean.getClubLogoByParmId()}"  >
+									<f:param name="target" value="#{TempGame.getAwayclubid()}" />
+								</p:graphicImage>
+						
+							</td>
+						</tr>
+						<tr>
+							<th align="center">#</th>
+							<th align="center">Name</th>
+						</tr>	
+						<ui:repeat value="#{gamesheetBean.getRosterforPrint('A')}" var="spot">
+						<tr>
+							<td><p:spacer width="1"/><h:outputText value= " #{spot.jerseynumber}" /></td>
+							<td><!-- these will display if player name is 20 or under -->
+							<h:outputText value=" #{spot.firstname}, #{spot.lastname}" rendered="#{spot.lastname ne ' ' and not spot.playernameislong}" /><h:outputText value=" (G)" rendered="#{spot.isgoalie and not spot.playernameislong}"/>
+								<h:outputText value=" #{spot.lastname} #{spot.firstname}" rendered="#{spot.lastname==' ' and not spot.playernameislong}"  />
+								
+							<!-- these will display if player name is 20 or over -->
+							<h:outputText value=" #{spot.firstname}, #{spot.lastname}" style="font-size: 13px;" rendered="#{spot.lastname ne ' ' and spot.playernameislong}"/>
+							<h:outputText value=" (G)" style="font-size: 13px;" rendered="#{spot.isgoalie and spot.playernameislong}"/>
+							<h:outputText value=" #{spot.lastname} #{spot.firstname}" style="font-size: 13px;" rendered="#{spot.lastname==' ' and spot.playernameislong}"/>
+							</td>
+						</tr>
+						</ui:repeat>
+					</table>
+					<table cellpadding="0" width="100%" border="1" cellspacing="0">
+						<tr>
+							<th align="center"></th>
+							<th align="center">Name</th>
+						</tr>	
+						<ui:repeat value="#{gamesheetBean.getRosterofCoachesforPrint('A')}" var="spot">
+						<tr>
+							<td><p:spacer width="1"  /><h:outputText value= " #{spot.jerseynumber}" /></td>
+							<td> 
+								<p:spacer width="1"  /><h:outputText value=" #{spot.lastname} #{spot.firstname}" /><br></br>
+								<p:spacer width="1"  /><h:outputText value=" #{spot.cepinfo}" />
+								<br></br>
+								<br></br>
+							</td>
+						</tr>
+						</ui:repeat>
+						
+					</table>
+				</td>	
+			</tr>
+			<tr>
+				<td width="30%" valign="top" align="center">
+					<div style="font-size:20px;font-weight: bold;"><h:outputText value="#{TempGame.getHome()}" /> Scoring</div>
+				</td>
+				<td width="30%" valign="top" align="center">
+					<div style="font-size:20px;font-weight: bold;"><h:outputText value="#{TempGame.getVisitor()}" /> Scoring</div>
+				</td>
+			</tr>
+			<tr>
+				<td width="30%" valign="top">
+					<table cellpadding="0" width="100%" border="1" cellspacing="0">
+						<tr>
+							<th align="center">#</th>
+							<th align="center">S/P</th>
+							<th align="center">Per</th>
+							<th align="center">Time</th>
+							<th align="center">G</th>
+							<th align="center">A</th>
+							<th align="center">A</th>
+						</tr>	
+						<ui:repeat value="#{gamesheetBean.getNumberofgrows()}" var="spot" size="15" varStatus="status">
+						<tr>
+							<td align="center" width="20"><h:outputText value= "#{status.index+1}" /></td>
+							<td width="20"> </td>
+							<td width="20"> </td>
+							<td> </td>
+							<td> </td>
+							<td> </td>
+							<td> </td>
+						</tr>
+						</ui:repeat>
+					</table>
+					<div style="font-size:20px;font-weight: bold;text-align: center;"><h:outputText value="#{TempGame.getHome()}" /> Goaltending</div>
+					<table cellpadding="0" width="100%" border="1" cellspacing="0">
+						<tr>
+							<th align="center" width="10">#</th>
+							<th align="center" width="20">Jrsy</th>
+							<th align="center" width="35">Tm In</th>
+							<th align="center" width="35">Tm Out</th>
+							<th align="center" width="10"> </th>
+							<th align="center" width="25">1</th>
+							<th align="center" width="25">2</th>
+							<th align="center" width="25">3</th>
+							<th align="center" width="25">OT</th>
+							<th align="center" width="40">Total</th>
+						</tr>	
+						<ui:repeat value="#{gamesheetBean.getNumberofgrows()}" var="spot" size="6" varStatus="status">
+						<tr>
+							<td align="center"><h:outputText value= "#{status.index+1}" /></td>
+							<td> </td>
+							<td> </td>
+							<td> </td>
+							<td>
+								<table cellpadding="0" cellspacing="0" border="0" width="100%">
+									<tr>
+										<td style="font-size:11px;border-bottom: 1;" >SH</td>
+									</tr>
+									<tr>
+										<td style="font-size:11px">SV</td>
+									</tr>
+								</table>
+							</td>
+							<td> 
+								<table cellpadding="0" cellspacing="0" border="0" width="100%">
+									<tr>
+										<td> </td>
+									</tr>
+									<tr>
+										<td> </td>
+									</tr>
+								</table>
+							</td>
+							<td> 
+								<table cellpadding="0" cellspacing="0" border="0" width="100%">
+									<tr>
+										<td> </td>
+									</tr>
+									<tr>
+										<td> </td>
+									</tr>
+								</table>
+							</td>
+							<td> 
+								<table cellpadding="0" cellspacing="0" border="0" width="100%">
+									<tr>
+										<td> </td>
+									</tr>
+									<tr>
+										<td> </td>
+									</tr>
+								</table>
+							</td>
+							<td> 
+								<table cellpadding="0" cellspacing="0" border="0" width="100%">
+									<tr>
+										<td> </td>
+									</tr>
+									<tr>
+										<td> </td>
+									</tr>
+								</table>
+							</td>
+							<td> 
+								<table cellpadding="0" cellspacing="0" border="0" width="100%">
+									<tr>
+										<td> </td>
+									</tr>
+									<tr>
+										<td> </td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						</ui:repeat>
+					</table>
+					<table cellpadding="0" width="100%" border="1" cellspacing="0">
+						<tr>
+							<td width="80">
+								<p:spacer width="1"  />Referee
+							</td>
+							<td>
+								&nbsp;
+							</td>
+						</tr>
+						<tr>
+							<td width="80">
+								<p:spacer width="1"  />Linesman
+							</td>
+							<td>
+								&nbsp;
+							</td>
+						</tr>
+						<tr>
+							<td width="80">
+								<p:spacer width="1"  />Linesman
+							</td>
+							<td>
+								&nbsp;
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td width="30%" valign="top">
+					<table cellpadding="0" width="100%" border="1" cellspacing="0">
+						<tr>
+							<th align="center">#</th>
+							<th align="center">S/P</th>
+							<th align="center">Per</th>
+							<th align="center">Time</th>
+							<th align="center">G</th>
+							<th align="center">A</th>
+							<th align="center">A</th>
+						</tr>	
+						<ui:repeat value="#{gamesheetBean.getNumberofgrows()}" var="spot" size="15" varStatus="status">
+						<tr>
+							<td align="center" width="20"><h:outputText value= "#{status.index+1}" /></td>
+							<td width="20"> </td>
+							<td width="20"> </td>
+							<td> </td>
+							<td> </td>
+							<td> </td>
+							<td> </td>
+						</tr>
+						</ui:repeat>
+					</table>
+					<div style="font-size:20px;font-weight: bold;text-align: center;"><h:outputText value="#{TempGame.getVisitor()}" /> Goaltending</div>
+					<table cellpadding="0" width="100%" border="1" cellspacing="0">
+						<tr>
+							<th align="center" width="10">#</th>
+							<th align="center" width="20">Jrsy</th>
+							<th align="center" width="35">Tm In</th>
+							<th align="center" width="35">Tm Out</th>
+							<th align="center" width="10"> </th>
+							<th align="center" width="25">1</th>
+							<th align="center" width="25">2</th>
+							<th align="center" width="25">3</th>
+							<th align="center" width="25">OT</th>
+							<th align="center" width="40">Total</th>
+						</tr>	
+						<ui:repeat value="#{gamesheetBean.getNumberofgrows()}" var="spot" size="6" varStatus="status">
+						<tr>
+							<td align="center"><h:outputText value= "#{status.index+1}" /></td>
+							<td> </td>
+							<td> </td>
+							<td> </td>
+							<td>
+								<table cellpadding="0" cellspacing="0" border="0" width="100%">
+									<tr>
+										<td style="font-size:11px;border-bottom: 1;" >SH</td>
+									</tr>
+									<tr>
+										<td style="font-size:11px">SV</td>
+									</tr>
+								</table>
+							</td>
+							<td> 
+								<table cellpadding="0" cellspacing="0" border="0" width="100%">
+									<tr>
+										<td style="font-size:11px;" > </td>
+									</tr>
+									<tr>
+										<td style="font-size:11px"> </td>
+									</tr>
+								</table>
+							</td>
+							<td> 
+								<table cellpadding="0" cellspacing="0" border="0" width="100%">
+									<tr>
+										<td style="font-size:11px;" > </td>
+									</tr>
+									<tr>
+										<td style="font-size:11px"> </td>
+									</tr>
+								</table>
+							</td>
+							<td> 
+								<table cellpadding="0" cellspacing="0" border="0" width="100%">
+									<tr>
+										<td style="font-size:11px;" > </td>
+									</tr>
+									<tr>
+										<td style="font-size:11px"> </td>
+									</tr>
+								</table>
+							</td>
+							<td> 
+								<table cellpadding="0" cellspacing="0" border="0" width="100%">
+									<tr>
+										<td style="font-size:11px;" > </td>
+									</tr>
+									<tr>
+										<td style="font-size:11px"> </td>
+									</tr>
+								</table>
+							</td>
+							<td> 
+								<table cellpadding="0" cellspacing="0" border="0" width="100%">
+									<tr>
+										<td style="font-size:11px;" > </td>
+									</tr>
+									<tr>
+										<td style="font-size:11px"> </td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						</ui:repeat>
+					</table>
+					<table cellpadding="0" width="100%" border="1" cellspacing="0">
+						<tr>
+							<td width="90">
+								<p:spacer width="1"  />Scorer
+							</td>
+							<td>
+								&nbsp;
+							</td>
+						</tr>
+						<tr>
+							<td width="90">
+								<p:spacer width="1"  />Timekeeper
+							</td>
+							<td>
+								&nbsp;
+							</td>
+						</tr>
+						<tr>
+							<td width="90">
+								<p:spacer width="1"  />Run Time
+							</td>
+							<td>
+								&nbsp;
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td width="30%" valign="top" colspan="2">
+							<p:spacer width="1"  />Notes:
+							<br></br>
+							<br></br>
+							<br></br>
+							<br></br>
+							<br></br>
+							
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<table cellpadding="0" width="100%" border="1" cellspacing="0">
+						<tr>
+							<th align="center" width="10">#</th>
+							<th align="center" width="40">Per</th>
+							<th align="center" width="40">Plyr</th>
+							<th align="center" width="40%">Penalty</th>
+							<th align="center" width="40">Min</th>
+							<th align="center" width="65">Off</th>
+							<th align="center" width="65">Start</th>
+							<th align="center" width="65">On</th>
+							
+						</tr>	
+						<ui:repeat value="#{gamesheetBean.getNumberofgrows()}" var="spot" size="16" varStatus="status">
+						<tr>
+							<td align="center"><h:outputText value= "#{status.index+1}" /></td>
+							<td> </td>
+							<td> </td>
+							<td> </td>
+							<td> </td>
+							<td> </td>
+							<td> </td>
+							<td> </td>
+							<td> </td>
+						</tr>
+						</ui:repeat>
+					</table>
+				</td>
+				<td colspan="2">
+					<table cellpadding="0" width="100%" border="1" cellspacing="0">
+						<tr>
+							<th align="center" width="10">#</th>
+							<th align="center" width="40">Per</th>
+							<th align="center" width="40">Plyr</th>
+							<th align="center" width="40%">Penalty</th>
+							<th align="center" width="40">Min</th>
+							<th align="center" width="65">Off</th>
+							<th align="center" width="65">Start</th>
+							<th align="center" width="65">On</th>
+							
+						</tr>	
+						<ui:repeat value="#{gamesheetBean.getNumberofgrows()}" var="spot" size="16" varStatus="status">
+						<tr>
+							<td align="center"><h:outputText value= "#{status.index+1}" /></td>
+							<td> </td>
+							<td> </td>
+							<td> </td>
+							<td> </td>
+							<td> </td>
+							<td> </td>
+							<td> </td>
+							<td> </td>
+						</tr>
+						</ui:repeat>
+					</table>
+				</td>
+			</tr>
+		</table>
+		<br></br>
+		<br></br>
+		<br></br>
+		<br></br>
+	</center>
+</ui:repeat>
+</ui:define>
+</ui:composition>
+</h:body>
+</f:view>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+ <f:metadata>
+	<f:event type="preRenderView" listener="#{profileBean.verifyHasRoles('S-VICE;S-PRES')}" />
+</f:metadata>
+ 
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:define name="content">
+	
+<h:form>
+	<p:messages id="loimessage" showDetail="true" autoUpdate="true" closable="false" />
+	<p:panel header="Export Team PIM Counts">
+        <h:commandLink>
+            <p:graphicImage value="/images/excel.png" />
+            <p:dataExporter type="xls" target="teamresult" fileName="teampims" />
+        </h:commandLink>
+ 
+        <h:commandLink>
+            <p:graphicImage value="/images/pdf.png" />
+            <p:dataExporter type="pdf" target="teamresult" fileName="teampims"/>
+        </h:commandLink>
+         
+    </p:panel>	
+	<p:fieldset>	
+	<p:panel id ="panel" header="Team Counts">
+		<p:dataTable id="teamresult" var="team" value="#{teamhistoryBean.listofteams}" >
+	  		<p:column >
+	  			<f:facet name="header">
+            		<h:outputText value="Team Name" />
+		        </f:facet>  
+				<h:outputText value="#{team.getTeamname()}" />  
+			</p:column>  
+			<p:column >
+				<f:facet name="header">
+            		<h:outputText value="Games Played" />
+		        </f:facet>  
+				<h:outputText value="#{team.getGp()}" />  
+			</p:column>
+			<p:column >  
+				<f:facet name="header">
+            		<h:outputText value="Minor Penalty Count" />
+		        </f:facet>
+		        <h:outputText value="#{team.getMinorpenalties()}" />  
+			</p:column>
+			<p:column >
+				<f:facet name="header">
+            		<h:outputText value="Major Penalty Count" />
+		        </f:facet>  
+				<h:outputText value="#{team.getMajorpenalties()}" />  
+			</p:column>
+			<p:column >  
+				<f:facet name="header">
+            		<h:outputText value="Total PIMS" />
+		        </f:facet>  
+				<h:outputText value="#{team.getPims()}" />  
+			</p:column>
+			<p:column >  
+				<f:facet name="header">
+            		<h:outputText value="Game Misconducts" />
+		        </f:facet>  
+				<h:outputText value="#{team.getGmcount()}" />  
+			</p:column>
+			<p:column >  
+				<f:facet name="header">
+            		<h:outputText value="Match Suspensions" />
+		        </f:facet>  
+				<h:outputText value="#{team.getMatchcount()}" />  
+			</p:column>
+			
+		</p:dataTable>
+	</p:panel>
+	</p:fieldset>
+		<p:fieldset>
+		<div align="center"><p:commandButton value="Close" id="close" ajax="false" actionListener="#{playerhistoryBean.searchClose()}"/></div>
+	</p:fieldset>
+
+</h:form>
+</ui:define>
+</ui:composition>
+</html>

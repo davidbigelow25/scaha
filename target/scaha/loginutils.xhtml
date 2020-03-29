@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<f:metadata>
+<f:event type="preRenderView" listener="#{profileBean.verifyUserLogin()}" />
+</f:metadata>
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://bootsfaces.net/ui">
+	
+	<ui:define name="content">
+		<b:container>
+			
+		<!-- administrator services  -->
+			<b:row rendered="#{profileBean.isSuperUser()}" >
+				<b:column>
+					<b:panel collapsible="false" title="Administrator Tools"  showCollapseLink="false" look="primary">
+						some code here
+					</b:panel>
+				</b:column>
+			</b:row>
+			
+		<!-- member services  -->
+			<b:row rendered="#{profileBean.hasRoleList('S-REG')}">
+				<b:column>
+					<b:panel collapsible="false" title="Member Services Tools"  showCollapseLink="false" look="primary">
+						<b:link value="Player Loi Hot List" style="font-size: 18px;font-weight: bold;" href="quickplayerloiconfirm.xhtml"/><br/>
+						<h:outputText value="Review, approve, edit, add notes to the latest player loi's for this season.."/>
+						<hr/>
+						<b:link value="Coach LOI Hot List" style="font-size: 18px;font-weight: bold;" href="quickcoachloiconfirm.xhtml"/><br/>
+						<h:outputText value="Review, approve, edit, add notes to the latest coach loi's for this season.."/>
+						<hr/>
+						<b:link value="Fix Player LOI" style="font-size: 18px;font-weight: bold;" href="workwithbirthcertificate.xhtml"/><br/>
+						<h:outputText value="Modify and/or add notes to a specific players loi for this season.."/>
+						<hr/>
+						<b:link value="Fix Coach LOI" style="font-size: 18px;font-weight: bold;" href="workwithcoaches.xhtml"/><br/>
+						<h:outputText value="Modify and/or add notes to a specific coaches loi for this season.."/>
+						<hr/>
+						<b:link value="Manage Rosters" style="font-size: 18px;font-weight: bold;" href="managerosters.xhtml"/><br/>
+						<h:outputText value="Drop, Activate, and manage rosters for individual teams for this season."/>
+						<hr/>
+						<b:link value="Delinquency List" style="font-size: 18px;font-weight: bold;" href="viewdelinquencylist.xhtml"/><br/>
+						<h:outputText value="Review and/or remove players who are on the delinquency list for this season."/>
+						<hr/>
+						<b:link value="Add Delinquency" style="font-size: 18px;font-weight: bold;" href="addplayerdelinquent.xhtml"/><br/>
+						<h:outputText value="Add players to the delinquency list for this season."/>
+						<hr/>
+						<b:link value="Releases" style="font-size: 18px;font-weight: bold;" href="confirmrelease.xhtml"/><br/>
+						<h:outputText value="Review, approve, deny releases for players who have been released for this season."/>
+					</b:panel>
+				</b:column>
+			</b:row>
+		<!-- registrar services  -->
+			<b:row rendered="#{profileBean.hasRoleList('C-REG')}">
+				<b:column>
+					<b:panel collapsible="false" title="Registrar Tools"  showCollapseLink="false" look="primary">
+						<b:link value="Manage Your Teams" style="font-size: 18px;font-weight: bold;" href="addteams.xhtml"/><br/>
+						<h:outputText value="Add, edit, and remove teams for the upcoming season."/>
+						<hr/>
+						<b:link value="Create Player LOI" style="font-size: 18px;font-weight: bold;" href="addplayerstoteam.xhtml"/><br/>
+						<h:outputText value="Select this option to create the LOI for the player in the current season."/>
+						<hr/>
+						<b:link value="Create Coach LOI" style="font-size: 18px;font-weight: bold;" href="addcoachestoteam.xhtml"/><br/>
+						<h:outputText value="Select this option to create the LOI for the player in the current season."/>
+						<hr/>
+						<b:link value="Add Coach to Teams" style="font-size: 18px;font-weight: bold;" href="addcoachtoadditionalteams.xhtml"/><br/>
+						<h:outputText value="Add coaches previously loi'd to additional teams within your club."/>
+						<hr/>
+						<b:link value="Review LOI's" style="font-size: 18px;font-weight: bold;" href="registrarviewlois.xhtml"/><br/>
+						<h:outputText value="Review and/or download all PLAYER LOI's by team or for the entire club."/>
+						<hr/>
+						<b:link value="Review Coach LOI's" style="font-size: 18px;font-weight: bold;" href="registrarcoachlois.xhtml"/><br/>
+						<h:outputText value="Review and/or download all COACH LOI's by team or for the entire club."/>
+						<hr/>
+						<b:link value="View Club D-List" style="font-size: 18px;font-weight: bold;" href="clubviewdelinquencylist.xhtml"/><br/>
+						<h:outputText value="Review players on the Delinquency List for your club for the upcoming season."/>
+						<hr/>
+						<b:link value="View Releases Status" style="font-size: 18px;font-weight: bold;" href="clubviewrelease.xhtml"/><br/>
+						<h:outputText value="Review status of releases issued by your club for this season."/>
+						<hr/>
+						<b:link value="Release Player" style="font-size: 18px;font-weight: bold;" href="startplayerrelease.xhtml"/><br/>
+						<h:outputText value="Release a player from your club for this season."/>
+						<hr/>
+					</b:panel>
+				</b:column>
+			</b:row>
+		
+			
+		<!-- convenor services  -->
+			<b:row rendered="#{profileBean.hasRoleList('C-ICE;C-PRES')}">
+				<b:column>
+					<b:panel collapsible="false" title="Ice Convenor Tools"  showCollapseLink="false" look="primary">
+						<b:link value="View Club Ice" style="font-size: 18px;font-weight: bold;" href="clubice.xhtml"/><br/>
+						<h:outputText value="Review ice submitted, used, and available."/>
+					</b:panel>
+				</b:column>
+			</b:row>
+			
+		</b:container>
+	</ui:define>
+</ui:composition>
+</html>

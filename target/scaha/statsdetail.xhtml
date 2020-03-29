@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui" 
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
+<f:view contentType="text/html">
+<h:head>
+	 <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+     </f:facet>
+	
+</h:head>
+<h:body >	
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+<ui:define name="content">
+	<p:panel header="Player Stats" footer="brought to you by iScaha">
+	<h:form id="form">
+	<p:dataTable id="detailedplayers" var="stat" rows="10"
+                         paginator="true" value="#{statsdetailBean.getCompleteplayers()}" headerText="Points" rendered="#{statsdetailBean.getDisplayplayer()}">
+               <f:facet name="header">
+		        <h:outputText value="#{statsdetailBean.getDisplaycompletetitle()}" />
+		    </f:facet>
+               <p:column headerText="#" style="width:25px;">  
+                <h:outputText value="#{stat.getRank()}" />
+            </p:column>  
+	        <p:column headerText="Name" sortBy="playername" filterBy="playername" filterMatchMode="contains" filterStyle="width:70px">  
+	        	<h:outputText value="#{stat.getPlayername()}" />  
+	        </p:column>
+	        <p:column headerText="Team" sortBy="teamname" filterBy="teamname" filterMatchMode="contains" filterStyle="width:70px">  
+	        	<h:outputText value="#{stat.getTeamname()}" />  
+	        </p:column>
+	        <p:column headerText="GP">  
+	        	<h:outputText value="#{stat.getGp()}" />  
+	        </p:column>
+	        <p:column headerText="G" >  
+	        	<h:outputText value="#{stat.getGoals()}" />  
+	        </p:column>
+	        <p:column headerText="A" >  
+	        	<h:outputText value="#{stat.getAssists()}" />  
+	        </p:column>
+	        <p:column headerText="Pts" >  
+	        	<h:outputText value="#{stat.getPoints()}" />  
+	        </p:column>
+	        <p:column headerText="PIMS" >  
+	        	<h:outputText value="#{stat.getPims()}" />  
+	        </p:column>
+	     </p:dataTable>
+	     <br></br>
+  		<div align="center"><p:commandButton id="closeplayers" value="Close" rendered="#{statsdetailBean.getDisplayplayer()}" ajax="true" action="#{statsdetailBean.gotoLeaderStats()}"/></div>
+   
+   		<p:dataTable id="detailedgoalies" var="stat" rows="10"
+                      paginator="true" value="#{statsdetailBean.getCompletegoalies()}" headerText="Save %" rendered="#{statsdetailBean.getDisplaygoalie()}">
+               <f:facet name="header">
+		        Goalie Stats
+		    </f:facet>
+               <p:column headerText="#" style="width:25px;">  
+                <h:outputText value="#{stat.getRank()}" />
+            </p:column>  
+	        <p:column headerText="Name" sortBy="playername" filterBy="playername" filterMatchMode="contains" filterStyle="width:70px">  
+	        	<h:outputText value="#{stat.getPlayername()}" />  
+	        </p:column>
+	        <p:column headerText="Team" sortBy="teamname" filterBy="teamname" filterMatchMode="contains" filterStyle="width:70px">  
+	        	<h:outputText value="#{stat.getTeamname()}" />  
+	        </p:column>
+	        <p:column headerText="GP" >  
+	        	<h:outputText value="#{stat.getGp()}" />  
+	        </p:column>
+	        <p:column headerText="Mins" >  
+	        	<h:outputText value="#{stat.getMins()}" />  
+	        </p:column>
+	        <p:column headerText="Shots">  
+	        	<h:outputText value="#{stat.getShots()}" />  
+	        </p:column>
+	        <p:column headerText="Saves">  
+	        	<h:outputText value="#{stat.getSaves()}" />  
+	        </p:column>
+	        <p:column headerText="SV%">  
+	        	<h:outputText value="#{stat.getSavepercentage()}" />  
+	        </p:column>
+	        <p:column headerText="GAA">  
+	        	<h:outputText value="#{stat.getGaa()}" />  
+	        </p:column>
+	     </p:dataTable>
+  		<br></br>
+  		<div align="center"><p:commandButton id="closegoalies" value="Close" rendered="#{statsdetailBean.getDisplaygoalie()}" ajax="true" action="#{statsdetailBean.gotoLeaderStats()}"/></div>
+           
+		
+		
+	
+	</h:form>
+	</p:panel>
+</ui:define>
+</ui:composition>
+</h:body>
+</f:view>
+</html>

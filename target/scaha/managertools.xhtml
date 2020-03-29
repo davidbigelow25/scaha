@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:b="http://bootsfaces.net/ui">
+
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+<ui:define name="content">
+<b:container>
+<b:form id="newform">
+	<b:row>
+		<b:column span="6">
+			<b:panel id="panel10uteams" collapsible="false" look="primary" 
+				large-screen="full-width"
+		    	medium-screen="half"
+		    	small-screen="one-third"
+		    	tiny-screen="one-third"
+			>
+				<f:facet name="heading">
+					<h:outputText value="10U and Up Manager Tools"/> 
+		        </f:facet> 
+		        <div class="NewsText"><h:outputText value="#{managertoolBean.getBody()}" escape="false" /></div>
+			</b:panel>
+		</b:column>
+		<b:column span="6">	
+			<b:panel id="panel8uteams" collapsible="false" look="primary" 
+				large-screen="full-width"
+		    	medium-screen="half"
+		    	small-screen="one-third"
+		    	tiny-screen="one-third"
+			>
+				<f:facet name="heading">
+					<h:outputText value="8U Manager Tools"/> 
+		        </f:facet> 
+		        <div class="NewsText"><h:outputText value="#{managertoolBean.getU8body()}" escape="false" /></div>
+			</b:panel>
+			
+		</b:column>
+	</b:row>
+</b:form>
+</b:container>
+
+
+	
+		<h:form id="form">
+		<!-- <p:panel header="Manager Tools" footer="brought to you by iScaha">
+			<div class="NewsText"><h:outputText value="#{managertoolBean.getBody()}" escape="false" /></div>
+		</p:panel> -->
+		<p:panel header="Edit The Manager Content" widgetVar="panelwv#" rendered="#{profileBean.hasRoleList('SUSER')}" toggleable="true">	
+   			10U Tool
+   			<p:editor  id="editor" widgetVar="edit" value="#{managertoolBean.body}" rendered="true"/>
+			<p:separator />
+			8U Tool
+			<p:editor  id="u8editor" widgetVar="edit" value="#{managertoolBean.u8body}" rendered="true"/>
+  			<p:commandButton value="Update Manager Tools" id="update" ajax="false" action="#{managertoolBean.updateManagertool()}" update="@form"/>
+			
+		  
+		</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

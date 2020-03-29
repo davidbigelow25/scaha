@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui" 
+     xmlns:b="http://bootsfaces.net/ui"
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
+<f:view contentType="text/html">
+<h:head>
+	 <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+     </f:facet>
+	
+</h:head>
+<h:body >	
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+<ui:define name="content">
+<b:container>
+	<b:form>
+	<b:row>
+		<b:column span="12">
+			<b:panel id="panelgames" collapsible="false" look="primary" 
+				large-screen="full-width"
+		    	medium-screen="full-width"
+		    	small-screen="one-third"
+		    	tiny-screen="one-third"
+			>
+				<f:facet name="heading">
+					<h:outputText value="SCAHA Calendar of Events"/> 
+		        </f:facet> 
+				<b:dataTable 
+					id="coachcertification" 
+					var="link"
+					value="#{coachlinksBean.getCertificationslinklist()}" 
+					editable="false" 
+					select="false"
+					paginated="false" 
+					border="true"
+					searching="true"
+					>
+			   		<f:facet name="header">
+			    	    Certification Information
+			    	</f:facet>
+                	<b:dataTableColumn styleClass="mtrxColumn">
+                   		<a href="#{link.getLinkurl()}" target="_blank">#{link.getLinklabel()}</a>
+			        </b:dataTableColumn>
+			    </b:dataTable>
+			    <br></br>
+			    <b:dataTable 
+					id="coachinformation" 
+					var="link"
+					value="#{coachlinksBean.getInformationlinklist()}" 
+					editable="false" 
+					select="false"
+					paginated="false" 
+					border="true"
+					searching="true"
+					>
+			   		<f:facet name="header">
+			    	    General Information
+			    	</f:facet>
+                	<b:dataTableColumn styleClass="mtrxColumn">
+                   		<a href="#{link.getLinkurl()}" target="_blank">#{link.getLinklabel()}</a>
+			        </b:dataTableColumn>
+			    </b:dataTable>
+			 	<br></br>
+			 	<b:dataTable 
+					id="coachscreening" 
+					var="link"
+					value="#{coachlinksBean.getScreeningslinklist()}" 
+					editable="false" 
+					select="false"
+					paginated="false" 
+					border="true"
+					searching="true"
+					>
+			   		<f:facet name="header">
+			    	    Screening Information
+			    	</f:facet>
+                	<b:dataTableColumn styleClass="mtrxColumn">
+                   		<a href="#{link.getLinkurl()}" target="_blank">#{link.getLinklabel()}</a>
+			        </b:dataTableColumn>
+			    </b:dataTable>
+			</b:panel>
+		</b:column>
+	</b:row>
+	</b:form>
+</b:container>
+</ui:define>
+</ui:composition>
+</h:body>
+</f:view>
+</html>

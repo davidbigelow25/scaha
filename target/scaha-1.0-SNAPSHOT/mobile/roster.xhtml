@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/templates/mobilelayout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+     xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+<ui:define name="content">
+<h:body>
+<h:form>
+<h:outputText value="Roster" style="font-size: 18px; font-weight: bold;"/>
+<table border="0" width="100%">
+		<tr>
+			<td>
+				<h:outputText value="Age Group:" style="font-size: 14px; "/>
+				<p:spacer height="3" width="4" />
+		        <p:selectOneButton id="division" value="#{rosterBean.agegroup}">
+		            <f:selectItem itemLabel="Squirt" itemValue="squirt" />
+		            <f:selectItem itemLabel="Peewee" itemValue="peewee" />
+		            <f:selectItem itemLabel="Bantam" itemValue="bantam" />
+		            
+		        </p:selectOneButton>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<h:outputText value="Skill Level:" style="font-size: 14px; "/>
+				<p:spacer height="3" width="4" />
+		        <p:selectOneButton id="skilllevel" value="#{rosterBean.skillgroup}">
+		            <f:selectItem itemLabel="A" itemValue="A" />
+		            <f:selectItem itemLabel="BB" itemValue="BB" />
+		            <f:selectItem itemLabel="B" itemValue="B" />
+		        </p:selectOneButton>
+		        <p:spacer height="3" width="4" />
+		        <p:commandButton value="Load Teams" widgetVar="loadteamsbutton" id="loadteamsbutton" ajax="true" action="#{rosterBean.loadTeams()}" rendered="#{rosterBean.displayloadteams}" update="@form" />
+			    
+		    </td>
+		</tr>
+		<tr>
+			<td align="left">
+			    <h:outputText value="Select Team:" style="font-size: 14px; "/>
+			</td>
+		</tr>
+		<tr>
+			<td align="left">
+			    <p:spacer height="3" width="4" />
+		        <ui:repeat id="teambuttons" value="#{rosterBean.getTeams()}" var="team" varStatus="VarStatus">
+			    	<p:commandButton value="#{team.getTeamname()}" ajax="true" action="#{rosterBean.loadTeam(team.getIdteam())}"  update="@form" />
+			    	<p:spacer height="20" width="4" />
+			    </ui:repeat>
+			</td>
+		</tr>
+		<tr>
+			<Td><p:spacer height="3" width="1" />
+			</Td>
+		</tr>
+		<tr>
+			<Td><h:outputText value="#{rosterBean.teamname} " style="font-size: 14px; font-weight: bold;"/>:
+			</Td>
+		</tr>
+		<tr>
+			<td valign="top" width="100%">
+				<p:dataTable id="playersearchresult" var="rosteredit" value="#{rosterBean.getPlayers()}" style="width:70%;" >
+                
+            	<p:column headerText="#" style="width:10%;">  
+	               <h:outputText value="#{rosteredit.jerseynumber}" />  
+	            </p:column>  
+		        <p:column headerText="Last Name" style="width:45%;">  
+		        	<h:outputText value="#{rosteredit.getLastname()}" />  
+		        </p:column>
+		        <p:column headerText="First Name" style="width:45%;">  
+		        	<h:outputText value="#{rosteredit.getFirstname()}" />  
+		        </p:column>
+			          
+			 </p:dataTable>
+			 <p:dataTable id="coachesresult" var="rosteredit" value="#{rosterBean.getCoaches()}" style="width:70%;">
+                <p:column style="width:10%;">  
+	                   	<h:outputText value="#{rosteredit.jerseynumber}" />  
+	            </p:column>  
+		        <p:column style="width:45%;">  
+		        	<h:outputText value="#{rosteredit.getLastname()}" />  
+		        </p:column>
+		        <p:column style="width:45%;">  
+		        	<h:outputText value="#{rosteredit.getFirstname()}" />  
+		        </p:column>
+			 </p:dataTable>
+			</td>
+		</tr>
+	</table>
+</h:form>
+</h:body>
+</ui:define>
+</ui:composition>
+

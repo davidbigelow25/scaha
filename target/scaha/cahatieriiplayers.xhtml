@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<f:metadata>
+<f:event type="preRenderView" listener="#{profileBean.verifyUserLogin()}" />
+</f:metadata>
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:define name="content">
+	
+	<p:notificationBar position="top" effect="slide" widgetVar="bar" styleClass="top">  
+    	<h:outputText value="SCAHA" style="color:#FFCC00;font-size:36px;" />  
+	</p:notificationBar>  
+  	<h:form id="mess">
+    		<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />    
+		</h:form>
+	<h:form>
+			
+			<p:panel id ="panel" header="CAHA Tier II Players:">
+				<p:panel header="Export LOI Options">
+			        <h:commandLink>
+			            <p:graphicImage value="/images/excel.png" />
+			            <p:dataExporter type="xls" target="listofplayers" fileName="tieriiplayerlist" />
+			        </h:commandLink>
+			    </p:panel>
+				<p:dataTable id="listofplayers" var="player" rowKey="#{player.IDplayer}" value="#{cahadataBean.getPlayerdatamodel()}" paginator="true" rows="10" autoupdate="false">
+                	<p:column >  
+			      		<f:facet name="header">
+		            		<h:outputText value="Player ID" />
+				        </f:facet>
+			            <h:outputText value="#{player.getIdplayer()}" />  
+			        </p:column>  
+			        <p:column >  
+			            <f:facet name="header">
+		            		<h:outputText value="First Name" />
+				        </f:facet>
+			            
+			            <h:outputText value="#{player.getFirstname()}" />  
+			        </p:column>  
+			        <p:column >  
+			            <f:facet name="header">
+		            		<h:outputText value="Last Name" />
+				        </f:facet>
+			            
+			            <h:outputText value="#{player.getLastname()}" />  
+			        </p:column>  
+			        <p:column >  
+			            <f:facet name="header">
+		            		<h:outputText value="Role" />
+				        </f:facet>
+			            
+			            <h:outputText value="#{player.getRostertype()}" />  
+			        </p:column>
+			        
+			        <p:column >  
+			            <f:facet name="header">
+		            		<h:outputText value="2014 Club" />
+				        </f:facet>
+			            
+			            <h:outputText value="#{player.getPreviousteam()}" />  
+			        </p:column>
+			        <p:column >  
+			            <f:facet name="header">
+		            		<h:outputText value="2014 Team Id" />
+				        </f:facet>
+			            
+			            <h:outputText value="#{player.getTeamid()}" />  
+			        </p:column>
+			        <p:column >  
+			            <f:facet name="header">
+		            		<h:outputText value="2014 Team" />
+				        </f:facet>
+			            
+			            <h:outputText value="#{player.getCurrentteam()}" />  
+			        </p:column>
+			        <p:column >  
+			            <f:facet name="header">
+		            		<h:outputText value="Division" />
+				        </f:facet>
+			            
+			            <h:outputText value="#{player.getDivision()}" />  
+			        </p:column>
+			        
+			        <p:column >  
+			            <f:facet name="header">
+		            		<h:outputText value="DOB" />
+				        </f:facet>
+			            
+			            <h:outputText value="#{player.getDob()}" />  
+			        </p:column>
+			        <p:column >  
+			            <f:facet name="header">
+		            		<h:outputText value="Player Up" />
+				        </f:facet>
+			            
+			            <h:outputText value="#{player.getPlayerup()}" />  
+			        </p:column>
+			        <p:column >  
+			            <f:facet name="header">
+		            		<h:outputText value="Added Date" />
+				        </f:facet>
+			            
+			            <h:outputText value="#{player.getLoidate()}" />  
+			        </p:column>
+			        <p:column  >  
+			            <f:facet name="header">
+		            		<h:outputText value="Eligibility Date" />
+				        </f:facet>
+			            
+			            <h:outputText value="#{player.getEligibility()}" />  
+			        </p:column>
+			        <p:column  >  
+			            <f:facet name="header">
+		            		<h:outputText value="Drop Date" />
+				        </f:facet>
+			            
+			            <h:outputText value="#{player.getDrop()}"/>  
+			        </p:column>
+			        <p:column  >  
+			            <f:facet name="header">
+		            		<h:outputText value="Active" />
+				        </f:facet>
+			            
+			            <h:outputText value="#{player.getActive()}" />  
+			        </p:column>
+			    </p:dataTable>
+			</p:panel>
+			
+			<p:separator id="customSeparator" style="width:800px;height:2px" />    
+	</h:form>
+	<h:form>
+			<div align="center"><p:commandButton id="closeaddteams" value="Close" ajax="false" actionListener="#{reviewloiBean.closePage()}"/></div>
+	</h:form>
+	</ui:define>
+</ui:composition>
+</html>

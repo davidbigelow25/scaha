@@ -1,0 +1,344 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui" 
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+     xmlns:b="http://bootsfaces.net/ui"
+>
+<f:view contentType="text/html">
+<h:head>
+	 <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+     </f:facet>
+     
+</h:head>
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+<ui:define name="content">
+<b:container>
+	<b:row>
+		<b:column>
+			<b:form>
+			<b:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+			<b:panel id ="panel" collapsible="false" look="primary" style="text-align: center;">
+				<f:facet name="heading">
+					<h:outputText value="SCAHA Scoreboard" />
+				</f:facet>
+				<!-- <b:panelGrid colSpans="1,10,1">
+					<h:outputText value=" " /> -->
+					<b:pillLinks id="datemenubar">
+						<b:navCommandLink actionListener="#{gamecentralBean.loadpreviousweek(gamecentralBean.currentfirstdateofweek)}" update="datemenubar" ajax="false">
+							<b:iconAwesome name="arrow-circle-left" size="2x"/>
+						</b:navCommandLink >
+						<ui:repeat var="days" value="#{gamecentralBean.getListofdays()}" >
+							<b:navCommandLink style="text-align: center;white-space: nowrap;" 
+								id="daylink"
+								rendered="#{not days.iscenternav}"
+								actionListener="#{gamecentralBean.generateListofdays(days.dateofday)}" 
+								update="@form" 
+								ajax="true"
+								visible="#{days.visible}"	
+								>
+								<h:outputText value="#{days.dayofweek}" />
+								<br></br>
+								<h:outputText value="#{days.datemonth} #{days.datenumber}" />
+							</b:navCommandLink>
+							
+							<b:navCommandLink style="font-weigth: bold;text-align: center;white-space: nowrap;" 
+								id="daylinkbold"
+								rendered="#{days.iscenternav}"
+								actionListener="#{gamecentralBean.generateListofdays(days.dateofday)}" 
+								update="@form" 
+								ajax="true"
+								>
+								<h:outputText value="#{days.dayofweek}" style="font-weight: bold;" />
+								<br></br>
+								<h:outputText value="#{days.datemonth} #{days.datenumber}" />
+							</b:navCommandLink>
+						</ui:repeat>
+					    <b:navCommandLink actionListener="#{gamecentralBean.loadnextweek(gamecentralBean.currentfirstdateofweek)}" update="datemenubar" ajax="false">
+							<b:iconAwesome name="arrow-circle-right" size="2x"/>
+						</b:navCommandLink>
+						
+						<b:navCommandLink >
+							<b:icon 
+								name="calendar" 
+								size="2x" 
+								update="@form" 
+								onclick="ajax:gamecentralBean.showdatepicker()"
+								rendered="#{not gamecentralBean.datepickershow}"/>
+							<!--  --> 
+							<b:dateTimePicker 
+								value="#{gamecentralBean.selecteddate}"
+								changeMonth="true" 
+								changeYear="true"
+								firstDay="0"
+								numberOfMonths="1"
+								mode="inline"
+								update="@form"
+								show-time="false"
+								col-lg="2"
+								ondtchange="ajax:gamecentralBean.loadgamesfromdatepicker()"
+								rendered="#{gamecentralBean.datepickershow}"/>
+							
+			
+						</b:navCommandLink>
+						<b:selectOneMenu id="myschedules" value="#{gamecentralBean.selectedschedule}" onchange="ajax:gamecentralBean.onScheduleChangefordate()" update="@form"
+							large-screen="one-third"
+	    					medium-screen="one-third"
+	    					small-screen="full-width"
+	    					tiny-screen="full-width"
+							>
+					    	<f:selectItem itemLabel="All Divisions" itemValue="0"/>
+					    	<f:selectItems value="#{gamecentralBean.getSchedules()}" var="schedule" itemLabel="#{schedule.getDescription()}" itemValue="#{schedule.getKey()}"/>
+					    </b:selectOneMenu>
+					</b:pillLinks>
+					
+				    <!-- <h:outputText value=" " />
+				</b:panelGrid> -->
+				
+			</b:panel>
+			<br></br>
+			
+			<b:panel id ="games" collapsible="false" look="primary" style="text-align: center;">
+				<f:facet name="heading">
+					<h:outputText value="#{gamecentralBean.GetTitleSelectedDay()}" />
+				</f:facet>
+					<!-- 
+				 		
+				 		column 1 is logo (1)
+				 		column 2 is team name and record (2)
+				 		column 3 is period by period scoring (2) - when game is final - this is hidden on xs and small screens
+				 		column 4 is total score (1)
+				 		column 5 is location and time (2)
+				 		column 6 is players to watch (2) - this is hidden on xs and small screens
+				 		column 7 is button options (1)
+				 	
+				 	 -->
+				<ui:repeat var="game" value="#{gamecentralBean.getListofgames()}" >	            
+				 	<!-- header row -->
+				 	<h:outputText span="6" style="float:left;font-weight:bold;font-size: 12px;" value="#{game.getLocation()} #{game.getGametime()} - #{game.getDisplaydivision()}" />
+				 	<h:outputText span="6" style="float:right;font-weight:bold;font-size: 12px;" value="#{game.getStatus()}" />
+				 	<br></br>
+				 	<br></br>
+				 	<b:panelGrid colSpans="3,2,3,2,2" style="padding: 0;" hidden="xs,sm">
+			 			<!-- column headers -->
+				 		<h:outputText value=" "/>
+				 		<h:outputText rendered="#{game.renderperiodtotals}"  >
+				 			<table cellpadding="0" cellspacing="0" border="0">
+				 				<tr>
+				 					<td width="30" align="center"><h:outputText style="font-weight: bold;" value="1" /></td>
+				 					<td width="30" align="center"><h:outputText style="font-weight: bold;" value="2" /></td>
+				 					<td width="30" align="center"><h:outputText style="font-weight: bold;" value="3" /></td>
+				 					<td width="100" align="center"><h:outputText style="font-weight: bold;" value="T" /></td>
+				 				</tr>
+				 			</table>
+				 		</h:outputText>
+				 		<h:outputText value=" "  hidden="xs,s"/>
+				 		<h:outputText value="Players to Watch"  rendered="#{not game.renderperiodtotals}"/>
+				 		<h:outputText value=" "/>
+				 		
+				 		<!-- visitor team -->
+				 		<h:outputText>
+				 			<table cellpadding="0" cellspacing="0" border="0">
+				 				<tr>
+				 					<td width="55">
+				 						<p:graphicImage value="#{clubBean.getClubLogoByParmId()}"  width="45" height="45">
+							            	<f:param id="target" name="target" value="#{game.getAwayclubid()}" />
+									 	</p:graphicImage>	
+				 					</td>
+				 					<td style="text-align: left;">
+				 						<h:outputText style="font-weight: bold;font-size: 15px;" value="#{game.getAwayteam()}" />
+							 			<br></br>
+							 			<h:outputText style="color: grey;font-size: 12px;" value="(#{game.getAwaywins()}-#{game.getAwaylosses()}-#{game.getAwaywins()} #{game.getAwaypoints()}pts)" />		
+				 					</td>
+				 				</tr>
+					 		</table>
+					 	</h:outputText>
+				 		<h:outputText rendered="#{game.renderperiodtotals}"  hidden="xs,s">
+				 			<table cellpadding="0" cellspacing="0" border="0">
+				 				<!-- <tr>
+				 					<td width="30" align="center"><h:outputText style="font-weight: bold;" value="1" /></td>
+				 					<td width="30" align="center"><h:outputText style="font-weight: bold;" value="2" /></td>
+				 					<td width="30" align="center"><h:outputText style="font-weight: bold;" value="3" /></td>
+				 					<td width="100" align="center"><h:outputText style="font-weight: bold;" value="T" /></td>
+				 				</tr> -->
+				 				<tr>
+				 					<td width="30" align="center"><h:outputText value="#{game.getAwayper1goals()}" /></td>
+				 					<td width="30" align="center"><h:outputText value="#{game.getAwayper2goals()}" /></td>
+				 					<td width="30" align="center"><h:outputText value="#{game.getAwayper3goals()}" /></td>
+				 					<td width="100"><h:outputText style="font-weight: bold;font-size: 20px;" value="#{game.getAwayscore()}" /></td>
+				 				</tr>
+				 			</table>
+				 		</h:outputText>
+				 		<h:outputText  hidden="xs,s">
+				 			<h:outputText style="font-weight: bold;" value="#{game.getLocation()}"  />
+				 			<br></br>
+				 			<h:outputText value="#{game.getGametime()} - #{game.getDisplaydivision()}" />
+				 			<br></br>
+				 			<h:outputText value="#{game.getStatus()}" />
+				 		</h:outputText>
+				 		<h:outputText  rendered="#{not game.renderperiodtotals}">
+				 			<table cellpadding="0" cellspacing="0" border="0">
+				 				<!-- <tr>
+				 					<td width="200" align="center"><h:outputText style="font-weight: bold;font-size:12px;" value="Players to Watch" /></td>
+				 				</tr> -->
+				 				<tr>
+				 					<td width="200" align="left"><h:outputText style="font-size:11px;" value="#{game.getAwaytopscorer()}" /></td>
+				 				</tr>
+				 				<tr>
+				 					<td width="200" align="left"><h:outputText style="font-size:10px;" value="#{game.getAwaytopscorergoals()}G, #{game.getAwaytopscorerassists()}A, #{game.getAwaytopscorerpoints()}PTS" /></td>
+				 				</tr>
+				 				<tr>
+				 					<td width="200" align="left"><h:outputText style="font-size:11px;" value="#{game.getAwaytopgoalie()}" /></td>
+				 				</tr>
+				 				<tr>
+				 					<td width="200" align="left"><h:outputText style="font-size:10px;" value="#{game.getAwaytopgoalieshots()}SHOTS, #{game.getAwaytopgoaliesaves()}SVS, #{game.getAwaytopgoaliepercentage()}SV%" /></td>
+				 				</tr>
+				 			</table>
+				 			<hr style="margin-top: 2px; margin-bottom: 2px"></hr>
+				 		</h:outputText>
+				 		<b:commandButton value="Box Score" 
+					                       action="#{gamecentralBean.gotoBoxscore(game.idlivegame)}" look="info"
+					                       size="sm"
+					                       >
+					       <f:ajax execute="@this" render="@form" />
+					    </b:commandButton>
+				 		
+				 		
+				 		<!-- home team -->
+				 		<h:outputText  hidden="xs,s">
+				 			<table cellpadding="0" cellspacing="0" border="0">
+				 				<tr>
+				 					<td width="55">
+				 						<p:graphicImage value="#{clubBean.getClubLogoByGameObject(game,'Home')}"  width="45" height="45">
+							            	<f:param id="targethome" name="targethome" value="#{game.getHomeclubid()}" />
+									 	</p:graphicImage>
+					 				</td>
+				 					<td style="text-align: left;">
+				 						<h:outputText style="font-weight: bold;font-size: 15px;" value="#{game.getHometeam()}" />
+							 			<br></br>
+							 			<h:outputText style="color: grey;font-size: 12px;" value="(#{game.getHomewins()}-#{game.getHomelosses()}-#{game.getHomewins()} #{game.getHomepoints()}pts)" />		
+				 					</td>
+				 				</tr>
+					 		</table>
+				 		</h:outputText>
+				 		<!-- <h:outputText rendered="#{not game.renderperiodtotals}"/> -->
+				 		<h:outputText rendered="#{game.renderperiodtotals}"  hidden="xs,s">
+				 			<table cellpadding="0" cellspacing="0" border="0">
+				 				<tr>
+				 					<td width="30" align="center"><h:outputText value="#{game.getHomeper1goals()}" /></td>
+				 					<td width="30" align="center"><h:outputText value="#{game.getHomeper2goals()}" /></td>
+				 					<td width="30" align="center"><h:outputText value="#{game.getHomeper3goals()}" /></td>
+				 					<td width="100"><h:outputText style="font-weight: bold;font-size: 20px;" value="#{game.getHomescore()}" /></td>
+				 				</tr>
+				 			</table>
+				 		</h:outputText>
+				 		<h:outputText value=" "  />
+				 		<h:outputText  rendered="#{not game.renderperiodtotals}">
+				 			<table cellpadding="0" cellspacing="0" border="0">
+				 				<tr>
+				 					<td width="200" align="left"><h:outputText style="font-size:11px;" value="#{game.getHometopscorer()}" /></td>
+				 				</tr>
+				 				<tr>
+				 					<td width="200" align="left"><h:outputText style="font-size:10px;" value="#{game.getHometopscorergoals()}G, #{game.getHometopscorerassists()}A, #{game.getHometopscorerpoints()}PTS" /></td>
+				 				</tr>
+				 				<tr>
+				 					<td width="200" align="left"><h:outputText style="font-size:11px;" value="#{game.getHometopgoalie()}" /></td>
+				 				</tr>
+				 				<tr>
+				 					<td width="200" align="left"><h:outputText style="font-size:10px;" value="#{game.getHometopgoalieshots()}SHOTS, #{game.getHometopgoaliesaves()}SVS, #{game.getHometopgoaliepercentage()}SV%" /></td>
+				 				</tr>
+				 			</table>
+				 		</h:outputText>
+				 		<h:outputText>
+				 			
+				 		<b:commandButton value="Scoresheet" 
+					                       action="#{gamecentralBean.gotoScoresheet(game.idlivegame)}" look="info"
+					                       size="sm"
+					                       >
+					       <f:ajax execute="@this" render="@form" />
+					    </b:commandButton>
+					    </h:outputText>
+				 	</b:panelGrid>
+				 	
+				 	<!-- use this one on smaller screens -->
+				 	<b:panelGrid colSpans="12" style="padding: 0;" hidden="md,lg">
+			 			<!-- visitor team -->
+				 		<h:outputText>
+				 			<table cellpadding="0" cellspacing="0" border="0">
+				 				<tr>
+				 					<td width="55">
+				 						<p:graphicImage value="#{clubBean.getClubLogoByGameObjectAway(game,'Away')}"  width="45" height="45">
+							            	<f:param id="targetaway" name="targetaway" value="#{game.getAwayclubid()}" />
+									 	</p:graphicImage>	
+				 					</td>
+				 					<td style="text-align: left;" width="75%">
+				 						<h:outputText style="font-weight: bold;font-size: 15px;" value="#{game.getAwayteam()}" />
+							 			<br></br>
+							 			<h:outputText style="color: grey;font-size: 12px;" value="(#{game.getAwaywins()}-#{game.getAwaylosses()}-#{game.getAwaywins()} #{game.getAwaypoints()}pts)" />		
+				 					</td>
+				 					<td style="text-align: right;" width="25%">
+				 						<br></br>
+				 						<b:commandButton value="Box Score" 
+									                       action="#{gamecentralBean.gotoBoxscore(game.idlivegame)}" look="info"
+									                       large-screen="full-width"
+									    					medium-screen="full-width"
+									    					small-screen="full-width"
+									    					tiny-screen="full-width">
+									       <f:ajax execute="@this" render="@form" />
+									    </b:commandButton>		
+				 					</td>
+				 				</tr>
+					 		</table>
+					 	</h:outputText>
+				 		<!-- home team -->
+				 		<h:outputText  hidden="xs,s">
+				 			<table cellpadding="0" cellspacing="0" border="0">
+				 				<tr>
+				 					<td width="55">
+				 						<p:graphicImage value="#{clubBean.getClubLogoByGameObjectHome(game,'Home2')}"  width="45" height="45">
+							            	<f:param id="targethome2" name="targethome2" value="#{game.getHomeclubid()}" />
+									 	</p:graphicImage>
+					 				</td>
+				 					<td style="text-align: left;" width="75%">
+				 						<h:outputText style="font-weight: bold;font-size: 15px;" value="#{game.getHometeam()}" />
+							 			<br></br>
+							 			<h:outputText style="color: grey;font-size: 12px;" value="(#{game.getHomewins()}-#{game.getHomelosses()}-#{game.getHomewins()} #{game.getHomepoints()}pts)" />		
+				 					</td>
+				 					<td style="text-align: right;" width="25%">
+				 						<br></br>
+				 						<b:commandButton value="Scoresheet" 
+									                       action="#{gamecentralBean.gotoScoresheet(game.idlivegame)}" look="info"
+									                       large-screen="full-width"
+									    					medium-screen="full-width"
+									    					small-screen="full-width"
+									    					tiny-screen="full-width">
+									       <f:ajax execute="@this" render="@form" />
+									    </b:commandButton>		
+				 					</td>
+				 				</tr>
+					 		</table>
+				 		</h:outputText>
+				 	</b:panelGrid>
+				 	<hr></hr>
+				</ui:repeat>
+			</b:panel>
+			</b:form>
+		</b:column>
+	</b:row>
+</b:container>
+
+
+
+		
+</ui:define>
+
+</ui:composition>
+</f:view>
+</html>

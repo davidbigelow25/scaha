@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+     xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+>
+<ui:define name="content">
+<h:body>
+<table border="0">
+		<tr>
+			<td valign="top">
+				<div id="page-div">
+					<h:form id="form">
+					<p:panel header="Latest SCAHA News." > 
+					  	<f:facet name="footer">
+					        Copyright 2016.  Website maintained by <a href="mailto:lahockeyfan2@yahoo.com?subject=SCAHA Website">Rob Foster/Dave Bigelow</a>
+					    </f:facet>
+					  	<p:panel header="Select Division(s) you want to email">
+					  		<table>
+					  			<tr>
+					  				<td width="50%">
+					  					<p:selectCheckboxMenu id="menu" value="#{groupemailBean.selectedgroups}" 
+				                              filter="true" filterMatchMode="contains" label="Select Division(s)" panelStyle="width:250px;height:250px;">
+								            <f:selectItems value="#{groupemailBean.groups}" var="theme" itemLabel="#{theme.displayname}" itemValue="#{theme.idemailgroup}" />
+								        </p:selectCheckboxMenu>
+					  				</td>
+					  				<td width="50%">
+					  					<p:selectCheckboxMenu id="bodmenu" value="#{groupemailBean.selectedscahagroups}" 
+			                              filter="true" filterMatchMode="contains" label="Select SCAHA Board Members(s)" panelStyle="width:250px;height:250px;">
+							            <f:selectItems value="#{groupemailBean.scahagroups}" var="theme" itemLabel="#{theme.displayname}" itemValue="#{theme.idemailgroup}" />
+							        </p:selectCheckboxMenu>
+					  				</td>
+					  			</tr>
+					  		</table>
+				        </p:panel>
+						
+				  	    <p:panel header="Enter Message to Managers" >	
+				   			
+				   			<h:panelGrid columns="3" cellpadding="3" id="edit-news-grid">  
+								<p:outputLabel for="subject" value="Subject:"></p:outputLabel>
+								<p:inputText id="subject" style="width:300px;" value="#{groupemailBean.subject}" required="true"/>
+							</h:panelGrid>
+							<p:separator />
+				   			<p:editor  id="neweditor" widgetVar="newnewsbody" value="#{groupemailBean.message}" rendered="true"/>
+							<p:separator />
+				  			<p:commandButton value="Send Email" id="add" ajax="false" action="#{groupemailBean.sendEmail()}" />
+							<p:spacer height="30" width="10" />
+						  
+						</p:panel>
+					</p:panel>
+					</h:form>
+				</div>
+			</td>
+			<td valign="top">
+				<p:spacer width="10" height="21" />
+			</td>
+		</tr>
+	</table>
+</h:body>
+</ui:define>
+</ui:composition>

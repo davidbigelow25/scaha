@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+<ui:define name="content">
+<div id="page-div">		
+<h:form id="form">
+	<p:fieldset>
+	<div class="NewsTitle">Who am I?</div>
+	  <div class="NewsDate">I don't know if I have an account, and what e-mail was used by SCAHA to create one.</div>  
+   	  <div class="NewsText">If a family member played in SCAHA they had to have a parent created account in the system.  
+   	  If you are uncertain of what email you used or cannot find your user account, 
+   	  simply type in the first THREE letters of your last name and we will pull up all the matches.   
+   	  <p/>
+   	  You then can click on the MAGNIFYING Glass on the right to see the basic info.  If this looks like you.. simply click the "send me info" button from the popup and the key account information will be sent to the e-mail we have on file.  
+   	  Please remember you do need access to the e-mail account in question. <p/>
+   	  If all else fails you can contact us and we will let you know if you have an account or need to create a new one (not hard to create if you do not have one).
+   	  </div>
+	</p:fieldset>
+	<p:spacer width="10px" height="10px" />
+   	<p:panel id ="panel" header="Search for Me:">
+		<p:messages id="messages" />	
+		<h:panelGrid columns="3" cellpadding="5">
+			<p:inputText id="searchforme" style="width:150px;" value="#{findMeBean.searchcriteria}" required="true" label="SearchName">
+				<f:validateLength minimum="3" />
+			</p:inputText>
+			<p:commandButton id="executesearch" value="Find Me" actionListener="#{findMeBean.meSearch()}" ajax="true" update="mesearchresult"/>
+			<p:message for="searchforme"/>
+		</h:panelGrid>
+		<p:dataTable id="mesearchresult" var="rdr" value="#{findMeBean.mydata}"  >
+	  		<f:facet name="header">  
+	            Select someone who looks like me  
+	        </f:facet> 
+			<p:column headerText="Searched Name">  
+				<h:outputText value="#{rdr.get(6)}" />  
+			</p:column>  
+			<p:column headerText="Acount Owner Name">  
+				<h:outputText value="#{rdr.getByKey('Acount Owner Name')}" />  
+			</p:column>  
+<!-- 		<p:column headerText="Street Address">  
+				<h:outputText value="#{rdr.get(7)}" />  
+			</p:column>  
+ -->
+			<p:column style="width:4%">
+                <p:commandButton id="selectButton" update=":form:display" oncomplete="PF('me').show()" icon="ui-icon-search" title="View">
+                <f:setPropertyActionListener value="#{rdr}" target="#{findMeBean.selectedrow}" />
+            </p:commandButton>
+        </p:column>
+		</p:dataTable>
+	</p:panel>
+	
+	<p:dialog header="Is This Me?" widgetVar="me" resizable="false" id="me"   showEffect="clip" hideEffect="fold" modal = "true">  
+ 
+        <h:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">
+            <h:outputText value="Account Owner:" />
+            <h:outputText value="#{findMeBean.selectedrow.getByKey('Acount Owner Name')}" style="font-weight:bold"/>
+            <h:outputText value="Searched Name" />
+            <h:outputText value="#{findMeBean.selectedrow.get(6)}" style="font-weight:bold"/>
+<!--             <h:outputText value="Street Address:" />
+            <h:outputText value="#{findMeBean.selectedrow.get(7)}" style="font-weight:bold"/>
+ -->            <h:outputText value="e-mail address:" />
+            <h:outputText value="#{findMeBean.selectedrow.get(13)}" style="font-weight:bold"/>
+        </h:panelGrid>
+ 
+     <p:commandButton value="Send Me Info" update="me" action="#{findMeBean.send()}"  style="margin-top:10px;" icon="ui-icon-disk" onclick="PF('me').hide()" />  
+	 <p:spacer width="10px" height="10px" />
+	 <p:commandButton value="Cancel" reset="true" style="margin-top:10px;" icon="ui-icon-disk" onclick="PF('me').hide()" />  
+ 
+    </p:dialog>	
+</h:form>
+</div>
+</ui:define>
+</ui:composition>
+</html>

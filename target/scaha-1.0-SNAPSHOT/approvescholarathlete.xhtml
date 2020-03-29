@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui" 
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
+<f:view contentType="text/html">
+<h:head>
+	 <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+     </f:facet>
+	<!-- <f:metadata>
+		<f:event type="preRenderView" listener="#{profileBean.verifySU()}" />
+	</f:metadata> -->
+</h:head>
+<h:body >	
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+<ui:define name="content">
+			<h:form id="scholarform">
+			<h:panelGrid columns="2" cellpadding="5">
+				<h:column><b>Display Scholar Athlete Applications:</b></h:column>
+				<h:column>
+					<p:selectOneMenu value="#{scholarathleteBean.selecteddisplayfilter}" >
+				    	<f:selectItem itemLabel="Pending Scholars" itemValue="0"/>
+				    	<f:selectItem itemLabel="Approved Scholars" itemValue="1"/>
+				    	<f:selectItem itemLabel="All Scholars" itemValue="4"/>
+				    </p:selectOneMenu>
+				</h:column>
+				<h:column>
+					<p:commandButton id="updatedisplay" value="Load Scholar Athletes" actionListener="#{scholarathleteBean.playersDisplay()}" ajax="true" update="@form"/>
+				</h:column>
+			</h:panelGrid>
+			<br></br>
+			<p:panel header="Export Approved Scholar Athletes" id="scholardownload" >
+		        <h:commandLink>
+		            <p:graphicImage value="/images/excel.png" />
+		            <p:dataExporter type="xls" target="hiddenlistofplayers" fileName="scholarathletes" />
+		        </h:commandLink>
+		    </p:panel>	
+			<ui:fragment id="edit-transfers" >
+				<p:panel id ="scholathletespanel" header="Submitted Scholar Athletes">
+					<p:dataTable id="athletes" paginator="true" var="result" value="#{scholarathleteBean.getListofpendingplayers()}" selection="#{scholarathleteBean.selectedpendingscholarathlete}" rows="10" autoupdate="false">
+			            <f:facet name="header">  
+				        	2015-2016 Scholar Athletes Submitted
+				        </f:facet> 
+				        <p:column headerText="Name" style="text-align: center">  
+				            <h:outputText value="#{result.getPlayername()}" />  
+				        </p:column>  
+				        <p:column headerText="Club" style="text-align: center">  
+				            <h:outputText value="#{result.getCurrentteam()}" />  
+				        </p:column>  
+	        			<p:column headerText="Report Card" style="text-align: center">  
+				            <p:commandButton id="openscoresheet" icon="ui-icon-extlink" onclick="openscoresheet('#{result.getReportcard()}')" ajax="false"/>
+				        </p:column>  
+	        			<p:column headerText="">
+	        				<p:commandButton id="athleteoptions#{result.getIdscholarathlete}" value="Approve" action="#{scholarathleteBean.approveScholar(result)}" rendered="#{not result.isapproved}" update="athletes"/>
+	        				<h:outputText value="Approved" rendered="#{result.isapproved}"/>
+				        </p:column>  
+				    </p:dataTable>
+				    
+				    <p:dataTable rendered="false" id="hiddenlistofplayers" paginator="true" var="result" value="#{scholarathleteBean.getListofpendingplayers()}" selection="#{scholarathleteBean.selectedpendingscholarathlete}" rows="10" autoupdate="false">
+			            <f:facet name="header">  
+				        	2015-2016 Scholar Athletes Approved
+				        </f:facet> 
+				        <p:column style="text-align: center">  
+				            <f:facet name="header">  
+					        	<h:outputText value="Name" />
+					        </f:facet> 
+				            <h:outputText value="#{result.getPlayername()}" />  
+				        </p:column>  
+				        <p:column  style="text-align: center">  
+				            <f:facet name="header">  
+					        	<h:outputText value="Club" />
+					        </f:facet>
+					        <h:outputText value="#{result.getCurrentteam()}" />  
+				        </p:column>  
+	        			<p:column  style="text-align: center">  
+				            <f:facet name="header">  
+					        	<h:outputText value="Address" />
+					        </f:facet>
+					        <h:outputText value="#{result.getAddress()}" />
+				        </p:column>  
+	        			<p:column  style="text-align: center">  
+				            <f:facet name="header">  
+					        	<h:outputText value="City" />
+					        </f:facet>
+					        <h:outputText value="#{result.getCity()}" />
+				        </p:column>  
+	        			<p:column style="text-align: center">  
+				            <f:facet name="header">  
+					        	<h:outputText value="State" />
+					        </f:facet>
+					        <h:outputText value="#{result.getState()}" />
+				        </p:column>  
+	        			<p:column style="text-align: center">  
+				            <f:facet name="header">  
+					        	<h:outputText value="Zip" />
+					        </f:facet>
+					        <h:outputText value="#{result.getZip()}" />
+				        </p:column>
+				        <p:column style="text-align: center">  
+				            <f:facet name="header">  
+					        	<h:outputText value="Status" />
+					        </f:facet>
+					        <h:outputText value="Approved" rendered="#{result.isapproved}"/>
+					        <h:outputText value="Pending" rendered="#{not result.isapproved}"/>
+				        </p:column>  
+	        		</p:dataTable>
+				    <script>
+						function openscoresheet(filename){
+							window.open('http://scaha.com/scholarathletes/' + filename,'mywindow');
+						}
+					</script>
+	 				
+				</p:panel>
+			</ui:fragment>
+			</h:form>
+		
+	
+</ui:define>
+</ui:composition>
+</h:body>
+</f:view>
+</html>

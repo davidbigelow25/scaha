@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui" 
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
+<f:view contentType="text/html">
+<h:head>
+	 <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+     </f:facet>
+	<f:metadata>
+		<f:event type="preRenderView" listener="#{profileBean.verifySU()}" />
+	</f:metadata>
+</h:head>
+<h:body >	
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+<ui:define name="content">
+
+<h:form id="rosterform">		
+
+	<p:panel id ="panel" header="Download List of Players/Goalies Receiving Patches">
+		<p:selectOneMenu styleClass="ddlistbox" id="patchtype" value="#{patchBean.selectedpatch}" >
+  			<f:selectItem style="font-size:10pt;" itemLabel="Select a Patch" itemValue="0" />
+  			<f:selectItem style="font-size:10pt;" itemLabel="Hat Trick" itemValue="1" />
+  			<f:selectItem style="font-size:10pt;" itemLabel="Playmaker" itemValue="2" />
+  			<f:selectItem style="font-size:10pt;" itemLabel="Shutout" itemValue="3" />
+  			<p:ajax listener="#{patchBean.getList()}" process="@this" update="patchlist"/>
+     	</p:selectOneMenu>
+		<p:separator />
+		<p:panel header="Export Patch Options">
+			        <h:commandLink>
+			            <p:graphicImage value="/images/excel.png" />
+			            <p:dataExporter type="xls" target="patchlist" fileName="patchlist" />
+			        </h:commandLink>
+		</p:panel>
+		<p:separator />
+		<p:dataTable id="patchlist" var="player" value="#{patchBean.getPlayers()}" paginator="true" rows="10" autoupdate="false">
+	        <f:facet name="header">  
+	        	2014-2015 Patch List
+	        </f:facet> 
+	         <p:column headerText="Date">  
+	            <h:outputText value="#{player.getLoidate()}" />  
+	        </p:column>  
+	        <p:column headerText="First Name">  
+	        	<h:outputText value="#{player.getFirstname()}" />  
+	        </p:column>
+	        <p:column headerText="Last Name">  
+	        	<h:outputText value="#{player.getLastname()}" />  
+	        </p:column>
+	        <p:column headerText="Team">  
+	        	<h:outputText value="#{player.getCurrentteam()}" />  
+	        </p:column>
+	        <p:column headerText="Address">  
+	        	<h:outputText value="#{player.getAddress()}" />  
+	        </p:column>
+	        <p:column headerText="City">  
+	            <h:outputText value="#{player.getCity()}" />  
+	        </p:column>
+	        <p:column headerText="State">  
+	            <h:outputText value="#{player.getState()}" />  
+	        </p:column>
+	        <p:column headerText="Zip">  
+	            <h:outputText value="#{player.getZip()}" />  
+	        </p:column>
+	    </p:dataTable>
+	</p:panel>
+</h:form>	
+	
+	
+	
+</ui:define>
+</ui:composition>
+</h:body>
+</f:view>
+</html>

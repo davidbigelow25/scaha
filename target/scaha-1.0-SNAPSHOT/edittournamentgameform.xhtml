@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://bootsfaces.net/ui">
+	
+	<ui:define name="content">
+<b:container>
+	<b:row>
+		<b:column>
+			<b:form id="form">
+			<b:messages id="messages" showDetail="true" autoUpdate="true" closable="false" />	
+ 			<b:panel id="panel" collapsible="false" look="primary">
+				<f:facet name="heading">
+					Add Tournament/Exhibition Game
+				</f:facet>
+				<b:panelGrid colSpans="2,3,7" id="tournamentform">
+					<h:outputText value="Game Type*:" />
+					<b:selectOneMenu 
+				    	value="#{nonscahagameBean.selectedtournamentforgame}" 
+				    	required="true" 
+				    	requiredMessage="Game type is required." 
+				    	large-screen="full-width"
+				    	medium-screen="full-width"
+				    	small-screen="full-width"
+				    	tiny-screen="full-width"
+				    >
+						<f:selectItem itemLabel="Select One" itemValue="0"/>
+						<f:selectItem itemLabel="Tournament" itemValue="1"/>
+						<f:selectItem itemLabel="Exhibition/Scrimmage" itemValue="2"/>
+						
+					</b:selectOneMenu>
+				    <h:outputText value=" " />
+				    <h:outputText value="Game Date*:" />
+					<b:inputText id="gamedate" value="#{nonscahagameBean.gamedate}" required="true" 
+						requiredMessage="Game date is required" 
+						large-screen="full-width"
+    					medium-screen="full-width"
+    					small-screen="full-width"
+    					tiny-screen="full-width"/>
+					<h:outputText value="(MM/DD/YYYY)" />
+					<h:outputText value="Game Time*:" />
+					<b:inputText id="gametime" value="#{nonscahagameBean.gametime}" required="true" 
+						requiredMessage="Game time is required"
+						large-screen="full-width"
+    					medium-screen="full-width"
+    					small-screen="full-width"
+    					tiny-screen="full-width"/>
+					<h:outputText value=" " />
+					<h:outputText value="Opponent*:" />
+					<b:inputText id="opponent" value="#{nonscahagameBean.opponent}" required="true" 
+						requiredMessage="Opponent is required"
+						large-screen="full-width"
+    					medium-screen="full-width"
+    					small-screen="full-width"
+    					tiny-screen="full-width"
+					/>
+					<h:outputText value=" " />
+					<h:outputText value="Location*:" />
+					<b:inputText id="tourneygamelocation" value="#{nonscahagameBean.location}" required="true" 
+						requiredMessage="Location of game is required." 
+						large-screen="full-width"
+    					medium-screen="full-width"
+    					small-screen="full-width"
+    					tiny-screen="full-width"
+					/>
+					<h:outputText value=" "/>
+					
+				</b:panelGrid>
+				<b:panelGrid colSpans="2,2,2,2,2,2" id="panelgrid">
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<b:commandButton value="Save" id="submittournamentgame"
+				                       actionListener="#{nonscahagameBean.updateTournamentGame()}" look="success"
+				                       large-screen="full-width"
+				    					medium-screen="full-width"
+				    					small-screen="full-width"
+				    					tiny-screen="full-width">
+				       <f:ajax execute="@form" render="@form" />
+				    </b:commandButton>
+				    <b:commandButton value="Close" 
+				                       actionListener="#{managerBean.BacktoManagerPortal()}" look="info"
+				                       large-screen="full-width"
+    									medium-screen="full-width"
+    									small-screen="full-width"
+    									tiny-screen="full-width"/>
+				</b:panelGrid>
+				
+			</b:panel>
+			</b:form>
+		</b:column>
+	</b:row>
+</b:container>
+<!-- 
+		<div id="page-div">
+		<h:form>
+		<ui:fragment id="edit-tournament">
+			<p:fieldset id="fs1" toggleable="false" toggleSpeed="500">
+				<p:panel id ="panel" header="Update Tournament Game">
+					<h:panelGrid columns="2" cellpadding="5" cellspacing="0" border="0" width="100%">
+						<h:column width="10%">Tournament Name:</h:column>
+						<h:column >
+							<p:selectOneMenu id="gametournament"  >
+						    	<f:selectItem itemLabel="Select One" itemValue="0"/>
+						    	<f:selectItems value="#{managerBean.getTournaments()}" var="tournament" itemLabel="#{tournament.getTournamentname()}" itemValue="#{tournament.getIdtournament()}"/>
+						    </p:selectOneMenu>
+						</h:column>
+						<h:column width="10%">Game Date:</h:column>
+						<h:column >
+							<p:inputText id="gamedate" style="width:80px;" value="#{nonscahagameBean.gamedate}" /> (MM/DD/YYYY)
+						</h:column>
+						<h:column width="10%">Game Time:</h:column>
+						<h:column >
+							<p:inputText id="gametime" style="width:80px;" value="#{nonscahagameBean.gametime}" />
+						</h:column>
+						<h:column width="10%">Opponent:</h:column>
+						<h:column >
+							<p:inputText id="opponent" style="width:200px;" value="#{nonscahagameBean.opponent}" />
+						</h:column>
+						<h:column width="10%">Location:</h:column>
+						<h:column >
+							<p:inputText id="tourneygamelocation" style="width:200px;" value="#{nonscahagameBean.location}" />
+						</h:column>
+					</h:panelGrid>
+				</p:panel>
+			</p:fieldset>
+			<p:spacer width="10" height="10" />
+			<p:fieldset id="fs6" toggleable="false" toggleSpeed="500">		
+			<div align="center"><p:commandButton id="completeTournament" value="Update" actionListener="#{nonscahagameBean.updateTournamentGame()}" ajax="false"/></div>
+		</p:fieldset>
+		</ui:fragment>
+		</h:form>
+		<p:spacer width="10" height="10" />
+		<p:fieldset id="fs7" toggleable="false" toggleSpeed="500">
+			<h:form>
+				<div align="center"><p:commandButton value="Close" id="close" ajax="false" action="managerportal.xhtml"/></div>
+			</h:form>
+		</p:fieldset>
+				
+		</div> -->
+	</ui:define>
+</ui:composition>

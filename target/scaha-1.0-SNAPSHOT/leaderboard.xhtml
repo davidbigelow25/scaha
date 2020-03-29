@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui" 
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
+<f:view contentType="text/html">
+<h:head>
+	 <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+     </f:facet>
+</h:head>
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+<ui:define name="content">
+<p:separator />
+		<h:form id="leaderboardform">
+		
+				<p:selectOneMenu styleClass="ddlistbox" id="myseasons" value="#{leaderboardBean.selectedseasonid}" >
+       	   			<f:selectItem style="font-size:10pt;" itemLabel="Select a Season..." itemValue="0" />
+           			<f:selectItems value="#{leaderboardBean.getSeasonlist()}"  var="season"  itemLabel="#{season.getDescription()}" itemValue="#{season.getKey()}"/>
+           			<p:ajax listener="#{leaderboardBean.onSeasonChange()}" process="@this" update="myschedules myteams testContainer"/>
+       			</p:selectOneMenu>
+  				<p:selectOneMenu styleClass="ddlistbox"  id="myschedules" value="#{leaderboardBean.selectedscheduleid}" >
+         			<f:selectItem style="font-size:10pt;" itemLabel="Select a Division Schedule" itemValue="0" />
+          			<f:selectItems  value="#{leaderboardBean.getSchedulelist()}" var="schedule" itemLabel="#{schedule.getDescription()}" itemValue="#{schedule.getKey()}" />
+          			<p:ajax listener="#{leaderboardBean.onScheduleChange()}" process="@this" update="@this myteams testContainer"/>
+        		</p:selectOneMenu>	
+				<p:selectOneMenu styleClass="ddlistbox"  id="myteams" value="#{leaderboardBean.selectedpartid}" >
+         			<f:selectItem style="font-size:10pt;" itemLabel="Leaderboard For All Teams..." itemValue="0" />
+          			<f:selectItems  value="#{leaderboardBean.getPartpicklist()}" var="part" itemLabel="#{part.getTeam().getTeamname()}" itemValue="#{part.getKey()}" />
+          			<p:ajax listener="#{leaderboardBean.onPartChange()}" process="@this" update="@this myteams testContainer"/>
+        		</p:selectOneMenu>	
+				<p:separator />   
+				
+			  <p:outputPanel id="testContainer">
+			  
+			  <div class="NewsTitle">Player Stats Leaderboard At A Glance:</div>	
+				<p:dataTable  
+				id= "leaderboard" 
+				var="myrow" 
+	 			value="#{leaderboardBean.mydata}" 
+				rowIndexVar="rowIndex"
+				sortOrder="descending"		
+				>
+				<p:column headerText="#">
+        			#{rowIndex+1}
+    			</p:column>
+  		          <p:column   width="6%" headerText="#{leaderboardBean.mydata.rheader.get(0)}" style="font-size: 12px;">
+   	    	         <h:outputText style="font-size: 12px;" value="#{myrow.get(0)}" />
+         	   	  </p:column >
+  		          <p:column   width="15%" headerText="#{leaderboardBean.mydata.rheader.get(1)}" style="font-size: 12px;">
+   	    	         <h:outputText style="font-size: 12px;" value="#{myrow.get(1)}" />
+         	   	  </p:column >
+  		          <p:column   width="11%" headerText="#{leaderboardBean.mydata.rheader.get(2)}" style="font-size: 12px;">
+   	    	         <h:outputText style="font-size: 12px;" value="#{myrow.get(2)}" />
+         	   	  </p:column >
+  		          <p:column   styleClass="mtrxColumn" width="5%" headerText="#{leaderboardBean.mydata.rheader.get(3)}" style="font-size: 12px;">
+   	    	         <h:outputText style="font-size: 12px;" value="#{myrow.get(3)}" />
+         	   	  </p:column >
+  		          <p:column  sortBy="get(4)" styleClass="mtrxColumn" width="9%" headerText="#{leaderboardBean.mydata.rheader.get(4)}" style="font-size: 12px;">
+   	    	         <h:outputText style="font-size: 12px;" value="#{myrow.get(4)}" />
+         	   	  </p:column >
+  		          <p:column  sortBy="get(5)" styleClass="mtrxColumn" width="9%" headerText="#{leaderboardBean.mydata.rheader.get(5)}" style="font-size: 12px;">
+   	    	         <h:outputText style="font-size: 12px;" value="#{myrow.get(5)}" />
+         	   	  </p:column >
+  		          <p:column  sortBy="get(6)" styleClass="mtrxColumn" width="9%" headerText="#{leaderboardBean.mydata.rheader.get(6)}" style="font-size: 12px;">
+   	    	         <h:outputText style="font-size: 12px;" value="#{myrow.get(6)}" />
+         	   	  </p:column >
+  		          <p:column  sortBy="get(7)" styleClass="mtrxColumn" width="9%" headerText="#{leaderboardBean.mydata.rheader.get(7)}" style="font-size: 12px;">
+   	    	         <h:outputText style="font-size: 12px;" value="#{myrow.get(7)}" />
+         	   	  </p:column >
+  		          <p:column  sortBy="get(8)" styleClass="mtrxColumn" width="9%" headerText="#{leaderboardBean.mydata.rheader.get(8)}" style="font-size: 12px;">
+   	    	         <h:outputText style="font-size: 12px;" value="#{myrow.get(8)}" />
+         	   	  </p:column >
+  		          <p:column  sortBy="get(9)" styleClass="mtrxColumn" width="9%" headerText="#{leaderboardBean.mydata.rheader.get(9)}" style="font-size: 12px;">
+   	    	         <h:outputText style="font-size: 12px;" value="#{myrow.get(9)}" />
+         	   	  </p:column >
+  		          <p:column  sortBy="get(10)" styleClass="mtrxColumn" width="9%" headerText="#{leaderboardBean.mydata.rheader.get(10)}" style="font-size: 12px;">
+   	    	         <h:outputText style="font-size: 12px;" value="#{myrow.get(10)}" />
+         	   	  </p:column >
+				</p:dataTable>
+				
+			
+				
+        		</p:outputPanel>
+    
+		</h:form>
+</ui:define>
+</ui:composition>
+</f:view>
+</html>

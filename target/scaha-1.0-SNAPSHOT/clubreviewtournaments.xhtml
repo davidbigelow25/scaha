@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui" 
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+     xmlns:b="http://bootsfaces.net/ui"
+>
+<f:view contentType="text/html">
+<h:head>
+	 <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+     </f:facet>
+	<!-- <f:metadata>
+		<f:event type="preRenderView" listener="#{profileBean.verifySU()}" />
+	</f:metadata> -->
+</h:head>
+<h:body >	
+<ui:composition template="/WEB-INF/templates/layoutadmin.xhtml">
+<ui:define name="content">
+<b:container>
+	<b:form>
+	<b:row>
+		<b:column span="12">
+			<b:panel id="panelgames" collapsible="false" look="primary" 
+				large-screen="full-width"
+		    	medium-screen="full-width"
+		    	small-screen="one-third"
+		    	tiny-screen="one-third"
+			>
+				<f:facet name="heading">
+					<h:outputText value="2019-2020 TOURNAMENTS SUBMITTED"/> 
+		        </f:facet> 
+		        <b:dataTable 
+					id="tournaments" 
+					var="tournament"
+					value="#{clubreviewtournamentBean.getTournamentdatamodel()}" 
+					editable="true" 
+					paginated="true" 
+					border="true"
+					searching="true"
+					>
+			   		<b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Tournament Name
+					    </f:facet>
+			            <h:outputText value="#{tournament.getTournamentname()}" />
+			        </b:dataTableColumn>
+			        <b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Requesting Team
+					    </f:facet>
+			            <h:outputText value="#{tournament.getRequestingteam()}" />
+			        </b:dataTableColumn>
+					<b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Sanction Number
+					    </f:facet>
+			            <h:outputText value="#{tournament.getSanction()}" />
+			        </b:dataTableColumn>
+			        <b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Dates
+					    </f:facet>
+					    <h:outputText value="#{tournament.getDates()}" />
+			        </b:dataTableColumn>
+					<b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Location
+					    </f:facet>
+			            <h:outputText value="#{tournament.getLocation()}" />
+			        </b:dataTableColumn>
+			        <b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Status
+					    </f:facet>
+					    <h:outputText value="#{tournament.getStatus()}" />
+			        </b:dataTableColumn>
+			    </b:dataTable>
+			</b:panel>
+			
+				
+		</b:column>
+	</b:row>
+	
+	</b:form>
+</b:container>
+</ui:define>
+</ui:composition>
+</h:body>
+</f:view>
+</html>

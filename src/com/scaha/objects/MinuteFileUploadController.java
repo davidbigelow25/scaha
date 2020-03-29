@@ -14,7 +14,7 @@ import org.apache.commons.io.IOUtils;
 import org.primefaces.event.FileUploadEvent;
 
 import com.gbli.context.ContextManager;
-  
+
 public class MinuteFileUploadController extends ScahaObject implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -30,7 +30,7 @@ public class MinuteFileUploadController extends ScahaObject implements Serializa
 		InputStream stream = null;
         FileOutputStream output = null;
         
-        String prefix = FilenameUtils.getBaseName(event.getFile().getFileName().replace("#", "")); 
+        String prefix = FilenameUtils.getBaseName(event.getFile().getFileName().replace("#", ""));
         String suffix = FilenameUtils.getExtension(event.getFile().getFileName());
         
         reportcard.setFilename(reportcard.getIdperson() + prefix + "." + suffix);

@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<f:metadata>
+<f:event type="preRenderView" listener="#{profileBean.verifyUserLogin()}" />
+</f:metadata>
+
+<ui:composition template="/WEB-INF/templates/layoutadmin.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://bootsfaces.net/ui">
+	
+<ui:define name="content">
+<b:container>
+	<b:row>
+		<b:column>
+			<b:form id="form">
+			<b:messages id="messages" showDetail="true" autoUpdate="true" closable="false" />	
+ 			<b:panel id="panel" collapsible="false" look="primary">
+				<f:facet name="heading">
+					Add Tournament/Exhibition Game
+				</f:facet>
+				<b:panelGrid colSpans="2,3,7" id="tournamentform">
+					<h:outputText value="Game Type*:" />
+					<b:selectOneMenu 
+				    	value="#{managerBean.gametype}" 
+				    	required="true" 
+				    	requiredMessage="Game type is required." 
+				    	large-screen="full-width"
+				    	medium-screen="full-width"
+				    	small-screen="full-width"
+				    	tiny-screen="full-width"
+				    >
+						<f:selectItem itemLabel="Select One" itemValue="0"/>
+						<f:selectItem itemLabel="Tournament" itemValue="1"/>
+						<f:selectItem itemLabel="Exhibition/Scrimmage" itemValue="2"/>
+						
+					</b:selectOneMenu>
+				    <h:outputText value=" " />
+				    <h:outputText value="Game Date*:" />
+					<b:inputText id="gamedate" value="#{managerBean.gamedate}" required="true" 
+						requiredMessage="Game date is required" 
+						large-screen="full-width"
+    					medium-screen="full-width"
+    					small-screen="full-width"
+    					tiny-screen="full-width"/>
+					<h:outputText value="(MM/DD/YYYY)" />
+					<h:outputText value="Game Time*:" />
+					<b:inputText id="gametime" value="#{managerBean.gametime}" required="true" 
+						requiredMessage="Game time is required"
+						large-screen="full-width"
+    					medium-screen="full-width"
+    					small-screen="full-width"
+    					tiny-screen="full-width"/>
+					<h:outputText value=" " />
+					<h:outputText value="Opponent*:" />
+					<b:inputText id="opponent" value="#{managerBean.opponent}" required="true" 
+						requiredMessage="Opponent is required"
+						large-screen="full-width"
+    					medium-screen="full-width"
+    					small-screen="full-width"
+    					tiny-screen="full-width"
+					/>
+					<h:outputText value=" " />
+					<h:outputText value="Location*:" />
+					<b:inputText id="tourneygamelocation" value="#{managerBean.tourneygamelocation}" required="true" 
+						requiredMessage="Location of game is required." 
+						large-screen="full-width"
+    					medium-screen="full-width"
+    					small-screen="full-width"
+    					tiny-screen="full-width"
+					/>
+					<h:outputText value=" "/>
+					
+				</b:panelGrid>
+				<b:panelGrid colSpans="2,2,2,2,2,2" id="panelgrid">
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<b:commandButton value="Save" id="submittournamentgame"
+				                       actionListener="#{managerBean.addTournamentGame()}" look="success"
+				                       large-screen="full-width"
+				    					medium-screen="full-width"
+				    					small-screen="full-width"
+				    					tiny-screen="full-width">
+				       <f:ajax execute="@form" render="@form" />
+				    </b:commandButton>
+				    <b:commandButton value="Close" 
+				                       actionListener="#{managerBean.BacktoManagerPortal()}" look="info"
+				                       large-screen="full-width"
+    									medium-screen="full-width"
+    									small-screen="full-width"
+    									tiny-screen="full-width"/>
+				</b:panelGrid>
+				
+			</b:panel>
+			</b:form>
+		</b:column>
+	</b:row>
+</b:container>
+</ui:define>
+</ui:composition>
+</html>

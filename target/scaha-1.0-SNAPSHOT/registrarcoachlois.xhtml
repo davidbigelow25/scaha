@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<f:metadata>
+<f:event type="preRenderView" listener="#{profileBean.verifyUserLogin()}" />
+</f:metadata>
+
+<ui:composition template="/WEB-INF/templates/layoutadmin.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://bootsfaces.net/ui">
+	
+<ui:define name="content">
+<b:container>
+	<b:row>
+		<b:column>
+			<b:form>
+				<b:panel id ="panel" collapsible="false" look="primary">
+					<f:facet name="heading">
+						<h:outputText value="View Coach/Manager Loi's:" />
+					</f:facet>
+					<b:dataTable 
+						id="listofcoaches" 
+						var="coach" 
+						value="#{registrarcoachloiBean.getCoachdatamodel()}" 
+						editable="true" 
+						select="true"
+						selection="#{registrarcoachloiBean.selectedcoach}" 
+						selectionMode="single" 
+						paginator="true"
+						searching="true" 
+						border="true"
+						excel="true"
+			            csv="true"
+			            pdf="true"
+						
+						>
+			   			<b:dataTableColumn style="font-size: 85%;">
+				            <f:facet name="header">
+						        First
+						    </f:facet>
+							<h:outputText value="#{coach.getFirstname()}" />    
+				        </b:dataTableColumn>
+				    	<b:dataTableColumn style="font-size: 85%;">
+				            <f:facet name="header">
+						        Last
+						    </f:facet>
+							<h:outputText value="#{coach.getLastname()}" />    
+				        </b:dataTableColumn>
+				    	<b:dataTableColumn style="font-size: 85%;">
+				            <f:facet name="header">
+						        <h:outputText value="#{registrarcoachloiBean.getCurrentyear()} Team" />
+						    </f:facet>
+							<h:outputText value="#{coach.getTeamname()}" />    
+				        </b:dataTableColumn>
+				    	<b:dataTableColumn style="font-size: 85%;">
+				            <f:facet name="header">
+						        LOI Date
+						    </f:facet>
+							<h:outputText value="#{coach.getLoidate()}" />    
+				        </b:dataTableColumn>
+				    	<b:dataTableColumn style="font-size: 85%;">
+				            <f:facet name="header">
+						        USA Mem #
+						    </f:facet>
+							<h:outputText value="#{coach.getUsamembership()}" />    
+				        </b:dataTableColumn>
+				    	<b:dataTableColumn style="font-size: 85%;">
+				            <f:facet name="header">
+						        Safe sport
+						    </f:facet>
+							<h:outputText value="#{coach.getSafesport()}" />    
+				        </b:dataTableColumn>
+				    	<b:dataTableColumn style="font-size: 85%;">
+				            <f:facet name="header">
+						        Screen Expires
+						    </f:facet>
+							<h:outputText value="#{coach.getScreeningexpires()}" />    
+				        </b:dataTableColumn>
+				    	<b:dataTableColumn style="font-size: 85%;">
+				            <f:facet name="header">
+						        CEP #
+						    </f:facet>
+							<h:outputText value="#{coach.getCepnumber()}" />    
+				        </b:dataTableColumn>
+				    	<b:dataTableColumn style="font-size: 85%;">
+				            <f:facet name="header">
+						        CEP Lvl
+						    </f:facet>
+							<h:outputText value="#{coach.getCeplevel()}" />    
+				        </b:dataTableColumn>
+				    	<b:dataTableColumn style="font-size: 85%;">
+				            <f:facet name="header">
+						        CEP Expires
+						    </f:facet>
+							<h:outputText value="#{coach.getCepexpires()}" />    
+				        </b:dataTableColumn>
+				    	<b:dataTableColumn style="font-size: 85%;">
+				            <f:facet name="header">
+						        8U
+						    </f:facet>
+							<h:outputText value="#{coach.getU8()}" />    
+				        </b:dataTableColumn>
+				    	<b:dataTableColumn style="font-size: 85%;">
+				            <f:facet name="header">
+						        10U
+						    </f:facet>
+							<h:outputText value="#{coach.getU10()}" />    
+				        </b:dataTableColumn>
+				    	<b:dataTableColumn style="font-size: 85%;">
+				            <f:facet name="header">
+						        12U
+						    </f:facet>
+							<h:outputText value="#{coach.getU12()}" />    
+				        </b:dataTableColumn>
+				    	<b:dataTableColumn style="font-size: 85%;">
+				            <f:facet name="header">
+						        14U
+						    </f:facet>
+							<h:outputText value="#{coach.getU12()}" />    
+				        </b:dataTableColumn>
+				    	<b:dataTableColumn style="font-size: 85%;">
+				            <f:facet name="header">
+						        18U
+						    </f:facet>
+							<h:outputText value="#{coach.getU18()}" />    
+				        </b:dataTableColumn>
+				    	<b:dataTableColumn style="font-size: 85%;">
+				            <f:facet name="header">
+						        Girls
+						    </f:facet>
+							<h:outputText value="#{coach.getGirls()}" />    
+				        </b:dataTableColumn>
+				    	<b:dataTableColumn style="font-size: 85%;">
+				            <f:facet name="header">
+						        Notes
+						    </f:facet>
+							<h:outputText value="#{coach.notes}" />    
+				        </b:dataTableColumn>
+				    	<b:dataTableColumn style="font-size: 85%;">
+				            <f:facet name="header">
+						        <h:outputText value="Option" />
+						    </f:facet>
+							<b:commandButton icon="info-circle" value="View" 
+						                       action="#{registrarcoachloiBean.viewLoi(coach)}" look="info"/>
+						</b:dataTableColumn>
+				    </b:dataTable>
+		            <p:spacer width="10" height="5" />
+					<b:panelGrid colSpans="3,2,2,2,3">
+						<h:outputText value=" "/>
+						<h:outputText value=" "/>
+						<b:commandButton value="Close" id="close" look="info" ajax="false" actionListener="#{registrarcoachloiBean.closePage()}"
+							large-screen="full-width"
+	    					medium-screen="full-width"
+	    					small-screen="full-width"
+	    					tiny-screen="full-width"
+						/>
+						<h:outputText value=" "/>
+						<h:outputText value=" "/>
+					</b:panelGrid>
+				</b:panel>
+			</b:form>
+		</b:column>
+	</b:row>
+</b:container>				
+</ui:define>
+</ui:composition>
+</html>
