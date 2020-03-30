@@ -122,7 +122,13 @@
 					    </f:facet>
 			            <h:outputText value="#{coach.getConfirmed()}" />
 			        </b:dataTableColumn>
-			        <b:dataTableColumn >
+					<b:dataTableColumn >
+						<f:facet name="header">
+							Susp
+						</f:facet>
+						<h:outputText value="#{coach.getSuspended()}" />
+					</b:dataTableColumn>
+					<b:dataTableColumn >
 			            <f:facet name="header">
 					        Notes
 					    </f:facet>

@@ -158,6 +158,7 @@ public class quickreviewcoachloiBean implements Serializable {
         				String confirmed = rs.getString("confirmed");
         				String notes = rs.getString("notes");
         				String sportexpires = rs.getString("sportexpires");
+        				String suspended =rs.getString("suspended");
         				
         				Coach ocoach = new Coach();
         				ocoach.setIdcoach(idcoach);
@@ -179,6 +180,7 @@ public class quickreviewcoachloiBean implements Serializable {
         				ocoach.setConfirmed(confirmed);
         				ocoach.setNotes(notes);
         				ocoach.setSportexpires(sportexpires);
+        				ocoach.setSuspended(suspended);
         				tempresult.add(ocoach);
     				}
     				rs.close();

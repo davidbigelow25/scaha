@@ -234,7 +234,8 @@ public class coachbcloiBean implements Serializable, MailableObject {
         				String confirmed = rs.getString("confirmed");
         				String notes = rs.getString("notes");
         				String sportexpires = rs.getString("sportexpires");
-        				
+						String suspended =rs.getString("suspended");
+
         				Coach ocoach = new Coach();
         				ocoach.setIdcoach(idcoach);
         				ocoach.setFirstname(sfirstname);
@@ -255,6 +256,7 @@ public class coachbcloiBean implements Serializable, MailableObject {
         				ocoach.setConfirmed(confirmed);
         				ocoach.setNotes(notes);
         				ocoach.setSportexpires(sportexpires);
+        				ocoach.setSuspended(suspended);
         				tempresult.add(ocoach);
     				}
     				

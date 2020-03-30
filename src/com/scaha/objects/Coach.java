@@ -50,12 +50,22 @@ public class Coach extends ScahaObject implements Serializable {
 	private String active = null;
 	private String updated = null;
 	private String teamrole = null;
+	private String suspended = null;
 	
 	
 	public Coach (){ 
 		
 	}
-	
+
+	public String getSuspended(){
+		return suspended;
+	}
+
+	public void setSuspended(String fname){
+		suspended=fname;
+	}
+
+
 	public String getSportexpires(){
     	return sportexpires;
     }
