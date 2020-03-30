@@ -26,11 +26,6 @@
     <param-value>resources.application</param-value>
   </context-param>
   <context-param>
-    <description>State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>
-    <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
-    <param-value>server</param-value>
-  </context-param>
-  <context-param>
     <description>
 	This parameter tells MyFaces if javascript code should be allowed in
 	the rendered HTML output.
@@ -120,7 +115,7 @@
   </mime-mapping>
   <error-page>
     <exception-type>javax.faces.application.ViewExpiredException</exception-type>
-    <location>/Weclome.xhtml</location>
+    <location>/Welcome.xhtml</location>
   </error-page>
   <session-config>
     <session-timeout>15</session-timeout>
