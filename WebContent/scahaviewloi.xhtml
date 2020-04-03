@@ -87,12 +87,9 @@
 				</b:dataTable>
 				<p:spacer width="10" height="10" />
 				<b:panelGrid colSpans="2,10" id="loisuspend" style="padding: 5;">
-					<h:outputText value="Suspend:"/>
-					<b:selectOneMenu id="suspendloi" value="#{loiBean.suspendloi}" >
-				    	<f:selectItem itemLabel="No" itemValue="0"/>
-				    	<f:selectItem itemLabel="Yes" itemValue="1"/>
-				    </b:selectOneMenu>
-				    <h:outputText value="Note:"/>
+					<h:outputText style="font-weight: bold;" value="Loi Suspended?:"/>
+					<h:outputText value="#{loiBean.displaysuspendloi}"/>
+					<h:outputText value="Note:"/>
 				    <b:inputTextarea value="#{loiBean.notes}" rows="3" cols="100"/>
 				</b:panelGrid>
 				<p:spacer width="10" height="10" />

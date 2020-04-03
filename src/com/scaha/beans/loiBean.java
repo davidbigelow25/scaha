@@ -95,7 +95,7 @@ public class loiBean implements Serializable, MailableObject {
 	private String safesportfor18 = "N"; //this one is for capturing whether or not has safesport
 	private Boolean is18safesport = false; //this one is for displaying the is 18 checkbox
 	private String safesportfor18display = null; //this one is for displaying in the email and printable loi
-	
+	private String displaysuspendloi = null;
 	
 	@PostConstruct
     public void init() {
@@ -162,8 +162,17 @@ public class loiBean implements Serializable, MailableObject {
 	
 	public loiBean() {  
         
-    }  
-	
+    }
+
+	public String getDisplaysuspendloi(){
+		return displaysuspendloi;
+	}
+
+	public void setDisplaysuspendloi(String cyear){
+		displaysuspendloi=cyear;
+	}
+
+
 	public String getSafesportfor18(){
 		return safesportfor18;
 	}
@@ -684,7 +693,7 @@ public class loiBean implements Serializable, MailableObject {
         				parentid = rs.getInt("parentid");
         				citizenship = rs.getString("citizenship");
         				notes = rs.getString("notes");
-        				suspendloi = rs.getInt("issuspended");
+        				displaysuspendloi = rs.getString("issuspended");
         				is18safesport = rs.getBoolean("is18display");
         				safesportfor18display = rs.getString("safesportfor18");
         				

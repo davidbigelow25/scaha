@@ -49,7 +49,7 @@ public class rosteractionBean implements Serializable {
 	private String safesportfor18 = "N"; //this one is for capturing whether or not has safesport
 	private Boolean is18safesport = false; //this one is for displaying the is 18 checkbox
 	private String safesportfor18display = null; //this one is for displaying in the email and printable loi
-	
+	private String suspended = null;
 	
 	@PostConstruct
     public void init() {
@@ -85,8 +85,16 @@ public class rosteractionBean implements Serializable {
     	//doing anything else right here
     	gotoTransferInformation = "addtransfercitizenship.xhtml?playerid=" + this.selectedplayer + "&page=" + page + "&search=" + search;
     	gotoCitizenship = "managecitizenship.xhtml?playerid=" + this.selectedplayer + "&page=" + page + "&search=" + search;
-    }  
-	
+    }
+
+	public String getSuspended(){
+		return suspended;
+	}
+
+	public void setSuspended(String cyear){
+		suspended=cyear;
+	}
+
 	public String getSafesportfor18(){
 		return safesportfor18;
 	}
@@ -263,7 +271,7 @@ public class rosteractionBean implements Serializable {
         				dob = rs.getString("dob");
         				is18safesport = rs.getBoolean("is18display");
         				safesportfor18 = rs.getString("safesportfor18");
-        				
+						suspended = rs.getString("issuspended");
         				
         				Date dexpirationdate = rs.getDate("expirationdate");
         				
@@ -307,7 +315,7 @@ public class rosteractionBean implements Serializable {
 			
 				//Need to provide info to the stored procedure to save or update
  				//LOGGER.info("verify loi code provided");
- 				CallableStatement cs = db.prepareCall("CALL scaha.saveTransfer(?,?,?,?,?,?,?)");
+ 				CallableStatement cs = db.prepareCall("CALL scaha.saveTransfer(?,?,?,?,?,?,?,?)");
     		    cs.setInt("transferid", this.transferid);
     		    cs.setInt("playerid", Integer.parseInt(this.selectedplayer));
     		    cs.setInt("transfer", this.transfer);
@@ -323,7 +331,11 @@ public class rosteractionBean implements Serializable {
     		    }else{
     		    	cs.setString("safesportindicator_in",null);
     		    }
-    		    
+				if (suspended.equals("Y")){
+					cs.setInt("suspended_in",1);
+				}else{
+					cs.setInt("suspended_in",0);
+				}
     		    cs.executeQuery();
     			
     		    db.commit();
