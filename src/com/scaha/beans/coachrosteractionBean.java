@@ -53,7 +53,8 @@ public class coachrosteractionBean implements Serializable {
 	private String firstname = null;
 	private String lastname = null;
 	private String searchcriteria = "";
-	
+	private String suspend = "";
+
 	@PostConstruct
     public void init() {
 	    //will need to load coach profile information for displaying certification details
@@ -85,8 +86,16 @@ public class coachrosteractionBean implements Serializable {
     	loadCoachProfile(selectedcoach);
 
     	//doing anything else right here
-    }  
-   
+    }
+
+	public String getSuspend(){
+		return suspend;
+	}
+
+	public void setSuspend(String cyear){
+		suspend=cyear;
+	}
+
 	public String getSportexpires(){
 		return sportexpires;
 	}
@@ -351,7 +360,8 @@ public class coachrosteractionBean implements Serializable {
         				safesport = rs.getString("safesport");
         				cepexpires = rs.getString("cepexpires");
         				sportexpires = rs.getString("sportexpires");
-        				
+        				suspend = rs.getString("suspended");
+
         				String templist = "";
         				u8 = rs.getString("eightu");
         				if (u8.equals("1")){
@@ -411,7 +421,7 @@ public class coachrosteractionBean implements Serializable {
 			
 				//Need to provide info to the stored procedure to save or update
  				//LOGGER.info("update coach details");
- 				CallableStatement cs = db.prepareCall("CALL scaha.updateCoachbyCoachId(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+ 				CallableStatement cs = db.prepareCall("CALL scaha.updateCoachbyCoachId(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
     		    cs.setInt("coachid", Integer.parseInt(this.selectedcoach));
     		    cs.setString("screenexpires", this.screeningexpires);
     		    cs.setString("cepnum", this.cepnumber);
@@ -420,7 +430,7 @@ public class coachrosteractionBean implements Serializable {
     		    cs.setString("insafesport", this.safesport);
     		    cs.setString("inrostertype", this.coachrole);
     		    cs.setInt("inrosterid", this.rosterid);
-    		    //need to set values for modules
+				//need to set values for modules
     		    Integer u8 = 0;
     		    Integer u10 = 0;
     		    Integer u12 = 0;
@@ -459,7 +469,12 @@ public class coachrosteractionBean implements Serializable {
     		    cs.setString("infirstname",this.firstname);
     		    cs.setString("inlastname",this.lastname);
     		    cs.setString("sportexpires", this.sportexpires);
-    		    rs = cs.executeQuery();
+				if (this.suspend.equals("Y")){
+					cs.setInt("issuspend_in", 1);
+				} else {
+					cs.setInt("issuspend_in", 0);
+				}
+				rs = cs.executeQuery();
     			
     		    db.commit();
     		    rs.close();

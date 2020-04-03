@@ -128,6 +128,16 @@
     					small-screen="full-width"
     					tiny-screen="full-width"
 					/>
+					<h:outputText value="Suspend LOI:" />
+					<b:selectOneMenu value="#{coachrosteractionBean.suspend}"
+									 large-screen="full-width"
+									 medium-screen="full-width"
+									 small-screen="full-width"
+									 tiny-screen="full-width"
+					>
+						<f:selectItem itemLabel="No" itemValue="N"/>
+						<f:selectItem itemLabel="Yes" itemValue="Y"/>
+					</b:selectOneMenu>
 				</b:panelGrid>
 				<b:panelGrid colSpans="2,2,2,2,2,2" id="panelgrid">
 					<h:outputText value=" " />

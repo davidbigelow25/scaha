@@ -100,6 +100,7 @@ public class coachloiBean implements Serializable, MailableObject {
 	private String searchcriteria = "";
 	private Integer boysteamcount = 0;
 	private Integer girlsteamcount = 0;
+	private String suspended = "";
 	
 	//these are used for creating the team select role tables.
 	private TeamDataModel boysteamdatamodel = null;
@@ -187,9 +188,17 @@ public class coachloiBean implements Serializable, MailableObject {
 	public void setGirlsteamcount(Integer cyear){
 		girlsteamcount=cyear;
 	}
-    
-    
-    public String getSportexpires(){
+
+	public String getSuspended(){
+		return suspended;
+	}
+
+	public void setSuspended(String cyear){
+		suspended=cyear;
+	}
+
+
+	public String getSportexpires(){
 		return sportexpires;
 	}
 	
@@ -833,6 +842,7 @@ public class coachloiBean implements Serializable, MailableObject {
         				safesport = rs.getInt("safesport");
         				sportexpires = rs.getString("sportexpires");
         				notes = rs.getString("notes");
+        				suspended = rs.getString("displayissuspended");
         				this.setDisplaysafesport(safesport.toString());
         				
         				if (ceplevel.equals(1)){

@@ -115,6 +115,8 @@
 					</b:panelGrid>
 					<p:spacer width="10" height="10" />
 					<b:panelGrid colSpans="2,10" id="loisuspend" style="padding: 5;">
+						<h:outputText style="font-weight: bold;" value="Loi Suspended?:"/>
+						<h:outputText value="#{coachloiBean.suspended}"/>
 						<h:outputText value="Note:"/>
 					    <b:inputTextarea value="#{coachloiBean.notes}" rows="3" cols="100"/>
 					</b:panelGrid>

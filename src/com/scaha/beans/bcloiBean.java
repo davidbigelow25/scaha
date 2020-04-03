@@ -228,7 +228,8 @@ public class bcloiBean implements Serializable, MailableObject {
         				String rosterid = rs.getString("idroster");
         				String notes = rs.getString("notes");
         				String safesport = rs.getString("safesportindicator");
-        				
+        				String suspended = rs.getString("issuspended");
+
         				Player oplayer = new Player();
         				oplayer.setIdplayer(idplayer);
         				oplayer.setFirstname(sfirstname);
@@ -242,7 +243,7 @@ public class bcloiBean implements Serializable, MailableObject {
         				oplayer.setCTExpirationdate(scitizenshipexpiredate);
         				oplayer.setNotes(notes);
         				oplayer.setSafesport(safesport);
-        				
+        				oplayer.setSuspended(suspended);
         				if (scitizenship!=null){
 	        				if (!scitizenship.equals("USA")){
 		        				if (sindefinite!=null){

@@ -103,8 +103,14 @@
 						        Confirmed
 						    </f:facet>
 				            <h:outputText value="#{player.confirmed}" />
-				        </b:dataTableColumn> 
-			        	<b:dataTableColumn >
+				        </b:dataTableColumn>
+						<b:dataTableColumn >
+							<f:facet name="header">
+								Susp
+							</f:facet>
+							<h:outputText value="#{player.suspended}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn >
 				            <f:facet name="header">
 						        Notes
 						    </f:facet>
