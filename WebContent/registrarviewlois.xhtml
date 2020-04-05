@@ -121,7 +121,13 @@
 						    </f:facet>
 							<h:outputText value="#{player.getSafesport()}"/>    
 				        </b:dataTableColumn>
-				        <b:dataTableColumn >
+						<b:dataTableColumn >
+							<f:facet name="header">
+								<h:outputText value="Suspended" />
+							</f:facet>
+							<h:outputText value="#{player.suspended}"/>
+						</b:dataTableColumn>
+						<b:dataTableColumn >
 				            <f:facet name="header">
 						        <h:outputText value="Cit. ship" />
 						    </f:facet>

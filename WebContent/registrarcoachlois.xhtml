@@ -75,7 +75,13 @@
 						    </f:facet>
 							<h:outputText value="#{coach.getUsamembership()}" />    
 				        </b:dataTableColumn>
-				    	<b:dataTableColumn style="font-size: 85%;">
+						<b:dataTableColumn style="font-size: 85%;">
+							<f:facet name="header">
+								<h:outputText value="Loi Susp." />
+							</f:facet>
+							<h:outputText value="#{coach.suspended}"/>
+						</b:dataTableColumn>
+						<b:dataTableColumn style="font-size: 85%;">
 				            <f:facet name="header">
 						        Safe sport
 						    </f:facet>

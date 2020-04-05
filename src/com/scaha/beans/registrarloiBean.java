@@ -213,7 +213,9 @@ public class registrarloiBean implements Serializable {
         				String semail2 = rs.getString("e-mail2");
         				String snotes = rs.getString("notes");
         				String safesportindicator = rs.getString("safesportindicator");
-        				
+						String suspended = rs.getString("issuspended");
+
+
         				Player oplayer = new Player();
         				oplayer.setIdplayer(idplayer);
         				oplayer.setFirstname(sfirstname);
@@ -227,7 +229,7 @@ public class registrarloiBean implements Serializable {
         				oplayer.setCTExpirationdate(scitizenshipexpiredate);
         				oplayer.setNotes(snotes);
         				oplayer.setSafesport(safesportindicator);
-        				
+        				oplayer.setSuspended(suspended);
         				if (scitizenship!=null){
 	        				if (!scitizenship.equals("USA")){
 		        				if (sindefinite!=null){
