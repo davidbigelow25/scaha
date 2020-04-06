@@ -144,11 +144,11 @@
 					    </b:commandButton> -->
 					    <p:spacer width="5"  />
 					    <b:commandButton iconAwesome="print"
-					                       action="#{managerBean.setCoachesforGamePrint(TempGame.printurl)}" look="info" rendered="#{not TempGame.is8u and TempGame.coachcountflag and TempGame.printeligibleflag}">
+					                       action="#{managerBean.setCoachesforGamePrint(TempGame.printurl)}" look="info" rendered="#{not TempGame.is8u and TempGame.coachcountflag}">
 					       <!-- <f:ajax execute="@this" render="@form" update=":form1:messages1,:form1:teamlist"/> -->
 					    </b:commandButton>
 					    <b:commandButton iconAwesome="print"
-					                       onclick="javascript: printscoresheet('#{TempGame.printurl}')"  look="info" rendered="#{not TempGame.is8u and not TempGame.coachcountflag and TempGame.printeligibleflag}">
+					                       onclick="javascript: printscoresheet('#{TempGame.printurl}')"  look="info" rendered="#{not TempGame.is8u and not TempGame.coachcountflag}">
 					       <!-- <f:ajax execute="@this" render="@form" update=":form1:messages1,:form1:teamlist"/> -->
 					    </b:commandButton>
 					    
@@ -360,6 +360,12 @@
 					    </f:facet>
 			            <h:outputText value="#{rosteredit.getFirstname()}" />
 			        </b:dataTableColumn>
+					<b:dataTableColumn styleClass="mtrxColumn">
+						<f:facet name="header">
+							Eligible
+						</f:facet>
+						<h:outputText value="#{rosteredit.getSuspended()}" />
+					</b:dataTableColumn>
 			    </b:dataTable>
 			    <b:dataTable 
 					id="coachesresultnew" 
@@ -387,6 +393,12 @@
 					    </f:facet>
 			            <h:outputText value="#{rosteredit.getFirstname()}" />
 			        </b:dataTableColumn>
+					<b:dataTableColumn styleClass="mtrxColumn">
+						<f:facet name="header">
+							Eligible
+						</f:facet>
+						<h:outputText value="#{rosteredit.getSuspended()}" />
+					</b:dataTableColumn>
 			    </b:dataTable>
 			</b:panel>
 		</b:column>

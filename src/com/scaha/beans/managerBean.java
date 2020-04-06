@@ -386,16 +386,7 @@ public class managerBean implements Serializable, MailableObject {
     public void setGametime(String gdate){
     	gametime=gdate;
     }
-    
-    public String getOpponent(){
-    	return opponent;
-    }
-    
-    public void setOpponent(String gdate){
-    	opponent=gdate;
-    }
-    
-    
+
     public String getLevelplayed(){
     	return levelplayed;
     }
@@ -876,7 +867,7 @@ public class managerBean implements Serializable, MailableObject {
 					String fname = rs.getString("fname");
 					String lname = rs.getString("lname");
 					String jerseynumber = rs.getString("jerseynumber");
-					
+					String suspended = rs.getString("suspended");
 					
 					RosterEdit player = new RosterEdit();
 					player.setIdplayer(playerid);
@@ -884,7 +875,7 @@ public class managerBean implements Serializable, MailableObject {
 					player.setLastname(lname);
 					player.setOldjerseynumber(jerseynumber);
 					player.setJerseynumber(jerseynumber);
-					
+					player.setSuspended(suspended);
 					templist.add(player);
 				}
 				//LOGGER.info("We have results for team roster");
@@ -902,7 +893,7 @@ public class managerBean implements Serializable, MailableObject {
 					String fname = rs.getString("fname");
 					String lname = rs.getString("lname");
 					String jerseynumber = rs.getString("teamrole");
-					
+					String suspended = rs.getString("suspended");
 					
 					RosterEdit player = new RosterEdit();
 					player.setIdplayer(playerid);
@@ -910,7 +901,7 @@ public class managerBean implements Serializable, MailableObject {
 					player.setLastname(lname);
 					player.setOldjerseynumber(jerseynumber);
 					player.setJerseynumber(jerseynumber);
-					
+					player.setSuspended(suspended);
 					templist2.add(player);
 				}
 				//LOGGER.info("We have results for team roster");

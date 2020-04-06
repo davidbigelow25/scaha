@@ -24,7 +24,8 @@ public class RosterEdit extends ScahaObject implements Serializable {
 	private String IDplayer = null;
 	private String oldjerseynumber = null;
 	private String jerseynumber = null;
-	
+	private String suspended = null;
+
 	public RosterEdit (){ 
 		
 	}
@@ -71,9 +72,17 @@ public class RosterEdit extends ScahaObject implements Serializable {
     		jerseynumber=fname;
     	}
     	
-    } 
-	
-    public String getOldjerseynumber(){
+    }
+
+	public String getSuspended(){
+		return suspended;
+	}
+
+	public void setSuspended(String fname){
+		suspended=fname;
+	}
+
+	public String getOldjerseynumber(){
     	return oldjerseynumber;
     }
     
