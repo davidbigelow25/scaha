@@ -59,6 +59,7 @@ public class Player extends ScahaObject implements Serializable {
 	private String rosterdate = null;
 	private String safesport = null;
 	private String suspended = null;
+	private Boolean bitalics = false;
 
 	public Player (){ 
 		
@@ -352,7 +353,15 @@ public class Player extends ScahaObject implements Serializable {
 		}
 		
 	}
-	
+
+	public Boolean getBitalics(){
+		return bitalics;
+	}
+
+	public void setBitalics(Boolean value){
+		bitalics=value;
+	}
+
 	public Boolean getBcverified(){
 		return bcverified;
 	}

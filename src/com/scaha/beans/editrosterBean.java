@@ -39,11 +39,15 @@ public class editrosterBean implements Serializable {
 	private List<Player> players = null;
 	private List<Coach> coaches = null;
 	private Coach selectedcoach = null;
+	private List<Player> pdr = null;
+	private List<Player> blockrecruitment = null;
 	private Player selectedplayer = null;
 	private Integer teamid = null;
 	private String teamname = null;
 	private String enteredrosterdate = null;
 	private String newrosterdate = null;
+	private String pdrcount = null;
+	private String totalplayercount = null;
 	
 	@PostConstruct
     public void init() {
@@ -54,7 +58,9 @@ public class editrosterBean implements Serializable {
         {
     		this.teamid = Integer.parseInt(hsr.getParameter("teamid").toString());
         }
-    	
+
+		generatePDR();
+    	generateBlock();
     	getRoster();
 
     }
@@ -62,9 +68,25 @@ public class editrosterBean implements Serializable {
     public editrosterBean() {  
     	    	
 		
-    }  
-    
-    public String getNewrosterdate(){
+    }
+
+	public String getPdrcount(){
+		return pdrcount;
+	}
+
+	public void setPdrcount(String name){
+		pdrcount=name;
+	}
+
+	public String getTotalplayercount(){
+		return totalplayercount;
+	}
+
+	public void setTotalplayercount(String name){
+		totalplayercount=name;
+	}
+
+	public String getNewrosterdate(){
     	return newrosterdate;
     }
     
@@ -123,6 +145,8 @@ public class editrosterBean implements Serializable {
 				
 				while (rs.next()) {
 					this.teamname = rs.getString("teamname");
+					this.totalplayercount = rs.getString("totalplayercount");
+					this.pdrcount = rs.getString("pdrcount");
 				}
 				//LOGGER.info("We have results for team name");
 			}
@@ -246,7 +270,24 @@ public class editrosterBean implements Serializable {
 	public void setPlayers(List<Player> list){
 		players = list;
 	}
-	
+
+	public List<Player> getPdr(){
+		return pdr;
+	}
+
+	public void setPdr(List<Player> list){
+		pdr = list;
+	}
+
+	public List<Player> getBlockrecruitment(){
+		return blockrecruitment;
+	}
+
+	public void setBlockrecruitment(List<Player> list){
+		blockrecruitment = list;
+	}
+
+
 	public void editrosterdetail(Player splayer){
 		String idplayer = splayer.getIdplayer();
 		
@@ -416,6 +457,110 @@ public class editrosterBean implements Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public void generatePDR(){
+		List<Player> templist = new ArrayList<Player>();
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+			//first get team name
+			CallableStatement cs = db.prepareCall("CALL scaha.getTeamPDR(?)");
+			cs.setInt("teamid", this.teamid);
+			rs = cs.executeQuery();
+
+			//next get pdr
+//TODO			cs = db.prepareCall("CALL scaha.getRosterByTeamId(?)");
+			cs = db.prepareCall("CALL scaha.getTeamPDR(?)");
+			cs.setInt("teamid", this.teamid);
+			rs = cs.executeQuery();
+
+			if (rs != null){
+
+				while (rs.next()) {
+					String playerid = rs.getString("playercount");
+					String fname = rs.getString("idclub");
+					String lname = rs.getString("clubname");
+					Boolean bitalicize = rs.getBoolean("bitalics");
+
+					Player player = new Player();
+					player.setDob(playerid);
+					player.setFirstname(fname);
+					player.setLastname(lname);
+					player.setBitalics(bitalicize);
+
+					templist.add(player);
+				}
+				//LOGGER.info("We have results for team roster");
+			}
+			rs.close();
+			db.cleanup();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN loading pdr");
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+		setPdr(templist);
+
+	}
+
+	public void generateBlock(){
+		List<Player> templist = new ArrayList<Player>();
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+			//first get team name
+			CallableStatement cs = db.prepareCall("CALL scaha.getTeamBlockRecruitment(?)");
+
+			//next get pdr
+//TODO			cs = db.prepareCall("CALL scaha.getRosterByTeamId(?)");
+			cs = db.prepareCall("CALL scaha.getTeamBlockRecruitment(?)");
+			cs.setInt("teamid", this.teamid);
+			rs = cs.executeQuery();
+
+			if (rs != null){
+
+				while (rs.next()) {
+					String playerid = rs.getString("playercount");
+					String fname = rs.getString("idteams");
+					String lname = rs.getString("teamname");
+
+					Player player = new Player();
+					player.setDob(playerid);
+					player.setFirstname(fname);
+					player.setLastname(lname);
+
+					templist.add(player);
+				}
+				//LOGGER.info("We have results for team roster");
+			}
+			rs.close();
+			db.cleanup();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN loading blockrecruitments");
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+		setBlockrecruitment(templist);
+
 	}
 }
 
