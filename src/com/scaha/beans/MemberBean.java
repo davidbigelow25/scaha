@@ -315,7 +315,7 @@ public class MemberBean implements Serializable, MailableObject {
 			//
 			// Then we did not find anything.
 			//
-			if (usar.getFirstName().trim().length()== 0) {
+			if (usar == null || usar.getFirstName() == null || usar.getFirstName().trim().length()== 0) {
 				
 				//LOGGER.info(mcomponent.getClientId());
 				context.addMessage(
