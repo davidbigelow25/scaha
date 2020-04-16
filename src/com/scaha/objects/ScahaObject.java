@@ -14,7 +14,6 @@ import com.gbli.context.ContextManager;
 public abstract class ScahaObject implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(ContextManager.getLoggerContext());
 	private static int newID = 0;
 	private Profile m_pro = null;
 	private List<String> options = null;

@@ -269,7 +269,7 @@ public class UsaHockeyRegistration extends ScahaObject implements Serializable {
 		return USAHnum;
 	}
 	/**
-	 * @param uSAHnum the uSAHnum to set
+	 * @param _uSAHnum the uSAHnum to set
 	 */
 	public void setUSAHnum(String _uSAHnum) {
 		USAHnum = _uSAHnum;
@@ -344,7 +344,7 @@ public class UsaHockeyRegistration extends ScahaObject implements Serializable {
 				this.ID = cs.getInt(1);
 				cs.close();
 
-				LOGGER.info("HERE IS THE NEW ID:" + this.ID);
+			//	LOGGER.info("HERE IS THE NEW ID:" + this.ID);
 				
 				_per.setUsaHockeyRegistration(this);
 	
