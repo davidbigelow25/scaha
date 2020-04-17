@@ -29,6 +29,7 @@ import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
 import com.scaha.objects.FamilyRow;
 import com.scaha.objects.MailableObject;
+import com.scaha.objects.Player;
 import com.scaha.objects.Team;
 
 //import com.gbli.common.SendMailSSL;
@@ -96,7 +97,15 @@ public class loiBean implements Serializable, MailableObject {
 	private Boolean is18safesport = false; //this one is for displaying the is 18 checkbox
 	private String safesportfor18display = null; //this one is for displaying in the email and printable loi
 	private String displaysuspendloi = null;
-	
+	private List<Player> pdr = null;
+	private List<Player> blockrecruitment = null;
+	private String pdrcount = null;
+	private String totalplayercount = null;
+	private Integer currentpdrcount = 0;
+	private Integer pdrcountwithplayer = 0;
+	private Integer totalplayercountwithplayer = 0;
+
+
 	@PostConstruct
     public void init() {
 		this.setSendingnote(false);
@@ -163,6 +172,63 @@ public class loiBean implements Serializable, MailableObject {
 	public loiBean() {  
         
     }
+
+	public Integer getPdrcountwithplayer(){
+		return pdrcountwithplayer;
+	}
+
+	public void setPdrcountwithplayer(Integer list){
+		pdrcountwithplayer = list;
+	}
+
+	public Integer getTotalplayercountwithplayer(){
+		return totalplayercountwithplayer;
+	}
+
+	public void setTotalplayercountwithplayer(Integer list){
+		totalplayercountwithplayer = list;
+	}
+
+
+	public Integer getCurrentpdrcount(){
+		return currentpdrcount;
+	}
+
+	public void setCurrentpdrcount(Integer list){
+		currentpdrcount = list;
+	}
+
+    public List<Player> getPdr(){
+		return pdr;
+	}
+
+	public void setPdr(List<Player> list){
+		pdr = list;
+	}
+
+	public List<Player> getBlockrecruitment(){
+		return blockrecruitment;
+	}
+
+	public void setBlockrecruitment(List<Player> list){
+		blockrecruitment = list;
+	}
+
+    public String getPdrcount(){
+		return pdrcount;
+	}
+
+	public void setPdrcount(String name){
+		pdrcount=name;
+	}
+
+	public String getTotalplayercount(){
+		return totalplayercount;
+	}
+
+	public void setTotalplayercount(String name){
+		totalplayercount=name;
+	}
 
 	public String getDisplaysuspendloi(){
 		return displaysuspendloi;
@@ -1413,7 +1479,8 @@ public class loiBean implements Serializable, MailableObject {
     		db.free();
     	}
 		
-		
+		this.generatePDR();
+		this.generateBlock();
 		
 	}
 		
@@ -1654,6 +1721,105 @@ public void getClubID(){
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public void generatePDR(){
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+			//first get team name
+			CallableStatement cs = db.prepareCall("CALL scaha.getTeamByTeamId(?)");
+			cs.setInt("teamid", Integer.parseInt(this.selectedteam));
+			rs = cs.executeQuery();
+
+			while (rs.next()) {
+				displayselectedteam = rs.getString("teamname");
+			}
+
+
+			//next get pdr
+//TODO			cs = db.prepareCall("CALL scaha.getRosterByTeamId(?)");
+			cs = db.prepareCall("CALL scaha.getTeamPDRforLOI(?,?)");
+			cs.setInt("teamid", Integer.parseInt(this.selectedteam));
+			cs.setInt("personid", this.selectedplayer);
+			rs = cs.executeQuery();
+
+			if (rs != null){
+
+				while (rs.next()) {
+					this.currentpdrcount= rs.getInt("playercount");
+					this.pdrcountwithplayer=rs.getInt("pdrplayercount");
+					this.totalplayercountwithplayer=rs.getInt("totalplayercountwithplayer");
+
+
+				}
+				//LOGGER.info("We have results for team roster");
+			}
+			rs.close();
+			db.cleanup();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN loading pdr");
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+	}
+
+	public void generateBlock(){
+		List<Player> templist = new ArrayList<Player>();
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+			//first get team name
+			CallableStatement cs = db.prepareCall("CALL scaha.getTeamBlockRecruitment(?)");
+
+			//next get pdr
+//TODO			cs = db.prepareCall("CALL scaha.getRosterByTeamId(?)");
+			cs = db.prepareCall("CALL scaha.getTeamBlockRecruitmentforLOI(?)");
+			cs.setInt("teamid", Integer.parseInt(this.selectedteam));
+			rs = cs.executeQuery();
+
+			if (rs != null){
+
+				while (rs.next()) {
+					String playerid = rs.getString("playercount");
+					String fname = rs.getString("idteams");
+					String lname = rs.getString("teamname");
+
+					Player player = new Player();
+					player.setDob(playerid);
+					player.setFirstname(fname);
+					player.setLastname(lname);
+
+					templist.add(player);
+				}
+				//LOGGER.info("We have results for team roster");
+			}
+			rs.close();
+			db.cleanup();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN loading blockrecruitments");
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+		setBlockrecruitment(templist);
+
 	}
 }
 

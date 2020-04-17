@@ -22,6 +22,58 @@
 		<b:column>
 			<b:form id="form">
 			<b:messages id="loicodemessage" showDetail="true" autoUpdate="true" closable="false" />
+				<b:panel id ="pdrpanel" collapsible="true" look="primary" >
+					<f:facet name="heading">
+						<h:outputText style="color: white;" value="PDR/Block Recruitment Numbers" />
+					</f:facet>
+
+					<b:panelGrid colSpans="6,6" id="pdrgrid" style="padding: 5;">
+						<b:panelGrid colSpans="9,3" id="pdrcounts" style="padding: 5;">
+							<h:outputText style="font-weight: bold;" value="Current PDR Count for #{loiBean.displayselectedteam}:"/>
+							<b:inputText disabled="true" value="#{loiBean.currentpdrcount}"
+										 large-screen="full-width"
+										 medium-screen="full-width"
+										 small-screen="full-width"
+										 tiny-screen="full-width"/>
+							<h:outputText style="font-weight: bold;" value="PDR Count for #{loiBean.displayselectedteam} with #{loiBean.lastname}, #{loiBean.firstname}:"/>
+							<b:inputText disabled="true" value="#{loiBean.pdrcountwithplayer}"
+										 large-screen="full-width"
+										 medium-screen="full-width"
+										 small-screen="full-width"
+										 tiny-screen="full-width"/>
+							<h:outputText style="font-weight: bold;" value="Total Players for #{loiBean.displayselectedteam} with #{loiBean.lastname}, #{loiBean.firstname}:"/>
+							<b:inputText disabled="true" value="#{loiBean.totalplayercountwithplayer}"
+										 large-screen="full-width"
+										 medium-screen="full-width"
+										 small-screen="full-width"
+										 tiny-screen="full-width"/>
+						</b:panelGrid>
+
+						<b:dataTable
+								id="blockrec"
+								var="player"
+								value="#{loiBean.getBlockrecruitment()}"
+								searching="false"
+								editable="true"
+								select="true"
+								selectionMode="single"
+								paginated="false"
+						>
+							<b:dataTableColumn >
+								<f:facet name="header">
+									#
+								</f:facet>
+								<h:outputText value="#{player.getDob()}" />
+							</b:dataTableColumn>
+							<b:dataTableColumn >
+								<f:facet name="header">
+									Block Recruitment Violation Against Team
+								</f:facet>
+								<h:outputText value="#{player.getLastname()}" />
+							</b:dataTableColumn>
+						</b:dataTable>
+					</b:panelGrid>
+				</b:panel>
 				<b:panel id ="panel" collapsible="false" look="primary">
 					<f:facet name="heading">
 						<h:outputText value="SCAHA LETTER OF INTENT AND MEMBERSHIP REGISTRATION #{loiBean.getCurrentyear()}" />
