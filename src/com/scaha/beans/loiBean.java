@@ -1779,6 +1779,7 @@ public void getClubID(){
 			cs = db.prepareCall("CALL scaha.getTeamPDRforLOI(?,?)");
 			if (sourceteam.equals("M")){
 				cs.setInt("teamid", Integer.parseInt(this.selectedteam));
+
 			}else {
 				cs.setInt("teamid", Integer.parseInt(this.selectedgirlsteam));
 			}
