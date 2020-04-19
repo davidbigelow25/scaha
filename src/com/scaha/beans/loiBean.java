@@ -31,6 +31,9 @@ import com.scaha.objects.FamilyRow;
 import com.scaha.objects.MailableObject;
 import com.scaha.objects.Player;
 import com.scaha.objects.Team;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
+import static org.apache.commons.lang3.BooleanUtils.and;
 
 //import com.gbli.common.SendMailSSL;
 
@@ -104,11 +107,14 @@ public class loiBean implements Serializable, MailableObject {
 	private Integer currentpdrcount = 0;
 	private Integer pdrcountwithplayer = 0;
 	private Integer totalplayercountwithplayer = 0;
-
+	private Boolean displaycounts = null;
+	private Boolean pdrrequired = null;
 
 	@PostConstruct
     public void init() {
 		this.setSendingnote(false);
+		this.setDisplaycounts(false);
+		this.setPdrrequired(false);
 		//hard code value until we load session variable
     	FacesContext context = FacesContext.getCurrentInstance();
     	Application app = context.getApplication();
@@ -172,6 +178,22 @@ public class loiBean implements Serializable, MailableObject {
 	public loiBean() {  
         
     }
+
+	public Boolean getPdrrequired(){
+		return pdrrequired;
+	}
+
+	public void setPdrrequired(Boolean list){
+		pdrrequired = list;
+	}
+
+	public Boolean getDisplaycounts(){
+		return displaycounts;
+	}
+
+	public void setDisplaycounts(Boolean list){
+		displaycounts = list;
+	}
 
 	public Integer getPdrcountwithplayer(){
 		return pdrcountwithplayer;
@@ -1368,6 +1390,7 @@ public class loiBean implements Serializable, MailableObject {
 					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"", "The player is too old for the team selected"));
 					this.selectedteam="0";
 					this.selectedgirlsteam="0";
+					this.setDisplaycounts(false);
 				}
 				
 				
@@ -1442,6 +1465,7 @@ public class loiBean implements Serializable, MailableObject {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"", "Not allowed to LOI for this division/skill level before tryout date."));
 				this.selectedteam=null;
 				this.selectedgirlsteam=null;
+				this.setDisplaycounts(false);
 			}
 					
 			if (resultcount.equals(0) && ageoldercount.equals(0) && pwtobtmcount.equals(0) && !is2yearplayerup){
@@ -1451,22 +1475,31 @@ public class loiBean implements Serializable, MailableObject {
 					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"", "2 or more years player up is not allowed."));
 					this.selectedteam=null;
 					this.selectedgirlsteam=null;
+					this.setDisplaycounts(false);
 				}else{
 					this.setDisplayplayerup(false);
 					if (pwtobtmcount.equals(1)){
 						FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"", "Player up from peewee to bantams is not allowed."));
 						this.selectedteam=null;
+						this.setDisplaycounts(false);
 					}
 				}
 			}
-		
+
+			if (ageoldercount.equals(0) && !isbeforeaaa && pwtobtmcount.equals(0) && !is2yearplayerup){
+				this.generatePDR(sourceteam);
+				this.generateBlock(sourceteam);
+			}
+
 			if (sourceteam.equals("M")){
 				this.selectedgirlsteam=null;
 			} else {
 				this.selectedteam=null;
 			}
-			
-			 
+
+
+
+
 		} catch (SQLException e) {
     		// TODO Auto-generated catch block
     		LOGGER.info("ERROR IN loading club by profile");
@@ -1478,10 +1511,9 @@ public class loiBean implements Serializable, MailableObject {
     		//
     		db.free();
     	}
-		
-		this.generatePDR();
-		this.generateBlock();
-		
+
+
+
 	}
 		
 public void getClubID(){
@@ -1723,24 +1755,33 @@ public void getClubID(){
 		}
 	}
 
-	public void generatePDR(){
+	public void generatePDR(String sourceteam){
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 
 		try{
 			//first get team name
 			CallableStatement cs = db.prepareCall("CALL scaha.getTeamByTeamId(?)");
-			cs.setInt("teamid", Integer.parseInt(this.selectedteam));
+			if (sourceteam.equals("M")){
+				cs.setInt("teamid", Integer.parseInt(this.selectedteam));
+			}else {
+				cs.setInt("teamid", Integer.parseInt(this.selectedgirlsteam));
+			}
 			rs = cs.executeQuery();
 
-			while (rs.next()) {
-				displayselectedteam = rs.getString("teamname");
+			if (rs != null) {
+				while (rs.next()) {
+					displayselectedteam = rs.getString("teamname");
+				}
 			}
-
 
 			//next get pdr
 //TODO			cs = db.prepareCall("CALL scaha.getRosterByTeamId(?)");
 			cs = db.prepareCall("CALL scaha.getTeamPDRforLOI(?,?)");
-			cs.setInt("teamid", Integer.parseInt(this.selectedteam));
+			if (sourceteam.equals("M")){
+				cs.setInt("teamid", Integer.parseInt(this.selectedteam));
+			}else {
+				cs.setInt("teamid", Integer.parseInt(this.selectedgirlsteam));
+			}
 			cs.setInt("personid", this.selectedplayer);
 			rs = cs.executeQuery();
 
@@ -1750,7 +1791,7 @@ public void getClubID(){
 					this.currentpdrcount= rs.getInt("playercount");
 					this.pdrcountwithplayer=rs.getInt("pdrplayercount");
 					this.totalplayercountwithplayer=rs.getInt("totalplayercountwithplayer");
-
+					this.pdrrequired=rs.getBoolean("pdrapplies");
 
 				}
 				//LOGGER.info("We have results for team roster");
@@ -1770,9 +1811,10 @@ public void getClubID(){
 			db.free();
 		}
 
+		this.setDisplaycounts(true);
 	}
 
-	public void generateBlock(){
+	public void generateBlock(String sourceteam){
 		List<Player> templist = new ArrayList<Player>();
 
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
@@ -1784,7 +1826,11 @@ public void getClubID(){
 			//next get pdr
 //TODO			cs = db.prepareCall("CALL scaha.getRosterByTeamId(?)");
 			cs = db.prepareCall("CALL scaha.getTeamBlockRecruitmentforLOI(?)");
-			cs.setInt("teamid", Integer.parseInt(this.selectedteam));
+			if (sourceteam.equals("M")){
+				cs.setInt("teamid", Integer.parseInt(this.selectedteam));
+			}else {
+				cs.setInt("teamid", Integer.parseInt(this.selectedgirlsteam));
+			}
 			rs = cs.executeQuery();
 
 			if (rs != null){

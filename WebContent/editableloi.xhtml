@@ -22,7 +22,7 @@
 		<b:column>
 			<b:form id="form">
 			<b:messages id="loicodemessage" showDetail="true" autoUpdate="true" closable="false" />
-				<b:panel id ="pdrpanel" collapsible="true" look="primary" >
+				<b:panel id ="pdrpanel" collapsible="true" look="primary" rendered="#{loiBean.displaycounts and loiBean.pdrrequired}">
 					<f:facet name="heading">
 						<h:outputText style="color: white;" value="PDR/Block Recruitment Numbers" />
 					</f:facet>
