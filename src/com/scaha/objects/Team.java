@@ -30,8 +30,16 @@ public class Team extends ScahaObject implements Serializable {
 	private String pims = null;
 	private String matchcount = null;
 	private String newdate = null;
-	
-	
+
+	//these are used for counts for team pdr page
+	private Integer playercount = 0;
+	private String pdrapply = null;
+	private String pdr = null;
+	private Integer pdrcount = null;
+	private String blockrecruitment = null;
+	private String blockrecruitmentteam = null;
+
+
 	//this is used for assigning coach role to teams on the coach loi process.
 	private String coachrole = null;
 	
@@ -39,7 +47,56 @@ public class Team extends ScahaObject implements Serializable {
 		teamname = sName;
 		IDteam = teamid;
 	}
-	
+
+	public Integer getPlayercount(){
+		return playercount;
+	}
+
+	public void setPlayercount(Integer sName){
+		playercount = sName;
+	}
+
+	public String getPdrapply(){
+		return pdrapply;
+	}
+
+	public void setPdrapply(String sName){
+		pdrapply = sName;
+	}
+
+	public String getPdr(){
+		return pdr;
+	}
+
+	public void setPdr(String sName){
+		pdr = sName;
+	}
+
+	public Integer getPdrcount(){
+		return pdrcount;
+	}
+
+	public void setPdrcount(Integer sName){
+		pdrcount = sName;
+	}
+
+	public String getBlockrecruitment(){
+		return blockrecruitment;
+	}
+
+	public void setBlockrecruitment(String sName){
+		blockrecruitment = sName;
+	}
+
+	public String getBlockrecruitmentteam(){
+		return blockrecruitmentteam;
+	}
+
+	public void setBlockrecruitmentteam(String sName){
+		blockrecruitmentteam = sName;
+	}
+
+
 	public String getNewdate(){
 		return newdate;
 	}

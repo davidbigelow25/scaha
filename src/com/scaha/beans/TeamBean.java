@@ -19,21 +19,12 @@ import javax.faces.context.FacesContext;
 import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 
+import com.scaha.objects.*;
 import org.primefaces.event.RowEditEvent;
 
 import com.gbli.common.SendMailSSL;
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
-import com.scaha.objects.Club;
-import com.scaha.objects.Division;
-import com.scaha.objects.Game;
-import com.scaha.objects.GeneralSeason;
-import com.scaha.objects.MailableObject;
-import com.scaha.objects.Release;
-import com.scaha.objects.ReleaseDataModel;
-import com.scaha.objects.ScahaTeam;
-import com.scaha.objects.SkillLevel;
-import com.scaha.objects.TeamList;
 
 //import com.gbli.common.SendMailSSL;
 
@@ -67,6 +58,7 @@ public class TeamBean implements Serializable, MailableObject {
 	private TeamList MyTeamList = null;
 	private List<Game> games = null;
 	private Integer teamid = null;
+	private List<Team> teams = null;
 	
 	@PostConstruct
     public void init() {
@@ -89,8 +81,10 @@ public class TeamBean implements Serializable, MailableObject {
         {
     		this.teamid = Integer.parseInt(hsr.getParameter("teamid").toString());
     		getGamesforTeam(teamid);
+
         }
-    	
+
+		getClubTeamsIncludePDR();
 	}
 	
     public TeamBean() {  
@@ -104,9 +98,16 @@ public class TeamBean implements Serializable, MailableObject {
     public void setTeamid(Integer value){
     	teamid = value;
     }
-    
-    
-    public List<Game> getGames(){
+
+	public List<Team> getTeams(){
+		return teams;
+	}
+
+	public void setTeams(List<Team> value){
+		teams = value;
+	}
+
+	public List<Game> getGames(){
     	return games;
     }
     
@@ -799,8 +800,8 @@ public void resetSkillLevel(){
 	
 	public void getGamesforTeam(Integer teamid){
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
-    	List<Game> tempresult = new ArrayList<Game>();
-    	
+
+		List<Game> tempresult = new ArrayList<>();
     	try{
 
     		if (db.setAutoCommit(false)) {
@@ -866,5 +867,63 @@ public void resetSkillLevel(){
 			e.printStackTrace();
 		}
     }
+
+	public void getClubTeamsIncludePDR(){
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		List<Team> tempresult = new ArrayList<>();
+
+		try{
+			//first get team name
+			CallableStatement cs = db.prepareCall("CALL scaha.getAllTeamsWPDRForClub(?)");
+			cs.setInt("in_IdClub", this.idclub);
+			rs = cs.executeQuery();
+
+			if (rs != null){
+
+				while (rs.next()) {
+					String sname = rs.getString("sname");
+					Integer teamid = rs.getInt("idteams");
+					String skilllevel = rs.getString("levelsname");
+					String divisionlevel = rs.getString("division_name");
+					Integer playercount = rs.getInt("playercount");
+					String pdrapply = rs.getString("pdrapply");
+					String pdr = rs.getString("pdr");
+					Integer pdrcount = rs.getInt("pdrcount");
+					String blockrecruitment = rs.getString("blockrecruitment");
+					String blockrecruitmentteam = rs.getString("blockrecruitmentteam");
+
+					Team oteam = new Team(sname,teamid.toString());
+					oteam.setTeamname(sname);
+					oteam.setSkillname(skilllevel);
+					oteam.setDivisionname(divisionlevel);
+					oteam.setPlayercount(playercount);
+					oteam.setPdrapply(pdrapply);
+					oteam.setPdr(pdr);
+					oteam.setPdrcount(pdrcount);
+					oteam.setBlockrecruitment(blockrecruitment);
+					oteam.setBlockrecruitmentteam(blockrecruitmentteam);
+
+					tempresult.add(oteam);
+				}
+				//LOGGER.info("We have results for team roster");
+			}
+			rs.close();
+			db.cleanup();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN loading pdr");
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+		this.setTeams(tempresult);
+	}
 }
 

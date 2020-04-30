@@ -25,7 +25,7 @@
 				                <b:navLink icon="list-alt" value="Scoreboard" href="gamecentral.xhtml?season=SCAHA-1819&amp;initial=yes"></b:navLink>
 				                <b:navLink iconAwesome="trophy" value="Playoffs" href="playoffscentral.xhtml"></b:navLink>
 				                <b:navLink icon="eye-open" value="Suspensions" href="suspensions.xhtml"></b:navLink>
-								<!--<b:navLink icon="glyphicon-modal-window" value="Register for SCAHA" href="manageUSAHockey.xhtml" rendered="#{not empty profileBean.getProfile()}"></b:navLink>-->
+								<b:navLink icon="glyphicon-modal-window" value="Register for SCAHA" href="manageUSAHockey.xhtml" rendered="#{not empty profileBean.getProfile()}"></b:navLink>
 				                <br></br><b:navLink icon="list" value="Manager Portal" href="managerportal.xhtml" rendered="#{profileBean.getProfile().getScahamanager().getIsmanager()}"></b:navLink>
 				            	<!-- displays only when user is logged in -->
 				                
@@ -87,7 +87,8 @@
 							<b:navbarLinks>
 				                <b:navLink value="8U Ice Reimbursement" href="https://docs.google.com/forms/d/e/1FAIpQLSee-ri9prgsrvTadmO65vmlsJ70dx0NayxOywa4wMZD0WotiQ/viewform" target="_blank" rendered="#{profileBean.hasRoleList('C-REG;C-PRES;S-STATS')}"></b:navLink>
 				                <b:navLink value="Manage Teams" href="addteams.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES;S-STATS')}"></b:navLink>
-				                <b:navLink value="Player LOI" href="addplayerstoteam.xhtml" rendered="#{profileBean.hasRoleList('C-REG')}"></b:navLink>
+								<b:navLink value="View Team PDR Counts" href="reviewteams.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES;S-STATS')}"></b:navLink>
+								<b:navLink value="Player LOI" href="addplayerstoteam.xhtml" rendered="#{profileBean.hasRoleList('C-REG')}"></b:navLink>
 				                <b:navLink value="Coach LOI" href="addcoachestoteam.xhtml" rendered="#{profileBean.hasRoleList('C-REG')}"></b:navLink>
 				                <b:navLink value="Add Coach to Teams" href="addcoachtoadditionalteams.xhtml" rendered="#{profileBean.hasRoleList('C-REG')}"></b:navLink>
 				                <b:navLink value="Review LOI's" href="registrarviewlois.xhtml" rendered="#{profileBean.hasRoleList('C-REG')}"></b:navLink>

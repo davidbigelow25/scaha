@@ -470,12 +470,6 @@ public class editrosterBean implements Serializable {
 			cs.setInt("teamid", this.teamid);
 			rs = cs.executeQuery();
 
-			//next get pdr
-//TODO			cs = db.prepareCall("CALL scaha.getRosterByTeamId(?)");
-			cs = db.prepareCall("CALL scaha.getTeamPDR(?)");
-			cs.setInt("teamid", this.teamid);
-			rs = cs.executeQuery();
-
 			if (rs != null){
 
 				while (rs.next()) {
