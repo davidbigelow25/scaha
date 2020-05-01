@@ -52,7 +52,10 @@
 				</f:facet>
 				<b:panelGrid colSpans="12" id="usahockeyninformation">
 					<h:outputText style="font-weight: bold;" value="Please Enter The USA Hockey Membership Number:" />
-					<b:inputText id="usah-reg" binding="#{memberBean.mcomponent}" value="#{memberBean.regnumber}" required="true" requiredMessage="Usa Hockey Number cannot be blank." 
+					<h:outputText style="font-style: italic;" value="Note:  For some memberships USA Hockey has taken up to 24 hours to make a member's data avaiable to retrieve.  If you receive a member record not found error, please try again in 24 hours." />
+
+
+					<b:inputText id="usah-reg" binding="#{memberBean.mcomponent}" value="#{memberBean.regnumber}" required="true" requiredMessage="Usa Hockey Number cannot be blank."
 						large-screen="half"
 				    	medium-screen="half"
 				    	small-screen="full-width"
@@ -93,8 +96,7 @@
 					    	tiny-screen="full-width"/>
  					</a>
  					<p:spacer width="10" height="10" />
-					<h:outputText value="Note:  Please allow up to 5 minutes between USA Hockey Membership creation and entering the USA Hockey Number on this page to allow USA Hockey's database to populate.  USA Hockey's process is immediate, but it takes a couple
-					of minutes for their site to make your number available to our system." />
+
  				</b:panelGrid>
 			</b:panel>
  			<b:panel id="selectmemberpanel" collapsible="false" look="primary" rendered="#{memberBean.displayselectmember}">
