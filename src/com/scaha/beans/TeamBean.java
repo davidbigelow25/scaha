@@ -41,6 +41,7 @@ public class TeamBean implements Serializable, MailableObject {
 	private ProfileBean pb;
 
 	transient private ResultSet rs = null;
+	transient private ResultSet rs2 = null;
     private List<Division> divisions= null;
     private String[] sdivisions = null;
     private List<SkillLevel> skilllevels= null;
@@ -874,8 +875,9 @@ public void resetSkillLevel(){
 		List<Team> tempresult = new ArrayList<>();
 
 		try{
-			//first get team name
+			//first get all teams
 			CallableStatement cs = db.prepareCall("CALL scaha.getAllTeamsWPDRForClub(?)");
+			CallableStatement cs2 = db.prepareCall("CALL scaha.getTeamBlockRecruitmentforLOI(?)");
 			cs.setInt("in_IdClub", this.idclub);
 			rs = cs.executeQuery();
 
@@ -901,10 +903,31 @@ public void resetSkillLevel(){
 					oteam.setPdrapply(pdrapply);
 					oteam.setPdr(pdr);
 					oteam.setPdrcount(pdrcount);
-					oteam.setBlockrecruitment(blockrecruitment);
-					oteam.setBlockrecruitmentteam(blockrecruitmentteam);
+
+					//need to call sp for block recruitment for a team
+					cs2.setInt("teamid", teamid);
+					rs2 = cs2.executeQuery();
+
+					if (rs2 != null){
+
+						while (rs2.next()) {
+
+							Integer brplayercount = rs2.getInt("playercount");
+							String brteamname = rs2.getString("teamname");
+
+							if (brplayercount>0) {
+								oteam.setBlockrecruitment("Yes");
+								oteam.setBlockrecruitmentteam(brteamname);
+							}else {
+								oteam.setBlockrecruitment("No");
+							}
+						}
+						//LOGGER.info("We have results for team roster");
+					}
+					rs2.close();
 
 					tempresult.add(oteam);
+
 				}
 				//LOGGER.info("We have results for team roster");
 			}
