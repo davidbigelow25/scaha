@@ -55,7 +55,8 @@ public class releaseBean implements Serializable, MailableObject {
 	private String selectedacceptingskilllevel = null;
 	private String selectedfinancial = null;
 	private String comments = null;
-	private Integer selectedplayer = null;
+	private Integer selectedplayer = null;  //this will now be the release id
+	private Integer personid = null;
 	private String subject = null;
 	private String textbody = null;
 	private String cc = null;
@@ -208,7 +209,10 @@ public class releaseBean implements Serializable, MailableObject {
 		// TODO Auto-generated method stub
 		return clubname;
 	}
-    
+
+	public void setPersonid(Integer number){personid=number;}
+	public Integer getPersonid(){return personid;}
+
     public void setClubname(String snum){
     	clubname = snum;
     }
@@ -755,7 +759,7 @@ public class releaseBean implements Serializable, MailableObject {
     		
     			Vector<Integer> v = new Vector<Integer>();
     			v.add(selectedplayer);
-    			db.getData("CALL scaha.getPlayerReleaseInfo(?)", v);
+    			db.getData("CALL scaha.getPlayerReleaseInfoByRosterId(?)", v);
     		    
     			if (db.getResultSet() != null){
     				//need to add to an array
@@ -769,6 +773,7 @@ public class releaseBean implements Serializable, MailableObject {
         				parentname = rs.getString("parentname");
         				parentemail = rs.getString("parentemail");
         				releasingclubdivision = rs.getString("releasingclubdivision");
+        				personid = rs.getInt("idperson");
         			}
     				rs.close();
     				//LOGGER.info("We have results for player details by player id");
@@ -881,8 +886,8 @@ public class releaseBean implements Serializable, MailableObject {
 
     		if (db.setAutoCommit(false)) {
     		
-    			CallableStatement cs = db.prepareCall("CALL scaha.addRelease(?,?,?,?,?,?,?,?,?,?,?,?,?)");
-    			cs.setInt("personid", this.selectedplayer);
+    			CallableStatement cs = db.prepareCall("CALL scaha.AddReleaseWRosterId(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    			cs.setInt("personid", this.personid);
     			cs.setInt("reason", Integer.parseInt(this.selectedreason));
     			if (!this.displayfreeandclearonly){
     				cs.setInt("suspension", 0);
@@ -930,7 +935,7 @@ public class releaseBean implements Serializable, MailableObject {
     				cs.setString("releasetype", "P");
     				cs.setInt("financial", 0);
     			}
-    			
+				cs.setInt("rosterid", this.selectedplayer);
     		    cs.executeQuery();
     			
     		    //need to get display values for all lookup fields for the email sent.

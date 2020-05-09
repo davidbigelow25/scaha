@@ -26,7 +26,7 @@ public class Result extends ScahaObject implements Serializable {
 	private String state = null;
 	private String city = null;
 	private String zip = null;
-	
+	private Integer idroster = null;
 	
 	public Result (String sName, String playerid,String saddress, String sdob){ 
 		
@@ -44,6 +44,15 @@ public class Result extends ScahaObject implements Serializable {
 	public void setIsapproved(Boolean value){
 		isapproved = value;
 	}
+	public Integer getIdroster(){
+		return idroster;
+	}
+
+	public void setIdroster(Integer sName){
+		idroster = sName;
+	}
+
+
 	public Integer getIdperson(){
 		return idperson;
 	}

@@ -141,9 +141,11 @@ public class playerreleaseBean implements Serializable {
         				
         				String dob = rs.getString("dob");
         				String currentteam = rs.getString("currentteam");
+        				Integer idroster = rs.getInt("idroster");
         				
         				Result result = new Result(playername,idperson,address,dob);
         				result.setCurrentteam(currentteam);
+        				result.setIdroster(idroster);
         				tempresult.add(result);
     				}
     				
@@ -220,11 +222,11 @@ public Integer loadClubid(){
 
 	public void startPermanentRelease(Result selectedPlayer){
 		
-		String sidplayer = selectedPlayer.getIdplayer();
+		Integer sidplayer = selectedPlayer.getIdroster();
 		FacesContext context = FacesContext.getCurrentInstance();
 		
 		try{
-			context.getExternalContext().redirect("releaseform.xhtml?releasetype=p&playerid=" + sidplayer);
+			context.getExternalContext().redirect("releaseform.xhtml?releasetype=p&playerid=" + sidplayer.toString());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -233,11 +235,11 @@ public Integer loadClubid(){
 	
 	public void startTemporaryRelease(Result selectedPlayer,String type){
 		
-		String sidplayer = selectedPlayer.getIdplayer();
+		Integer sidplayer = selectedPlayer.getIdroster();
 		FacesContext context = FacesContext.getCurrentInstance();
 		
 		try{
-			context.getExternalContext().redirect("releaseform.xhtml?playerid=" + sidplayer + "&releasetype=" + type);
+			context.getExternalContext().redirect("releaseform.xhtml?playerid=" + sidplayer.toString() + "&releasetype=" + type);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
