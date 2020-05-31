@@ -135,7 +135,7 @@ public class gamecentralBean implements Serializable{
 		//lets get todays date to plug in to a stored procedure to get a list of dates to load 
 		//into pills in the calendar section
 		this.selectedschedule=0;
-		this.selectedseason="SCAHA-1920";
+		this.selectedseason="SCAHA-2021";
 		this.datepickershow = false;
 		generateListofdays(null);
 		

@@ -78,8 +78,16 @@ public class boxscoreBean implements Serializable{
 	private String selectedseason = null;
 	private String selectedschedule = null;
 	private String selectedgame = null;
-	
-	
+	private String awaywins = null;
+	private String awaylosses = null;
+	private String awayties = null;
+	private String awaypoints = null;
+	private String homewins = null;
+	private String homelosses = null;
+	private String hometies = null;
+	private String homepoints = null;
+
+
 	@ManagedProperty(value="#{scahaBean}")
     private ScahaBean scaha;
 	
@@ -135,9 +143,73 @@ public class boxscoreBean implements Serializable{
 	
     public boxscoreBean() {  
         
-    }  
-    
-    public String getSelectedgame(){
+    }
+
+	public String getAwaywins(){
+		return awaywins;
+	}
+
+	public void setAwaywins(String value){
+		awaywins=value;
+	}
+
+	public String getHomewins(){
+		return homewins;
+	}
+
+	public void setHomewins(String value){
+		homewins=value;
+	}
+
+	public String getAwaylosses(){
+		return awaylosses;
+	}
+
+	public void setAwaylosses(String value){
+		awaylosses=value;
+	}
+
+	public String getAwayties(){
+		return awayties;
+	}
+
+	public void setAwayties(String value){
+		awayties=value;
+	}
+
+	public String getAwaypoints(){
+		return awaypoints;
+	}
+
+	public void setAwaypoints(String value){
+		awaypoints=value;
+	}
+
+	public String getHomelosses(){
+		return homelosses;
+	}
+
+	public void setHomelosses(String value){
+		homelosses=value;
+	}
+
+	public String getHometies(){
+		return hometies;
+	}
+
+	public void setHometies(String value){
+		hometies=value;
+	}
+
+	public String getHomepoints(){
+		return homepoints;
+	}
+
+	public void setHomepoints(String value){
+		homepoints=value;
+	}
+
+	public String getSelectedgame(){
     	return selectedgame;
     }
     
@@ -436,7 +508,7 @@ public class boxscoreBean implements Serializable{
     public void closePage(){
     	FacesContext context = FacesContext.getCurrentInstance();
     	try{
-    		context.getExternalContext().redirect("gamecentral.xhtml?selecteddate=" + this.selectedgame + "&schedule=" + this.selectedschedule + "&season=" + this.selectedseason);
+    		context.getExternalContext().redirect("gamecentral.xhtml");
     	} catch (Exception e){
 			e.printStackTrace();
 		}
@@ -477,6 +549,14 @@ public class boxscoreBean implements Serializable{
 					this.location=rs.getString("location");
 					this.statetag=rs.getString("statetag");
 					this.typetag=rs.getString("typetag");
+					this.awaywins=rs.getString("awaywins");
+					this.awaylosses=rs.getString("awaylosses");
+					this.awayties=rs.getString("awayties");
+					this.awaypoints=rs.getString("awaypoints");
+					this.homewins=rs.getString("homewins");
+					this.homelosses=rs.getString("homelosses");
+					this.hometies=rs.getString("hometies");
+					this.homepoints=rs.getString("homepoints");
 				}
 				//LOGGER.info("We have selected details for live game id:" + gameid);
 			}
@@ -579,7 +659,7 @@ public class boxscoreBean implements Serializable{
 					pen.setPenaltytype(rs.getString("penaltytype"));
 					pen.setMinutes(rs.getString("minutes"));
 					pen.setTimeofpenalty(rs.getString("penaltytime"));
-					
+					pen.setIdroster(rs.getInt("idroster"));
 					penalties.add(pen);
 				}
 				//LOGGER.info("We have selected penalties summary for live game id:" + gameid);
@@ -602,6 +682,7 @@ public class boxscoreBean implements Serializable{
 					stat.setAssists(rs.getString("assists"));
 					stat.setPoints(rs.getString("points"));
 					stat.setPims(rs.getString("pims"));
+					stat.setId(rs.getInt("idroster"));
 					
 					homestats.add(stat);
 				}
@@ -624,7 +705,7 @@ public class boxscoreBean implements Serializable{
 					stat.setPlayername(rs.getString("playername"));
 					stat.setShots(rs.getString("shots"));
 					stat.setSaves(rs.getString("saves"));
-					
+					stat.setId(rs.getInt("idroster"));
 					homegoaliestats.add(stat);
 				}
 				//LOGGER.info("We have selected penalties summary for live game id:" + gameid);
@@ -647,6 +728,7 @@ public class boxscoreBean implements Serializable{
 					stat.setAssists(rs.getString("assists"));
 					stat.setPoints(rs.getString("points"));
 					stat.setPims(rs.getString("pims"));
+					stat.setId(rs.getInt("idroster"));
 					
 					awaystats.add(stat);
 				}
@@ -668,7 +750,7 @@ public class boxscoreBean implements Serializable{
 					stat.setPlayername(rs.getString("playername"));
 					stat.setShots(rs.getString("shots"));
 					stat.setSaves(rs.getString("saves"));
-					
+					stat.setId(rs.getInt("idroster"));
 					awaygoaliestats.add(stat);
 				}
 				//LOGGER.info("We have selected penalties summary for live game id:" + gameid);
@@ -734,5 +816,17 @@ public class boxscoreBean implements Serializable{
 			this.setNoperiod4penalties(false);
 		}
 	}
+
+	public void playerDetail(String rosterid,String gameid){
+
+		FacesContext context = FacesContext.getCurrentInstance();
+		try{
+			context.getExternalContext().redirect("playerdetail.xhtml?id=" + rosterid + "&gameid=" +gameid);
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+
+
 }
 

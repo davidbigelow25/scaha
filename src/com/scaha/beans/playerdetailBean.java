@@ -42,8 +42,10 @@ public class playerdetailBean implements Serializable{
 	//lists for generated datamodels
 	private List<Stat> seasonstats;
 	private List<Stat> currentseasonstats;
-	
-	
+	private List<Stat> goalieseasonstats;
+	private List<Stat> goaliecurrentseasonstats;
+
+
 	//bean level properties used by multiple methods
 	
 	
@@ -53,7 +55,8 @@ public class playerdetailBean implements Serializable{
 	private String teamname = null;
 	private String playername = null;
 	private String jerseynumber = null;
-	
+	private String gameid = null;
+	private Boolean isgoalie = null;
 	
 	@ManagedProperty(value="#{scahaBean}")
     private ScahaBean scaha;
@@ -75,7 +78,10 @@ public class playerdetailBean implements Serializable{
         {
     		this.personid = Integer.parseInt(hsr.getParameter("id"));
         }
-		
+		if(hsr.getParameter("gameid") != null)
+		{
+			this.gameid = hsr.getParameter("gameid");
+		}
     	
     	    	
 		this.loadBoxscore(personid);
@@ -84,9 +90,34 @@ public class playerdetailBean implements Serializable{
 	
     public playerdetailBean() {  
         
-    }  
-    
-   public List<Stat> getSeasonstats(){
+    }
+
+	public Boolean getIsgoalie() {
+		return isgoalie;
+	}
+
+	public void setIsgoalie(Boolean isgoalie) {
+		this.isgoalie = isgoalie;
+	}
+
+	public List<Stat> getGoalieseasonstats() {
+		return goalieseasonstats;
+	}
+
+	public void setGoalieseasonstats(List<Stat> goalieseasonstats) {
+		this.goalieseasonstats = goalieseasonstats;
+	}
+
+	public List<Stat> getGoaliecurrentseasonstats(){
+		return this.goaliecurrentseasonstats;
+	}
+
+	public void setGoaliecurrentseasonstats(List<Stat> value){
+		this.goaliecurrentseasonstats = value;
+	}
+
+
+	public List<Stat> getSeasonstats(){
 	   return this.seasonstats;
    }
     
@@ -171,7 +202,7 @@ public class playerdetailBean implements Serializable{
     public void closePage(){
     	FacesContext context = FacesContext.getCurrentInstance();
     	try{
-   // TODO: error		context.getExternalContext().redirect("gamecentral.xhtml?selecteddate=" + this.selectedgame + "&schedule=" + this.selectedschedule + "&season=" + this.selectedseason);
+   			context.getExternalContext().redirect("boxscore.xhtml?id=" + this.gameid);
     	} catch (Exception e){
 			e.printStackTrace();
 		}
@@ -184,8 +215,10 @@ public class playerdetailBean implements Serializable{
 	public void loadBoxscore(Integer gameid){
 		List<Stat> tempseasonstats = new ArrayList<Stat>();
 		List<Stat> tempcurrentstats = new ArrayList<Stat>();
-		
-		
+		List<Stat> tempgoalieseasonstats = new ArrayList<Stat>();
+		List<Stat> tempgoaliecurrentstats = new ArrayList<Stat>();
+
+
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
     	
     	try{
@@ -201,18 +234,46 @@ public class playerdetailBean implements Serializable{
 					this.teamname=rs.getString("teamname");
 					this.playername=rs.getString("playername");
 					this.jerseynumber=rs.getString("jerseynumber");
+					this.isgoalie=rs.getBoolean("isgoalie");
 				}
 				//LOGGER.info("We have selected details for person id:" + gameid);
 			}
 			rs.close();
 			
 			//need to load list of seasons stats
-			cs = db.prepareCall("CALL scaha.getPlayersStatsSeasonList(?)");
-    		cs.setInt("in_personid", gameid);
+			//if the rosterid is a goalie
+			cs = db.prepareCall("CALL scaha.getGoalieStatsSeasonList(?)");
+    		cs.setInt("in_rosterid", gameid);
     		rs = cs.executeQuery();
 			
 			if (rs != null){
 				
+				while (rs.next()) {
+					Stat score = new Stat();
+					score.setTeamname(rs.getString("teamname"));
+					score.setJersey(rs.getString("season"));
+					score.setMins(rs.getString("toipergame"));
+					score.setGwg(rs.getString("wins"));
+					score.setShg(rs.getString("losses"));
+					score.setGaa(rs.getString("gaa"));
+					score.setShots(rs.getString("shots"));
+					score.setSaves(rs.getString("saves"));
+					score.setSavepercentage(rs.getString("savepercentage"));
+					score.setPpg(rs.getString("shutouts"));
+					tempgoalieseasonstats.add(score);
+				}
+				//LOGGER.info("We have selected season history for person id:" + gameid);
+			}
+			
+			rs.close();
+
+			//for when rosterid is a plyer
+			cs = db.prepareCall("CALL scaha.getPlayersStatsSeasonList(?)");
+			cs.setInt("in_personid", gameid);
+			rs = cs.executeQuery();
+
+			if (rs != null){
+
 				while (rs.next()) {
 					Stat score = new Stat();
 					score.setTeamname(rs.getString("teamname"));
@@ -231,10 +292,12 @@ public class playerdetailBean implements Serializable{
 				}
 				//LOGGER.info("We have selected season history for person id:" + gameid);
 			}
-			
+
 			rs.close();
-			
+
+
 			//need to load scoring by game for person.
+			//when rosterid is for player
 			cs = db.prepareCall("CALL scaha.getScoringforCurrentSeason(?)");
     		cs.setInt("in_personid", gameid);
     		
@@ -261,6 +324,30 @@ public class playerdetailBean implements Serializable{
 				}
 				//LOGGER.info("We have selected game by game scoring for person id:" + gameid);
 			}
+
+			//when rosterid is for a goalie
+			cs = db.prepareCall("CALL scaha.getScoringforGoalieCurrentSeason(?)");
+			cs.setInt("in_rosterid", gameid);
+
+			rs = cs.executeQuery();
+
+			if (rs != null){
+
+				while (rs.next()) {
+					Stat score2 = new Stat();
+					score2.setPlayername(rs.getString("gamedate"));
+					score2.setTeamname(rs.getString("opponent"));
+					score2.setJersey(rs.getString("result"));
+					score2.setShots(rs.getString("shots"));
+					score2.setSaves(rs.getString("saves"));
+					score2.setSavepercentage(rs.getString("savepercentage"));
+					score2.setPpg(rs.getString("shutouts"));
+					score2.setGwg(rs.getString("toi"));
+
+					tempgoaliecurrentstats.add(score2);
+				}
+				//LOGGER.info("We have selected game by game scoring for person id:" + gameid);
+			}
 			rs.close();
 			cs.close();
 			db.cleanup();
@@ -279,7 +366,8 @@ public class playerdetailBean implements Serializable{
 		
 		this.setSeasonstats(tempseasonstats);
 		this.setCurrentseasonstats(tempcurrentstats);
-		
+		this.setGoalieseasonstats(tempgoalieseasonstats);
+		this.setGoaliecurrentseasonstats(tempgoaliecurrentstats);
 	}
 	
 	
