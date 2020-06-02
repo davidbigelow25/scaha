@@ -27,6 +27,8 @@ public class Penalty extends ScahaObject implements Serializable {
 	private String teamname = null;
 	private String playername = null;
 	
+	public Integer getId() {return ID;}
+
 	public String getPensec() {
 		return pensec;
 	}

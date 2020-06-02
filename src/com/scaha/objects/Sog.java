@@ -48,6 +48,9 @@ public class Sog extends ScahaObject implements Serializable {
 		
 	}
 
+	public Integer getId(){
+		return this.ID;
+	}
 	/**
 	 * @return the team
 	 */

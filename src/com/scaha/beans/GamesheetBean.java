@@ -659,69 +659,36 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 				list = SogList.NewListFactory(pb.getProfile(), db, this.getLivegame(), this.getLivegame().getAwayteam(), this.getAwayteam());	
 			}
 			
-			Integer currentrownumber = list.getRowCount();
-			
-			for (int i=1;i<=6;i++){
-				currentrownumber++;
-				Sog sog = new Sog(0,pb.getProfile());
-				if (this.teamid.equals(this.livegame.getHometeam().ID)){
-					sog.setTeam(this.getLivegame().getHometeam());
-				} else {
-					sog.setTeam(this.getLivegame().getAwayteam());
-				}
-				sog.setLivegame(this.getLivegame());
-				
-				LiveGameRosterSpot lgrs = new LiveGameRosterSpot(0, pb.getProfile());
-				
-				sog.setIdroster(0);
-				sog.setRosterspot(lgrs);
-				sog.setShots1(0);
-				sog.setShots2(0);
-				sog.setShots3(0);
-				sog.setShots4(0);
-				sog.setShots5(0);
-				sog.setShots6(0);
-				sog.setShots7(0);
-				sog.setShots8(0);
-				sog.setShots9(0);
-				sog.setPlaymins("00");
-				sog.setPlaysecs("00");
-				sog.setPlaytime("00:00:00");
-				list.add(sog);
-				
+
+			Sog sog = new Sog(0,pb.getProfile());
+			if (this.teamid.equals(this.livegame.getHometeam().ID)){
+				sog.setTeam(this.getLivegame().getHometeam());
+			} else {
+				sog.setTeam(this.getLivegame().getAwayteam());
 			}
+			sog.setLivegame(this.getLivegame());
+
+			LiveGameRosterSpot lgrs = new LiveGameRosterSpot(0, pb.getProfile());
+
+			sog.setIdroster(0);
+			sog.setRosterspot(lgrs);
+			sog.setShots1(0);
+			sog.setShots2(0);
+			sog.setShots3(0);
+			sog.setShots4(0);
+			sog.setShots5(0);
+			sog.setShots6(0);
+			sog.setShots7(0);
+			sog.setShots8(0);
+			sog.setShots9(0);
+			sog.setPlaymins("00");
+			sog.setPlaysecs("00");
+			sog.setPlaytime("00:00:00");
+			list.add(sog);
+
+
 			
-			if(bAddsogrows){
-				for (int i=1;i<=numsogadd;i++){
-					currentrownumber++;
-					Sog sog = new Sog(0,pb.getProfile());
-					if (this.teamid.equals(this.livegame.getHometeam().ID)){
-						sog.setTeam(this.getLivegame().getHometeam());
-					} else {
-						sog.setTeam(this.getLivegame().getAwayteam());
-					}
-					sog.setLivegame(this.getLivegame());
-					
-					LiveGameRosterSpot lgrs = new LiveGameRosterSpot(0, pb.getProfile());
-					
-					sog.setIdroster(0);
-					sog.setRosterspot(lgrs);
-					sog.setShots1(0);
-					sog.setShots2(0);
-					sog.setShots3(0);
-					sog.setShots4(0);
-					sog.setShots5(0);
-					sog.setShots6(0);
-					sog.setShots7(0);
-					sog.setShots8(0);
-					sog.setShots9(0);
-					sog.setPlaymins("00");
-					sog.setPlaysecs("00");
-					sog.setPlaytime("00:00:00");
-					list.add(sog);
-				
-				}
-			}
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -765,59 +732,32 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 				list = ScoringList.NewListFactory(pb.getProfile(), db, this.getLivegame(), this.getLivegame().getAwayteam(), this.getAwayteam());
 			}
 			
-			Integer currentrownumber = list.getRowCount();
-			
-			for (int i=1;i<=10;i++){
-				currentrownumber++;
-				Scoring score = new Scoring(0,pb.getProfile(), this.getLivegame(), this.getLivegame().getHometeam());
-				if (this.teamid.equals(this.livegame.getHometeam().ID)){
-					score.setTeam(this.getLivegame().getHometeam());
-				} else {
-					score.setTeam(this.getLivegame().getAwayteam());
-				}
-				
-				
-				LiveGameRosterSpot lgrs = new LiveGameRosterSpot(0, pb.getProfile());
-				score.setCount(currentrownumber);
-				score.setIdrostergoal(0);
-				score.setLgrosterspotgoal(lgrs);
-				score.setIdrostera1(0);
-				score.setLgrosterspota1(lgrs);
-				score.setIdrostera2(0);
-				score.setLgrosterspota2(lgrs);
-				score.setGoaltype("");
-				score.setPeriod(0);
-				score.setGoalmin("00");
-				score.setGoalsec("00");
-				score.setTimescored("");
-				
-				list.add(score);
-				
+
+			Scoring score = new Scoring(0,pb.getProfile(), this.getLivegame(), this.getLivegame().getHometeam());
+			if (this.teamid.equals(this.livegame.getHometeam().ID)){
+				score.setTeam(this.getLivegame().getHometeam());
+			} else {
+				score.setTeam(this.getLivegame().getAwayteam());
 			}
-			
-			if(bAddgoalrows){
-				for (int i=1;i<=numgoalsadd;i++){
-					Scoring score = new Scoring(0,pb.getProfile(), this.getLivegame(), this.getLivegame().getHometeam());
-					
-					LiveGameRosterSpot lgrs = new LiveGameRosterSpot(0, pb.getProfile());
-					score.setCount(currentrownumber+i);
-					score.setIdrostergoal(0);
-					score.setLgrosterspotgoal(lgrs);
-					score.setIdrostera1(0);
-					score.setLgrosterspota1(lgrs);
-					score.setIdrostera2(0);
-					score.setLgrosterspota2(lgrs);
-					score.setGoaltype("");
-					score.setPeriod(0);
-					score.setGoalmin("00");
-					score.setGoalsec("00");
-					score.setTimescored("");
-					list.add(score);
-					
-				}
-			}
-			
-			
+				
+				
+			LiveGameRosterSpot lgrs = new LiveGameRosterSpot(0, pb.getProfile());
+			score.setCount(list.getRowCount()+1);
+			score.setIdrostergoal(0);
+			score.setLgrosterspotgoal(lgrs);
+			score.setIdrostera1(0);
+			score.setLgrosterspota1(lgrs);
+			score.setIdrostera2(0);
+			score.setLgrosterspota2(lgrs);
+			score.setGoaltype("");
+			score.setPeriod(0);
+			score.setGoalmin("00");
+			score.setGoalsec("00");
+			score.setTimescored("");
+
+			list.add(score);
+				
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -858,60 +798,29 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 				list = PenaltyList.NewListFactory(pb.getProfile(), db, this.getLivegame(), this.getLivegame().getAwayteam(), this.getAwayteam());
 			}
 			
-			Integer currentrownumber = list.getRowCount();
-			
-			for (int i=1;i<=10;i++){
-				currentrownumber++;
-				
-				Penalty pen = new Penalty(0,pb.getProfile());
-				LiveGameRosterSpot lgrs = new LiveGameRosterSpot(0, pb.getProfile());
-				pen.setCount(currentrownumber++);
-				if (this.teamid.equals(this.livegame.getHometeam().ID)){
-					pen.setTeam(this.getLivegame().getHometeam());
-				} else {
-					pen.setTeam(this.getLivegame().getAwayteam());
-				}
-				pen.setLivegame(this.getLivegame());
-				pen.setIdroster(0);
-				pen.setRosterspot(lgrs);
-				pen.setPeriod(0);
-				pen.setPenaltytype("");
-				pen.setMinutes("");
-				pen.setPenmin("00");
-				pen.setPensec("00");
-				pen.setTimeofpenalty("00:00:00");
-				list.add(pen);
-			
-				
+			Penalty pen = new Penalty(0,pb.getProfile());
+			LiveGameRosterSpot lgrs = new LiveGameRosterSpot(0, pb.getProfile());
+			pen.setCount(list.getRowCount()+1);
+			if (this.teamid.equals(this.livegame.getHometeam().ID)){
+				pen.setTeam(this.getLivegame().getHometeam());
+			} else {
+				pen.setTeam(this.getLivegame().getAwayteam());
 			}
-			
-			if(bAddPimrows){
-				for (int i=1;i<=numpimsadd;i++){
-					Penalty pen = new Penalty(0,pb.getProfile());
-					LiveGameRosterSpot lgrs = new LiveGameRosterSpot(0, pb.getProfile());
-					pen.setCount(currentrownumber++);
-					if (this.teamid.equals(this.livegame.getHometeam().ID)){
-						pen.setTeam(this.getLivegame().getHometeam());
-					} else {
-						pen.setTeam(this.getLivegame().getAwayteam());
-					}
-					
-					pen.setIdroster(0);
-					pen.setRosterspot(lgrs);
-					pen.setPeriod(0);
-					pen.setPenaltytype("");
-					pen.setMinutes("");
-					pen.setTimeofpenalty("00:00");
-					list.add(pen);
-				
-				}
-			}
-			
+			pen.setLivegame(this.getLivegame());
+			pen.setIdroster(0);
+			pen.setRosterspot(lgrs);
+			pen.setPeriod(0);
+			pen.setPenaltytype("");
+			pen.setMinutes("");
+			pen.setPenmin("00");
+			pen.setPensec("00");
+			pen.setTimeofpenalty("00:00:00");
+			list.add(pen);
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			
 			db.free();
 		}
 		
@@ -1380,7 +1289,7 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		this.setHomesogs(this.refreshHomeSog(false));
 	}
 	public void saveGoal(Scoring score) {
 		
