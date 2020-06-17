@@ -330,7 +330,15 @@
 				<f:facet name="heading">
 					<h:outputText value="Manage Jersey Numbers"/> 
 		        </f:facet>
-		        <b:dataTable 
+				<!-- lets put a button here to allow user to set default coaches-->
+				<b:commandButton value="Set Default Coaches" iconAwesome="user"
+								 action="#{managerBean.setDefaultCoaches()}" look="info"
+								 large-screen="full-width"
+								 medium-screen="full-width"
+								 small-screen="full-width"
+								 tiny-screen="full-width"
+				/>
+				<b:dataTable
 					id="playersearchresultnew" 
 					var="rosteredit"
 					value="#{managerBean.getRostereditdatamodel()}" 

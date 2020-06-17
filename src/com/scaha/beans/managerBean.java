@@ -27,20 +27,7 @@ import com.gbli.common.SendMailSSL;
 import com.gbli.common.Utils;
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
-import com.scaha.objects.ExhibitionGame;
-import com.scaha.objects.ExhibitionGameDataModel;
-import com.scaha.objects.LiveGame;
-import com.scaha.objects.MailableObject;
-import com.scaha.objects.RosterEdit;
-import com.scaha.objects.RosterEditDataModel;
-import com.scaha.objects.ScahaTeam;
-import com.scaha.objects.Team;
-import com.scaha.objects.TempGame;
-import com.scaha.objects.TempGameDataModel;
-import com.scaha.objects.Tournament;
-import com.scaha.objects.TournamentDataModel;
-import com.scaha.objects.TournamentGame;
-import com.scaha.objects.TournamentGameDataModel;
+import com.scaha.objects.*;
 
 //import com.gbli.common.SendMailSSL;
 
@@ -131,7 +118,15 @@ public class managerBean implements Serializable, MailableObject {
 		
 	//miscellaneous variables
 	private Boolean displaymessage = null;
-	
+
+	//setting default coaches
+	private Integer headcoach = null;
+	private Integer	assistantcoach1 = null;
+	private Integer	assistantcoach2 = null;
+	private Integer	assistantcoach3 = null;
+	private List<LiveGameRosterSpot> penpicklist = null;
+
+
 	@PostConstruct
     public void init() {
 		games = new ArrayList<TempGame>();  
@@ -178,17 +173,46 @@ public class managerBean implements Serializable, MailableObject {
         
         //Load Exhibition Games
         getExhibitionGames();
-        
+
+        //let's load the default coaches for the team
+		getDefaultCoaches();
+
         //now lets highlight the areas needing action.
         setAlerts();
-        
+
+        //need to load pick lists for default coach selection
+		this.penpicklist = (List<LiveGameRosterSpot>) this.refreshCoachRosterforpl().getWrappedData();
 	}
 	
     public managerBean() {  
         
-    }  
-    
-    public void setGametype(Integer value){
+    }
+
+
+	public List<LiveGameRosterSpot> getPenpicklist() {
+		return penpicklist;
+	}
+	public void setPenpicklist(List<LiveGameRosterSpot> penpicklist) {
+		this.penpicklist = penpicklist;
+	}
+	public Integer getHeadcoach(){
+		return this.headcoach;
+	}
+	public void setHeadcoach(Integer coach){this.headcoach=coach;}
+	public Integer getAssistantcoach1(){
+		return this.assistantcoach1;
+	}
+	public void setAssistantcoach1(Integer coach){this.assistantcoach1=coach;}
+	public Integer getAssistantcoach2(){
+		return this.assistantcoach2;
+	}
+	public void setAssistantcoach2(Integer coach){this.assistantcoach2=coach;}
+	public Integer getAssistantcoach3(){
+		return this.assistantcoach3;
+	}
+	public void setAssistantcoach3(Integer coach){this.assistantcoach3=coach;}
+
+	public void setGametype(Integer value){
     	this.gametype = value;
     }
     
@@ -1902,7 +1926,10 @@ public class managerBean implements Serializable, MailableObject {
         
         //Load Exhibition Games
         getExhibitionGames();
-        
+
+        //load default coaches
+		getDefaultCoaches();
+
         //now lets highlight the areas needing action.
         setAlerts();
 	}
@@ -1974,11 +2001,119 @@ public class managerBean implements Serializable, MailableObject {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+
+
 	}
-	
-	
-	
+
+	public void setDefaultCoaches(){
+
+		FacesContext context = FacesContext.getCurrentInstance();
+
+		try{
+			context.getExternalContext().redirect("setdefaultcoaches.xhtml");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public LiveGameRosterSpotList refreshCoachRosterforpl() {
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		LiveGameRosterSpotList list = null;
+		try {
+			list = LiveGameRosterSpotList.NewListFactoryByTeamid(pb.getProfile(), db, this.teamid);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+
+			db.free();
+		}
+
+		return list;
+	}
+
+	public void SetasDefault(){
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+
+			if (db.setAutoCommit(false)) {
+
+				//Need to provide info to the stored procedure to save or update
+				//LOGGER.info("save default coaches");
+				CallableStatement cs = db.prepareCall("CALL scaha.SaveDefaultCoachesForTeam(?,?,?,?,?)");
+				cs.setInt("in_teamid", this.teamid);
+				cs.setInt("in_headcoachrosterid", this.headcoach);
+				cs.setInt("in_assistantcoach1rosterid", this.assistantcoach1);
+				cs.setInt("in_assistantcoach2rosterid", this.assistantcoach2);
+				cs.setInt("in_assistantcoach3rosterid", this.assistantcoach3);
+				cs.executeQuery();
+				db.commit();
+				db.cleanup();
+
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null, new FacesMessage("Successful", "You have saved your default coaches"));
+			} else {
+
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN Deleting the Tournament");
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+	}
+
+	public void getDefaultCoaches() {
+		List<ExhibitionGame> templist = new ArrayList<ExhibitionGame>();
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+			//first get team name
+			CallableStatement cs = db.prepareCall("CALL scaha.getDefaultCoaches(?)");
+			cs.setInt("teamid", this.teamid);
+			rs = cs.executeQuery();
+
+			if (rs != null){
+
+				while (rs.next()) {
+					this.headcoach = rs.getInt("headcoachrosterid");
+					this.assistantcoach1 = rs.getInt("assistantcoach1rosterid");
+					this.assistantcoach2 = rs.getInt("assistantcoach2rosterid");
+					this.assistantcoach3 = rs.getInt("assistantcoach3rosterid");
+					//LOGGER.info("We have results for exhibition list by team:" + this.teamid);
+				}
+			}
+
+
+			rs.close();
+			db.cleanup();
+
+			//need to add email sent to scaha statistician and manager
+
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN getting default coaches for team:" + this.teamid);
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+	}
 }
 

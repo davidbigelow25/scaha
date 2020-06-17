@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<f:metadata>
+<f:event type="preRenderView" listener="#{profileBean.verifyUserLogin()}" />
+</f:metadata>
+
+<ui:composition template="/WEB-INF/templates/layoutadmin.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://bootsfaces.net/ui">
+	
+<ui:define name="content">
+<b:container>
+<script>
+	function printscoresheet(gameid){
+		window.open("printscoresheet.xhtml?id=" + gameid);
+	}
+	
+	function printmitescoresheet(gameid){
+		window.open("printscoresheetformites.xhtml?id=" + gameid);
+	}
+
+</script>
+	
+	<b:row>
+		<b:column>
+			<b:form id="form">
+			
+			<b:panel id="panel" collapsible="false" look="primary">
+				<f:facet name="heading">
+					Set Your Default Coaches for Season
+				</f:facet>
+				<b:panelGrid colSpans="12" id="coachesrosterlist">
+					<p:graphicImage width="60" height="60" id="homelogo" value="#{scahaBean.getClubLogoByParmId()}"  >
+						<f:param name="target" value="#{gamesheetBean.getTeamclubid()}" />
+					</p:graphicImage>
+					<b:messages  />
+					<b:panelGrid colSpans="1,2,3,6">
+						<h:outputText value=" " />
+						<h:outputText value="Head Coach:" />
+						<b:selectOneMenu styleClass="ddlistbox" id="headcoach" value="#{managerBean.headcoach}"
+										 style="width:200px;"
+
+						>
+							<f:selectItem style="font-size:10pt;" itemLabel="Coach..." itemValue="0" />
+							<f:selectItems value="#{managerBean.penpicklist}"  var="roster"  itemLabel="#{roster.jerseynumber} - #{roster.lname}" itemValue="#{roster.getKey()}"/>
+							<!--<f:ajax event="change" Listener="#{gamesheetBean.saveCoach(spot)}" update="@form"/>-->
+							<f:param name="blockui.disabled" value="true"/>
+						</b:selectOneMenu>
+						<h:outputText value=" " />
+						<h:outputText value=" " />
+						<h:outputText value="Assistant Coach:" />
+						<b:selectOneMenu styleClass="ddlistbox" id="assistantcoach" value="#{managerBean.assistantcoach1}"
+										 style="width:200px;"
+
+						>
+							<f:selectItem style="font-size:10pt;" itemLabel="Coach..." itemValue="0" />
+							<f:selectItems value="#{managerBean.penpicklist}"  var="roster"  itemLabel="#{roster.jerseynumber} - #{roster.lname}" itemValue="#{roster.getKey()}"/>
+							<!--<f:ajax event="change" Listener="#{gamesheetBean.saveCoach(spot)}" update="@form"/>-->
+							<f:param name="blockui.disabled" value="true"/>
+						</b:selectOneMenu>
+						<h:outputText value=" " />
+						<h:outputText value=" " />
+						<h:outputText value="Assistant Coach:" />
+						<b:selectOneMenu styleClass="ddlistbox" id="assistantcoach1" value="#{managerBean.assistantcoach2}"
+										 style="width:200px;"
+
+						>
+							<f:selectItem style="font-size:10pt;" itemLabel="Coach..." itemValue="0" />
+							<f:selectItems value="#{managerBean.penpicklist}"  var="roster"  itemLabel="#{roster.jerseynumber} - #{roster.lname}" itemValue="#{roster.getKey()}"/>
+							<!--<f:ajax event="change" Listener="#{gamesheetBean.saveCoach(spot)}" update="@form"/>-->
+							<f:param name="blockui.disabled" value="true"/>
+						</b:selectOneMenu>
+						<h:outputText value=" " />
+						<h:outputText value=" " />
+						<h:outputText value="Assistant Coach:" />
+						<b:selectOneMenu styleClass="ddlistbox" id="assistantcoach2" value="#{managerBean.assistantcoach3}"
+										 style="width:200px;"
+
+						>
+							<f:selectItem style="font-size:10pt;" itemLabel="Coach..." itemValue="0" />
+							<f:selectItems value="#{managerBean.penpicklist}"  var="roster"  itemLabel="#{roster.jerseynumber} - #{roster.lname}" itemValue="#{roster.getKey()}"/>
+							<!--<f:ajax event="change" Listener="#{gamesheetBean.saveCoach(spot)}" update="@form"/>-->
+							<f:param name="blockui.disabled" value="true"/>
+						</b:selectOneMenu>
+					</b:panelGrid>
+
+				</b:panelGrid>
+				<b:panelGrid colSpans="2,2,2,2,2,2" id="panelgrid">
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+					<b:commandButton value="Set as Default" 
+				                       actionListener="#{managerBean.SetasDefault()}" look="success"
+				                       large-screen="full-width"
+    									medium-screen="full-width"
+    									small-screen="full-width"
+    									tiny-screen="full-width">
+    					<f:ajax execute="@form" render="@form" />
+    				</b:commandButton>
+					<b:commandButton value="Close" 
+				                       actionListener="#{managerBean.BacktoManagerPortal()}" look="info"
+				                       large-screen="full-width"
+    									medium-screen="full-width"
+    									small-screen="full-width"
+    									tiny-screen="full-width"/>
+
+				</b:panelGrid>
+				
+			</b:panel>
+			</b:form>
+		</b:column>
+	</b:row>
+</b:container>
+</ui:define>
+</ui:composition>
+</html>

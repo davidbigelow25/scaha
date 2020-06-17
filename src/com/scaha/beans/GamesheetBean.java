@@ -63,7 +63,8 @@ public class GamesheetBean implements Serializable,  MailableObject {
 	private rosterBean rb;
 	
 	private LiveGame livegame = null;
-	private LiveGameRosterSpot selectedhomerosterspot;	
+	private LiveGameRosterSpot selectedhomerosterspot;
+	private LiveGameRosterSpot selectedhomecoachrosterspot;
 	private LiveGameRosterSpot selectedawayrosterspot;	
 	
 	private Scoring selectedhomescore = null;
@@ -79,6 +80,7 @@ public class GamesheetBean implements Serializable,  MailableObject {
 	private LiveGameRosterSpotList awayteam = null;
 	private LiveGameRosterSpotList awayteamforpl = null;
 	private LiveGameRosterSpotList hometeam = null;
+	private LiveGameRosterSpotList hometeamcoach = null;
 	private LiveGameRosterSpotList hometeamforpl = null;
 	
 	private ScoringList awayscoring = null;
@@ -227,6 +229,7 @@ public class GamesheetBean implements Serializable,  MailableObject {
 		 if (this.getLivegame() != null) {
 			 if (this.teamid.equals(this.livegame.getHometeam().ID)){
 				 this.setHometeam(this.refreshHomeRoster());
+				 this.setHometeamcoach(this.refreshHomeCoachRoster());
 				 this.setHometeamforpl(this.refreshHomeRosterforpl());
 				 this.scoringpicklist = (List<LiveGameRosterSpot>) this.getHometeamforpl().getWrappedData();
 				 this.setHomescoring(this.refreshHomeScoring(false));
@@ -239,6 +242,7 @@ public class GamesheetBean implements Serializable,  MailableObject {
 			 } else {
 				 this.setAwayteam(this.refreshAwayRoster());
 				 this.setHometeam(this.refreshAwayRoster());
+				 this.setHometeamcoach(this.refreshAwayCoachRoster());
 				 this.setAwayteamforpl(this.refreshAwayRosterforpl());
 				 this.scoringpicklist = (List<LiveGameRosterSpot>) this.getAwayteamforpl().getWrappedData();
 				 this.setHomescoring(this.refreshHomeScoring(false));
@@ -455,6 +459,17 @@ public class GamesheetBean implements Serializable,  MailableObject {
 		this.selectedhomerosterspot = selectedhomerosterspot;
 	}
 
+	public LiveGameRosterSpot getSelectedhomecoachrosterspot() {
+		return selectedhomecoachrosterspot;
+	}
+
+	/**
+	 * @param selectedhomerosterspot the selectedhomerosterspot to set
+	 */
+	public void setSelectedhomecoachrosterspot(LiveGameRosterSpot selectedhomecoachrosterspot) {
+		this.selectedhomecoachrosterspot = selectedhomecoachrosterspot;
+	}
+
 	/**
 	 * @return the selectedawayrosterspot
 	 */
@@ -501,12 +516,17 @@ public class GamesheetBean implements Serializable,  MailableObject {
 		return hometeam;
 	}
 
+	public LiveGameRosterSpotList getHometeamcoach() {
+		return hometeamcoach;
+	}
+
 	/**
 	 * @param hometeam the hometeam to set
 	 */
 	public void setHometeamforpl(LiveGameRosterSpotList hometeam) {
 		this.hometeamforpl = hometeam;
 	}
+
 
 	/**
 	 * @return the hometeam
@@ -520,6 +540,10 @@ public class GamesheetBean implements Serializable,  MailableObject {
 	 */
 	public void setHometeam(LiveGameRosterSpotList hometeam) {
 		this.hometeam = hometeam;
+	}
+
+	public void setHometeamcoach(LiveGameRosterSpotList hometeam) {
+		this.hometeamcoach = hometeam;
 	}
 
 	/**
@@ -592,6 +616,77 @@ public class GamesheetBean implements Serializable,  MailableObject {
 			db.free();
 		}
 		
+		return list;
+	}
+
+	public LiveGameRosterSpotList refreshHomeCoachRoster() {
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		LiveGameRosterSpotList list = null;
+		try {
+			list = LiveGameRosterSpotList.NewListFactoryCoach(pb.getProfile(), db, this.getLivegame(), scaha.getScahaTeamList(), "H");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+
+			db.free();
+		}
+
+		Integer x = list.getRowCount();
+
+		for (int i = x; i < 4; i++) {
+				LiveGameRosterSpot spot = new LiveGameRosterSpot(0,pb.getProfile());
+				spot.setIdRoster(0);
+				spot.setIdPerson(0);
+				spot.setRostertype("");
+				spot.setJerseynumber("");
+				spot.setLname("");
+				spot.setFname("");
+				spot.setMia(false);
+				spot.setTeam(this.getLivegame().getHometeam());
+				spot.setLivegame(this.getLivegame());
+				spot.setTag("");
+				spot.setRank(i+1);
+				list.add(spot);
+				//LOGGER.info("Found a match " + spot);
+		}
+
+		return list;
+	}
+
+	public LiveGameRosterSpotList refreshAwayCoachRoster() {
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		LiveGameRosterSpotList list = null;
+		try {
+			list = LiveGameRosterSpotList.NewListFactoryCoach(pb.getProfile(), db, this.getLivegame(), scaha.getScahaTeamList(), "A");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+
+			db.free();
+		}
+		Integer x = list.getRowCount();
+
+		for (int i = x; i < 4; i++) {
+			LiveGameRosterSpot spot = new LiveGameRosterSpot(0,pb.getProfile());
+			spot.setIdRoster(0);
+			spot.setIdPerson(0);
+			spot.setRostertype("");
+			spot.setJerseynumber("");
+			spot.setLname("");
+			spot.setFname("");
+			spot.setMia(false);
+			spot.setTeam(this.getLivegame().getAwayteam());
+			spot.setLivegame(this.getLivegame());
+			spot.setTag("");
+			spot.setRank(i+1);
+			list.add(spot);
+			//LOGGER.info("Found a match " + spot);
+		}
+
 		return list;
 	}
 
@@ -2881,6 +2976,7 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
    public void viewHome(){
 	   this.setTeamid(this.livegame.getHometeam().ID);
 	   this.setHometeam(this.refreshHomeRoster());
+	   this.setHometeamcoach(this.refreshHomeCoachRoster());
 	   this.setHometeamforpl(this.refreshHomeRosterforpl());
 	   this.scoringpicklist = (List<LiveGameRosterSpot>) this.getHometeamforpl().getWrappedData();
 	   this.setHomescoring(this.refreshHomeScoring(false));
@@ -2894,6 +2990,7 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
    public void viewAway(){
 	   this.setTeamid(this.livegame.getAwayteam().ID);
 	   this.setHometeam(this.refreshAwayRoster());
+	   this.setHometeamcoach(this.refreshAwayCoachRoster());
 	   this.setHometeamforpl(this.refreshAwayRosterforpl());
 	   this.scoringpicklist = (List<LiveGameRosterSpot>) this.getAwayteamforpl().getWrappedData();
 	   this.setHomescoring(this.refreshHomeScoring(false));
@@ -3352,5 +3449,34 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 			db.free();
 		}
 	    
+	}
+
+	public void saveCoach(LiveGameRosterSpot spot) {
+
+		//LOGGER.info("toggling MIA for " + spot);
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		try {
+			CallableStatement pc = db.prepareCall("call scaha.saveLivegameCoachRosterSpot(?,?,?,?)");
+			pc.setInt(1, spot.ID);
+			pc.setInt(2, (spot.getIdRoster()));
+			pc.setInt(3, (spot.getLivegame().getIdgame()));
+			pc.setInt(4, (spot.getRank()));
+			pc.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		db.free();
+
+		//spot.setMia(!spot.isMia());
+//		if (_ha.equals("H")) {
+//			refreshHomeRoster();
+//		} else {
+//			refreshAwayRoster();
+//		}
+
+		refreshHomeCoachRoster();
+		refreshAwayCoachRoster();
 	}
 }	

@@ -45,10 +45,6 @@
 		<b:column span="12">
 			<b:panelGrid colSpans="9,1,1,1" id="panelgrid">
 				<h:outputText value=" " />
-				<b:commandButton value="Save" iconAwesome="save"
-	                       action="#{gamesheetBean.statsSaveAll()}" look="success">
-			       <f:ajax execute="@form" render="@form" update="pims"/>
-			    </b:commandButton>
 				<b:commandButton id="reviewcmd" value="Set Complete" actionListener="#{gamesheetBean.setStatsComplete(gamesheetBean.getTeamid())}" look="success" />
 				<h:outputText value=" " />
 			</b:panelGrid>
@@ -105,6 +101,34 @@
 					    
 			        </b:dataTableColumn>
 			    </b:dataTable>
+				<b:dataTable
+						id="coachroster"
+						var="spot"
+						value="#{gamesheetBean.hometeamcoach}"
+						paginated="false"
+						border="true"
+						searching="false"
+						selection="#{gamesheetBean.selectedhomerosterspot}"
+						selectionMode="single"
+
+				>
+					<b:dataTableColumn styleClass="mtrxColumn">
+						<f:facet name="header">
+							Coaches
+						</f:facet>
+						<b:selectOneMenu styleClass="ddlistbox" id="g" value="#{spot.idRoster}"
+										 style="width:200px;"
+										 update="coachroster"
+										 onchange="ajax:gamesheetBean.saveCoach(spot)"
+						>
+							<f:selectItem style="font-size:10pt;" itemLabel="Coach..." itemValue="0" />
+							<f:selectItems value="#{gamesheetBean.penpicklist}"  var="roster"  itemLabel="#{roster.jerseynumber} - #{roster.lname}" itemValue="#{roster.getKey()}"/>
+							<!--<f:ajax event="change" Listener="#{gamesheetBean.saveCoach(spot)}" update="@form"/>-->
+							<f:param name="blockui.disabled" value="true"/>
+						</b:selectOneMenu>
+					</b:dataTableColumn>
+
+				</b:dataTable>
 			</b:panel>
 		</b:column>
 		<b:column span="9">
@@ -117,17 +141,7 @@
 				<f:facet name="heading">
 					<h:outputText value="Goals Scored"/> 
 		        </f:facet>
-		        <b:inputText id="goalrowstoadd" value="#{gamesheetBean.numgoalsadd}" maxlength="2" span="3" offset="9">
-		        	<f:ajax execute="@this" render="@form" />
-		        	<f:param name="blockui.disabled" value="true"/>
-		        	<f:facet name="append">
-				    	<b:commandButton value="Add Rows" iconAwesome="plus"
-			                       action="#{gamesheetBean.addGoalRows()}" look="info">
-					       <f:ajax execute="@this" render="@form" update="scoring"/>
-					    </b:commandButton>
-				    </f:facet>
-		        </b:inputText>
- 				<b:dataTable 
+		        <b:dataTable
 					id="scoring" 
 					var="score"
 					value="#{gamesheetBean.getHomescoring()}" 
@@ -156,7 +170,7 @@
 			       		    <f:selectItem itemLabel="Penalty Shot" itemValue="PS" />
 			       		    <f:selectItem itemLabel="Power Play" itemValue="P" />
 			       		    <f:selectItem itemLabel="Empty Net" itemValue="N" />
-			       		    <!-- <f:ajax event="change" listener="#{gamesheetBean.saveGoal(score)}" /> -->
+			       		    <f:ajax event="change" />
 			            	<f:param name="blockui.disabled" value="true"/>
 				        </b:selectOneMenu>
         			</b:dataTableColumn>
@@ -172,7 +186,7 @@
 			           		<f:selectItem itemLabel="2nd" itemValue="2" />
 			           		<f:selectItem itemLabel="3rd" itemValue="3" />
 			       		    <f:selectItem itemLabel="OT" itemValue="4" />
-			       		    <!-- <f:ajax event="change" listener="#{gamesheetBean.saveGoal(score)}" /> -->
+			       		    <f:ajax event="change" />
 			            	<f:param name="blockui.disabled" value="true"/>
 				        </b:selectOneMenu>
 	        
@@ -182,12 +196,12 @@
 					       	Time
 					    </f:facet>
 					    <b:inputText id="gmin" value="#{score.goalmin}" maxlength="2" style="width:45px;" >
-					    	<!-- <f:ajax event="change" listener="#{gamesheetBean.saveGoal(score)}" /> -->
+					    	<f:ajax event="change" />
 			            	<f:param name="blockui.disabled" value="true"/>
 			            </b:inputText> 
 						<h:outputText value=":" />
 						<b:inputText id="gsec" value="#{score.goalsec}" maxlength="2" style="width:40px;" >
-							<!-- <f:ajax event="change" listener="#{gamesheetBean.saveGoal(score)}" /> -->
+							<f:ajax event="change" />
 			            	<f:param name="blockui.disabled" value="true"/>
 			            </b:inputText>
 			        </b:dataTableColumn>
@@ -200,7 +214,7 @@
 					    >
 			      			<f:selectItem style="font-size:10pt;" itemLabel="Goal Scorer..." itemValue="0" />
 			       			<f:selectItems value="#{gamesheetBean.getScoringpicklist()}"  var="roster"  itemLabel="#{roster.jerseynumber} - #{roster.lname}" itemValue="#{roster.getKey()}"/>
-			       			<!-- <f:ajax event="change" listener="#{gamesheetBean.saveGoal(score)}" /> -->
+			       			<f:ajax event="change" />
 			            	<f:param name="blockui.disabled" value="true"/>
 			       		</b:selectOneMenu>
 			        </b:dataTableColumn>
@@ -213,7 +227,7 @@
 					    >
 			   	   			<f:selectItem style="font-size:10pt;" itemLabel="First Assist..." itemValue="0" />
 			   	   			<f:selectItems value="#{gamesheetBean.getScoringpicklist()}"  var="roster"  itemLabel="#{roster.jerseynumber} - #{roster.lname}" itemValue="#{roster.getKey()}"/>
-			   	   			<!-- <f:ajax event="change" listener="#{gamesheetBean.saveGoal(score)}" /> -->
+			   	   			<f:ajax event="change" />
 			            	<f:param name="blockui.disabled" value="true"/>
 			       		</b:selectOneMenu>
 			        </b:dataTableColumn>
@@ -226,7 +240,7 @@
 					    >
 			   	   			<f:selectItem style="font-size:10pt;" itemLabel="Second Assit..." itemValue="0" />
 			   	   			<f:selectItems value="#{gamesheetBean.getScoringpicklist()}"  var="roster"  itemLabel="#{roster.jerseynumber} - #{roster.lname}" itemValue="#{roster.getKey()}"/>
-			   	   			<!-- <f:ajax event="change" listener="#{gamesheetBean.saveGoal(score)}" /> -->
+			   	   			<f:ajax event="change" />
 			            	<f:param name="blockui.disabled" value="true"/>
 			       		</b:selectOneMenu>
 			        </b:dataTableColumn>
@@ -234,10 +248,21 @@
 			            <f:facet name="header">
 					       Option
 					    </f:facet>
-					    <b:commandButton iconAwesome="trash"
-					                       action="#{gamesheetBean.deleteGoal(score)}" look="danger" >
-					      	<f:ajax execute="@this" render="@form" update="@form"/>
-					    </b:commandButton>
+						<b:commandButton iconAwesome="save"
+										 action="#{gamesheetBean.saveGoal(score)}" look="success"
+										 rendered="#{score.getID() ne 0}">
+							<f:ajax execute="@this" render="@form" update="@form"/>
+						</b:commandButton>
+						<b:commandButton iconAwesome="plus"
+										 action="#{gamesheetBean.saveGoal(score)}" look="success"
+										 rendered="#{score.getID() eq 0}">
+							<f:ajax execute="@this" render="@form" update="@form"/>
+						</b:commandButton>
+						<b:commandButton iconAwesome="trash"
+										 action="#{gamesheetBean.deleteGoal(score)}" look="danger"
+										 rendered="#{score.getID() ne 0}">
+							<f:ajax execute="@this" render="@form" update="@form"/>
+						</b:commandButton>
 					</b:dataTableColumn>
 			        
 			            
@@ -252,17 +277,7 @@
 				<f:facet name="heading">
 					<h:outputText value="Goaltending"/> 
 		        </f:facet>
-		        <b:inputText id="sogrowstoadd" value="#{gamesheetBean.numsogadd}" maxlength="2" span="3" offset="9">
-		        	<f:ajax execute="@this" render="@form" />
-		        	<f:param name="blockui.disabled" value="true"/>
-		        	<f:facet name="append">
-				    	<b:commandButton value="Add Rows" iconAwesome="plus"
-			                       action="#{gamesheetBean.addSogRows()}" look="info">
-					       <f:ajax execute="@this" render="@form" update="saves"/>
-					    </b:commandButton>
-				    </f:facet>
-		        </b:inputText>
- 				<b:dataTable 
+		        <b:dataTable
 					id="saves" 
 					var="sog" 
     				value="#{gamesheetBean.getHomesogs()}"
@@ -279,7 +294,7 @@
 					    <b:selectOneMenu styleClass="ddlistbox" id="sogperson" value="#{sog.idroster}" >
 			      			<f:selectItem style="font-size:10pt;" itemLabel="Goalie..." itemValue="0" />
 			       			<f:selectItems value="#{gamesheetBean.sogpicklist}"  var="roster"  itemLabel="#{roster.jerseynumber} - #{roster.lname}" itemValue="#{roster.getKey()}"/>
-			       			<!-- <f:ajax event="change" listener="#{gamesheetBean.saveSog(sog)}" /> -->
+			       			<f:ajax event="change" />
 			            	<f:param name="blockui.disabled" value="true"/>
 			       		</b:selectOneMenu>
 					</b:dataTableColumn>
@@ -288,12 +303,12 @@
 					       	Mins
 					    </f:facet>
 					    <b:inputText id="goaliemin" value="#{sog.playmins}" maxlength="2" style="width:45px;" >
-					    	<!-- <f:ajax event="change" listener="#{gamesheetBean.saveGoal(score)}" /> -->
+					    	<f:ajax event="change" />
 			            	<f:param name="blockui.disabled" value="true"/>
 			            </b:inputText> 
 						<h:outputText value=":" />
 						<b:inputText id="goaliesec" value="#{sog.playsecs}" maxlength="2" style="width:40px;" >
-							<!-- <f:ajax event="change" listener="#{gamesheetBean.saveGoal(score)}" /> -->
+							<f:ajax event="change" />
 			            	<f:param name="blockui.disabled" value="true"/>
 			            </b:inputText>
 					    
@@ -303,7 +318,7 @@
 					       	1st
 					    </f:facet>
 					    <b:inputText id="shots1" value = "#{sog.shots1}"   maxlength="2" size="3">
-					    	<!-- <f:ajax event="change" listener="#{gamesheetBean.saveSog(sog)}" /> -->
+					    	<f:ajax event="change" />
 							<f:param name="blockui.disabled" value="true"/>
 						</b:inputText>
 			        </b:dataTableColumn>
@@ -312,7 +327,7 @@
 					       	2nd
 					    </f:facet>
 					    <b:inputText id="shots2" value = "#{sog.shots2}"   maxlength="2" size="3">
-					    	<!-- <f:ajax event="change" listener="#{gamesheetBean.saveSog(sog)}" /> -->
+					    	<f:ajax event="change" />
 							 <f:param name="blockui.disabled" value="true"/>
 					    </b:inputText>
 					</b:dataTableColumn>
@@ -321,7 +336,7 @@
 					       	3rd
 					    </f:facet>
 					    <b:inputText id="shots3" value = "#{sog.shots3}"   maxlength="2" size="3">
-					    	<!-- <f:ajax event="change" listener="#{gamesheetBean.saveSog(sog)}" /> -->
+					    		<f:ajax event="change" />
 							 <f:param name="blockui.disabled" value="true"/>
 					    </b:inputText>
 			        </b:dataTableColumn>
@@ -330,7 +345,7 @@
 					       	OT
 					    </f:facet>
 					    <b:inputText id="shots4" value = "#{sog.shots4}"   maxlength="2" size="3">
-					    	<!-- <f:ajax event="change" listener="#{gamesheetBean.saveSog(sog)}" /> -->
+					    	<f:ajax event="change" />
 							 <f:param name="blockui.disabled" value="true"/>
 					    </b:inputText>
 			        </b:dataTableColumn>
@@ -338,10 +353,21 @@
 			            <f:facet name="header">
 					       Option
 					    </f:facet>
-					    <b:commandButton iconAwesome="trash"
-					                       action="#{gamesheetBean.deleteSog(sog)}" look="danger" >
-					      	<f:ajax execute="@this" render="@form" update="@form"/>
-					    </b:commandButton>
+						<b:commandButton iconAwesome="save"
+										 action="#{gamesheetBean.saveSog(sog)}" look="success"
+										 rendered="#{sog.getId() ne 0}">
+							<f:ajax execute="@this" render="@form" update="@form"/>
+						</b:commandButton>
+						<b:commandButton iconAwesome="plus"
+										 action="#{gamesheetBean.saveSog(sog)}" look="success"
+										 rendered="#{sog.getId() eq 0}">
+							<f:ajax execute="@this" render="@form" update="@form"/>
+						</b:commandButton>
+						<b:commandButton iconAwesome="trash"
+										 action="#{gamesheetBean.deleteSog(sog)}" look="danger"
+										 rendered="#{sog.getId() ne 0}">
+							<f:ajax execute="@this" render="@form" update="@form"/>
+						</b:commandButton>
 					</b:dataTableColumn>
 			    </b:dataTable>
 		    </b:panel>
@@ -354,17 +380,7 @@
 				<f:facet name="heading">
 					<h:outputText value="Penalties"/> 
 		        </f:facet>
-		        <b:inputText id="pimrowstoadd" value="#{gamesheetBean.numpimsadd}" maxlength="2" span="3" offset="9">
-		        	<f:ajax execute="@this" render="@form" />
-		        	<f:param name="blockui.disabled" value="true"/>
-		        	<f:facet name="append">
-				    	<b:commandButton value="Add Rows" iconAwesome="plus"
-			                       action="#{gamesheetBean.addPenRows()}" look="info">
-					       <f:ajax execute="@this" render="@form" update="pims"/>
-					    </b:commandButton>
-				    </f:facet>
-		        </b:inputText>
- 				<b:dataTable 
+		        <b:dataTable
 					id="pims" 
 					var="pen" 
     				value="#{gamesheetBean.homepenalties}"
@@ -388,7 +404,7 @@
 			           		<f:selectItem itemLabel="2nd" itemValue="2" />
 			           		<f:selectItem itemLabel="3rd" itemValue="3" />
 			       		    <f:selectItem itemLabel="OT" itemValue="4" />
-			       		    <!-- <f:ajax event="change" listener="#{gamesheetBean.savePenalty(pen)}" /> -->
+			       		    <f:ajax event="change" />
 			            	<f:param name="blockui.disabled" value="true"/>
 				        </b:selectOneMenu>
 	        		</b:dataTableColumn>
@@ -401,7 +417,7 @@
 					    	style="width:105px;">
 			      			<f:selectItem style="font-size:10pt;" itemLabel="Culprit..." itemValue="0" />
 			       			<f:selectItems value="#{gamesheetBean.penpicklist}"  var="roster"  itemLabel="#{roster.jerseynumber} - #{roster.lname}" itemValue="#{roster.getKey()}"/>
-			       			<!-- <f:ajax event="change" listener="#{gamesheetBean.savePenalty(pen)}" /> -->
+			       			<f:ajax event="change" />
 			            	<f:param name="blockui.disabled" value="true"/>
 			       		</b:selectOneMenu>
         			</b:dataTableColumn>
@@ -413,7 +429,7 @@
 					    	style="width:105px;">
 			    	        <f:selectItem itemLabel="Infraction..." itemValue="" />
 				            <f:selectItems value="#{gamesheetBean.penalties}" />
-				            <!-- <f:ajax event="change" listener="#{gamesheetBean.savePenalty(pen)}" /> -->
+				            <f:ajax event="change" />
 							 <f:param name="blockui.disabled" value="true"/>
 			            </b:selectOneMenu>
 		        	</b:dataTableColumn>
@@ -430,7 +446,7 @@
 			       		    <f:selectItem itemValue="10m" itemLabel="10 Mis Conduct" />
 			       		    <f:selectItem itemValue="gmc" itemLabel="Game Misconduct" />
 			       		    <f:selectItem itemValue="pen shot" itemLabel="Penalty Shot" />
-			       		    <!-- <f:ajax event="change" listener="#{gamesheetBean.savePenalty(pen)}" /> -->
+			       		    <f:ajax event="change" />
 							<f:param name="blockui.disabled" value="true"/>
 				        </b:selectOneMenu>
 			        </b:dataTableColumn>
@@ -439,12 +455,12 @@
 					       	Time
 					    </f:facet>
 					    <b:inputText id="pmin" value = "#{pen.penmin}"  maxlength="2" style="width:45px;">
-					    	<!-- <f:ajax event="change" listener="#{gamesheetBean.savePenalty(pen)}" /> -->
+					    	<f:ajax event="change" />
 							<f:param name="blockui.disabled" value="true"/>
 					    </b:inputText> 
 						<h:outputText value=":" />
 						<b:inputText id="psec" value="#{pen.pensec}" maxlength="2" style="width:45px;">
-							<!-- <f:ajax event="change" listener="#{gamesheetBean.savePenalty(pen)}" /> -->
+							<f:ajax event="change" />
 							<f:param name="blockui.disabled" value="true"/>
 						</b:inputText>
 						
@@ -453,10 +469,21 @@
 			            <f:facet name="header">
 					       Option
 					    </f:facet>
-					    <b:commandButton iconAwesome="trash"
-					                       action="#{gamesheetBean.deletePenalty(pen)}" look="danger" >
-					      	<f:ajax execute="@this" render="@form" update="@form"/>
-					    </b:commandButton>
+							<b:commandButton iconAwesome="save"
+											 action="#{gamesheetBean.savePenalty(pen)}" look="success"
+											 rendered="#{pen.getId() ne 0}">
+								<f:ajax execute="@this" render="@form" update="@form"/>
+							</b:commandButton>
+							<b:commandButton iconAwesome="plus"
+											 action="#{gamesheetBean.savePenalty(pen)}" look="success"
+											 rendered="#{pen.getId() eq 0}">
+								<f:ajax execute="@this" render="@form" update="@form"/>
+							</b:commandButton>
+							<b:commandButton iconAwesome="trash"
+											 action="#{gamesheetBean.deletePenalty(pen)}" look="danger"
+											 rendered="#{pen.getId() ne 0}">
+								<f:ajax execute="@this" render="@form" update="@form"/>
+							</b:commandButton>
 					</b:dataTableColumn>
 			    </b:dataTable>
 			 </b:panel>

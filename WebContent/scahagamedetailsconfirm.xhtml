@@ -123,6 +123,34 @@
 					    
 			        </b:dataTableColumn>
 			    </b:dataTable>
+				<b:dataTable
+						id="coachroster"
+						var="spot"
+						value="#{gamesheetBean.hometeamcoach}"
+						paginated="false"
+						border="true"
+						searching="false"
+						selection="#{gamesheetBean.selectedhomerosterspot}"
+						selectionMode="single"
+
+				>
+					<b:dataTableColumn styleClass="mtrxColumn">
+						<f:facet name="header">
+							Coaches
+						</f:facet>
+						<b:selectOneMenu styleClass="ddlistbox" id="g" value="#{spot.idRoster}"
+										 style="width:200px;"
+										 update="coachroster"
+										 onchange="ajax:gamesheetBean.saveCoach(spot)"
+						>
+							<f:selectItem style="font-size:10pt;" itemLabel="Coach..." itemValue="0" />
+							<f:selectItems value="#{gamesheetBean.penpicklist}"  var="roster"  itemLabel="#{roster.jerseynumber} - #{roster.lname}" itemValue="#{roster.getKey()}"/>
+							<!--<f:ajax event="change" Listener="#{gamesheetBean.saveCoach(spot)}" update="@form"/>-->
+							<f:param name="blockui.disabled" value="true"/>
+						</b:selectOneMenu>
+					</b:dataTableColumn>
+
+				</b:dataTable>
 			</b:panel>
 		</b:column>
 		<b:column span="9">
@@ -135,10 +163,6 @@
 				<f:facet name="heading">
 					<h:outputText value="Goals Scored"/> 
 		        </f:facet>
-		        <!--<b:commandButton value="Save" iconAwesome="plus"
-	                       action="#{gamesheetBean.statsSavegoals()}" look="success">
-			       <f:ajax execute="@form" render="@form" update="scoring"/>
-			    </b:commandButton>-->
 		        <b:dataTable
 					id="scoring" 
 					var="score"
