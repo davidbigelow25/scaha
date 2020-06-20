@@ -152,6 +152,7 @@ public class managerBean implements Serializable, MailableObject {
         } else {
         	this.teamid = pb.getProfile().getManagerteamid();
         }
+
     	
         
         //do we display multiple option or single option.
@@ -182,6 +183,15 @@ public class managerBean implements Serializable, MailableObject {
 
         //need to load pick lists for default coach selection
 		this.penpicklist = (List<LiveGameRosterSpot>) this.refreshCoachRosterforpl().getWrappedData();
+		//need to load selected game
+		if(hsr.getParameter("gameid") != null)
+		{
+			Integer gameid = Integer.parseInt(hsr.getParameter("gameid").toString());
+			this.selectedgame = this.TempGameDataModel.getRowDataByInteger(gameid);
+			getDefaultCoachesForGame();
+		} else {
+			this.selectedgame = null;
+		}
 	}
 	
     public managerBean() {  
@@ -1930,6 +1940,11 @@ public class managerBean implements Serializable, MailableObject {
         //load default coaches
 		getDefaultCoaches();
 
+		//lets load default coaches for game if the game is selected
+		if (this.selectedgame != null){
+			getDefaultCoachesForGame();
+		}
+
         //now lets highlight the areas needing action.
         setAlerts();
 	}
@@ -1980,9 +1995,10 @@ public class managerBean implements Serializable, MailableObject {
 	public void setCoachesforGame(TempGame game, Integer teamid){
 		
 		FacesContext context = FacesContext.getCurrentInstance();
-		
+		this.selectedgame = game;
+
 		try{
-			context.getExternalContext().redirect("setgamecoaches.xhtml?id=" + game.getIdgame().toString() + "&teamid=" + this.teamid);
+			context.getExternalContext().redirect("setgamecoaches.xhtml?gameid=" + game.getIdgame() + "&id=" + this.teamid);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -2115,5 +2131,89 @@ public class managerBean implements Serializable, MailableObject {
 		}
 
 	}
-}
 
+	public void SetasGameDefault(){
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+
+			if (db.setAutoCommit(false)) {
+
+				//Need to provide info to the stored procedure to save or update
+				//LOGGER.info("save default coaches");
+				CallableStatement cs = db.prepareCall("CALL scaha.SaveDefaultCoachesForGame(?,?,?,?,?,?)");
+				cs.setInt("in_livegameid", this.selectedgame.getIdgame());
+				cs.setInt("in_teamid", this.teamid);
+				cs.setInt("in_headcoachrosterid", this.headcoach);
+				cs.setInt("in_assistantcoach1rosterid", this.assistantcoach1);
+				cs.setInt("in_assistantcoach2rosterid", this.assistantcoach2);
+				cs.setInt("in_assistantcoach3rosterid", this.assistantcoach3);
+				cs.executeQuery();
+				db.commit();
+				db.cleanup();
+
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null, new FacesMessage("Successful", "You have saved your default coaches"));
+			} else {
+
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN Saving Coaches for the Game:" + this.selectedgame.getIdgame());
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+	}
+
+	public void getDefaultCoachesForGame() {
+		List<ExhibitionGame> templist = new ArrayList<ExhibitionGame>();
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+			//first get team name
+			CallableStatement cs = db.prepareCall("CALL scaha.getDefaultCoachesForGame(?,?)");
+			cs.setInt("teamid", this.teamid);
+			cs.setInt("gameid", this.selectedgame.getIdgame());
+
+			rs = cs.executeQuery();
+
+			if (rs != null){
+
+				while (rs.next()) {
+					this.headcoach = rs.getInt("headcoachrosterid");
+					this.assistantcoach1 = rs.getInt("assistantcoach1rosterid");
+					this.assistantcoach2 = rs.getInt("assistantcoach2rosterid");
+					this.assistantcoach3 = rs.getInt("assistantcoach3rosterid");
+					//LOGGER.info("We have results for exhibition list by team:" + this.teamid);
+				}
+			}
+
+
+			rs.close();
+			db.cleanup();
+
+			//need to add email sent to scaha statistician and manager
+
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN getting default coaches for team:" + this.teamid);
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+	}
+
+}

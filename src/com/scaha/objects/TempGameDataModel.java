@@ -34,7 +34,21 @@ public class TempGameDataModel extends ListDataModel<TempGame> implements Serial
         }  
           
         return null;  
-    }  
+    }
+
+
+    public TempGame getRowDataByInteger(Integer rowKey) {
+        //In a real app, a more efficient way like a query by rowKey should be implemented to deal with huge data
+
+        List<TempGame> results = (List<TempGame>) getWrappedData();
+
+        for(TempGame result : results) {
+            if(result.getIdgame().equals(rowKey))
+                return result;
+        }
+
+        return null;
+    }
   
     @Override  
     public Object getRowKey(TempGame result) {  

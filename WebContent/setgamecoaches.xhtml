@@ -46,81 +46,78 @@
 						<f:param name="target" value="#{gamesheetBean.getTeamclubid()}" />
 					</p:graphicImage>
 					<b:messages  />
-					<b:dataTable 
-						id="roster" 
-						var="spot"
-						value="#{gamesheetBean.getRosterofCoachesforSelection()}" 
-						paginated="false" 
-						border="true"
-						searching="false"
-						selection="#{gamesheetBean.selectedhomerosterspot}"
-		 				selectionMode="single" 
-		 				
-		 				>
-		 				<b:dataTableColumn styleClass="mtrxColumn">
-				            <f:facet name="header">
-						    	<h:outputText value="Role" />    
-						    </f:facet>
-						    <h:outputText value="#{spot.jerseynumber}" />
-				        </b:dataTableColumn>
-				        <b:dataTableColumn styleClass="mtrxColumn">
-				            <f:facet name="header">
-						       	Name
-						    </f:facet>
-						    <h:outputText value="#{spot.lastname}, #{spot.firstname}" />
-				        </b:dataTableColumn>
-				        <b:dataTableColumn styleClass="mtrxColumn">
-				            <f:facet name="header">
-						       	Add to Scoresheet
-						    </f:facet>
-						    <!-- <b:selectBooleanCheckbox value="#{spot.lgpid}" caption=" " render="@form" update="@form">
-						    	<f:ajax event="change" listener="#{gamesheetBean.setCoachforPrint(spot)}" />
-			            		<f:param name="blockui.disabled" value="true"/>
-			            	</b:selectBooleanCheckbox>
-			            	 -->
-			            	<b:commandButton iconAwesome="remove"
-					                       action="#{gamesheetBean.setCoachforPrint(spot, false)}" look="danger" rendered="#{spot.lgpid}">
-						      	<f:ajax execute="@this" render="@form" update="@form"/>
-						    </b:commandButton>
-						    <b:commandButton iconAwesome="plus"
-						                       action="#{gamesheetBean.setCoachforPrint(spot,true)}" look="success" rendered="#{not spot.lgpid}">
-						       <f:ajax execute="@this" render="@form" update="@form"/>
-						    </b:commandButton>
-					    
-				        </b:dataTableColumn>
-				    </b:dataTable>						
+					<b:panelGrid colSpans="1,2,3,6">
+						<h:outputText value=" " />
+						<h:outputText value="Head Coach:" />
+						<b:selectOneMenu styleClass="ddlistbox" id="headcoach" value="#{managerBean.headcoach}"
+										 style="width:200px;"
+
+						>
+							<f:selectItem style="font-size:10pt;" itemLabel="Coach..." itemValue="0" />
+							<f:selectItems value="#{managerBean.penpicklist}"  var="roster"  itemLabel="#{roster.jerseynumber} - #{roster.lname}" itemValue="#{roster.getKey()}"/>
+							<!--<f:ajax event="change" Listener="#{gamesheetBean.saveCoach(spot)}" update="@form"/>-->
+							<f:param name="blockui.disabled" value="true"/>
+						</b:selectOneMenu>
+						<h:outputText value=" " />
+						<h:outputText value=" " />
+						<h:outputText value="Assistant Coach:" />
+						<b:selectOneMenu styleClass="ddlistbox" id="assistantcoach" value="#{managerBean.assistantcoach1}"
+										 style="width:200px;"
+
+						>
+							<f:selectItem style="font-size:10pt;" itemLabel="Coach..." itemValue="0" />
+							<f:selectItems value="#{managerBean.penpicklist}"  var="roster"  itemLabel="#{roster.jerseynumber} - #{roster.lname}" itemValue="#{roster.getKey()}"/>
+							<!--<f:ajax event="change" Listener="#{gamesheetBean.saveCoach(spot)}" update="@form"/>-->
+							<f:param name="blockui.disabled" value="true"/>
+						</b:selectOneMenu>
+						<h:outputText value=" " />
+						<h:outputText value=" " />
+						<h:outputText value="Assistant Coach:" />
+						<b:selectOneMenu styleClass="ddlistbox" id="assistantcoach1" value="#{managerBean.assistantcoach2}"
+										 style="width:200px;"
+
+						>
+							<f:selectItem style="font-size:10pt;" itemLabel="Coach..." itemValue="0" />
+							<f:selectItems value="#{managerBean.penpicklist}"  var="roster"  itemLabel="#{roster.jerseynumber} - #{roster.lname}" itemValue="#{roster.getKey()}"/>
+							<!--<f:ajax event="change" Listener="#{gamesheetBean.saveCoach(spot)}" update="@form"/>-->
+							<f:param name="blockui.disabled" value="true"/>
+						</b:selectOneMenu>
+						<h:outputText value=" " />
+						<h:outputText value=" " />
+						<h:outputText value="Assistant Coach:" />
+						<b:selectOneMenu styleClass="ddlistbox" id="assistantcoach2" value="#{managerBean.assistantcoach3}"
+										 style="width:200px;"
+
+						>
+							<f:selectItem style="font-size:10pt;" itemLabel="Coach..." itemValue="0" />
+							<f:selectItems value="#{managerBean.penpicklist}"  var="roster"  itemLabel="#{roster.jerseynumber} - #{roster.lname}" itemValue="#{roster.getKey()}"/>
+							<!--<f:ajax event="change" Listener="#{gamesheetBean.saveCoach(spot)}" update="@form"/>-->
+							<f:param name="blockui.disabled" value="true"/>
+						</b:selectOneMenu>
+					</b:panelGrid>
+
 				</b:panelGrid>
 				<b:panelGrid colSpans="2,2,2,2,2,2" id="panelgrid">
 					<h:outputText value=" " />
 					<h:outputText value=" " />
 					<h:outputText value=" " />
-					<b:commandButton value="Set as Default" 
-				                       actionListener="#{gamesheetBean.SetasDefault()}" look="info"
-				                       large-screen="full-width"
-    									medium-screen="full-width"
-    									small-screen="full-width"
-    									tiny-screen="full-width">
-    					<f:ajax execute="@form" render="@form" />
-    				</b:commandButton>
-					<b:commandButton value="Close" 
-				                       actionListener="#{managerBean.BacktoManagerPortal()}" look="info"
-				                       large-screen="full-width"
-    									medium-screen="full-width"
-    									small-screen="full-width"
-    									tiny-screen="full-width"/>
-    				<b:commandButton value="Print Scoresheet" id="submittournamentgame"
-				                       look="success"
-				                       large-screen="full-width"
-				    					medium-screen="full-width"
-				    					small-screen="full-width"
-				    					tiny-screen="full-width"
-				    					onclick="javascript: printscoresheet('#{gamesheetBean.getLivegameid()}')"
-				    					>
-				       <f:ajax execute="@form" render="@form" />
-				    </b:commandButton>
-				    
+					<b:commandButton value="Set as Default"
+									 actionListener="#{managerBean.SetasGameDefault()}" look="success"
+									 large-screen="full-width"
+									 medium-screen="full-width"
+									 small-screen="full-width"
+									 tiny-screen="full-width">
+						<f:ajax execute="@form" render="@form" />
+					</b:commandButton>
+					<b:commandButton value="Close"
+									 actionListener="#{managerBean.BacktoManagerPortal()}" look="info"
+									 large-screen="full-width"
+									 medium-screen="full-width"
+									 small-screen="full-width"
+									 tiny-screen="full-width"/>
+
 				</b:panelGrid>
-				
+
 			</b:panel>
 			</b:form>
 		</b:column>
