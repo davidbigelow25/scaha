@@ -30,10 +30,13 @@ public class PenaltyPusher  implements Serializable,  MailableObject {
 	private static final Logger LOGGER = Logger.getLogger(ContextManager.getLoggerContext());
 
 	private static String mail_penaltypush_body = Utils.getMailTemplateFromFile("/mail/penaltypush.html");
+	private static String mail_penaltypush_served = Utils.getMailTemplateFromFile("/mail/penaltypushserved.html");
 	private Penalty penalty;
 	private LiveGame livegame=null;
 	private PenaltyList penaltylist = null;
 	private String penaltyrows = null;
+	private String servedrows = null;
+	private Boolean isServed = null;
 	
 	public PenaltyPusher (Penalty _pen) {
 		penalty = _pen;
@@ -45,7 +48,7 @@ public class PenaltyPusher  implements Serializable,  MailableObject {
 	
 	public void pushPenalty () {
 		SendMailSSL mail = new SendMailSSL(this);
-		//mail.sendMail();
+		mail.sendMail();
 		mail.cleanup();
 	}
 	@Override
@@ -69,10 +72,19 @@ public class PenaltyPusher  implements Serializable,  MailableObject {
 		myTokens.add("AWAYTEAM|" + this.livegame.getAwayteamname());
 		myTokens.add("GAMENUMBER|" + this.livegame.ID+"");
 		myTokens.add("PENALTYROWS|" + this.getPenaltyrows());
+		myTokens.add("MUSTSERVE|" + this.getServedrows());
 		myTokens.add("CLUBNAME|" + club.getClubname());
 		myTokens.add("TEAMNAME|" + team.getTeamname());
-		return Utils.mergeTokens(PenaltyPusher.mail_penaltypush_body,myTokens,"\\|");
+		if (this.isServed){
+			return Utils.mergeTokens(PenaltyPusher.mail_penaltypush_served, myTokens, "\\|");
+		}else {
+			return Utils.mergeTokens(PenaltyPusher.mail_penaltypush_body, myTokens, "\\|");
+		}
 	}
+
+	public String getServedrows(){return this.servedrows;}
+
+	public void setServedrows(String value) {this.servedrows=value;}
 
 	@Override
 	public String getPreApprovedCC() {
@@ -84,6 +96,8 @@ public class PenaltyPusher  implements Serializable,  MailableObject {
 	public String getToMailAddress() {
 		return null;
 	}
+
+
 
 	@Override
 	public InternetAddress[] getToMailIAddress() {
@@ -98,7 +112,10 @@ public class PenaltyPusher  implements Serializable,  MailableObject {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				data.add(new InternetAddress(rs.getString(2),rs.getString(1)));
+				InternetAddress tempaddress =new InternetAddress(rs.getString(2),rs.getString(1));
+				tempaddress = new InternetAddress("lahockeyfan2@yahoo.com","Rob-Foster");
+				data.add(tempaddress);
+
 			}
 			rs.close();
 			ps.close();
@@ -149,4 +166,13 @@ public class PenaltyPusher  implements Serializable,  MailableObject {
 	public void setPenaltyrows(String value){
 		penaltyrows=value;
 	}
+
+	public Boolean getIsServed() {
+		return isServed;
+	}
+
+	public void setIsServed(Boolean value) {
+		this.isServed = value;
+	}
+
 }

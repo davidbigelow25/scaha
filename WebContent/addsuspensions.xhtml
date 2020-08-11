@@ -38,30 +38,183 @@
 				<f:facet name="heading">
 					<h:outputText value="Add Suspensions" />
 				</f:facet>
+
+				<b:panel id="panelgames" collapsible="false" look="primary"
+						 large-screen="full-width"
+						 medium-screen="full-width"
+						 small-screen="one-third"
+						 tiny-screen="one-third"
+				>
+					<f:facet name="heading">
+						<h:outputText value="Select Livegame"/>
+					</f:facet>
+
+					<b:panelGrid colSpans="1,3,2,2,2,2" id="panelgrid">
+						<h:outputText value=" " />
+						<b:selectOneMenu value="#{scoreboardBean.selectedseasonid}" onchange="ajax:scoreboardBean.onSeasonChange()" update="@form" rendered="#{!suspensionBean.displayselectedlivegame}">
+							<f:selectItem style="font-size:10pt;" itemLabel="Select a Season..." itemValue="0" />
+							<f:selectItems value="#{scoreboardBean.getSeasonlist()}"  var="season"  itemLabel="#{season.getDescription()}" itemValue="#{season.getKey()}"/>
+						</b:selectOneMenu>
+						<b:selectOneMenu value="#{scoreboardBean.selectedscheduleid}" onchange="ajax:scoreboardBean.onScheduleChange()" update="@form" rendered="#{!suspensionBean.displayselectedlivegame}">
+							<f:selectItem style="font-size:10pt;" itemLabel="Select a Schedule..." itemValue="0" />
+							<f:selectItems  value="#{scoreboardBean.getSchedulelist()}" var="schedule" itemLabel="#{schedule.getDescription()}" itemValue="#{schedule.getKey()}" />
+						</b:selectOneMenu>
+
+						<b:selectOneMenu value="#{scoreboardBean.selectedpartid}" onchange="ajax:scoreboardBean.onPartChange()" update="@form" rendered="#{!suspensionBean.displayselectedlivegame}">
+							<f:selectItem style="font-size:10pt;" itemLabel="Schedule For All Teams..." itemValue="0" />
+							<f:selectItems  value="#{scoreboardBean.getPartpicklist()}" var="part" itemLabel="#{part.getTeam().getTeamname()}" itemValue="#{part.getKey()}" />
+						</b:selectOneMenu>
+						<h:outputText value=" " />
+						<h:outputText value=" " />
+
+					</b:panelGrid>
+
+					<b:dataTable
+							id="games"
+							var="game"
+							value="#{scoreboardBean.getLivegamelist()}"
+							editable="false"
+							select="false"
+							paginated="false"
+							border="true"
+							searching="true"
+							rowStyleClass="#{game.isCancelled() ? 'gamecancelled' : null}"
+							rendered="#{!suspensionBean.displayselectedlivegame}"
+					>
+						<b:dataTableColumn styleClass="mtrxColumn">
+							<f:facet name="header">
+								<h:outputText value="Game #" />
+							</f:facet>
+							<h:outputText value="#{game.getGameId()}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn styleClass="mtrxColumn">
+							<f:facet name="header">
+								<h:outputText value="Date" />
+							</f:facet>
+							<h:outputText value="#{game.getStartdate()}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn styleClass="mtrxColumn">
+							<f:facet name="header">
+								<h:outputText value="Time" />
+							</f:facet>
+							<h:outputText value="#{game.getStarttime()}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn styleClass="mtrxColumn">
+							<f:facet name="header">
+								<h:outputText value="Type" />
+							</f:facet>
+							<h:outputText value="#{game.getTypetag()}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn styleClass="mtrxColumn">
+							<f:facet name="header">
+								<h:outputText value="Status" />
+							</f:facet>
+							<h:outputText value="#{game.getStatetag()}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn styleClass="mtrxColumn">
+							<f:facet name="header">
+								<h:outputText value="Home" />
+							</f:facet>
+							<h:outputText style="font-weight: bold;" value="#{game.getHometeam().getTeamname()}" rendered="#{game.getHostteam()}"/>
+							<h:outputText value="#{game.getHometeam().getTeamname()}" rendered="#{not game.getHostteam()}"/>
+						</b:dataTableColumn>
+						<b:dataTableColumn styleClass="mtrxColumn">
+							<f:facet name="header">
+								<h:outputText value="Score" />
+							</f:facet>
+							<h:outputText value="#{ (game.statetag == 'Scheduled' ? '--' : game.getHomescore()) }" />
+						</b:dataTableColumn>
+						<b:dataTableColumn styleClass="mtrxColumn">
+							<f:facet name="header">
+								<h:outputText value="Away" />
+							</f:facet>
+							<h:outputText value="#{game.getAwayteam().getTeamname()}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn styleClass="mtrxColumn">
+							<f:facet name="header">
+								<h:outputText value="Score" />
+							</f:facet>
+							<h:outputText value="#{ (game.statetag == 'Scheduled' ? '--' : game.getAwayscore()) }" />
+						</b:dataTableColumn>
+						<b:dataTableColumn styleClass="mtrxColumn">
+							<f:facet name="header">
+								<h:outputText value="Venue" />
+							</f:facet>
+							<h:outputText value="#{game.getVenueshortname()}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn styleClass="mtrxColumn">
+							<f:facet name="header">
+								<h:outputText value="Rink" />
+							</f:facet>
+							<h:outputText value="#{game.getSheetname()}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn styleClass="mtrxColumn" rendered="#{profileBean.hasRoleList('SUSER;S-SCHED;S-STATS')}">
+							<f:facet name="header">
+								<h:outputText value=" " />
+							</f:facet>
+							<b:commandButton iconAwesome="save"
+											 action="#{suspensionBean.SelectLiveGame(game)}" look="success" >
+								<f:ajax execute="@this" render="@form" update="@form"/>
+							</b:commandButton>
+
+						</b:dataTableColumn>
+					</b:dataTable>
+					<b:panelGrid colSpans="1,1,1,1,2,1,2,1,1,1" id="selectedgamegrid" rendered="#{suspensionBean.displayselectedlivegame}">
+						<h:outputText style="font-weight: bold;text-decoration: underline;" value="Game #" />
+						<h:outputText style="font-weight: bold;text-decoration: underline;" value="Date" />
+						<h:outputText style="font-weight: bold;text-decoration: underline;" value="Time" />
+						<h:outputText style="font-weight: bold;text-decoration: underline;" value="Type" />
+						<h:outputText style="font-weight: bold;text-decoration: underline;" value="Home" />
+						<h:outputText style="font-weight: bold;text-decoration: underline;" value="Score" />
+						<h:outputText style="font-weight: bold;text-decoration: underline;" value="Away" />
+						<h:outputText style="font-weight: bold;text-decoration: underline;" value="Score" />
+						<h:outputText style="font-weight: bold;text-decoration: underline;" value="Venue" />
+						<h:outputText style="font-weight: bold;text-decoration: underline;" value=" " />
+						<h:outputText value="#{suspensionBean.selectedlivegame.getGameId()}" />
+						<h:outputText value="#{suspensionBean.selectedlivegame.getStartdate()}" />
+						<h:outputText value="#{suspensionBean.selectedlivegame.getStarttime()}" />
+						<h:outputText value="#{suspensionBean.selectedlivegame.getTypetag()}" />
+						<h:outputText value="#{suspensionBean.selectedlivegame.getHometeam().getTeamname()}"/>
+						<h:outputText value="#{ (suspensionBean.selectedlivegame.statetag == 'Scheduled' ? '--' : suspensionBean.selectedlivegame.getHomescore()) }" />
+						<h:outputText value="#{suspensionBean.selectedlivegame.getAwayteam().getTeamname()}" />
+						<h:outputText value="#{ (suspensionBean.selectedlivegame.statetag == 'Scheduled' ? '--' : suspensionBean.selectedlivegame.getAwayscore()) }" />
+						<h:outputText value="#{suspensionBean.selectedlivegame.getVenueshortname()}" />
+						<b:commandButton iconAwesome="save"
+										 action="#{suspensionBean.DeSelectLiveGame(suspensionBean.selectedlivegame)}" look="success" >
+							<f:ajax execute="@this" render="@form" update="@form"/>
+						</b:commandButton>
+
+					</b:panelGrid>
+
+
+
+				</b:panel>
+
+
 				<b:panel id ="panel2" collapsible="false" look="primary">
 					<f:facet name="heading">
 						<h:outputText value="Search For Player/Coach" />
 					</f:facet>
 				
-					<b:panelGrid colSpans="3,3,3,3">
+					<!--<b:panelGrid colSpans="3,3,3,3">
 						<b:inputText value="#{editsuspensionBean.searchcriteria}" />
 						<b:commandButton value="Search" actionListener="#{editsuspensionBean.playerSearch()}" look="success">
 							<f:ajax execute="@form" render="@form" update="@form"/>
 						</b:commandButton>
-					</b:panelGrid>
+					</b:panelGrid>-->
 					
 					<b:dataTable 
 						id="playersearchresult" 
 						var="result"
-						value="#{editsuspensionBean.listofplayers}" 
+						value="#{suspensionBean.listofplayers}"
 						paginated="true" 
 						border="true"
-						searching="false"
+						searching="true"
 						page-length="5"
 						>
 				   		<b:dataTableColumn styleClass="mtrxColumn">
 				            <f:facet name="header">
-						        Player Name
+						        Player/Coach Name
 						    </f:facet>
 				            <h:outputText value="#{result.getPlayername()}" />
 				        </b:dataTableColumn>

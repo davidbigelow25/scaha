@@ -275,12 +275,14 @@ public class editsuspensionBean implements Serializable {
    			ResultSet rs = db.getResultSet();
    
    			while (rs.next()) {
+				Integer idroster = rs.getInt("idroster");
    				String idperson = rs.getString("idperson");
         		String playername = rs.getString("playername");
         		String teamname = rs.getString("teamname");
         		String dob = rs.getString("dob");
         		
         		Result result = new Result(playername,idperson,teamname,dob);
+        		result.setIdroster(idroster);
         		tempresult.add(result);
     		}
     				
@@ -299,6 +301,46 @@ public class editsuspensionBean implements Serializable {
     	
     	listofplayers = new ResultDataModel(tempresult);
     }
+
+	public void playerSearchForLiveGame(Integer livegameid){
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		List<Result> tempresult = new ArrayList<Result>();
+
+		try{
+
+			Vector<Integer> v = new Vector<Integer>();
+			v.add(livegameid);
+			db.getData("CALL scaha.playersearchlivegame(?)", v);
+			ResultSet rs = db.getResultSet();
+
+			while (rs.next()) {
+				Integer idroster = rs.getInt("idroster");
+				String idperson = rs.getString("idperson");
+				String playername = rs.getString("playername");
+				String teamname = rs.getString("teamname");
+				String dob = rs.getString("dob");
+
+				Result result = new Result(playername,idperson,teamname,dob);
+				result.setIdroster(idroster);
+				tempresult.add(result);
+			}
+
+			//LOGGER.info("We have results for search criteria " + this.searchcriteria);
+			rs.close();
+			db.cleanup();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN Searching FOR " + this.searchcriteria);
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			db.free();
+		}
+
+		listofplayers = new ResultDataModel(tempresult);
+	}
 
     /**
 	 * @return the listofplayers
