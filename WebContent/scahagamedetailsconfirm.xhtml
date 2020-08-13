@@ -154,7 +154,28 @@
 			</b:panel>
 		</b:column>
 		<b:column span="9">
-			<b:panel id ="teamscoresnew" collapsible="false" look="primary" 
+			<b:panel id ="teamnotes" collapsible="false" look="primary"
+					 large-screen="full-width"
+					 medium-screen="half"
+					 small-screen="one-third"
+					 tiny-screen="one-third"
+			>
+				<f:facet name="heading">
+					<h:outputText value="Game Notes"/>
+				</f:facet>
+				<b:panelGrid colSpans="11,1" id="gamenotes" >
+					<b:inputTextarea value="#{gamesheetBean.note}" rows="3" cols="100"
+									 large-screen="full-width"
+									 medium-screen="full-width"
+									 small-screen="full-width"
+									 tiny-screen="full-width"
+					>
+						<f:ajax event="change" />
+					</b:inputTextarea>
+
+				</b:panelGrid>
+			</b:panel>
+			<b:panel id ="teamscoresnew" collapsible="false" look="primary"
 				large-screen="full-width"
 		    	medium-screen="half"
 		    	small-screen="one-third"

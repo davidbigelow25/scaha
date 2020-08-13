@@ -164,7 +164,7 @@ public class GamesheetBean implements Serializable,  MailableObject {
 	private Integer numgoalsadd = 10;
 	private Integer numsogadd = 6;
 	private Integer numpimsadd = 10;
-	
+	private String note = "";
 	
 	//these are used for printing scoresheet
 	private List<RosterForPrint> rfplist = null;
@@ -238,7 +238,7 @@ public class GamesheetBean implements Serializable,  MailableObject {
 				 this.penpicklist = (List<LiveGameRosterSpot>) this.getHometeamforpl().getWrappedData();
 				 this.setHomepenalties(this.refreshHomePenalty(false));
 				 this.setTeamclubid(this.livegame.getHomeclubid());
-				 
+				 this.setNote(this.loadNote());
 			 } else {
 				 this.setAwayteam(this.refreshAwayRoster());
 				 this.setHometeam(this.refreshAwayRoster());
@@ -251,6 +251,7 @@ public class GamesheetBean implements Serializable,  MailableObject {
 				 this.penpicklist = (List<LiveGameRosterSpot>) this.getAwayteamforpl().getWrappedData();
 				 this.setHomepenalties(this.refreshHomePenalty(false));
 				 this.setTeamclubid(this.livegame.getAwayclubid());
+				 this.setNote(this.loadNote());
 			 }
 			 
 			 
@@ -321,6 +322,16 @@ public class GamesheetBean implements Serializable,  MailableObject {
 			this.lgateamval = this.livegame.getAwayteam().ID+"";
 		}
 	}
+
+	public void setNote(String tid){
+		this.note=tid;
+	}
+
+
+	public String getNote(){
+		return this.note;
+	}
+
 
 	public void setLivegameid(Integer tid){
 		livegameid=tid;
@@ -2985,6 +2996,7 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 	   this.penpicklist = (List<LiveGameRosterSpot>) this.getHometeamforpl().getWrappedData();
 	   this.setHomepenalties(this.refreshHomePenalty(false));
 	   this.setTeamclubid(this.livegame.getHomeclubid());
+	   this.setNote(this.loadNote());
    }
    
    public void viewAway(){
@@ -2999,6 +3011,7 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 	   this.penpicklist = (List<LiveGameRosterSpot>) this.getAwayteamforpl().getWrappedData();
 	   this.setHomepenalties(this.refreshHomePenalty(false));
 	   this.setTeamclubid(this.livegame.getAwayclubid());
+	   this.setNote(this.loadNote());
    }
    
    
@@ -3478,5 +3491,47 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 
 		refreshHomeCoachRoster();
 		refreshAwayCoachRoster();
+	}
+
+	public void saveNote() {
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try {
+			CallableStatement cs = db.prepareCall("CALL scaha.saveManagerNote(?,?,?)");
+			cs.setInt("livegameid",this.getLivegame().getGameId());
+			cs.setInt("teamid",this.teamid);
+			cs.setString("note",this.getNote());
+			cs.executeQuery();
+			db.commit();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public String loadNote(){
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		String finalnote = "";
+		try {
+			CallableStatement cs = db.prepareCall("CALL scaha.getManagerNote(?,?)");
+			cs.setInt("livegameid",this.getLivegame().getGameId());
+			cs.setInt("teamid",this.teamid);
+			ResultSet rs = cs.executeQuery();
+			while (rs.next()) {
+				finalnote = rs.getString("gamenotes");
+				}
+
+			rs.close();
+			cs.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return finalnote;
 	}
 }	
