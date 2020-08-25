@@ -56,10 +56,10 @@
 					<h:outputText value="Eligibility:"/>
 					<b:inputTextarea value="#{editsuspensionBean.eligibility}" rows="3" span="100" />
 						
-					<h:outputText value=" "/>
-					<h:outputText value=" "/>
 					<b:commandButton value="Close" action="managesuspensionslist.xhtml" look="info"/>
-					<b:commandButton value="Update Suspension" actionListener="#{editsuspensionBean.Updatesuspension()}" look="success"/>
+					<b:commandButton value="Remove Suspension" actionListener="#{editsuspensionBean.Removesuspension()}" look="success"/>
+					<b:commandButton value="Update Suspension and Email" actionListener="#{editsuspensionBean.UpdatesuspensionEmail()}" look="success"/>
+					<b:commandButton value="Update Suspension No Email" actionListener="#{editsuspensionBean.Updatesuspension()}" look="success"/>
 				</b:panelGrid>
 			</b:panel>
 			</b:form>

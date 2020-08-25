@@ -509,6 +509,7 @@ public class suspensionBean implements Serializable {
 			pp.setServedrows(this.eligibility);
 			pp.setLivegame(this.selectedlivegame);
 			pp.setIsServed(false);
+			pp.setIsRemoved(false);
 			pp.pushPenalty();
 
 
@@ -541,6 +542,7 @@ public class suspensionBean implements Serializable {
 
 		playerhistoryBean pb = (playerhistoryBean) expression.getValue( context.getELContext() );
 		pb.setSearchcriteria("");
+		closePage();
 	}
 	
 	public void manageSuspension(Suspension suspension){
@@ -748,6 +750,7 @@ public class suspensionBean implements Serializable {
 	public void setListofplayers(ResultDataModel listofplayers) {
 		this.listofplayers = listofplayers;
 	}
+
 
 }
 

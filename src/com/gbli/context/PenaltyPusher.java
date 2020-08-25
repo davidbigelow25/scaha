@@ -31,12 +31,15 @@ public class PenaltyPusher  implements Serializable,  MailableObject {
 
 	private static String mail_penaltypush_body = Utils.getMailTemplateFromFile("/mail/penaltypush.html");
 	private static String mail_penaltypush_served = Utils.getMailTemplateFromFile("/mail/penaltypushserved.html");
+	private static String mail_penaltypush_remove = Utils.getMailTemplateFromFile("/mail/penaltypushremove.html");
+
 	private Penalty penalty;
 	private LiveGame livegame=null;
 	private PenaltyList penaltylist = null;
 	private String penaltyrows = null;
 	private String servedrows = null;
 	private Boolean isServed = null;
+	private Boolean isRemoved = null;
 	
 	public PenaltyPusher (Penalty _pen) {
 		penalty = _pen;
@@ -77,6 +80,8 @@ public class PenaltyPusher  implements Serializable,  MailableObject {
 		myTokens.add("TEAMNAME|" + team.getTeamname());
 		if (this.isServed){
 			return Utils.mergeTokens(PenaltyPusher.mail_penaltypush_served, myTokens, "\\|");
+		}else if (this.isRemoved) {
+			return Utils.mergeTokens(PenaltyPusher.mail_penaltypush_remove, myTokens, "\\|");
 		}else {
 			return Utils.mergeTokens(PenaltyPusher.mail_penaltypush_body, myTokens, "\\|");
 		}
@@ -173,6 +178,14 @@ public class PenaltyPusher  implements Serializable,  MailableObject {
 
 	public void setIsServed(Boolean value) {
 		this.isServed = value;
+	}
+
+	public Boolean getIsRemoved() {
+		return isRemoved;
+	}
+
+	public void setIsRemoved(Boolean value) {
+		this.isRemoved = value;
 	}
 
 }

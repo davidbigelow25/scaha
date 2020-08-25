@@ -12,16 +12,16 @@ import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
+import com.gbli.common.Utils;
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
-import com.scaha.objects.PlayerStat;
-import com.scaha.objects.Result;
-import com.scaha.objects.ResultDataModel;
-import com.scaha.objects.Suspension;
+import com.gbli.context.PenaltyPusher;
+import com.scaha.objects.*;
 
 //import com.gbli.common.SendMailSSL;
 @ManagedBean
@@ -30,6 +30,15 @@ public class editsuspensionBean implements Serializable {
 
 	private static final long serialVersionUID = 2L;
 	private static final Logger LOGGER = Logger.getLogger(ContextManager.getLoggerContext());
+	private static String mail_penaltypush_remove = Utils.getMailTemplateFromFile("/mail/penaltypushremove.html");
+
+
+	@ManagedProperty(value="#{profileBean}")
+	private ProfileBean pb;
+
+	@ManagedProperty(value="#{scahaBean}")
+	private ScahaBean sb;
+
 
 	transient private ResultSet rs = null;
 	private String numberofgames = null;
@@ -43,7 +52,10 @@ public class editsuspensionBean implements Serializable {
 	private Integer suspensionid = 0;
 	private String searchcriteria = "";			// Start out with no search criteria
 	private ResultDataModel listofplayers = null;
-	
+	private Integer teamid = null;
+	private Integer livegameid = null;
+	private LiveGame selectedlivegame = null;
+
 	@PostConstruct
     public void init() {
 		
@@ -58,9 +70,42 @@ public class editsuspensionBean implements Serializable {
 	
     public editsuspensionBean() {  
         
-    }  
-    
-    public String getEligibility(){
+    }
+
+	public LiveGame getSelectedlivegame() {
+		return selectedlivegame;
+	}
+
+	/**
+	 * @param pb the pb to set
+	 */
+	public void setSelectedlivegame(LiveGame pb) {
+		this.selectedlivegame = pb;
+	}
+
+	public ScahaBean getSb() {
+		return sb;
+	}
+
+	/**
+	 * @param pb the pb to set
+	 */
+	public void setSb(ScahaBean pb) {
+		this.sb = pb;
+	}
+
+	public ProfileBean getPb() {
+		return pb;
+	}
+
+	/**
+	 * @param pb the pb to set
+	 */
+	public void setPb(ProfileBean pb) {
+		this.pb = pb;
+	}
+
+	public String getEligibility(){
     	return eligibility;
     }
     
@@ -84,8 +129,24 @@ public class editsuspensionBean implements Serializable {
     public void setTeam(String value){
     	team=value;
     }
-    
-    public Integer getSuspensionid(){
+
+	public Integer getLivegameid(){
+		return this.livegameid;
+	}
+
+	public void setLivegameid(Integer value){
+		this.livegameid = value;
+	}
+
+	public Integer getTeamid(){
+		return this.teamid;
+	}
+
+	public void setTeamid(Integer value){
+		this.teamid = value;
+	}
+
+	public Integer getSuspensionid(){
     	return suspensionid;
     }
     
@@ -170,6 +231,8 @@ public class editsuspensionBean implements Serializable {
 					Integer imatch = rs.getInt("matchpenalty");
 					Integer iserved = rs.getInt("served");
 					String ssuspensiondate = rs.getString("suspensiondate");
+					Integer isteamid = rs.getInt("idteam");
+					Integer islivegameid = rs.getInt("idlivegame");
 					
 					this.playername=splayername;
 					this.team=steam;
@@ -179,6 +242,8 @@ public class editsuspensionBean implements Serializable {
 					this.served=iserved;
 					this.suspdate=ssuspensiondate;
 					this.eligibility=eligibility;
+					this.teamid = isteamid;
+					this.livegameid = islivegameid;
 				}
 				//LOGGER.info("We have results for suspension id:" + this.suspensionid.toString());
 			}
@@ -355,7 +420,68 @@ public class editsuspensionBean implements Serializable {
 	public void setListofplayers(ResultDataModel listofplayers) {
 		this.listofplayers = listofplayers;
 	}
-	
-	
+
+	public void Removesuspension(){
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+
+			//then lets get the email all setup
+			//now lets create a penalty object and push email from the object.
+			String temppenaltyrows =  "<tr><td>&nbsp;" + this.playername +"&nbsp;</td><td>&nbsp;";
+			temppenaltyrows = temppenaltyrows + this.numberofgames +" games&nbsp;</td><td>&nbsp;";
+			if (this.match.equals(1)){
+				temppenaltyrows = temppenaltyrows + "Yes&nbsp;</td><td>&nbsp;Infraction(s): ";
+			}else {
+				temppenaltyrows = temppenaltyrows + "NO&nbsp;</td><td>&nbsp;Infraction(s): ";
+			}
+			temppenaltyrows = temppenaltyrows + this.infraction + "&nbsp;</td></tr>";
+
+			ScahaTeam team = sb.getScahaTeamList().getRowData(this.teamid.toString());
+
+			for (LiveGame item : sb.getScahaLiveGameList()) {
+				if (item.getIdgame()==livegameid){
+					this.selectedlivegame=item;
+					break;
+				}
+			}
+
+			Penalty pen = new Penalty(this.suspensionid,pb.getProfile(), this.selectedlivegame, team);
+			PenaltyPusher pp = new PenaltyPusher();
+			pp.setPenalty(pen);
+			pp.setPenaltyrows(temppenaltyrows);
+			pp.setServedrows(this.eligibility);
+			pp.setIsServed(false);
+			pp.setServedrows(" ");
+			pp.setLivegame(this.selectedlivegame);
+			pp.setIsRemoved(true);
+
+			//then lets update the suspension as served
+			CallableStatement cs = db.prepareCall("CALL scaha.removeSuspension(?)");
+			cs.setInt("suspensionid", this.suspensionid);
+			cs.executeQuery();
+
+			//then lets send the email
+			pp.pushPenalty();
+
+			db.commit();
+			db.cleanup();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN removing suspension");
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+		closePage();
+	}
+
+
 }
 
