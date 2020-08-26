@@ -482,6 +482,73 @@ public class editsuspensionBean implements Serializable {
 		closePage();
 	}
 
+	public void UpdatesuspensionWithEmail(){
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+			//then lets get the email all setup
+			//now lets create a penalty object and push email from the object.
+			String temppenaltyrows =  "<tr><td>&nbsp;" + this.playername +"&nbsp;</td><td>&nbsp;";
+			temppenaltyrows = temppenaltyrows + this.numberofgames +" games&nbsp;</td><td>&nbsp;";
+			if (this.match.equals(1)){
+				temppenaltyrows = temppenaltyrows + "Yes&nbsp;</td><td>&nbsp;Infraction(s): ";
+			}else {
+				temppenaltyrows = temppenaltyrows + "NO&nbsp;</td><td>&nbsp;Infraction(s): ";
+			}
+			temppenaltyrows = temppenaltyrows + this.infraction + "&nbsp;</td></tr>";
+
+			ScahaTeam team = sb.getScahaTeamList().getRowData(this.teamid.toString());
+
+			for (LiveGame item : sb.getScahaLiveGameList()) {
+				if (item.getIdgame()==livegameid){
+					this.selectedlivegame=item;
+					break;
+				}
+			}
+
+			Penalty pen = new Penalty(this.suspensionid,pb.getProfile(), this.selectedlivegame, team);
+			PenaltyPusher pp = new PenaltyPusher();
+			pp.setPenalty(pen);
+			pp.setPenaltyrows(temppenaltyrows);
+			pp.setServedrows(this.eligibility);
+			pp.setIsServed(false);
+			pp.setLivegame(this.selectedlivegame);
+			pp.setIsRemoved(false);
+
+
+			//first get team name
+			CallableStatement cs = db.prepareCall("CALL scaha.updateSuspension(?,?,?,?,?,?,?)");
+			cs.setInt("inpersonid", this.suspensionid);
+			cs.setString("numgames", this.numberofgames);
+			cs.setString("ininfraction", this.infraction);
+			cs.setInt("ismatch", this.match);
+			cs.setInt("served", this.served);
+			cs.setString("susdate", this.suspdate);
+			cs.setString("elgibility", this.eligibility);
+			cs.executeQuery();
+
+			//LOGGER.info("set suspension for:" + this.suspensionid);
+			//then lets send the email
+			pp.pushPenalty();
+
+
+			db.commit();
+			db.cleanup();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN settings suspension");
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+		closePage();
+	}
 
 }
 
