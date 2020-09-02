@@ -34,6 +34,16 @@
 		<b:column>
 			
 			<b:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+			<b:panel id ="gamesourcepanel" collapsible="false" look="primary">
+				<f:facet name="heading">
+					<h:outputText value="What Game Was Suspension Earned In?" />
+				</f:facet>
+				<b:selectOneMenu value="#{suspensionBean.selectedgamesource}" onchange="ajax:suspensionBean.displayGameSource()" update="@form">
+					<f:selectItem style="font-size:10pt;" itemLabel="SCAHA Game" itemValue="S" />
+					<f:selectItem style="font-size:10pt;" itemLabel="Tournament Game" itemValue="T" />
+					<f:selectItem style="font-size:10pt;" itemLabel="Exhibition Game" itemValue="E" />
+				</b:selectOneMenu>
+			</b:panel>
 			<b:panel id ="panel" collapsible="false" look="primary">
 				<f:facet name="heading">
 					<h:outputText value="Add Suspensions" />
@@ -44,6 +54,7 @@
 						 medium-screen="full-width"
 						 small-screen="one-third"
 						 tiny-screen="one-third"
+						 rendered="#{suspensionBean.isscahagamesource}"
 				>
 					<f:facet name="heading">
 						<h:outputText value="Select Livegame"/>
@@ -190,7 +201,30 @@
 
 				</b:panel>
 
+				<b:panel id="paneltourneygames" collapsible="false" look="primary"
+						 large-screen="full-width"
+						 medium-screen="full-width"
+						 small-screen="one-third"
+						 tiny-screen="one-third"
+						 rendered="#{suspensionBean.istournamentgamesource}"
+				>
+					<f:facet name="heading">
+						<h:outputText value="Select Tournament Game"/>
+					</f:facet>
 
+				</b:panel>
+
+				<b:panel id="panelexhibitiongames" collapsible="false" look="primary"
+						 large-screen="full-width"
+						 medium-screen="full-width"
+						 small-screen="one-third"
+						 tiny-screen="one-third"
+						 rendered="#{suspensionBean.isexhibitiongamesource}"
+				>
+					<f:facet name="heading">
+						<h:outputText value="Select Exhibition Game"/>
+					</f:facet>
+				</b:panel>
 				<b:panel id ="panel2" collapsible="false" look="primary">
 					<f:facet name="heading">
 						<h:outputText value="Search For Player/Coach" />

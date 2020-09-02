@@ -64,18 +64,50 @@ public class suspensionBean implements Serializable {
 	private Integer rosterid = null;
 	private Boolean displayselectedlivegame = null;
 	private Integer livegameid = null;
-	
+	private String selectedgamesource = null;
+	private Boolean isscahagamesource = null;
+	private Boolean istournamentgamesource = null;
+	private Boolean isexhibitiongamesource = null;
+
 	@PostConstruct
     public void init() {
 		
         loadSuspensions();
         
         loadAllSuspensions();
+
+        this.selectedgamesource="S";
+        this.displayGameSource();
 	}
 	
     public suspensionBean() {  
         
     }
+
+	public Boolean getIsscahagamesource(){
+		return isscahagamesource;
+	}
+
+	public void setIsscahagamesource(Boolean value){
+		isscahagamesource = value;
+	}
+
+	public Boolean getIstournamentgamesource(){
+		return istournamentgamesource;
+	}
+
+	public void setIstournamentgamesource(Boolean value){
+		istournamentgamesource = value;
+	}
+
+	public Boolean getIsexhibitiongamesource(){
+		return isexhibitiongamesource;
+	}
+
+	public void setIsexhibitiongamesource(Boolean value){
+		isexhibitiongamesource = value;
+	}
+
 
 	public ScahaBean getSb() {
 		return sb;
@@ -116,6 +148,14 @@ public class suspensionBean implements Serializable {
 		selectedlivegame = value;
 	}
 
+
+	public String getSelectedgamesource(){
+		return selectedgamesource;
+	}
+
+	public void setSelectedgamesource(String value){
+		selectedgamesource = value;
+	}
 
 
 	public String getEligibility(){
@@ -751,6 +791,20 @@ public class suspensionBean implements Serializable {
 		this.listofplayers = listofplayers;
 	}
 
-
+	public void displayGameSource(){
+		if (this.selectedgamesource.equals("S")){
+			isscahagamesource = true;
+			istournamentgamesource = false;
+			isexhibitiongamesource = false;
+		}else if (this.selectedgamesource.equals("T")){
+			isscahagamesource = false;
+			istournamentgamesource = true;
+			isexhibitiongamesource = false;
+		}else {
+			isscahagamesource = false;
+			istournamentgamesource = false;
+			isexhibitiongamesource = true;
+		}
+	}
 }
 
