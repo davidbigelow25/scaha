@@ -45,6 +45,9 @@ public class suspensionBean implements Serializable {
 	@ManagedProperty(value="#{scahaBean}")
 	private ScahaBean sb;
 
+	@ManagedProperty(value="#{scoreboardBean}")
+	private ScoreboardBean sbb;
+
 	private List<Suspension> suspensions = null;
 	private List<Suspension> allsuspensions = null;
 	private ResultDataModel listofplayers = null;
@@ -68,6 +71,9 @@ public class suspensionBean implements Serializable {
 	private Boolean isscahagamesource = null;
 	private Boolean istournamentgamesource = null;
 	private Boolean isexhibitiongamesource = null;
+	private List<TournamentGame> tournamentgames = null;
+	private TournamentGameDataModel TournamentGameDataModel = null;
+
 
 	@PostConstruct
     public void init() {
@@ -83,6 +89,14 @@ public class suspensionBean implements Serializable {
     public suspensionBean() {  
         
     }
+
+	public TournamentGameDataModel getTournamentgamedatamodel(){
+		return TournamentGameDataModel;
+	}
+
+	public void setTournamentgamedatamodel(TournamentGameDataModel odatamodel){
+		TournamentGameDataModel = odatamodel;
+	}
 
 	public Boolean getIsscahagamesource(){
 		return isscahagamesource;
@@ -108,6 +122,17 @@ public class suspensionBean implements Serializable {
 		isexhibitiongamesource = value;
 	}
 
+
+	public ScoreboardBean getSbb() {
+		return sbb;
+	}
+
+	/**
+	 * @param pb the pb to set
+	 */
+	public void setSbb(ScoreboardBean pb) {
+		this.sbb = pb;
+	}
 
 	public ScahaBean getSb() {
 		return sb;
@@ -806,5 +831,86 @@ public class suspensionBean implements Serializable {
 			isexhibitiongamesource = true;
 		}
 	}
+
+	public void loadGames(){
+
+	}
+
+	public void onPartChange(){
+		Integer teamid = null;
+
+		teamid = sbb.getSelectedpartid();
+
+		getTournamentGames(teamid);
+	}
+
+	public void getTournamentGames(Integer teamid) {
+		List<TournamentGame> templist = new ArrayList<TournamentGame>();
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+			//first get team name
+			CallableStatement cs = db.prepareCall("CALL scaha.getTournamentGamesForTeam(?)");
+			cs.setInt("teamid", teamid);
+			rs = cs.executeQuery();
+
+			if (rs != null){
+
+				while (rs.next()) {
+					String idnonscahagame = rs.getString("idnonscahagames");
+					String gametype = rs.getString("gametype");
+					String gamedate = rs.getString("gamedate");
+					String gametime = rs.getString("gametime");
+					String opponent = rs.getString("opponent");
+					String location = rs.getString("location");
+					String status = rs.getString("status");
+					Boolean rendered = rs.getBoolean("rendered");
+
+					TournamentGame tournament = new TournamentGame();
+					tournament.setIdgame(Integer.parseInt(idnonscahagame));
+					tournament.setGametype(gametype);
+					tournament.setDate(gamedate);
+					tournament.setTime(gametime);
+					tournament.setOpponent(opponent);
+					tournament.setLocation(location);
+					tournament.setStatus(status);
+					tournament.setRendered(rendered);
+					templist.add(tournament);
+				}
+				//LOGGER.info("We have results for tourney list by team:" + this.teamid);
+			}
+
+
+			rs.close();
+			db.cleanup();
+
+			//LOGGER.info("manager has added tournament:" + this.tournamentname);
+			//need to add email sent to scaha statistician and manager
+
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN getting tournament list for team" + this.teamid);
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+		setTournamentgames(templist);
+		TournamentGameDataModel = new TournamentGameDataModel(tournamentgames);
+	}
+
+	public List<TournamentGame> getTournamentgames(){
+		return tournamentgames;
+	}
+
+	public void setTournamentgames(List<TournamentGame> tgames){
+		tournamentgames = tgames;
+	}
+
 }
 
