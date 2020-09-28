@@ -278,18 +278,9 @@
 							<f:facet name="header">
 								Edit
 							</f:facet>
-							<b:commandButton iconAwesome="edit"
-											 rendered="#{tournamentgame.rendered}" action="#{managerBean.editGameDetail(tournamentgame)}" look="info">
-								<!-- <f:ajax execute="@this" render="@form" update=":form1:messages1,:form1:teamlist"/> -->
-							</b:commandButton>
 							<p:spacer width="5"  />
 							<b:commandButton iconAwesome="file"
-											 action="#{managerBean.uploadTournamentScoresheet(tournamentgame)}" look="info">
-								<!-- <f:ajax execute="@this" render="@form" update=":form1:messages1,:form1:teamlist"/> -->
-							</b:commandButton>
-							<p:spacer width="5"  />
-							<b:commandButton iconAwesome="trash"
-											 rendered="#{tournamentgame.rendered}" action="#{managerBean.deleteTournamentGame(tournamentgame)}" look="danger">
+											 action="#{suspensionBean.playerSearchForTournamentGame(tournamentgame)}" look="success">
 								<!-- <f:ajax execute="@this" render="@form" update=":form1:messages1,:form1:teamlist"/> -->
 							</b:commandButton>
 						</b:dataTableColumn>

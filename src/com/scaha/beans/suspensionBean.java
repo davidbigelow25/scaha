@@ -30,6 +30,8 @@ import com.gbli.context.ContextManager;
 import com.gbli.context.PenaltyPusher;
 import com.scaha.objects.*;
 
+import static java.lang.Integer.parseInt;
+
 //import com.gbli.common.SendMailSSL;
 @ManagedBean
 @ViewScoped
@@ -535,7 +537,7 @@ public class suspensionBean implements Serializable {
     	try{
     		//first get team name
     		CallableStatement cs = db.prepareCall("CALL scaha.addSuspension(?,?,?,?,?,?,?,?,?)");
-			cs.setInt("inpersonid", Integer.parseInt(this.selectedplayer.getIdplayer()));
+			cs.setInt("inpersonid", parseInt(this.selectedplayer.getIdplayer()));
 			if (this.match==1){
 				cs.setString("numgames", "0");
 			} else {
@@ -637,91 +639,92 @@ public class suspensionBean implements Serializable {
 		this.playername = result.getPlayername();
 		this.team = result.getAddress();
 		this.rosterid = result.getIdroster();
-		this.suspdate= this.selectedlivegame.getStartdate();
+		if (isscahagamesource) {
+			this.suspdate = this.selectedlivegame.getStartdate();
 
-		//need to get the number of games
-		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+			//need to get the number of games
+			ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 
-		try{
-			//lets get number of games, infraction, teamid and penalty id
-			CallableStatement cs = db.prepareCall("CALL scaha.getpenaltygamecount(?,?)");
-			cs.setInt("inrosterid", this.selectedplayer.getIdroster());
-			cs.setInt("ingameid",this.selectedlivegame.getIdgame());
+			try {
+				//lets get number of games, infraction, teamid and penalty id
+				CallableStatement cs = db.prepareCall("CALL scaha.getpenaltygamecount(?,?)");
+				cs.setInt("inrosterid", this.selectedplayer.getIdroster());
+				cs.setInt("ingameid", this.selectedlivegame.getIdgame());
 
-			rs = cs.executeQuery();
+				rs = cs.executeQuery();
 
-			this.numberofgames = "--";
-			this.match = 0;
-			this.infraction="";
-			this.teamid = "0";
-			this.penaltyid = 0;
-
-			if (rs != null){
-
-				while (rs.next()) {
-					this.numberofgames = rs.getString("numberofgamescount");
-					this.match = rs.getInt("matchcount");
-					this.infraction = rs.getString("infractions");
-					this.teamid = rs.getString("teamid");
-					this.penaltyid = rs.getInt("penaltyid");
-					//this.eligibility = rs.getString("eligibility");
-				}
-				//LOGGER.info("We have results for suspension list");
-			}
-
-			cs = db.prepareCall("CALL scaha.getpenaltyeligibility(?,?)");
-			cs.setInt("inlivegameid", this.selectedlivegame.getIdgame());
-			if (this.teamid==null){
+				this.numberofgames = "--";
+				this.match = 0;
+				this.infraction = "";
 				this.teamid = "0";
-			}
-			cs.setInt("inteamid",Integer.parseInt(this.teamid));
+				this.penaltyid = 0;
 
-			rs = cs.executeQuery();
+				if (rs != null) {
 
-			Integer i = 0;
-			String newDate = "";
-			if (this.match > 0) {
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-				Calendar c = Calendar.getInstance();
-				try{
-					//Setting the date to the given date
-					c.setTime(sdf.parse(this.suspdate));
-				}catch(ParseException e){
-					e.printStackTrace();
+					while (rs.next()) {
+						this.numberofgames = rs.getString("numberofgamescount");
+						this.match = rs.getInt("matchcount");
+						this.infraction = rs.getString("infractions");
+						this.teamid = rs.getString("teamid");
+						this.penaltyid = rs.getInt("penaltyid");
+						//this.eligibility = rs.getString("eligibility");
+					}
+					//LOGGER.info("We have results for suspension list");
 				}
 
-				//Number of Days to add
-				c.add(Calendar.DAY_OF_MONTH, 30);
-				//Date after adding the days to the given date
-				newDate = sdf.format(c.getTime());
-				this.eligibility = "Can not participate in any USA hockey event until " + newDate + " pending a hearing";
-			} else {
-				this.eligibility = "Must be served ";
-			}
-			if (rs != null){
+				cs = db.prepareCall("CALL scaha.getpenaltyeligibility(?,?)");
+				cs.setInt("inlivegameid", this.selectedlivegame.getIdgame());
+				if (this.teamid == null) {
+					this.teamid = "0";
+				}
+				cs.setInt("inteamid", parseInt(this.teamid));
 
-				while (rs.next()) {
-					i++;
-						if (this.match > 0){
-							if (rs.getInt("numdays") > 30){
-								if (rs.getString("eventtype").equals("Tournament")){
+				rs = cs.executeQuery();
+
+				Integer i = 0;
+				String newDate = "";
+				if (this.match > 0) {
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					Calendar c = Calendar.getInstance();
+					try {
+						//Setting the date to the given date
+						c.setTime(sdf.parse(this.suspdate));
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+
+					//Number of Days to add
+					c.add(Calendar.DAY_OF_MONTH, 30);
+					//Date after adding the days to the given date
+					newDate = sdf.format(c.getTime());
+					this.eligibility = "Can not participate in any USA hockey event until " + newDate + " pending a hearing";
+				} else {
+					this.eligibility = "Must be served ";
+				}
+				if (rs != null) {
+
+					while (rs.next()) {
+						i++;
+						if (this.match > 0) {
+							if (rs.getInt("numdays") > 30) {
+								if (rs.getString("eventtype").equals("Tournament")) {
 									this.eligibility = this.eligibility + ", GM must be served in the appropriate game(s) in the " + rs.getString("opponent");
 									this.eligibility = this.eligibility + " starting on " + rs.getString("eventdate");
-								}else {
+								} else {
 									this.eligibility = this.eligibility + ", GM must be served on " + rs.getString("eventdate");
 									this.eligibility = this.eligibility + " vs " + rs.getString("opponent");
 								}
 							}
-						}else {
-							if (i<=Integer.parseInt(this.numberofgames)){
-								if (i>1){
+						} else {
+							if (i <= parseInt(this.numberofgames)) {
+								if (i > 1) {
 									this.eligibility = this.eligibility + ", and ";
 								}
 
-								if (rs.getString("eventtype").equals("Tournament")){
+								if (rs.getString("eventtype").equals("Tournament")) {
 									this.eligibility = this.eligibility + " in the appropriate game(s) in the " + rs.getString("opponent");
 									this.eligibility = this.eligibility + " starting on " + rs.getString("eventdate");
-								}else {
+								} else {
 									this.eligibility = this.eligibility + "on " + rs.getString("eventdate");
 									this.eligibility = this.eligibility + " vs " + rs.getString("opponent");
 								}
@@ -729,24 +732,26 @@ public class suspensionBean implements Serializable {
 
 						}
 
+					}
+					//LOGGER.info("We have results for suspension list");
+					if (this.match > 0) {
+						this.numberofgames = "0";
+					}
 				}
-				//LOGGER.info("We have results for suspension list");
-				if (this.match>0){
-					this.numberofgames="0";
-				}
-			}
 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			LOGGER.info("ERROR IN settings suspension");
-			e.printStackTrace();
-			db.rollback();
-		} finally {
-			//
-			// always clean up after yourself..
-			//
-			db.free();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				LOGGER.info("ERROR IN settings suspension");
+				e.printStackTrace();
+				db.rollback();
+			} finally {
+				//
+				// always clean up after yourself..
+				//
+				db.free();
+			}
 		}
+
 
 	}
 
@@ -867,7 +872,7 @@ public class suspensionBean implements Serializable {
 					Boolean rendered = rs.getBoolean("rendered");
 
 					TournamentGame tournament = new TournamentGame();
-					tournament.setIdgame(Integer.parseInt(idnonscahagame));
+					tournament.setIdgame(parseInt(idnonscahagame));
 					tournament.setGametype(gametype);
 					tournament.setDate(gamedate);
 					tournament.setTime(gametime);
@@ -912,5 +917,73 @@ public class suspensionBean implements Serializable {
 		tournamentgames = tgames;
 	}
 
+	public void playerSearchForTournamentGame(TournamentGame tgame){
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		List<Result> tempresult = new ArrayList<Result>();
+		Integer teamId = this.sbb.getSelectedpartid();
+		this.suspdate = tgame.getDate();
+		try{
+			//next get player roster
+			CallableStatement cs = db.prepareCall("CALL scaha.getRosterPlayersForManagerByTeamID(?)");
+			cs.setInt("teamid", teamId);
+			rs = cs.executeQuery();
+
+			if (rs != null){
+
+				while (rs.next()) {
+					Integer idroster = rs.getInt("idroster");
+					String idperson = rs.getString("idperson");
+					String playername = rs.getString("fname") + ' ' + rs.getString("lname");
+					String teamname = rs.getString("teamname");
+					String dob = rs.getString("dob");
+
+					Result result = new Result(playername,idperson,teamname,dob);
+					result.setIdroster(idroster);
+					tempresult.add(result);
+
+				}
+				//LOGGER.info("We have results for team roster");
+			}
+			rs.close();
+
+			cs = db.prepareCall("CALL scaha.getRosterCoachesForManagerByTeamID(?)");
+			cs.setInt("teamid", teamId);
+			rs = cs.executeQuery();
+
+			if (rs != null){
+
+				while (rs.next()) {
+					Integer idroster = rs.getInt("idroster");
+					String idperson = rs.getString("idperson");
+					String playername = rs.getString("fname") + ' ' + rs.getString("lname");
+					String teamname = rs.getString("teamname");
+					String dob = rs.getString("dob");
+
+					Result result = new Result(playername,idperson,teamname,dob);
+					result.setIdroster(idroster);
+					tempresult.add(result);
+
+				}
+				//LOGGER.info("We have results for team roster");
+			}
+			rs.close();
+
+			db.cleanup();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN loading teams");
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+		listofplayers = new ResultDataModel(tempresult);
+	}
 }
 
