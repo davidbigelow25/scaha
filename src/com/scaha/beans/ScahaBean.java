@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.el.ELContext;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
@@ -75,7 +76,7 @@ public class ScahaBean implements Serializable,  MailableObject {
 	private StatsList scahastatslist = null;
 	private MultiMedia noimage = null;
 	private Profile DefaultProfile = null;
-	
+	private Member selectedmember = null;
 	
 	
 	 @PostConstruct
@@ -362,6 +363,13 @@ public class ScahaBean implements Serializable,  MailableObject {
 	/**
 	 * @param scahaTeamList the scahaTeamList to set
 	 */
+	public void setSelectedmember(Member member) {
+		this.selectedmember = member;
+	}
+	public Member getSelectedmember() {
+		return this.selectedmember;
+	}
+
 	public void setScahaTeamList(TeamList scahaTeamList) {
 		ScahaTeamList = scahaTeamList;
 	}
@@ -843,5 +851,21 @@ public class ScahaBean implements Serializable,  MailableObject {
     		db.free();
     	}
 	}
-		
+
+	public void displayEmailForm(Member member){
+
+
+		this.setSelectedmember(member);
+
+		FacesContext context = FacesContext.getCurrentInstance();
+		try{
+			context.getExternalContext().redirect("sendemail.xhtml");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+	}
+
 }

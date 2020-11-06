@@ -55,12 +55,42 @@
 				            <f:facet name="header">
 						        <h:outputText value=" " />
 						    </f:facet>
-				            <a href="mailto:#{member.getMemberemail()}" target="_blank">#{member.getMemberemail()}</a><ui:fragment rendered="#{member.renderaddress}"><br /></ui:fragment>
-				            <h:outputText value="#{member.getMemberaddress()}" rendered="#{member.renderaddress}"/><ui:fragment rendered="#{member.renderphone}"><br /></ui:fragment>
-				            <h:outputText value="#{member.getMemberphone()}"  rendered="#{member.renderphone}"/>
-				            <p:spacer width="30px" />
+				            <!--<a href="mailto:#{member.getMemberemail()}" target="_blank">#{member.getMemberemail()}</a><ui:fragment rendered="#{member.renderaddress}"><br /></ui:fragment>-->
+							<!-- need to change this to a button to open a mail form page. -->
+
+
+							<h:outputText value="#{member.getMemberaddress()}" rendered="#{member.renderaddress}"/><ui:fragment rendered="#{member.renderphone}"><br /></ui:fragment>
+
+							<p:spacer width="30px" />
 	            
 				        </b:dataTableColumn>
+						<b:dataTableColumn styleClass="mtrxColumn">
+							<f:facet name="header">
+								<h:outputText value=" " />
+							</f:facet>
+							<!--<a href="mailto:#{member.getMemberemail()}" target="_blank">#{member.getMemberemail()}</a><ui:fragment rendered="#{member.renderaddress}"><br /></ui:fragment>-->
+							<!-- need to change this to a button to open a mail form page. -->
+
+
+							<h:outputText value="#{member.getMemberphone()}"  rendered="#{member.renderphone}"/><br />
+							<!--<p:spacer width="30px" />-->
+
+						</b:dataTableColumn>
+						<b:dataTableColumn styleClass="mtrxColumn">
+							<f:facet name="header">
+								<h:outputText value=" " />
+							</f:facet>
+							<!--<a href="mailto:#{member.getMemberemail()}" target="_blank">#{member.getMemberemail()}</a><ui:fragment rendered="#{member.renderaddress}"><br /></ui:fragment>-->
+							<!-- need to change this to a button to open a mail form page. -->
+
+
+							<b:commandButton iconAwesome="envelope"
+											 action="#{scahaBean.displayEmailForm(member)}" look="info" >
+								<f:ajax execute="@this" render="@form" update="@form"/>
+							</b:commandButton>
+
+
+						</b:dataTableColumn>
 						<b:dataTableColumn styleClass="mtrxColumn" rendered="#{member.getMemberemail()==profileBean.getProfile().getUserName()}">
 				            <f:facet name="header">
 						        <h:outputText value=" " />
@@ -98,23 +128,54 @@
 						border="true"
 						searching="false"
 						>
-				   		<b:dataTableColumn styleClass="mtrxColumn">
-				            <f:facet name="header">
-						         <h:outputText value=" " />
-						    </f:facet>
-						    <h:outputText value="#{member.getMembername()}" style="font-weight:bold;"/> <br></br>
-	            			<h:outputText value="#{member.getMemberrole()}" style="font-style:italic;"/>
-	            		</b:dataTableColumn>
-				        <b:dataTableColumn styleClass="mtrxColumn">
-				            <f:facet name="header">
-						        <h:outputText value=" " />
-						    </f:facet>
-							<a href="mailto:#{member.getMemberemail()}" target="_blank">#{member.getMemberemail()}</a><ui:fragment rendered="#{member.renderaddress}"><br /></ui:fragment>
-				            <h:outputText value="#{member.getMemberaddress()}" rendered="#{member.renderaddress}"/><ui:fragment rendered="#{member.renderphone}"><br /></ui:fragment>
-				            <h:outputText value="#{member.getMemberphone()}"  rendered="#{member.renderphone}"/>
-				            <p:spacer width="30px" />
-	                    </b:dataTableColumn>
-	                    <b:dataTableColumn styleClass="mtrxColumn" rendered="#{member.getMemberemail()==profileBean.getProfile().getUserName()}">
+						<b:dataTableColumn styleClass="mtrxColumn">
+							<f:facet name="header">
+								<h:outputText value=" " />
+							</f:facet>
+							<h:outputText value="#{member.getMembername()}" style="font-weight:bold;"/> <br></br>
+							<h:outputText value="#{member.getMemberrole()}" style="font-style:italic;"/>
+						</b:dataTableColumn>
+						<b:dataTableColumn styleClass="mtrxColumn">
+							<f:facet name="header">
+								<h:outputText value=" " />
+							</f:facet>
+							<!--<a href="mailto:#{member.getMemberemail()}" target="_blank">#{member.getMemberemail()}</a><ui:fragment rendered="#{member.renderaddress}"><br /></ui:fragment>-->
+							<!-- need to change this to a button to open a mail form page. -->
+
+
+							<h:outputText value="#{member.getMemberaddress()}" rendered="#{member.renderaddress}"/><ui:fragment rendered="#{member.renderphone}"><br /></ui:fragment>
+
+							<p:spacer width="30px" />
+
+						</b:dataTableColumn>
+						<b:dataTableColumn styleClass="mtrxColumn">
+							<f:facet name="header">
+								<h:outputText value=" " />
+							</f:facet>
+							<!--<a href="mailto:#{member.getMemberemail()}" target="_blank">#{member.getMemberemail()}</a><ui:fragment rendered="#{member.renderaddress}"><br /></ui:fragment>-->
+							<!-- need to change this to a button to open a mail form page. -->
+
+
+							<h:outputText value="#{member.getMemberphone()}"  rendered="#{member.renderphone}"/><br />
+							<!--<p:spacer width="30px" />-->
+
+						</b:dataTableColumn>
+						<b:dataTableColumn styleClass="mtrxColumn">
+							<f:facet name="header">
+								<h:outputText value=" " />
+							</f:facet>
+							<!--<a href="mailto:#{member.getMemberemail()}" target="_blank">#{member.getMemberemail()}</a><ui:fragment rendered="#{member.renderaddress}"><br /></ui:fragment>-->
+							<!-- need to change this to a button to open a mail form page. -->
+
+
+							<b:commandButton iconAwesome="envelope"
+											 action="#{scahaBean.displayEmailForm(member)}" look="info" >
+								<f:ajax execute="@this" render="@form" update="@form"/>
+							</b:commandButton>
+
+
+						</b:dataTableColumn>
+						<b:dataTableColumn styleClass="mtrxColumn" rendered="#{member.getMemberemail()==profileBean.getProfile().getUserName()}">
 				            <f:facet name="header">
 						        <h:outputText value=" " />
 						    </f:facet>

@@ -75,6 +75,10 @@ public class suspensionBean implements Serializable {
 	private Boolean isexhibitiongamesource = null;
 	private List<TournamentGame> tournamentgames = null;
 	private TournamentGameDataModel TournamentGameDataModel = null;
+	private List<ExhibitionGame> exhibitiongames = null;
+	private ExhibitionGameDataModel ExhibitionGameDataModel = null;
+
+
 
 
 	@PostConstruct
@@ -91,6 +95,22 @@ public class suspensionBean implements Serializable {
     public suspensionBean() {  
         
     }
+
+	public ExhibitionGameDataModel getExhibitiongamedatamodel(){
+		return ExhibitionGameDataModel;
+	}
+
+	public void setExhibitiongamedatamodel(ExhibitionGameDataModel odatamodel){
+		ExhibitionGameDataModel = odatamodel;
+	}
+
+	public List<ExhibitionGame> getExhibitiongames(){
+		return exhibitiongames;
+	}
+
+	public void setExhibitiongames(List<ExhibitionGame> tgames){
+		exhibitiongames = tgames;
+	}
 
 	public TournamentGameDataModel getTournamentgamedatamodel(){
 		return TournamentGameDataModel;
@@ -533,7 +553,20 @@ public class suspensionBean implements Serializable {
 	
 	public void Addsuspension(){
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
-		
+		//lets check if we have a scaha game or a exhibition game
+		if (this.selectedlivegame==null){
+			LiveGame live = new LiveGame(1,pb.getProfile());
+			Schedule sched = new Schedule(1);
+			sched.setDescription("schedule");
+			live.setStartdate("");
+			live.setHometeamname("");
+			live.setAwayteamname("");
+			live.setIdgame(0);
+			live.setSched(sched);
+
+			this.selectedlivegame = live;
+		}
+
     	try{
     		//first get team name
     		CallableStatement cs = db.prepareCall("CALL scaha.addSuspension(?,?,?,?,?,?,?,?,?)");
@@ -750,6 +783,42 @@ public class suspensionBean implements Serializable {
 				//
 				db.free();
 			}
+		} else{
+			//need to get the teamid for the player selected in a non scaha game.
+			ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+			try {
+				CallableStatement cs = db.prepareCall("CALL scaha.getTeamIdbyRosterId(?)");
+				cs.setInt("inrosterid", this.selectedplayer.getIdroster());
+
+				rs = cs.executeQuery();
+
+				this.numberofgames = "--";
+				this.match = 0;
+				this.infraction = "";
+				this.teamid = "0";
+				this.penaltyid = 0;
+
+				if (rs != null) {
+
+					while (rs.next()) {
+						this.teamid = rs.getString("teamid");
+					}
+					//LOGGER.info("We have results for suspension list");
+				}
+
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				LOGGER.info("ERROR IN settings suspension");
+				e.printStackTrace();
+				db.rollback();
+			} finally {
+				//
+				// always clean up after yourself..
+				//
+				db.free();
+			}
 		}
 
 
@@ -830,10 +899,6 @@ public class suspensionBean implements Serializable {
 			isscahagamesource = false;
 			istournamentgamesource = true;
 			isexhibitiongamesource = false;
-		}else {
-			isscahagamesource = false;
-			istournamentgamesource = false;
-			isexhibitiongamesource = true;
 		}
 	}
 
@@ -985,5 +1050,8 @@ public class suspensionBean implements Serializable {
 
 		listofplayers = new ResultDataModel(tempresult);
 	}
+
+
+
 }
 

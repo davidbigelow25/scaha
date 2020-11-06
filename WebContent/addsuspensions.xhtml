@@ -40,8 +40,7 @@
 				</f:facet>
 				<b:selectOneMenu value="#{suspensionBean.selectedgamesource}" onchange="ajax:suspensionBean.displayGameSource()" update="@form">
 					<f:selectItem style="font-size:10pt;" itemLabel="SCAHA Game" itemValue="S" />
-					<f:selectItem style="font-size:10pt;" itemLabel="Tournament Game" itemValue="T" />
-					<f:selectItem style="font-size:10pt;" itemLabel="Exhibition Game" itemValue="E" />
+					<f:selectItem style="font-size:10pt;" itemLabel="Tournament/Exhibition Game" itemValue="T" />
 				</b:selectOneMenu>
 			</b:panel>
 			<b:panel id ="panel" collapsible="false" look="primary">
@@ -285,38 +284,9 @@
 							</b:commandButton>
 						</b:dataTableColumn>
 					</b:dataTable>
-				</b:panel>
-
-				<b:panel id="panelexhibitiongames" collapsible="false" look="primary"
-						 large-screen="full-width"
-						 medium-screen="full-width"
-						 small-screen="one-third"
-						 tiny-screen="one-third"
-						 rendered="#{suspensionBean.isexhibitiongamesource}"
-				>
-					<f:facet name="heading">
-						<h:outputText value="Select Exhibition Game"/>
-					</f:facet>
-
-					<b:panelGrid colSpans="1,3,2,2,2,2" id="panelexgrid">
-						<h:outputText value=" " />
-						<b:selectOneMenu value="#{scoreboardBean.selectedseasonid}" onchange="ajax:scoreboardBean.onSeasonChange()" update="@form" >
-							<f:selectItem style="font-size:10pt;" itemLabel="Select a Season..." itemValue="0" />
-							<f:selectItems value="#{scoreboardBean.getSeasonlist()}"  var="season"  itemLabel="#{season.getDescription()}" itemValue="#{season.getKey()}"/>
-						</b:selectOneMenu>
-						<b:selectOneMenu value="#{scoreboardBean.selectedscheduleid}" onchange="ajax:scoreboardBean.onScheduleChange()" update="@form" >
-							<f:selectItem style="font-size:10pt;" itemLabel="Select a Schedule..." itemValue="0" />
-							<f:selectItems  value="#{scoreboardBean.getSchedulelist()}" var="schedule" itemLabel="#{schedule.getDescription()}" itemValue="#{schedule.getKey()}" />
-						</b:selectOneMenu>
-
-						<b:selectOneMenu value="#{scoreboardBean.selectedpartid}" onchange="ajax:scoreboardBean.onPartChange();suspensionBean.loadGames()" update="@form" >
-							<f:selectItem style="font-size:10pt;" itemLabel="Schedule For All Teams..." itemValue="0" />
-							<f:selectItems  value="#{scoreboardBean.getPartpicklist()}" var="part" itemLabel="#{part.getTeam().getTeamname()}" itemValue="#{part.getKey()}" />
-						</b:selectOneMenu>
-						<h:outputText value=" " />
-						<h:outputText value=" " />
-
-					</b:panelGrid>
+					<b:commandButton value="Add Tournament/Exhibition Game" iconAwesome="plus"
+									 action="#{managerBean.navigatetoaddgame()}" look="success" style="float: right;">
+					</b:commandButton>
 
 				</b:panel>
 				<b:panel id ="panel2" collapsible="false" look="primary">
