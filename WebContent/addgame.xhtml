@@ -81,7 +81,12 @@
     					tiny-screen="full-width"
 					/>
 					<h:outputText value=" "/>
-					
+					<h:outputText value="Count Toward Playoffs?:" />
+					<b:selectOneMenu value="#{managerBean.playoffeligible}"  >
+						<f:selectItem style="font-size:10pt;" itemLabel="Yes" itemValue="1" />
+						<f:selectItem style="font-size:10pt;" itemLabel="No" itemValue="0" />
+					</b:selectOneMenu>
+
 				</b:panelGrid>
 				<b:panelGrid colSpans="2,2,2,2,2,2" id="panelgrid">
 					<h:outputText value=" " />

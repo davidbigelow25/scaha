@@ -37,6 +37,7 @@ public class PenaltyPusher  implements Serializable,  MailableObject {
 	private LiveGame livegame=null;
 	private PenaltyList penaltylist = null;
 	private String penaltyrows = null;
+	private String emailsubject = null;
 	private String servedrows = null;
 	private Boolean isServed = null;
 	private Boolean isRemoved = null;
@@ -56,17 +57,19 @@ public class PenaltyPusher  implements Serializable,  MailableObject {
 	}
 	@Override
 	public String getSubject() {
-		ScahaTeam team = penalty.getTeam();
-		Club club = team.getTeamClub();
-
-		return null;
+		return this.emailsubject;
 	}
+
+	public void setEmailsubject(String insubject){
+		this.emailsubject=insubject;
+	}
+
 
 	@Override
 	public String getTextBody() {
 		// TODO Auto-generated method stub
 		ScahaTeam team = penalty.getTeam();
-		Club club = team.getTeamClub();
+		//Club club = team.getTeamClub();
 		
 		List<String> myTokens = new ArrayList<String>();
 		myTokens.add("SCHEDULE|" + this.livegame.getSched().getDescription());
@@ -76,8 +79,8 @@ public class PenaltyPusher  implements Serializable,  MailableObject {
 		myTokens.add("GAMENUMBER|" + this.livegame.ID+"");
 		myTokens.add("PENALTYROWS|" + this.getPenaltyrows());
 		myTokens.add("MUSTSERVE|" + this.getServedrows());
-		myTokens.add("CLUBNAME|" + club.getClubname());
-		myTokens.add("TEAMNAME|" + team.getTeamname());
+		//myTokens.add("CLUBNAME|" + club.getClubname());
+		myTokens.add("TEAMNAME|" + penalty.getTeamname());
 		if (this.isServed){
 			return Utils.mergeTokens(PenaltyPusher.mail_penaltypush_served, myTokens, "\\|");
 		}else if (this.isRemoved) {

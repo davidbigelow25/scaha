@@ -102,6 +102,7 @@ public class managerBean implements Serializable, MailableObject {
 	private String tourneygamelocation=null;
 	private String exhibitiongamelocation=null;
 	private Boolean displaymultiple = null;
+	private String playoffeligible = null;
 	
 	//properties for emailing to managers, scaha statistician
 	private String to = null;
@@ -118,6 +119,7 @@ public class managerBean implements Serializable, MailableObject {
 		
 	//miscellaneous variables
 	private Boolean displaymessage = null;
+	private String from = null;
 
 	//setting default coaches
 	private Integer headcoach = null;
@@ -152,6 +154,12 @@ public class managerBean implements Serializable, MailableObject {
         } else {
         	this.teamid = pb.getProfile().getManagerteamid();
         }
+		if(hsr.getParameter("from") != null)
+		{
+			this.from =hsr.getParameter("from");
+		} else {
+			this.from = "managerportal";
+		}
 
     	
         
@@ -229,18 +237,39 @@ public class managerBean implements Serializable, MailableObject {
     public Integer getGametype(){
     	return this.gametype;
     }
-    
-    
-    public void setStatus(String value){
+
+	public void setFrom(String value){
+		this.from = value;
+	}
+
+	public String getFrom(){return this.from;}
+
+
+	public void setStatus(String value){
     	this.status = value;
     }
     
     public String getStatus(){
     	return this.status;
     }
-    
-    
-    public void setDisplaymessage(Boolean value){
+
+	public void setOpponent(String value){
+		this.opponent = value;
+	}
+
+	public String getOpponent(){
+		return this.opponent;
+	}
+
+	public void setPlayoffeligible(String value){
+		this.playoffeligible = value;
+	}
+
+	public String getPlayoffeligible(){
+		return this.playoffeligible;
+	}
+
+	public void setDisplaymessage(Boolean value){
     	this.displaymessage = value;
     }
     
@@ -1339,13 +1368,14 @@ public class managerBean implements Serializable, MailableObject {
     	
     	try{
     		//first get team name
-    		CallableStatement cs = db.prepareCall("CALL scaha.addTournamentGameForTeam(?,?,?,?,?,?)");
+    		CallableStatement cs = db.prepareCall("CALL scaha.addTournamentGameForTeam(?,?,?,?,?,?,?)");
 			cs.setInt("teamid", this.teamid);
 			cs.setInt("newgametypeid", this.gametype);
 			cs.setString("newgamedate", this.gamedate);
 			cs.setString("newgametime", this.gametime);
 			cs.setString("newopponent", this.opponent);
 			cs.setString("newlocation", this.tourneygamelocation);
+			cs.setInt("playoffeligible", Integer.parseInt(this.playoffeligible));
 			rs=cs.executeQuery();
 			/*if (rs != null){
   				while (rs.next()) {
@@ -1973,7 +2003,7 @@ public class managerBean implements Serializable, MailableObject {
 		FacesContext context = FacesContext.getCurrentInstance();
 		
 		try{
-			context.getExternalContext().redirect("addgame.xhtml?id="+this.teamid);
+			context.getExternalContext().redirect("addgame.xhtml?id="+this.teamid+"&from=managerportal");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1985,7 +2015,12 @@ public class managerBean implements Serializable, MailableObject {
 		FacesContext context = FacesContext.getCurrentInstance();
 		
 		try{
-			context.getExternalContext().redirect("managerportal.xhtml?id=" + this.teamid);
+			if (this.from.equals("suspension")){
+				context.getExternalContext().redirect("addsuspensions.xhtml?id=" + this.teamid);
+			}else {
+				context.getExternalContext().redirect("managerportal.xhtml?id=" + this.teamid);
+			}
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

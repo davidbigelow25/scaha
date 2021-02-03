@@ -9,10 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -64,6 +61,7 @@ public class suspensionBean implements Serializable {
 	private String playername = null;
 	private String team = null;
 	private String teamid = null;
+
 	private Integer penaltyid = null;
 	private LiveGame selectedlivegame = null;
 	private Integer rosterid = null;
@@ -77,6 +75,7 @@ public class suspensionBean implements Serializable {
 	private TournamentGameDataModel TournamentGameDataModel = null;
 	private List<ExhibitionGame> exhibitiongames = null;
 	private ExhibitionGameDataModel ExhibitionGameDataModel = null;
+	private TournamentGame selectedtournamentgame = null;
 
 
 
@@ -95,6 +94,14 @@ public class suspensionBean implements Serializable {
     public suspensionBean() {  
         
     }
+
+	public TournamentGame getSelectedtournamentgame(){
+		return selectedtournamentgame;
+	}
+
+	public void setSelectedtournamentgame(TournamentGame odatamodel){
+		selectedtournamentgame = odatamodel;
+	}
 
 	public ExhibitionGameDataModel getExhibitiongamedatamodel(){
 		return ExhibitionGameDataModel;
@@ -558,9 +565,9 @@ public class suspensionBean implements Serializable {
 			LiveGame live = new LiveGame(1,pb.getProfile());
 			Schedule sched = new Schedule(1);
 			sched.setDescription("schedule");
-			live.setStartdate("");
-			live.setHometeamname("");
-			live.setAwayteamname("");
+			live.setStartdate(this.suspdate);
+			live.setHometeamname(this.selectedplayer.getAddress());
+			live.setAwayteamname(this.selectedtournamentgame.getOpponent());
 			live.setIdgame(0);
 			live.setSched(sched);
 
@@ -603,6 +610,10 @@ public class suspensionBean implements Serializable {
 			ScahaTeam team = sb.getScahaTeamList().getRowData(this.teamid);
 
 			Penalty pen = new Penalty(this.penaltyid,pb.getProfile(), this.selectedlivegame, team);
+
+			if (!this.isscahagamesource){
+				pen.setTeamname(team.getTeamname());
+			}
 			PenaltyPusher pp = new PenaltyPusher();
 			pp.setPenalty(pen);
 			pp.setPenaltyrows(temppenaltyrows);
@@ -610,6 +621,7 @@ public class suspensionBean implements Serializable {
 			pp.setLivegame(this.selectedlivegame);
 			pp.setIsServed(false);
 			pp.setIsRemoved(false);
+			pp.setEmailsubject(this.playername + " Suspension Details");
 			pp.pushPenalty();
 
 
@@ -802,7 +814,7 @@ public class suspensionBean implements Serializable {
 				if (rs != null) {
 
 					while (rs.next()) {
-						this.teamid = rs.getString("teamid");
+						this.teamid = rs.getString("idteam");
 					}
 					//LOGGER.info("We have results for suspension list");
 				}
@@ -907,11 +919,12 @@ public class suspensionBean implements Serializable {
 	}
 
 	public void onPartChange(){
-		Integer teamid = null;
+		Integer tempteamid = null;
 
-		teamid = sbb.getSelectedpartid();
+		tempteamid = sbb.getSelectedpartid();
+		this.teamid= tempteamid.toString();
 
-		getTournamentGames(teamid);
+		getTournamentGames(tempteamid);
 	}
 
 	public void getTournamentGames(Integer teamid) {
@@ -984,10 +997,27 @@ public class suspensionBean implements Serializable {
 
 	public void playerSearchForTournamentGame(TournamentGame tgame){
 
+		this.selectedtournamentgame = tgame;
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 		List<Result> tempresult = new ArrayList<Result>();
 		Integer teamId = this.sbb.getSelectedpartid();
+
+
 		this.suspdate = tgame.getDate();
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		Date date = null;
+		String convertedDate = null;
+		try {
+			date = dateFormat.parse(this.suspdate);
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			this.suspdate = simpleDateFormat.format(date);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
+
 		try{
 			//next get player roster
 			CallableStatement cs = db.prepareCall("CALL scaha.getRosterPlayersForManagerByTeamID(?)");
@@ -1051,7 +1081,16 @@ public class suspensionBean implements Serializable {
 		listofplayers = new ResultDataModel(tempresult);
 	}
 
+	public void navigatetoaddgame(){
+		FacesContext context = FacesContext.getCurrentInstance();
 
+		try{
+			context.getExternalContext().redirect("addgame.xhtml?id="+this.teamid+"&from=suspension");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 }
 
