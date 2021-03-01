@@ -84,10 +84,11 @@ public class ScahaCoach extends Person {
 		// is it an object that is not in the database yet..
 		//
 		//
+		//need to prevent the coaching credentials scaha member services has entered up to
+		//this point from being overwritten
+
 		CallableStatement cs = _db.prepareCall("call scaha.updateScahaCoach(?,?,?,?,?,?,?,?,?,?,?,?,?)");
 		
-		//LOGGER.info("HERE IS THE PERSON ID for coach:" + super.ID);
-		//LOGGER.info("HERE IS THE coach ID for coach:" + this.ID);
 
 		int i = 1;
 		cs.registerOutParameter(1, java.sql.Types.INTEGER);
@@ -106,7 +107,7 @@ public class ScahaCoach extends Person {
 		cs.setString(i++,null);
 
 		cs.execute();
-				
+
 		//
 		// Update the new ID from the database...
 		//

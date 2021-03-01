@@ -22,35 +22,20 @@ public class Member extends ScahaObject implements Serializable {
 	private String memberemail = null;
 	private String memberphone = null;
 	private String memberaddress = null;
+	private String profileid = null;
+	private String actionrenderphonemessage = null;
+	private String actionrenderaddressmessage = null;
 	private Boolean renderaddress = null;
 	private String actionrenderaddress = null;
 	private Boolean renderphone = null;
 	private String actionrenderphone = null;
-	private String profileid = null;
-	private String actionrenderphonemessage = null;
-	private String actionrenderaddressmessage = null;
-	
-	public String getActionrenderaddressmessage() {
-		return actionrenderaddressmessage;
-	}
 
-	public void setActionrenderphonemessage(String fam) {
-		actionrenderphonemessage = fam;
-	}
-	
-	public String getActionrenderphonemessage() {
-		return actionrenderphonemessage;
-	}
 
-	public void setActionrenderaddressmessage(String fam) {
-		actionrenderaddressmessage = fam;
-	}
-	
 	public String getActionrenderphone() {
 		return actionrenderphone;
 	}
 
-	public void setActionrenderphoine(String fam) {
+	public void setActionrenderphone(String fam) {
 		this.actionrenderphone = fam;
 		
 	}
@@ -78,7 +63,23 @@ public class Member extends ScahaObject implements Serializable {
 	public void setRenderphone(Boolean fam) {
 		this.renderphone = fam;
 	}
-	
+
+	public String getActionrenderaddressmessage() {
+		return actionrenderaddressmessage;
+	}
+
+	public void setActionrenderphonemessage(String fam) {
+		actionrenderphonemessage = fam;
+	}
+
+	public String getActionrenderphonemessage() {
+		return actionrenderphonemessage;
+	}
+
+	public void setActionrenderaddressmessage(String fam) {
+		actionrenderaddressmessage = fam;
+	}
+
 	public String getMembername() {
 		return membername;
 	}

@@ -25,33 +25,12 @@ import javax.faces.event.PhaseId;
 import javax.imageio.ImageIO;
 import javax.mail.internet.InternetAddress;
 
+import com.scaha.objects.*;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
-import com.scaha.objects.Club;
-import com.scaha.objects.ClubAdmin;
-import com.scaha.objects.ClubAdminList;
-import com.scaha.objects.ClubList;
-import com.scaha.objects.GeneralSeason;
-import com.scaha.objects.GeneralSeasonList;
-import com.scaha.objects.LiveGame;
-import com.scaha.objects.LiveGameList;
-import com.scaha.objects.MailableObject;
-import com.scaha.objects.Member;
-import com.scaha.objects.MemberList;
-import com.scaha.objects.MultiMedia;
-import com.scaha.objects.Participant;
-import com.scaha.objects.ParticipantList;
-import com.scaha.objects.Profile;
-import com.scaha.objects.ScahaTeam;
-import com.scaha.objects.Schedule;
-import com.scaha.objects.ScheduleList;
-import com.scaha.objects.StatsList;
-import com.scaha.objects.TeamGameInfo;
-import com.scaha.objects.TeamList;
-import com.scaha.objects.YearList;
 
 @ManagedBean
 @ApplicationScoped
@@ -77,7 +56,8 @@ public class ScahaBean implements Serializable,  MailableObject {
 	private MultiMedia noimage = null;
 	private Profile DefaultProfile = null;
 	private Member selectedmember = null;
-	
+	private ClubAdmin selectedclubadmin = null;
+
 	
 	 @PostConstruct
 	 public void init() {
@@ -363,6 +343,13 @@ public class ScahaBean implements Serializable,  MailableObject {
 	/**
 	 * @param scahaTeamList the scahaTeamList to set
 	 */
+	public void setSelectedclubadmin(ClubAdmin member) {
+		this.selectedclubadmin = member;
+	}
+	public ClubAdmin getSelectedclubadmin() {
+		return this.selectedclubadmin;
+	}
+
 	public void setSelectedmember(Member member) {
 		this.selectedmember = member;
 	}
@@ -859,7 +846,7 @@ public class ScahaBean implements Serializable,  MailableObject {
 
 		FacesContext context = FacesContext.getCurrentInstance();
 		try{
-			context.getExternalContext().redirect("sendemail.xhtml");
+			context.getExternalContext().redirect("sendemail.xhtml?source=bod");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -867,5 +854,69 @@ public class ScahaBean implements Serializable,  MailableObject {
 
 
 	}
+
+	public void displayEmailFormClubList(ClubAdmin member){
+
+
+		this.setSelectedclubadmin(member);
+
+		FacesContext context = FacesContext.getCurrentInstance();
+		try{
+			context.getExternalContext().redirect("sendemail.xhtml?source=clublist");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+	}
+
+	public void setPersonDisplay(ClubAdmin clubadmin,String flagtype){
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		Integer profileid = clubadmin.getPersonID();
+		String flagstate = "";
+		if (flagtype.equals("Address")){
+			flagstate=clubadmin.getActionrenderaddress();
+		}else{
+			flagstate=clubadmin.getActionrenderphone();
+		}
+		try{
+
+			if (db.setAutoCommit(false)) {
+
+				//Need to provide info to the stored procedure to save or update
+				LOGGER.info("verify loi code provided");
+				CallableStatement cs = db.prepareCall("CALL scaha.setPersonRenderDisplay(?,?,?)");
+				cs.setInt("profileid", profileid);
+				cs.setInt("flagstate", Integer.parseInt(flagstate));
+				cs.setString("flagtype", flagtype);
+				cs.executeQuery();
+
+				db.commit();
+				db.cleanup();
+
+				//logging
+				LOGGER.info("We are have set " + flagtype + " display for " + profileid);
+
+			} else {
+
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN set " + flagtype + " display for " + profileid);
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+		this.refreshClubList();
+	}
+
+
 
 }

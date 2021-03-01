@@ -54,6 +54,7 @@ public class coachrosteractionBean implements Serializable {
 	private String lastname = null;
 	private String searchcriteria = "";
 	private String suspend = "";
+	private String cepexpiresdisplayvalue = "";
 
 	@PostConstruct
     public void init() {
@@ -87,6 +88,14 @@ public class coachrosteractionBean implements Serializable {
 
     	//doing anything else right here
     }
+
+	public String getCepexpiresdisplayvalue(){
+		return cepexpiresdisplayvalue;
+	}
+
+	public void setCepexpiresdisplayvalue(String cyear){
+		cepexpiresdisplayvalue=cyear;
+	}
 
 	public String getSuspend(){
 		return suspend;
@@ -359,6 +368,11 @@ public class coachrosteractionBean implements Serializable {
         				ceplevel = rs.getInt("ceplevel");
         				safesport = rs.getString("safesport");
         				cepexpires = rs.getString("cepexpires");
+        				if (ceplevel==4 || ceplevel==5){
+							this.cepexpiresdisplayvalue = "N/A";
+						}else {
+        					this.cepexpiresdisplayvalue=cepexpires;
+						}
         				sportexpires = rs.getString("sportexpires");
         				suspend = rs.getString("suspended");
 
@@ -426,7 +440,13 @@ public class coachrosteractionBean implements Serializable {
     		    cs.setString("screenexpires", this.screeningexpires);
     		    cs.setString("cepnum", this.cepnumber);
     		    cs.setInt("levelcep", this.ceplevel);
-    		    cs.setString("cepexpire", this.cepexpires);
+    		    if (this.cepexpiresdisplayvalue.equals("N/A")){
+					cs.setString("cepexpire", this.cepexpires);
+				} else {
+    		    	this.cepexpires=this.cepexpiresdisplayvalue;
+					cs.setString("cepexpire", this.cepexpires);
+				}
+
     		    cs.setString("insafesport", this.safesport);
     		    cs.setString("inrostertype", this.coachrole);
     		    cs.setInt("inrosterid", this.rosterid);
@@ -550,6 +570,15 @@ public class coachrosteractionBean implements Serializable {
 			this.displaycoachcredentials=false;
 		}else {
 			this.displaycoachcredentials=true;
+		}
+	}
+
+	public void setExpireDateByLevel(){
+		//need to set coach credential fields to hide when manager is selected.  For all others display.
+		if (this.ceplevel==4 || this.ceplevel==5){
+			this.cepexpiresdisplayvalue="N/A";
+		}else {
+			this.cepexpiresdisplayvalue=this.cepexpires;
 		}
 	}
 }

@@ -121,7 +121,7 @@ public class PenaltyPusher  implements Serializable,  MailableObject {
 
 			while (rs.next()) {
 				InternetAddress tempaddress =new InternetAddress(rs.getString(2),rs.getString(1));
-				tempaddress = new InternetAddress("lahockeyfan2@yahoo.com","Rob-Foster");
+				//tempaddress = new InternetAddress("lahockeyfan2@yahoo.com","Rob-Foster");
 				data.add(tempaddress);
 
 			}

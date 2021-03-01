@@ -28,7 +28,11 @@ public class ClubAdmin extends Person implements Serializable {
 	
 	private Role MyRole = null;
 	private Club MyClub = null;
-	
+	private Boolean renderphone = null;
+	private Boolean renderaddress = null;
+	private String actionrenderaddress = null;
+	private String actionrenderphone = null;
+
 	public ClubAdmin(int _id, Profile _pro, Club _cl, Role _role) {
 		super(_id, _pro);
 		MyRole = _role;
@@ -46,7 +50,8 @@ public class ClubAdmin extends Person implements Serializable {
 		//super.update(_db);
 	}
 
-
+	public Boolean getRenderphone(){return this.renderphone;}
+	public void setRenderphone(Boolean value){this.renderphone=value;}
 	/**
 	 * @return the myRole
 	 */
@@ -85,4 +90,34 @@ public class ClubAdmin extends Person implements Serializable {
 	public void setMyClub(Club myClub) {
 		MyClub = myClub;
 	}
+
+
+
+	public String getActionrenderphone() {
+		return actionrenderphone;
+	}
+
+	public void setActionrenderphone(String fam) {
+		this.actionrenderphone = fam;
+
+	}
+
+	public String getActionrenderaddress() {
+		return actionrenderaddress;
+	}
+
+	public void setActionrenderaddress(String fam) {
+		this.actionrenderaddress = fam;
+	}
+
+	public Boolean getRenderaddress() {
+		return renderaddress;
+	}
+
+	public void setRenderaddress(Boolean fam) {
+		this.renderaddress = fam;
+	}
+
+
+
 }

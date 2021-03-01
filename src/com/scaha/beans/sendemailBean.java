@@ -54,8 +54,10 @@ public class sendemailBean implements Serializable, MailableObject {
 	private String emailsubject = null;
 	private String emailbody = null;
 	private Member selectedmember = null;
+	private ClubAdmin selectedclubadmin = null;
 	private String fname = null;
 	private String lname = null;
+	private Boolean isexecutivelist = null;
 
 	@PostConstruct
     public void init() {
@@ -70,7 +72,17 @@ public class sendemailBean implements Serializable, MailableObject {
 
 		//will need to load executive board member profile
 
-    	loadBODProfile();
+		HttpServletRequest hsr = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+
+		if(hsr.getParameter("source").equals("clublist") )
+		{
+			loadClubAdminProfile();
+		} else {
+			loadBODProfile();
+		}
+
+
+
 
     	ValueExpression scahaexpression = app.getExpressionFactory().createValueExpression( context.getELContext(),
 				"#{scahaBean}", Object.class );
@@ -85,9 +97,19 @@ public class sendemailBean implements Serializable, MailableObject {
         
     }
 
-	public Member getSelectedmember(){return this.selectedmember;}
+	public Boolean getIsexecutivelist(){return this.isexecutivelist;}
+	public void setIsexecutivelist(Boolean value){
+		this.isexecutivelist=value;
+	}
+
+    public Member getSelectedmember(){return this.selectedmember;}
 	public void setSelectedmember(Member value){
 		this.selectedmember=value;
+	}
+
+	public ClubAdmin getSelectedclubadmin(){return this.selectedclubadmin;}
+	public void setSelectedclubadmin(ClubAdmin value){
+		this.selectedclubadmin=value;
 	}
 
 	public String getFname(){return this.fname;}
@@ -177,7 +199,15 @@ public class sendemailBean implements Serializable, MailableObject {
 		this.selectedmember = scaha.getSelectedmember();
 		this.to = this.selectedmember.getMemberemail();
 		this.fname = this.selectedmember.getMembername();
+		setIsexecutivelist(true);
    }
+
+	public void loadClubAdminProfile(){
+		this.selectedclubadmin = scaha.getSelectedclubadmin();
+		this.to = this.selectedclubadmin.getsEmail();
+		this.fname = this.selectedclubadmin.getsFirstName() + " " + this.selectedclubadmin.getsLastName();
+		setIsexecutivelist(false);
+	}
 	
 	public void SendMessage(){
 
@@ -195,7 +225,11 @@ public class sendemailBean implements Serializable, MailableObject {
 			FacesContext context = FacesContext.getCurrentInstance();
 			String origin = ((HttpServletRequest)context.getExternalContext().getRequest()).getRequestURL().toString();
 			try{
-				context.getExternalContext().redirect("boardofdirectors.xhtml");
+				if (this.isexecutivelist){
+					context.getExternalContext().redirect("boardofdirectors.xhtml");
+				}else {
+					context.getExternalContext().redirect("viewallclubs.xhtml");
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -214,7 +248,12 @@ public class sendemailBean implements Serializable, MailableObject {
 
 		String origin = ((HttpServletRequest)context.getExternalContext().getRequest()).getRequestURL().toString();
 		try{
-			context.getExternalContext().redirect("boardofdirectors.xhtml");
+			if (this.isexecutivelist){
+				context.getExternalContext().redirect("boardofdirectors.xhtml");
+			}else {
+				context.getExternalContext().redirect("viewallclubs.xhtml");
+			}
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

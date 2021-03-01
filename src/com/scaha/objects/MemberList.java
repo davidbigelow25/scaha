@@ -62,10 +62,10 @@ public class MemberList extends ListDataModel<Member> implements Serializable, S
 					mem.setActionrenderaddressmessage("Show Address");
 				}
 				if (rs.getString("renderphone").equals("1")){
-					mem.setActionrenderphoine("0");
+					mem.setActionrenderphone("0");
 					mem.setActionrenderphonemessage("Hide Phone");
 				}else{
-					mem.setActionrenderphoine("1");
+					mem.setActionrenderphone("1");
 					mem.setActionrenderphonemessage("Show Phone");
 				}
 				
