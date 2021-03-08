@@ -245,7 +245,7 @@ public class sendemailBean implements Serializable, MailableObject {
 
 			//hard my email address for testing purposes
 
-			to = "lahockeyfan2@yahoo.com";
+			//to = "lahockeyfan2@yahoo.com";
 			this.setToMailAddress(to + "," + this.sendfromemail);
 			this.setPreApprovedCC("");
 			this.setSubject(this.emailsubject);
