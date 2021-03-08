@@ -77,15 +77,22 @@
 						            <f:facet name="header">
 								         <h:outputText value="Phone" />
 								    </f:facet>
-								    <h:outputText value="#{peep.getsPhone()}" />
+								    <h:outputText value="#{peep.getsPhone()}"  rendered="#{peep.renderphone}"/>
+									<b:commandButton iconAwesome="phone"
+													 action="#{scahaBean.setPersonDisplay(peep,'Phone')}" look="info" rendered="#{peep.getsEmail()==profileBean.getProfile().getUserName()}" >
+										<f:ajax execute="@this" render="@form" update="@form"/>
+									</b:commandButton>
 								</b:dataTableColumn>
 								<b:dataTableColumn >
 						            <f:facet name="header">
 								         <h:outputText value="Email" />
 								    </f:facet>
-								    <h:outputLink value="mailto:#{peep.getsEmail()}?subject=Scaha%20Related">
+								    <!--<h:outputLink value="mailto:#{peep.getsEmail()}?subject=Scaha%20Related">
 				   						 <h:outputText style="font-size: 12px;" value=" #{peep.getsEmail()}" />
-									</h:outputLink>
+									</h:outputLink>-->
+									<b:commandButton iconAwesome="envelope"
+													 action="#{scahaBean.displayEmailFormClubList(peep)}" look="info" ><f:ajax execute="@this" render="@form" update="@form"/>
+									</b:commandButton>
 								</b:dataTableColumn> 
 							</b:dataTable>
 						</b:panel>
@@ -180,7 +187,11 @@
 					            <f:facet name="header">
 							         <h:outputText value="e-mail" />
 							    </f:facet>
-							    <h:outputText style="font-size: 11px;" value="#{empty team.getHeadCoach()  ? 'No e-mail found' : team.getHeadCoach().getsEmail()}" />
+							    <h:outputText style="font-size: 11px;" value="No e-mail found" rendered="#{empty team.getHeadCoach()}"/>
+								<!--<h:outputText style="font-size: 11px;" value="#{team.getHeadCoach().getsEmail()}" rendered="#{team.getHeadCoach().getDisplayemail()}"/>-->
+								<b:commandButton iconAwesome="envelope"
+												 action="#{scahaBean.displayEmailFormTeamList(team.getHeadCoach())}" look="info" rendered="#{team.getHeadCoach().getDisplayemail()}"><f:ajax execute="@this" render="@form" update="@form"/>
+								</b:commandButton>
 							</b:dataTableColumn>
 							<b:dataTableColumn >
 					            <f:facet name="header">
@@ -192,7 +203,12 @@
 					            <f:facet name="header">
 							         <h:outputText value="e-mail" />
 							    </f:facet>
-							    <h:outputText style="font-size: 11px;" value="#{empty team.getManager()  ? 'No e-mail found' : team.getManager().getsEmail()}" />
+								<h:outputText style="font-size: 11px;" value="No e-mail found" rendered="#{empty team.getManager()}"/>
+								<!--<h:outputText style="font-size: 11px;" value="#{team.getHeadCoach().getsEmail()}" rendered="#{team.getHeadCoach().getDisplayemail()}"/>-->
+								<b:commandButton iconAwesome="envelope"
+												 action="#{scahaBean.displayEmailFormTeamManagerList(team.getManager())}" look="info" rendered="#{team.getManager().getDisplayemail()}"><f:ajax execute="@this" render="@form" update="@form"/>
+								</b:commandButton>
+								<!--<h:outputText style="font-size: 11px;" value="#{empty team.getManager()  ? 'No e-mail found' : team.getManager().getsEmail()}" />-->
 							</b:dataTableColumn> 
 						</b:dataTable>
 					</b:panel>				

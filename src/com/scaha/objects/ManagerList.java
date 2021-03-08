@@ -57,6 +57,7 @@ public class ManagerList extends ListDataModel<ScahaManager> implements Serializ
 			sc.getGenatt().put("ROSTERTYPE",rs.getString(i++));
 			sc.setsEmail(rs.getString(i++));
 			sc.setsPhone(rs.getString(i++));
+			sc.setDisplayemail(rs.getBoolean(i++));
 			data.add(sc);
 		}
 		rs.close();

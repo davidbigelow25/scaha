@@ -57,6 +57,8 @@ public class ScahaBean implements Serializable,  MailableObject {
 	private Profile DefaultProfile = null;
 	private Member selectedmember = null;
 	private ClubAdmin selectedclubadmin = null;
+	private ScahaCoach selectedscahacoach = null;
+	private ScahaManager selectedscahamanager = null;
 
 	
 	 @PostConstruct
@@ -343,6 +345,20 @@ public class ScahaBean implements Serializable,  MailableObject {
 	/**
 	 * @param scahaTeamList the scahaTeamList to set
 	 */
+	public void setSelectedscahacoach(ScahaCoach member) {
+		this.selectedscahacoach = member;
+	}
+	public ScahaCoach getSetSelectedscahacoach() {
+		return this.selectedscahacoach;
+	}
+
+	public void setSetSelectedscahamanager(ScahaManager member) {
+		this.selectedscahamanager = member;
+	}
+	public ScahaManager getSetSelectedscahamanager() {
+		return this.selectedscahamanager;
+	}
+
 	public void setSelectedclubadmin(ClubAdmin member) {
 		this.selectedclubadmin = member;
 	}
@@ -863,6 +879,38 @@ public class ScahaBean implements Serializable,  MailableObject {
 		FacesContext context = FacesContext.getCurrentInstance();
 		try{
 			context.getExternalContext().redirect("sendemail.xhtml?source=clublist");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+	}
+
+	public void displayEmailFormTeamList(ScahaCoach member){
+
+
+		this.setSelectedscahacoach(member);
+
+		FacesContext context = FacesContext.getCurrentInstance();
+		try{
+			context.getExternalContext().redirect("sendemail.xhtml?source=clubdetailcoach");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+	}
+
+	public void displayEmailFormTeamManagerList(ScahaManager member){
+
+
+		this.setSetSelectedscahamanager(member);
+
+		FacesContext context = FacesContext.getCurrentInstance();
+		try{
+			context.getExternalContext().redirect("sendemail.xhtml?source=clubdetailmanager");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

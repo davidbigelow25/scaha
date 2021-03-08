@@ -55,6 +55,8 @@ public class sendemailBean implements Serializable, MailableObject {
 	private String emailbody = null;
 	private Member selectedmember = null;
 	private ClubAdmin selectedclubadmin = null;
+	private ScahaCoach selectedscahacoach = null;
+	private ScahaManager selectedscahamanager = null;
 	private String fname = null;
 	private String lname = null;
 	private Boolean isexecutivelist = null;
@@ -77,7 +79,13 @@ public class sendemailBean implements Serializable, MailableObject {
 		if(hsr.getParameter("source").equals("clublist") )
 		{
 			loadClubAdminProfile();
-		} else {
+		} else if(hsr.getParameter("source").equals("clubdetailcoach") )
+		{
+			loadTeamCoachProfile();
+		} else if(hsr.getParameter("source").equals("clubdetailmanager") )
+		{
+			loadTeamManagerProfile();
+		}else {
 			loadBODProfile();
 		}
 
@@ -110,6 +118,16 @@ public class sendemailBean implements Serializable, MailableObject {
 	public ClubAdmin getSelectedclubadmin(){return this.selectedclubadmin;}
 	public void setSelectedclubadmin(ClubAdmin value){
 		this.selectedclubadmin=value;
+	}
+
+	public ScahaCoach getSelectedscahacoach(){return this.selectedscahacoach;}
+	public void setSelectedscahacoach(ScahaCoach value){
+		this.selectedscahacoach=value;
+	}
+
+	public ScahaManager getSelectedscahamanager(){return this.selectedscahamanager;}
+	public void setSelectedscahamanager(ScahaManager value){
+		this.selectedscahamanager=value;
 	}
 
 	public String getFname(){return this.fname;}
@@ -208,12 +226,26 @@ public class sendemailBean implements Serializable, MailableObject {
 		this.fname = this.selectedclubadmin.getsFirstName() + " " + this.selectedclubadmin.getsLastName();
 		setIsexecutivelist(false);
 	}
+
+	public void loadTeamCoachProfile(){
+		this.selectedscahacoach = scaha.getSetSelectedscahacoach();
+		this.to = this.selectedscahacoach.getsEmail();
+		this.fname = this.selectedscahacoach.getsFirstName() + " " + this.selectedscahacoach.getsLastName();
+		setIsexecutivelist(false);
+	}
+
+	public void loadTeamManagerProfile(){
+		this.selectedscahamanager = scaha.getSetSelectedscahamanager();
+		this.to = this.selectedscahamanager.getsEmail();
+		this.fname = this.selectedscahamanager.getsFirstName() + " " + this.selectedscahamanager.getsLastName();
+		setIsexecutivelist(false);
+	}
 	
 	public void SendMessage(){
 
 			//hard my email address for testing purposes
 
-			//to = "lahockeyfan2@yahoo.com";
+			to = "lahockeyfan2@yahoo.com";
 			this.setToMailAddress(to + "," + this.sendfromemail);
 			this.setPreApprovedCC("");
 			this.setSubject(this.emailsubject);

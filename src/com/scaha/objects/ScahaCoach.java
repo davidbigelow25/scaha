@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 /**
  * @author dbigelow
@@ -31,6 +32,7 @@ public class ScahaCoach extends Person {
 	private int u12 = 0;
 	private int u14 = 0;
 	private int u18 = 0;
+	private Boolean displayemail = null;
 	
 	private Person MyPerson = null;				// ok.. new strat.. this owns the member object
 	private Person TopPerson = null; 	// This represents the Top owner of this object.. Usually the account holder
@@ -116,7 +118,17 @@ public class ScahaCoach extends Person {
 		//LOGGER.info("HERE IS THE NEW Coach ID:" + this.ID);
 		
 	}
-	
+
+	public Boolean getDisplayemail() {
+		return displayemail;
+	}
+
+	/**
+	 * @param screeningexpires the screeningexpires to set
+	 */
+		public void setDisplayemail(Boolean displayemail) {
+		this.displayemail = displayemail;
+	}
 	/**
 	 * @return the screeningexpires
 	 */

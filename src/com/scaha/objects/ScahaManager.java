@@ -34,6 +34,7 @@ public class ScahaManager extends Person {
 	//
 	protected int ID = -1;
 	protected Boolean ismanager = null;
+	private Boolean displayemail = null;
 	
 	/**
 	 * A basic constructor that glues a person to a player given the relationship.
@@ -59,8 +60,19 @@ public class ScahaManager extends Person {
 	
 	public int getID() {
 		return ID;
-	} 
-	
+	}
+
+	public Boolean getDisplayemail() {
+		return displayemail;
+	}
+
+	/**
+	 * @param screeningexpires the screeningexpires to set
+	 */
+	public void setDisplayemail(Boolean displayemail) {
+		this.displayemail = displayemail;
+	}
+
 	public Boolean getIsmanager(){
 		return ismanager;
 	}
