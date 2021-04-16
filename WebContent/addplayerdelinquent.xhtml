@@ -47,16 +47,16 @@
 						var="result" 
 						value="#{draftplayersBean.listofplayers}"
 						selection="#{draftplayersBean.selectedplayer}"
-						editable="true" 
+						editable="true"
 						select="true"
 						selection-mode="multiple"
-						selected-items="rows" 
+						selected-items="rows"
 						paginator="true"
-						searching="false"
-						
+						searching="true"
+
 						>
 						<f:facet name="header">  
-				            Select a Player from the List  
+				            Select a Player from the List, The year displayed is the last year played for that player.
 				        </f:facet> 
 			        	<b:dataTableColumn >
 				            <f:facet name="header">
@@ -76,7 +76,13 @@
 						    </f:facet>
 				            <h:outputText value="#{result.getAddress()}" />
 				        </b:dataTableColumn>
-				        <b:dataTableColumn >
+						<b:dataTableColumn >
+							<f:facet name="header">
+								Year Played
+							</f:facet>
+							<h:outputText value="#{result.getCoachname()}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn >
 				            <f:facet name="header">
 						        Option
 						    </f:facet>

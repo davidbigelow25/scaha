@@ -240,6 +240,8 @@ public class DraftPlayersBean implements Serializable {
         		String city = db.getResultSet().getString("city");
         		String state = db.getResultSet().getString("state");
         		String zip = db.getResultSet().getString("zipcode");
+        		String PlayedYear = db.getResultSet().getString("yearplayed");
+        		Integer idroster = db.getResultSet().getInt("idroster");
         				
         		if (address == null){
         			address = "";
@@ -257,6 +259,8 @@ public class DraftPlayersBean implements Serializable {
         		String dob = rs.getString("dob");
         		
         		Result result = new Result(playername,idperson,address,dob);
+        		result.setCoachname(PlayedYear);
+        		result.setIdroster(idroster);
         		tempresult.add(result);
     		}
     				
@@ -410,6 +414,7 @@ public class DraftPlayersBean implements Serializable {
     public void addtoDelinquency(Result result){
     	Result tempResult = result;
     	int selectedPlayerid = Integer.parseInt(tempResult.getIdplayer());
+    	int rosterid = tempResult.getIdroster();
     	String selectedPlayername = tempResult.getPlayername();
     	
     	//LOGGER.info("Adding to D-List: playerid=" + selectedPlayerid + " ,selectedPlayerName=" + selectedPlayername);
@@ -417,9 +422,10 @@ public class DraftPlayersBean implements Serializable {
     	
     	try{
     		
-    		CallableStatement cs = db.prepareCall("CALL scaha.addToDelinquency(?)");
+    		CallableStatement cs = db.prepareCall("CALL scaha.addToDelinquency(?,?)");
 			cs.setInt(1,selectedPlayerid);
-		    cs.executeUpdate();
+			cs.setInt(2,rosterid);
+			cs.executeUpdate();
 		    cs.close();
     		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"", selectedPlayername + "has been added to the Delinquency List"));
     	} catch (SQLException e) {
