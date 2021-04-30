@@ -27,10 +27,8 @@ import com.gbli.common.SendMailSSL;
 import com.gbli.common.Utils;
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
-import com.scaha.objects.FamilyRow;
-import com.scaha.objects.MailableObject;
-import com.scaha.objects.Player;
-import com.scaha.objects.Team;
+import com.scaha.objects.*;
+import com.sun.media.jfxmedia.events.PlayerStateEvent;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import static org.apache.commons.lang3.BooleanUtils.and;
@@ -110,6 +108,9 @@ public class loiBean implements Serializable, MailableObject {
 	private Boolean displaycounts = null;
 	private Boolean pdrrequired = null;
 
+	//added to support covid player history for aa/aaa teams
+	private List<PlayerStat> playerhistory = null;
+
 	@PostConstruct
     public void init() {
 		this.setSendingnote(false);
@@ -178,6 +179,14 @@ public class loiBean implements Serializable, MailableObject {
 	public loiBean() {  
         
     }
+
+	public List<PlayerStat> getPlayerhistory(){
+		return playerhistory;
+	}
+
+	public void setPlayerhistory(List<PlayerStat> list){
+		playerhistory = list;
+	}
 
 	public Boolean getPdrrequired(){
 		return pdrrequired;
@@ -817,7 +826,35 @@ public class loiBean implements Serializable, MailableObject {
     				//LOGGER.info("We have results for player details by player id");
     			}
     			rs.close();
-    			db.cleanup();
+
+    			//need to load the 2020 and 2019 team history to support covid aa/aaa rules
+				v = new Vector<Integer>();
+				v.add(selectedplayer);
+				db.getData("CALL scaha.getPlayerHistoryInfoByPersonId(?)", v);
+
+				if (db.getResultSet() != null){
+					//need to add to an array
+					rs = db.getResultSet();
+
+					List<PlayerStat> temphistory = new ArrayList<PlayerStat>();
+
+					while (rs.next()) {
+						PlayerStat tempps = new PlayerStat();
+						tempps.setTeamname(rs.getString("teamname"));
+						tempps.setGmcount(rs.getString("rosteryear"));
+						tempps.setPenalties(rs.getString("clubname"));
+
+						temphistory.add(tempps);
+					}
+					//LOGGER.info("We have results for player details by player id");
+
+					this.setPlayerhistory(temphistory);
+				}
+				rs.close();
+
+				db.cleanup();
+
+
     		} else {
     		
     		}

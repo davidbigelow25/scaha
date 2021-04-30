@@ -395,7 +395,7 @@ public void resetSkillLevel(){
     	}
 
     	SendMailSSL mail = new SendMailSSL(this);
-		mail.sendMail();
+		//mail.sendMail();
 		
 		FacesMessage msg = new FacesMessage("Team Added", this.teamname);  
 		FacesContext.getCurrentInstance().addMessage(null, msg); 
