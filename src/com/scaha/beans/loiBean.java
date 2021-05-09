@@ -107,6 +107,7 @@ public class loiBean implements Serializable, MailableObject {
 	private Integer totalplayercountwithplayer = 0;
 	private Boolean displaycounts = null;
 	private Boolean pdrrequired = null;
+	private String playerhistoryforemail = null;
 
 	//added to support covid player history for aa/aaa teams
 	private List<PlayerStat> playerhistory = null;
@@ -444,7 +445,7 @@ public class loiBean implements Serializable, MailableObject {
 		}else {
 			myTokens.add("SELECTEDGRLSTEAM:" + this.displayselectedgirlsteam + " ");
 		}
-		
+		myTokens.add("PLAYERHISTORY:" + this.playerhistoryforemail);
 		myTokens.add("DOB:" + this.dob);
 		myTokens.add("CITIZENSHIP:" + this.citizenship);
 		myTokens.add("GENDER:" + this.displaygender);
@@ -832,6 +833,7 @@ public class loiBean implements Serializable, MailableObject {
 				v.add(selectedplayer);
 				db.getData("CALL scaha.getPlayerHistoryInfoByPersonId(?)", v);
 
+				this.playerhistoryforemail = "<table cellpadding=\"5\" cellspacing=\"0\" width=\"90%\"><tr><th>Year</th><th>Club</th><th>Team</th></tr>";
 				if (db.getResultSet() != null){
 					//need to add to an array
 					rs = db.getResultSet();
@@ -843,6 +845,8 @@ public class loiBean implements Serializable, MailableObject {
 						tempps.setTeamname(rs.getString("teamname"));
 						tempps.setGmcount(rs.getString("rosteryear"));
 						tempps.setPenalties(rs.getString("clubname"));
+						this.playerhistoryforemail = this.playerhistoryforemail + "<tr><td>" + tempps.getGmcount() +
+								"</td><td>" + tempps.getPenalties() + "</td><td>" + tempps.getTeamname() + "</td></tr>";
 
 						temphistory.add(tempps);
 					}
@@ -850,6 +854,7 @@ public class loiBean implements Serializable, MailableObject {
 
 					this.setPlayerhistory(temphistory);
 				}
+				this.playerhistoryforemail = this.playerhistoryforemail + "</table>";
 				rs.close();
 
 				db.cleanup();
@@ -1182,14 +1187,14 @@ public class loiBean implements Serializable, MailableObject {
 	    		    }
 	    		    
 	    		    //hard my email address for testing purposes
-	    		    //to = "lahockeyfan2@yahoo.com";
+	    		    to = "lahockeyfan2@yahoo.com";
 	    		    this.setToMailAddress(to);
 	    		    this.setPreApprovedCC("");
 	    		    this.setSubject(this.firstname + " " + this.lastname + " LOI with " + this.getClubName());
 	    		    
 					SendMailSSL mail = new SendMailSSL(this);
 					//LOGGER.info("Finished creating mail object for " + this.firstname + " " + this.lastname + " LOI with " + this.getClubName());
-					//mail.sendMail();
+					mail.sendMail();
 					
 					db.commit();
 					db.cleanup();

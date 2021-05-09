@@ -24,6 +24,7 @@ public class Player extends ScahaObject implements Serializable {
 	private String idplayer = null;
 	private String currentteam = null;
 	private String previousteam = null;
+	private String priorteam = null;
 	private String citizenship = null;
 	private Boolean citizenshiptransfer = null;
 	private String citizenshipexpirationdate = null;
@@ -60,6 +61,7 @@ public class Player extends ScahaObject implements Serializable {
 	private String safesport = null;
 	private String suspended = null;
 	private Boolean bitalics = false;
+	private Boolean bcovid = false;
 
 	public Player (){ 
 		
@@ -452,7 +454,17 @@ public class Player extends ScahaObject implements Serializable {
 	public void setPreviousteam(String steamid){
 		previousteam = steamid;
 	}
-	
-	
+
+	public String getPriorteam(){
+		return priorteam;
+	}
+
+	public void setPriorteam(String steamid){
+		priorteam = steamid;
+	}
+
+	public Boolean getBcovid() {return bcovid;}
+
+	public void setBcovid(Boolean steamid) {bcovid=steamid;}
 		
 }
