@@ -896,7 +896,8 @@ public class MemberBean implements Serializable, MailableObject {
 			if (selectedPerson.getGenatt().get("ISMANAGER").equals("Y")) this.manager=true;
 			if (selectedPerson.getGenatt().get("ISCOACH").equals("Y")) this.coach=true;
 			this.relationship = selectedPerson.getXRelType();
-			
+
+			//we should add check here for is selected person is in the delinquency list
 			
         } else if (nextstep.equals("displayseasonpass")){
         	displayusanumber = false;

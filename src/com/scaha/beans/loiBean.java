@@ -1189,7 +1189,7 @@ public class loiBean implements Serializable, MailableObject {
 	    		    
 					SendMailSSL mail = new SendMailSSL(this);
 					//LOGGER.info("Finished creating mail object for " + this.firstname + " " + this.lastname + " LOI with " + this.getClubName());
-					mail.sendMail();
+					//mail.sendMail();
 					
 					db.commit();
 					db.cleanup();
@@ -1484,6 +1484,7 @@ public class loiBean implements Serializable, MailableObject {
 			
 			//need to check if a girl player is on boys team already or if on girls team already
 			String isgirlsteam = getThisYearGirlsTeam();
+			//String isgirlsteam = getThisYearGirlsTeam();
 			String isboysteam = getThisYearBoysTeam();
 			
 			if (!isgirlsteam.equals("") && sourceteam.equals("F")){

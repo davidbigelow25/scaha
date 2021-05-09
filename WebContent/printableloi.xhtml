@@ -54,13 +54,44 @@
 					<h:outputText value="#{loiBean.zip}" />
 					<h:outputText value=" " />
 					<h:outputText value=" " />
-					<h:outputText style="font-weight: bold;" value="#{loiBean.getPrioryear()} Club:" />
+					<!--<h:outputText style="font-weight: bold;" value="#{loiBean.getPrioryear()} Club:" />
 					<h:outputText value="#{loiBean.lastyearclub}" />
 					<h:outputText style="font-weight: bold;" value="Team:" />
-					<h:outputText value="#{loiBean.lastyearteam}" />
+					<h:outputText value="#{loiBean.lastyearteam}" />-->
 				</b:panelGrid>
 				<p:spacer width="10" height="10" />
-				<b:dataTable 
+				<p:spacer width="10" height="10" />
+				<b:dataTable
+						id="playerhistoryforcovidaaaaa"
+						var="PlayerStat"
+						value="#{loiBean.getPlayerhistory()}"
+						editable="false"
+						select="false"
+						paginated="false"
+						border="false"
+						searching="false"
+				>
+					<b:dataTableColumn >
+						<f:facet name="header">
+							Year
+						</f:facet>
+						<h:outputText value="#{PlayerStat.getGmcount()}" />
+					</b:dataTableColumn>
+					<b:dataTableColumn >
+						<f:facet name="header">
+							Club
+						</f:facet>
+						<h:outputText value="#{PlayerStat.getPenalties()}" />
+					</b:dataTableColumn>
+					<b:dataTableColumn >
+						<f:facet name="header">
+							Team Name
+						</f:facet>
+						<h:outputText value="#{PlayerStat.getTeamname()}"/>
+					</b:dataTableColumn>
+				</b:dataTable>
+				<p:spacer width="10" height="10" />
+				<b:dataTable
 					id="playersearchresult" 
 					var="FamilyRow"
 					value="#{loiBean.getParents()}" 

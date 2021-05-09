@@ -45,7 +45,13 @@
 						    </f:facet>
 				            <h:outputText value="#{player.getLastname()}" />
 				        </b:dataTableColumn>
-				        <b:dataTableColumn >
+						<b:dataTableColumn >
+							<f:facet name="header">
+								Club
+							</f:facet>
+							<h:outputText value="#{player.getCurrentteam()}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn >
 				            <f:facet name="header">
 						        DOB
 						    </f:facet>
