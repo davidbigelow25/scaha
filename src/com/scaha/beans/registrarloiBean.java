@@ -187,11 +187,24 @@ public class registrarloiBean implements Serializable {
         				String sfirstname = rs.getString("firstname");
         				String slastname = rs.getString("lastname");
         				String scurrentteam = rs.getString("currentteam");
-        				String slastyearteam = rs.getString("lastyearteam");
-        				if (slastyearteam==null){
-        					slastyearteam="N/A";
-        				}
-        				String sdob = rs.getString("dob");
+						String slastyearteam = rs.getString("lastyearteam");
+						if (slastyearteam==null){
+							slastyearteam="N/A";
+						}else {
+							slastyearteam = "2020-" + slastyearteam;
+						}
+						String sprioryearteam = rs.getString("prioryearteam");
+						if (sprioryearteam==null){
+							sprioryearteam="N/A";
+						} else {
+							sprioryearteam = "2019-" + sprioryearteam;
+						}
+						Integer icovid = rs.getInt("covidcount");
+						Boolean bcovid = false;
+						if (icovid>0){
+							bcovid=true;
+						}
+						String sdob = rs.getString("dob");
         				String sloidate = rs.getString("loidate");
         				String susamember = rs.getString("usamembership");
         				String scitizenship = rs.getString("citizenship");
@@ -222,7 +235,9 @@ public class registrarloiBean implements Serializable {
         				oplayer.setLastname(slastname);
         				oplayer.setCurrentteam(scurrentteam);
         				oplayer.setPreviousteam(slastyearteam);
-        				oplayer.setDob(sdob);
+						oplayer.setPriorteam(sprioryearteam);
+        				oplayer.setBcovid(bcovid);
+						oplayer.setDob(sdob);
         				oplayer.setCitizenship(scitizenship);
         				oplayer.setCitizenshiptransfer(scitizenshiptransfer);
         				oplayer.setCtverified(scitizenshiptransfer);
