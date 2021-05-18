@@ -343,7 +343,7 @@ public class bcloiBean implements Serializable, MailableObject {
 	
 	public void voidLoi(Player selectedPlayer){
 		
-		String sidplayer = selectedPlayer.getIdplayer();
+		String sidplayer = selectedPlayer.getRosterid();
 		String playname = selectedPlayer.getFirstname() + ' ' + selectedPlayer.getLastname();
 		this.setSelectedplayer(selectedPlayer);
 		
