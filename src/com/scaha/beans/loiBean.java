@@ -174,8 +174,10 @@ public class loiBean implements Serializable, MailableObject {
 		this.setPrioryear(pyear.toString());
 
 		//need to generate pdr and block recruitment display for confirm loi.
-		generatePDRForLoiConfirm();
-		generateBlockForLOIConfirm();
+		if (this.rosteridforconfirm!=null) {
+			generatePDRForLoiConfirm();
+			generateBlockForLOIConfirm();
+		}
     }
 	
 	
@@ -1532,8 +1534,11 @@ public class loiBean implements Serializable, MailableObject {
 			}
 
 			if (ageoldercount.equals(0) && !isbeforeaaa && pwtobtmcount.equals(0) && !is2yearplayerup){
-				this.generatePDR(sourceteam);
-				this.generateBlock(sourceteam);
+				if ((this.selectedteam!=null) || (this.selectedgirlsteam!=null)){
+					this.generatePDR(sourceteam);
+					this.generateBlock(sourceteam);
+				}
+
 			}
 
 			if (sourceteam.equals("M")){

@@ -209,11 +209,24 @@ public class bcloiBean implements Serializable, MailableObject {
         				String sfirstname = rs.getString("firstname");
         				String slastname = rs.getString("lastname");
         				String scurrentteam = rs.getString("currentteam");
-        				String slastyearteam = rs.getString("lastyearteam");
-        				if (slastyearteam==null){
-        					slastyearteam="N/A";
-        				}
-        				String sdob = rs.getString("dob");
+						String slastyearteam = rs.getString("lastyearteam");
+						if (slastyearteam==null){
+							slastyearteam="N/A";
+						}else {
+							slastyearteam = "2020-" + slastyearteam;
+						}
+						String sprioryearteam = rs.getString("prioryearteam");
+						if (sprioryearteam==null){
+							sprioryearteam="N/A";
+						} else {
+							sprioryearteam = "2019-" + sprioryearteam;
+						}
+						Integer icovid = rs.getInt("covidcount");
+						Boolean bcovid = false;
+						if (icovid>0){
+							bcovid=true;
+						}
+						String sdob = rs.getString("dob");
         				String sloidate = rs.getString("loidate");
         				String scitizenship = rs.getString("citizenship");
         				String scitizenshipexpiredate = rs.getString("citizenshipexpiredate");
@@ -234,9 +247,10 @@ public class bcloiBean implements Serializable, MailableObject {
         				oplayer.setIdplayer(idplayer);
         				oplayer.setFirstname(sfirstname);
         				oplayer.setLastname(slastname);
-        				oplayer.setCurrentteam(scurrentteam);
-        				oplayer.setPreviousteam(slastyearteam);
-        				oplayer.setDob(sdob);
+						oplayer.setPreviousteam(slastyearteam);
+						oplayer.setPriorteam(sprioryearteam);
+						oplayer.setBcovid(bcovid);
+						oplayer.setDob(sdob);
         				oplayer.setCitizenship(scitizenship);
         				oplayer.setCitizenshiptransfer(scitizenshiptransfer);
         				oplayer.setCtverified(scitizenshiptransfer);
