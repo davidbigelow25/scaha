@@ -4,11 +4,14 @@ import java.io.Serializable;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Logger;
 
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
+import com.sun.org.apache.xpath.internal.operations.Div;
 
 public class Team extends ScahaObject implements Serializable {
 	
@@ -38,6 +41,8 @@ public class Team extends ScahaObject implements Serializable {
 	private Integer pdrcount = null;
 	private String blockrecruitment = null;
 	private String blockrecruitmentteam = null;
+
+
 
 
 	//this is used for assigning coach role to teams on the coach loi process.

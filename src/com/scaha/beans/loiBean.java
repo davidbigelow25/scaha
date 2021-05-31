@@ -1869,12 +1869,13 @@ public void getClubID(){
 
 			//next get pdr
 //TODO			cs = db.prepareCall("CALL scaha.getRosterByTeamId(?)");
-			cs = db.prepareCall("CALL scaha.getTeamBlockRecruitmentforLOI(?)");
+			cs = db.prepareCall("CALL scaha.getTeamBlockRecruitmentforLOI(?,?)");
 			if (sourceteam.equals("M")){
 				cs.setInt("teamid", Integer.parseInt(this.selectedteam));
 			}else {
 				cs.setInt("teamid", Integer.parseInt(this.selectedgirlsteam));
 			}
+			cs.setInt("personid", this.selectedplayer);
 			rs = cs.executeQuery();
 
 			if (rs != null){

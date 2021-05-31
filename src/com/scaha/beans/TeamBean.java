@@ -20,6 +20,7 @@ import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 
 import com.scaha.objects.*;
+import jdk.nashorn.internal.ir.Block;
 import org.primefaces.event.RowEditEvent;
 
 import com.gbli.common.SendMailSSL;
@@ -60,6 +61,7 @@ public class TeamBean implements Serializable, MailableObject {
 	private List<Game> games = null;
 	private Integer teamid = null;
 	private List<Team> teams = null;
+
 	
 	@PostConstruct
     public void init() {
@@ -877,7 +879,6 @@ public void resetSkillLevel(){
 		try{
 			//first get all teams
 			CallableStatement cs = db.prepareCall("CALL scaha.getAllTeamsWPDRForClub(?)");
-			CallableStatement cs2 = db.prepareCall("CALL scaha.getTeamBlockRecruitmentforLOI(?)");
 			cs.setInt("in_IdClub", this.idclub);
 			rs = cs.executeQuery();
 
@@ -904,33 +905,15 @@ public void resetSkillLevel(){
 					oteam.setPdr(pdr);
 					oteam.setPdrcount(pdrcount);
 
-					//need to call sp for block recruitment for a team
-					cs2.setInt("teamid", teamid);
-					rs2 = cs2.executeQuery();
-
-					if (rs2 != null){
-
-						while (rs2.next()) {
-
-							Integer brplayercount = rs2.getInt("playercount");
-							String brteamname = rs2.getString("teamname");
-
-							if (brplayercount>0) {
-								oteam.setBlockrecruitment("Yes");
-								oteam.setBlockrecruitmentteam(brteamname);
-							}else {
-								oteam.setBlockrecruitment("No");
-							}
-						}
-						//LOGGER.info("We have results for team roster");
-					}
-					rs2.close();
-
 					tempresult.add(oteam);
+
+					//LOGGER.info("We have results for team roster");
+					}
+
 
 				}
 				//LOGGER.info("We have results for team roster");
-			}
+
 			rs.close();
 			db.cleanup();
 
@@ -947,6 +930,62 @@ public void resetSkillLevel(){
 		}
 
 		this.setTeams(tempresult);
+
+}
+
+public List<BlockRecruitment> Blockrecruitmentforteam(Team te) {
+	ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+	List<BlockRecruitment> tempresult = new ArrayList<>();
+
+	try {
+		//first get all teams
+		CallableStatement cs = db.prepareCall("CALL scaha.getTeamBlockRecruitmentById(?)");
+		cs.setInt("teamid", Integer.parseInt(te.getIdteam()));
+		rs = cs.executeQuery();
+
+		if (rs != null) {
+
+
+			while (rs.next()) {
+
+				BlockRecruitment di = new BlockRecruitment();
+
+				di.setPlayercount(rs.getInt("playercount"));
+				di.setTeamname(rs.getString("teamname"));
+				di.setYear(rs.getString("year"));
+
+				if (di.getPlayercount() == 0) {
+					di.setTeamname("None");
+				}
+
+				tempresult.add(di);
+
+
+			}
+			//LOGGER.info("We have results for team roster");
+		}
+
+
+		//LOGGER.info("We have results for team roster");
+
+		rs.close();
+		db.cleanup();
+
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		LOGGER.info("ERROR IN loading pdr");
+		e.printStackTrace();
+		db.rollback();
+	} finally {
+		//
+		// always clean up after yourself..
+		//
+		db.free();
+	}
+
+	return tempresult;
+
 	}
 }
 

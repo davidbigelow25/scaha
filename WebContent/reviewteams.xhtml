@@ -93,8 +93,10 @@
 						<f:facet name="header">
 							Block Recruitment?
 						</f:facet>
-						<h:outputText style="font-size:10pt;width:100%;display:block;" value="#{t.blockrecruitment}" />
-						<h:outputText style="font-size:10pt;width:100%;display:block;" value="#{t.blockrecruitment eq 'Yes' ? t.blockrecruitmentteam : ''}" />
+						<h:outputText style="font-size:10pt;width:100%;display:block;" value="#{t.blockrecruitmentteam}" />
+						<ui:repeat value="#{teamBean.Blockrecruitmentforteam(t)}" var="bl" varStatus="metadata">
+							<h:outputText style="font-size:10pt;width:100%;display:block;" value="#{bl.getTeamname()}" />
+						</ui:repeat>
 					</b:dataTableColumn>
 				</b:dataTable>
 			    <b:panelGrid colSpans="2,10" id="closegrid">
