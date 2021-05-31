@@ -172,8 +172,10 @@ public class loiBean implements Serializable, MailableObject {
 		
 		Integer pyear = Integer.parseInt(cyear) - 1;
 		this.setPrioryear(pyear.toString());
-		
-		
+
+		//need to generate pdr and block recruitment display for confirm loi.
+		generatePDRForLoiConfirm();
+		generateBlockForLOIConfirm();
     }
 	
 	
@@ -1875,6 +1877,98 @@ public void getClubID(){
 			}else {
 				cs.setInt("teamid", Integer.parseInt(this.selectedgirlsteam));
 			}
+			cs.setInt("personid", this.selectedplayer);
+			rs = cs.executeQuery();
+
+			if (rs != null){
+
+				while (rs.next()) {
+					String playerid = rs.getString("playercount");
+					String fname = rs.getString("idteams");
+					String lname = rs.getString("teamname");
+
+					Player player = new Player();
+					player.setDob(playerid);
+					player.setFirstname(fname);
+					player.setLastname(lname);
+
+					templist.add(player);
+				}
+				//LOGGER.info("We have results for team roster");
+			}
+			rs.close();
+			db.cleanup();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN loading blockrecruitments");
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+		setBlockrecruitment(templist);
+
+	}
+
+	public void generatePDRForLoiConfirm(){
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+
+			//next get pdr
+//TODO			cs = db.prepareCall("CALL scaha.getRosterByTeamId(?)");
+			CallableStatement cs = db.prepareCall("CALL scaha.getTeamPDRforRosterID(?,?)");
+			cs.setInt("rosterid", this.rosteridforconfirm);
+			cs.setInt("personid", this.selectedplayer);
+			rs = cs.executeQuery();
+
+			if (rs != null){
+
+				while (rs.next()) {
+					this.currentpdrcount= rs.getInt("playercount");
+					this.pdrcountwithplayer=rs.getInt("pdrplayercount");
+					this.totalplayercountwithplayer=rs.getInt("totalplayercountwithplayer");
+					this.pdrrequired=rs.getBoolean("pdrapplies");
+
+				}
+				//LOGGER.info("We have results for team roster");
+			}
+			rs.close();
+			db.cleanup();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN loading pdr");
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+		this.setDisplaycounts(true);
+	}
+
+	public void generateBlockForLOIConfirm(){
+		List<Player> templist = new ArrayList<Player>();
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+			//first get team name
+			CallableStatement cs = db.prepareCall("CALL scaha.getTeamBlockRecruitment(?)");
+
+			//next get pdr
+//TODO			cs = db.prepareCall("CALL scaha.getRosterByTeamId(?)");
+			cs = db.prepareCall("CALL scaha.getTeamBlockRecruitmentByRosterID(?,?)");
+			cs.setInt("rosterid", this.rosteridforconfirm);
 			cs.setInt("personid", this.selectedplayer);
 			rs = cs.executeQuery();
 
