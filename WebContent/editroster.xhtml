@@ -66,11 +66,10 @@
 
 							</b:dataTableColumn>
 						</b:dataTable>
-
 						<b:dataTable
 								id="blockrec"
-								var="player"
-								value="#{editrosterBean.getBlockrecruitment()}"
+								var="bl"
+								value="#{editrosterBean.Blockrecruitmentforteam()}"
 								searching="false"
 								editable="true"
 								select="true"
@@ -81,13 +80,13 @@
 								<f:facet name="header">
 									#
 								</f:facet>
-								<h:outputText value="#{player.getDob()}" />
+								<h:outputText value="#{bl.getPlayercount()}" />
 							</b:dataTableColumn>
 							<b:dataTableColumn >
 								<f:facet name="header">
 									Block Recruitment Violation Against Team
 								</f:facet>
-								<h:outputText value="#{player.getLastname()}" />
+								<h:outputText value="#{bl.getTeamname()}" />
 							</b:dataTableColumn>
 						</b:dataTable>
 					</b:panelGrid>

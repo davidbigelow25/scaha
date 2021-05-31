@@ -21,11 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
-import com.scaha.objects.Club;
-import com.scaha.objects.Coach;
-import com.scaha.objects.Player;
-import com.scaha.objects.PlayerDataModel;
-import com.scaha.objects.Team;
+import com.scaha.objects.*;
 
 //import com.gbli.common.SendMailSSL;
 
@@ -556,5 +552,61 @@ public class editrosterBean implements Serializable {
 		setBlockrecruitment(templist);
 
 	}
+
+	public List<BlockRecruitment> Blockrecruitmentforteam() {
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		List<BlockRecruitment> tempresult = new ArrayList<>();
+
+		try {
+			//first get all teams
+			CallableStatement cs = db.prepareCall("CALL scaha.getTeamBlockRecruitmentById(?)");
+			cs.setInt("teamid", this.teamid);
+			rs = cs.executeQuery();
+
+			if (rs != null) {
+
+
+				while (rs.next()) {
+
+					BlockRecruitment di = new BlockRecruitment();
+
+					di.setPlayercount(rs.getInt("playercount"));
+					di.setTeamname(rs.getString("teamname"));
+					di.setYear(rs.getString("year"));
+
+					if (di.getPlayercount() == 0) {
+						di.setTeamname("None");
+					}
+
+					tempresult.add(di);
+
+
+				}
+				//LOGGER.info("We have results for team roster");
+			}
+
+
+			//LOGGER.info("We have results for team roster");
+
+			rs.close();
+			db.cleanup();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN loading pdr");
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+		return tempresult;
+
+	}
 }
+
 
