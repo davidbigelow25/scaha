@@ -369,10 +369,21 @@ public class bcloiBean implements Serializable, MailableObject {
 		try{
 
 			if (db.setAutoCommit(false)) {
-			
+				//need to get club id first before setting the loi to void.
+				CallableStatement cs = db.prepareCall("CALL scaha.getClubIdbyRosterID(?)");
+				cs.setInt("rosterid", Integer.parseInt(sidplayer));
+				rs = cs.executeQuery();
+
+				if (rs != null) {
+
+					while (rs.next()) {
+						this.clubid = rs.getInt("idclub");
+					}
+				}
+
 				//Need to provide info to the stored procedure to save or update
  				LOGGER.info("verify loi code provided");
- 				CallableStatement cs = db.prepareCall("CALL scaha.settoVoid(?)");
+ 				cs = db.prepareCall("CALL scaha.settoVoid(?)");
     		    cs.setInt("playerid", Integer.parseInt(sidplayer));
     		    cs.executeQuery();
     		    
