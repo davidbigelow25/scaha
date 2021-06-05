@@ -247,6 +247,7 @@ public class bcloiBean implements Serializable, MailableObject {
         				oplayer.setIdplayer(idplayer);
         				oplayer.setFirstname(sfirstname);
         				oplayer.setLastname(slastname);
+        				oplayer.setCurrentteam(scurrentteam);
 						oplayer.setPreviousteam(slastyearteam);
 						oplayer.setPriorteam(sprioryearteam);
 						oplayer.setBcovid(bcovid);
