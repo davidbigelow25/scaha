@@ -1740,7 +1740,7 @@ public void getClubID(){
 				context.getExternalContext().redirect("workwithbirthcertificate.xhtml?search=" + this.search);
 			}
 			else if (page.equals("quick")){
-				context.getExternalContext().redirect("quickplayerloiconfirm.xhtml");
+				context.getExternalContext().redirect("quickplayerloiconfirmnew.xhtml");
 			}else{
 				context.getExternalContext().redirect("confirmlois.xhtml");
 			}
@@ -1794,7 +1794,7 @@ public void getClubID(){
 				context.getExternalContext().redirect("workwithbirthcertificate.xhtml?search=" + this.search);
 			}
 			else if (page.equals("quick")){
-				context.getExternalContext().redirect("quickplayerloiconfirm.xhtml");
+				context.getExternalContext().redirect("quickplayerloiconfirmnew.xhtml");
 			}else{
 				context.getExternalContext().redirect("confirmlois.xhtml");
 			}

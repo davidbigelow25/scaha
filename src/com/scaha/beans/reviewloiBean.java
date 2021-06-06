@@ -609,7 +609,7 @@ public class reviewloiBean implements Serializable, MailableObject {
 				context.getExternalContext().redirect("workwithbirthcertificate.xhtml?search=" + this.search);
 			}
 			else if (spage.equals("quick")){
-				context.getExternalContext().redirect("quickplayerloiconfirm.xhtml");
+				context.getExternalContext().redirect("quickplayerloiconfirmnew.xhtml");
 			}else{
 				context.getExternalContext().redirect("confirmlois.xhtml");
 			}
@@ -626,7 +626,7 @@ public class reviewloiBean implements Serializable, MailableObject {
 				context.getExternalContext().redirect("workwithbirthcertificate.xhtml?search=" + ssearch);
 			}
 			else if (spage.equals("quick")){
-				context.getExternalContext().redirect("quickplayerloiconfirm.xhtml");
+				context.getExternalContext().redirect("quickplayerloiconfirmnew.xhtml");
 			}else{
 				context.getExternalContext().redirect("confirmlois.xhtml");
 			}
@@ -672,7 +672,7 @@ public class reviewloiBean implements Serializable, MailableObject {
 			FacesContext context = FacesContext.getCurrentInstance();
 			try{
 				if (spage.equals("quick")){
-					context.getExternalContext().redirect("quickplayerloiconfirm.xhtml");
+					context.getExternalContext().redirect("quickplayerloiconfirmnew.xhtml");
 				}else{
 					context.getExternalContext().redirect("confirmlois.xhtml");
 				}
