@@ -1764,7 +1764,8 @@ public void getClubID(){
  				CallableStatement cs = db.prepareCall("CALL scaha.saveNoteSuspend(?,?,?)");
  				cs.setString("innote", this.notes);
  				cs.setInt("personid", this.selectedplayer);
- 				cs.setInt("suspendloi", this.suspendloi);
+ 				/*cs.setInt("suspendloi", this.suspendloi);*/
+				cs.setInt("suspendloi", 0);
  				
     		    cs.executeQuery();
     			db.commit();
