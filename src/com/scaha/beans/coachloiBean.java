@@ -1114,8 +1114,12 @@ public class coachloiBean implements Serializable, MailableObject {
     		    				}
     		    				LOGGER.info("We have player up code validation results for player details by player id");
     		    			}*/
-	    		    		
-    		    		    
+
+							if (team.getCoachrole().equals("Manager")){
+								this.coachrole="Manager";
+							} else {
+								this.coachrole=team.getCoachrole().toString();
+							}
     		    		    
 	    				}
 	    			}
