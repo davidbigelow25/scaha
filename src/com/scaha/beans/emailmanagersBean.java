@@ -54,6 +54,7 @@ public class emailmanagersBean implements Serializable, MailableObject {
 	private String cc = null;
 	private String body = null;
 	private List<Player> players = null;
+	private List<Player> selectedplayers = null;
 	private PlayerDataModel PlayerDataModel = null;
 	private GeneralSeasonList seasons = null;
 	private GeneralSeason selectedseason;
@@ -142,6 +143,14 @@ public class emailmanagersBean implements Serializable, MailableObject {
 
 	public void setPlayers(List<Player> list){
 		players = list;
+	}
+
+	public List<Player> getSelectedplayers(){
+		return selectedplayers;
+	}
+
+	public void setSelectedplayers(List<Player> list){
+		selectedplayers = list;
 	}
 
 	public GeneralSeasonList getSeasons() {
@@ -469,6 +478,32 @@ public class emailmanagersBean implements Serializable, MailableObject {
 		return null;
 	}
 
+	//the following methods are used for adding/removing the selected managers from the list to be emailed.
+	public void onSelect(Player car, String typeOfSelection, String indexes) {
+		if (null != car) {
+			getSelectedplayers().add(car);
+		} else if (null != indexes) {
+			String[] indexArray = indexes.split(",");
+			for (String index:indexArray) {
+				int i = Integer.valueOf(index);
+				Player newCar=players.get(i);
+				if (!selectedplayers.contains(newCar)) {
+					getSelectedplayers().add(newCar);
+				}
+			}
+		}
+	}
 
+	public void onDeselect(Player car, String typeOfSelection, String indexes) {
+		if (null != car) {
+			getSelectedplayers().remove(car);
+		} else if (null != indexes) {
+			String[] indexArray = indexes.split(",");
+			for (String index:indexArray) {
+				int i = Integer.valueOf(index);
+				getSelectedplayers().remove(players.get(i));
+			}
+		}
+	}
 }
 

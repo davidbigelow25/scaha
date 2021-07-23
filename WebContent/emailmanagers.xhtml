@@ -37,6 +37,10 @@
 		    	small-screen="one-third"
 		    	tiny-screen="one-third"
 			>
+				<f:facet name="heading" style="margin-bottom: 0;margin-top: 0;">
+					<h:outputText value="Set Email Subject/Body"/>
+				</f:facet>
+
 				<h:outputText value="Subject"/>
 		        <b:inputText value="#{emailmanagersBean.subject}"
 							 large-screen="full-width"
@@ -82,17 +86,22 @@
 					value="#{emailmanagersBean.getPlayerdatamodel()}"
 					editable="true" 
 					select="true"
-					selection="#{emailmanagerBean.selectedtournament}"
-					selectionMode="single" 
+					selectedItems="rows"
+					selection="#{emailmanagersBean.selectedtournament}"
+					selectionMode="multiple"
 					paginated="true" 
 					border="true"
-					searching="false"
+					searching="true"
+					onselect="ajax:emailmanagersBean.onSelect(player, typeOfSelection, indexes);"
+					ondeselect="ajax:emailmanagersBean.onDeselect(player, typeOfSelection, indexes);"
 					>
-					<b:dataTableColumn styleClass="mtrxColumn">
+					<b:dataTableColumn selectionMode="multiple" styleClass="mtrxColumn">
 						<f:facet name="header">
-							Checkbox
+							Select
 						</f:facet>
+
 					</b:dataTableColumn>
+
 					<b:dataTableColumn styleClass="mtrxColumn">
 			            <f:facet name="header">
 					        Manager Name

@@ -702,11 +702,12 @@ public class managerBean implements Serializable, MailableObject {
     				ogame.setTeamsstatsstatus(teamstatus);
     				ogame.setIs8u(is8u);
     				ogame.setHomecoachflag(homecoachflag);
-    				if (coachcountflag){
+					ogame.setPrinturl("printscoresheet.xhtml?id=" + idgame + "&teamid=" + this.teamid.toString());
+    				/*if (coachcountflag){
     					ogame.setPrinturl("printscoresheet.xhtml?selco=1&id=" + idgame + "&teamid=" + this.teamid.toString());
     				}else {
     					ogame.setPrinturl("printscoresheet.xhtml?id=" + idgame + "&teamid=" + this.teamid.toString());
-    				}
+    				}*/
     				ogame.setCoachcountflag(coachcountflag);
     				ogame.setPrinteligibleflag(printeligibleflag);
     				tempresult.add(ogame);
