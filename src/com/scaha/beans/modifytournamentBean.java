@@ -352,10 +352,111 @@ public class modifytournamentBean implements Serializable{
 		    		    		tempskillgroup = "Track2";
 		    		    		flag=1;
 		    		    	}
-		    		    	
-		    		    	
-		    		    	
-		    		    	cs2.setInt("tourneyid", tourneyid);
+							if (this.selectedlevels[i].equals("g19uaaa")){
+								tempagegroup = "Girls 19U";
+								tempskillgroup = "AAA";
+								flag=1;
+							}
+							if (this.selectedlevels[i].equals("g19uaa")){
+								tempagegroup = "Girls 19U";
+								tempskillgroup = "AA";
+								flag=1;
+							}
+							if (this.selectedlevels[i].equals("g19ua")){
+								tempagegroup = "Girls 19U";
+								tempskillgroup = "A";
+								flag=1;
+							}
+							if (this.selectedlevels[i].equals("g16uaaa")){
+								tempagegroup = "Girls 16U";
+								tempskillgroup = "AAA";
+								flag=1;
+							}
+							if (this.selectedlevels[i].equals("g16uaa")){
+								tempagegroup = "Girls 16U";
+								tempskillgroup = "AA";
+								flag=1;
+							}
+							if (this.selectedlevels[i].equals("g16ua")){
+								tempagegroup = "Girls 16U";
+								tempskillgroup = "A";
+								flag=1;
+							}
+							if (this.selectedlevels[i].equals("g14uaaa")){
+								tempagegroup = "Girls 14U";
+								tempskillgroup = "AAA";
+								flag=1;
+							}
+							if (this.selectedlevels[i].equals("g14uaa")){
+								tempagegroup = "Girls 14U";
+								tempskillgroup = "AA";
+								flag=1;
+							}
+							if (this.selectedlevels[i].equals("g14ua")){
+								tempagegroup = "Girls 14U";
+								tempskillgroup = "A";
+								flag=1;
+							}
+							if (this.selectedlevels[i].equals("g14ub")){
+								tempagegroup = "Girls 14U";
+								tempskillgroup = "B";
+								flag=1;
+							}
+							if (this.selectedlevels[i].equals("g12uaaa")){
+								tempagegroup = "Girls 12U";
+								tempskillgroup = "AAA";
+								flag=1;
+							}
+							if (this.selectedlevels[i].equals("g12uaa")){
+								tempagegroup = "Girls 12U";
+								tempskillgroup = "AA";
+								flag=1;
+							}
+							if (this.selectedlevels[i].equals("g12ua")){
+								tempagegroup = "Girls 12U";
+								tempskillgroup = "A";
+								flag=1;
+							}
+							if (this.selectedlevels[i].equals("g12ubb")){
+								tempagegroup = "Girls 12U";
+								tempskillgroup = "BB";
+								flag=1;
+							}
+							if (this.selectedlevels[i].equals("g12ub")){
+								tempagegroup = "Girls 12U";
+								tempskillgroup = "B";
+								flag=1;
+							}
+							if (this.selectedlevels[i].equals("g10ua")){
+								tempagegroup = "Girls 10U";
+								tempskillgroup = "A";
+								flag=1;
+							}
+							if (this.selectedlevels[i].equals("g10ubb")){
+								tempagegroup = "Girls 10U";
+								tempskillgroup = "BB";
+								flag=1;
+							}
+							if (this.selectedlevels[i].equals("g10ub")){
+								tempagegroup = "Girls 10U";
+								tempskillgroup = "B";
+								flag=1;
+							}
+							if (this.selectedlevels[i].equals("g8utr1")){
+								tempagegroup = "Girls 8U";
+								tempskillgroup = "Track1";
+								flag=1;
+							}
+							if (this.selectedlevels[i].equals("g8utr2")){
+								tempagegroup = "Girls 8U";
+								tempskillgroup = "Track2";
+								flag=1;
+							}
+
+
+
+
+							cs2.setInt("tourneyid", tourneyid);
 		    		    	cs2.setString("AgeGroup", tempagegroup);
 		    		    	cs2.setString("Skill", tempskillgroup);
 		        		    cs2.setInt("flag", flag);
