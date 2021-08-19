@@ -368,11 +368,6 @@ public class coachrosteractionBean implements Serializable {
         				ceplevel = rs.getInt("ceplevel");
         				safesport = rs.getString("safesport");
         				cepexpires = rs.getString("cepexpires");
-        				if (ceplevel==4 || ceplevel==5){
-							this.cepexpiresdisplayvalue = "N/A";
-						}else {
-        					this.cepexpiresdisplayvalue=cepexpires;
-						}
         				sportexpires = rs.getString("sportexpires");
         				suspend = rs.getString("suspended");
 

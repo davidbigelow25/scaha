@@ -23,7 +23,6 @@
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 <ui:define name="content">
 <b:container>
-<b:form id="form">
 	<p:notificationBar position="top" effect="slide" widgetVar="bar" styleClass="top">
 	   	<h:outputText value="SCAHA" style="color:#FFCC00;font-size:36px;" />  
 	</p:notificationBar>
@@ -31,27 +30,43 @@
 	<!-- 1st row is 3 columns, column 1 is subject and body, column 2 is select recipients, column 3 is upload attachment and get link-->
 	<b:row>
 		<b:column span="9">
-			<b:panel id="panelteams" collapsible="false" look="primary" 
+			<b:form id="form">
+
+			<b:panel id="panelteams" collapsible="false" look="primary"
 				large-screen="full-width"
 		    	medium-screen="half"
 		    	small-screen="one-third"
 		    	tiny-screen="one-third"
 			>
 				<f:facet name="heading" style="margin-bottom: 0;margin-top: 0;">
-					<h:outputText value="Set Email Subject/Body"/>
+					<h:outputText value="Set Email Subject and Body"/>
 				</f:facet>
 
-				<h:outputText value="Subject"/>
-		        <b:inputText value="#{emailmanagersBean.subject}"
-							 large-screen="full-width"
-							 medium-screen="half"
-							 small-screen="one-third"
-							 tiny-screen="one-third" >
-				</b:inputText>
-				<h:outputText value="Body"/>
-				<p:editor  id="editor" value="#{emailmanagersBean.body}" height="200" width="800"  rendered="true"/>
+				<b:panelGrid colSpans="10,2" id="sendemail" style="padding: 5;">
+					<h:outputText value=" "/>
+					<b:commandButton id="sendemails" value="Send Email(s)"  actionListener="#{emailmanagersBean.sendEmail()}" look="success"
+									 large-screen="full-width"
+									 medium-screen="one-third"
+									 small-screen="one-third"
+									 tiny-screen="one-third"/>
+					<h:outputText value=" "/>
+					<h:outputText value=" "/>
+
+				</b:panelGrid>
+				<b:panelGrid colSpans="1,11" id="emailsubject" style="padding: 5;">
+					<h:outputText value="Subject"/>
+					<b:inputText value="#{emailmanagersBean.subject}"
+								 large-screen="full-width"
+								 medium-screen="half"
+								 small-screen="one-third"
+								 tiny-screen="one-third" >
+					</b:inputText>
+					<h:outputText value="Body"/>
+					<p:editor  id="editor" value="#{emailmanagersBean.body}" height="200" width="800"  rendered="true"/>
+				</b:panelGrid>
 			</b:panel>
 			<!--  here goes selecting receipients -->
+
 			<b:panel id ="tourneypanels" collapsible="false" look="primary" 
 				large-screen="full-width"
 		    	medium-screen="half"
@@ -95,13 +110,13 @@
 					onselect="ajax:emailmanagersBean.onSelect(player, typeOfSelection, indexes);"
 					ondeselect="ajax:emailmanagersBean.onDeselect(player, typeOfSelection, indexes);"
 					>
-					<b:dataTableColumn selectionMode="multiple" styleClass="mtrxColumn">
+					<!--<b:dataTableColumn selectionMode="multiple" styleClass="mtrxColumn">
 						<f:facet name="header">
 							Select
 						</f:facet>
 
 					</b:dataTableColumn>
-
+					-->
 					<b:dataTableColumn styleClass="mtrxColumn">
 			            <f:facet name="header">
 					        Manager Name
@@ -128,8 +143,9 @@
 			        </b:dataTableColumn>
 			    </b:dataTable>
 			</b:panel>
+			</b:form>
 		</b:column>
-		<!--  here goes penalty counts and jersey numbers -->
+		<!--  here goes area to upload a file and get a link to include in the email -->
 		<b:column span="3">
 			
 			<b:panel id ="pimpanelnew" collapsible="false" look="primary" 
@@ -139,97 +155,20 @@
 		    	tiny-screen="one-third"
 			>
 				<f:facet name="heading">
-					<h:outputText value="Current Pim Counts"/> 
-		        </f:facet> 
-		        Accumulated <b><h:outputText value="#{managerBean.getCurrentpimcount()}" /></b> penalty minutes towards the maximum <h:outputText value="#{managerBean.getMaxpimcount()}" /> penalty minutes allowed.
-			</b:panel>
-			<b:panel id ="rosternew" collapsible="false" look="primary" 
-				large-screen="full-width"
-		    	medium-screen="half"
-		    	small-screen="one-third"
-		    	tiny-screen="one-third"
-			>
-				<f:facet name="heading">
-					<h:outputText value="Manage Jersey Numbers"/> 
+					<h:outputText value="Add File to Site"/>
 		        </f:facet>
-				<!-- lets put a button here to allow user to set default coaches-->
-				<b:commandButton value="Set Default Coaches" iconAwesome="user"
-								 action="#{managerBean.setDefaultCoaches()}" look="info"
-								 large-screen="full-width"
-								 medium-screen="full-width"
-								 small-screen="full-width"
-								 tiny-screen="full-width"
-				/>
-				<b:dataTable
-					id="playersearchresultnew" 
-					var="rosteredit"
-					value="#{managerBean.getRostereditdatamodel()}" 
-					paginated="false" 
-					border="true"
-					searching="false"
-					>
-					<b:dataTableColumn styleClass="mtrxColumn">
-			            <f:facet name="header">
-					        #
-					    </f:facet>
-			            <b:inputText value="#{rosteredit.jerseynumber}" 
-			            	style="width:40px;" >
-			            	<f:ajax event="change" listener="#{rosteredit.setJerseynumber(rosteredit.jerseynumber)}"/>
-			            	<f:param name="blockui.disabled" value="true"/>
-			            </b:inputText>
-			        </b:dataTableColumn>
-			        <b:dataTableColumn styleClass="mtrxColumn">
-			            <f:facet name="header">
-					        Last Name
-					    </f:facet>
-					    <h:outputText value="#{rosteredit.getLastname()}" />
-			        </b:dataTableColumn>
-			        <b:dataTableColumn styleClass="mtrxColumn">
-			            <f:facet name="header">
-					        First Name
-					    </f:facet>
-			            <h:outputText value="#{rosteredit.getFirstname()}" />
-			        </b:dataTableColumn>
-					<b:dataTableColumn styleClass="mtrxColumn">
-						<f:facet name="header">
-							Eligible
-						</f:facet>
-						<h:outputText value="#{rosteredit.getSuspended()}" />
-					</b:dataTableColumn>
-			    </b:dataTable>
-			    <b:dataTable 
-					id="coachesresultnew" 
-					var="rosteredit"
-					value="#{managerBean.getRostercoachdatamodel()}" 
-					paginated="false" 
-					border="true"
-					searching="false"
-					>
-			   		<b:dataTableColumn styleClass="mtrxColumn">
-			            <f:facet name="header">
-					        #
-					    </f:facet>
-			            <h:outputText value="#{rosteredit.jerseynumber}" />
-			        </b:dataTableColumn>
-			        <b:dataTableColumn styleClass="mtrxColumn">
-			            <f:facet name="header">
-					        Last Name
-					    </f:facet>
-					    <h:outputText value="#{rosteredit.getLastname()}" />
-			        </b:dataTableColumn>
-			        <b:dataTableColumn styleClass="mtrxColumn">
-			            <f:facet name="header">
-					        First Name
-					    </f:facet>
-			            <h:outputText value="#{rosteredit.getFirstname()}" />
-			        </b:dataTableColumn>
-					<b:dataTableColumn styleClass="mtrxColumn">
-						<f:facet name="header">
-							Eligible
-						</f:facet>
-						<h:outputText value="#{rosteredit.getSuspended()}" />
-					</b:dataTableColumn>
-			    </b:dataTable>
+				<h:form id="fileupload">
+					<p:fileUpload fileUploadListener="#{scoresheetBean.handleFileUploadForEmail}" mode="advanced"
+								  update="@form" label="Select File" dragDropSupport="false" multiple="false" auto="false" sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpeg|jpg|png|pdf)$/"/>
+					<!-- update=":fileresults:scoresheets" -->
+
+					<br></br>
+					<p:messages id="uploadmessage" showDetail="true" autoUpdate="true" closable="false" />
+				</h:form>
+				<h:form id="fileresults">
+					<h:outputText value="Copy and past this url into the insert hyperlink option in the text editor."/>
+					<h:outputText value="#{scoresheetBean.filename}"/>
+				</h:form>
 			</b:panel>
 		</b:column>
 	</b:row>
@@ -241,7 +180,6 @@
 			
 		</b:column>
 	</b:row>
-</b:form>	
 </b:container>
  
 

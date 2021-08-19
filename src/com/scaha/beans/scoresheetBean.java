@@ -1,5 +1,6 @@
 package com.scaha.beans;
 
+import java.io.File;
 import java.io.Serializable;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
@@ -55,6 +56,7 @@ public class scoresheetBean implements Serializable {
 	private String gametime = null;
 	private String isscaha = null;
 	private String redirect = null;
+	private String filename = "";
 	
 	//datamodels for all of the lists on the page
 	private ScoresheetDataModel ScoresheetDataModel = null;
@@ -102,16 +104,27 @@ public class scoresheetBean implements Serializable {
 	  	if (this.isscaha.equals("yes")){
 	  		getScahaGame();
 	  	}else{
-	  		getNonScahaGame();
+			if (this.idgame!=null){
+				getNonScahaGame();
+			}
+
 	  	}
 	  	getGameScoresheets();
 	}
 	
     public scoresheetBean() {  
         
-    }  
-    
-    public String getRedirect(){
+    }
+
+	public String getFilename(){
+		return filename;
+	}
+
+	public void setFilename(String gdate){
+		filename=gdate;
+	}
+
+	public String getRedirect(){
     	return redirect;
     }
     
@@ -345,6 +358,17 @@ public class scoresheetBean implements Serializable {
 			
 		}
 		
+	}
+
+	public void handleFileUploadForEmail(FileUploadEvent event) {
+
+		this.filename = "";
+		if (this.fileuploadcontroller.handleFileUploadForEmail(event, filename)){
+
+			this.filename = "/var/scaha/scoresheets/General/" + filename;
+
+		}
+
 	}
 	
 	public void deleteScoresheet(Scoresheet scoresheet){

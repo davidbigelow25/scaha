@@ -1174,7 +1174,7 @@ public class loiBean implements Serializable, MailableObject {
 		    		    db.commit();
 	    		    }
 	    		    
-	    		    cs = db.prepareCall("CALL scaha.getFamilyEmail(?)");
+	    		    cs = db.prepareCall("CALL scaha.getFamilyEmailforLoi(?)");
 	    		    cs.setInt("iplayerid", this.selectedplayer);
 	    		    rs = cs.executeQuery();
 	    		    if (rs != null){

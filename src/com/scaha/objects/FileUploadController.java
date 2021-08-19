@@ -54,7 +54,39 @@ public class FileUploadController extends ScahaObject implements Serializable {
         }
         
         
-    }	
+    }
+
+	public Boolean handleFileUploadForEmail(FileUploadEvent event, String Filename) {
+
+		InputStream stream = null;
+		FileOutputStream output = null;
+
+		String prefix = FilenameUtils.getBaseName(event.getFile().getFileName().replace("#", ""));
+		String suffix = FilenameUtils.getExtension(event.getFile().getFileName());
+
+		Filename = prefix + "." + suffix;
+
+		try {
+			//String destPath = "/var/scaha/scoresheets/General/" + prefix + "." + suffix;
+			//use this one when working in local environment
+			String destPath = "c:/" + prefix + "." + suffix;
+
+			File destFile = new File(destPath);
+			stream = event.getFile().getInputstream();
+			output = new FileOutputStream(destFile);
+
+			IOUtils.copy(stream, output);
+			return true;
+		}catch (IOException e){
+			e.printStackTrace();
+			return false;
+		} finally {
+			IOUtils.closeQuietly(output);
+			IOUtils.closeQuietly(stream);
+		}
+
+
+	}
 		
 }
 	
