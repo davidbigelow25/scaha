@@ -38,7 +38,7 @@ public class emailmanagersBean implements Serializable, MailableObject {
 	// Class Level Variables
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = Logger.getLogger(ContextManager.getLoggerContext());
-	private static String mail_reg_body = Utils.getMailTemplateFromFile("/mail/loireceipt.html");
+	private static String mail_reg_body = Utils.getMailTemplateFromFile("/mail/generalemail.html");
 
 	@ManagedProperty(value="#{scahaBean}")
     private ScahaBean scaha;
@@ -348,8 +348,9 @@ public class emailmanagersBean implements Serializable, MailableObject {
     public String getTextBody() {
 		// TODO Auto-generated method stub
 		List<String> myTokens = new ArrayList<String>();
-		myTokens.add(":BODY:" + this.body);
-		return Utils.mergeTokens(emailmanagersBean.mail_reg_body, myTokens);
+		myTokens.add("MESSAGE:" + this.body);
+		String body = Utils.mergeTokens(emailmanagersBean.mail_reg_body, myTokens);
+		return body;
 	}
 
 	
@@ -429,7 +430,8 @@ public class emailmanagersBean implements Serializable, MailableObject {
 	    		    to = "lahockeyfan2@yahoo.com";
 	    		    this.setToMailAddress(to);
 	    		    this.setPreApprovedCC("");
-
+					this.setSubject(this.subject);
+					this.getTextBody();
 					SendMailSSL mail = new SendMailSSL(this);
 					//LOGGER.info("Finished creating mail object for " + this.firstname + " " + this.lastname + " LOI with " + this.getClubName());
 					mail.sendMail();
@@ -485,8 +487,18 @@ public class emailmanagersBean implements Serializable, MailableObject {
 	}
 
 	//the following methods are used for adding/removing the selected managers from the list to be emailed.
-	public void onSelect(Player car, String typeOfSelection, String indexes) {
-		if (null != car) {
+	public void onSelect(Player car) {
+		List<Player> tempresult = new ArrayList<Player>();
+		if (this.selectedplayers !=null){
+			tempresult = this.selectedplayers;
+		}
+		if (car != null){
+			tempresult.add(car);
+		}
+		this.selectedplayers=tempresult;
+
+
+		/*if (null != car) {
 			this.selectedplayers.add(car);
 		} else if (null != indexes) {
 			String[] indexArray = indexes.split(",");
@@ -497,17 +509,16 @@ public class emailmanagersBean implements Serializable, MailableObject {
 					this.selectedplayers.add(newCar);
 				}
 			}
-		}
+		}*/
 	}
 
-	public void onDeselect(Player car, String typeOfSelection, String indexes) {
+	public void onDeselect(Player car) {
 		if (null != car) {
 			this.selectedplayers.remove(car);
-		} else if (null != indexes) {
-			String[] indexArray = indexes.split(",");
-			for (String index:indexArray) {
-				int i = Integer.valueOf(index);
-				this.selectedplayers.remove(players.get(i));
+		} else  {
+			for (Player player : this.selectedplayers) {
+				if (player==car)
+				this.selectedplayers.remove(player);
 			}
 		}
 	}

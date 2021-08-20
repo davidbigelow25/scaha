@@ -116,7 +116,13 @@ public class PenaltyPusher  implements Serializable,  MailableObject {
 		List<InternetAddress> data = new ArrayList<InternetAddress>();
 		try {
 			PreparedStatement ps = db.prepareCall("call scaha.getPenaltyPushEmails(?)");
-			ps.setInt(1, this.penalty.ID);
+			if (this.penalty.ID==0){
+				ps = db.prepareCall("call scaha.getPenaltyPushEmailsforTeam(?)");
+				ps.setInt(1, this.penalty.getTeam().ID);
+			}else {
+				ps.setInt(1, this.penalty.ID);
+			}
+
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
