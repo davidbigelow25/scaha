@@ -100,7 +100,8 @@
 				            	<b:navLink value="LOI Form" icon="ui-icon-arrowthickstop-1-s" href="downloads/SCAHA_LOI_AUTHORIZATION.docx" rendered="#{profileBean.hasRoleList('C-REG')}"></b:navLink>
 				            	<b:navLink value="View Club Ice" href="clubice.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES')}"></b:navLink>
 				            	<b:navLink value="View Team Tournaments" href="clubreviewtournaments.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES')}"></b:navLink>
-		                    </b:navbarLinks>
+								<b:navLink value="Print Scoresheet for Venue" href="printscoresheetsforvenue.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES')}"></b:navLink>
+							</b:navbarLinks>
 		            </b:navBar>
 				</b:column>
 			</b:row>
@@ -110,7 +111,8 @@
  					<b:navBar brand="Club Ice Convenor" inverse="false" position="top" sticky="false" fluid="true">
 							<b:navbarLinks>
 				                <b:navLink value="View Club Ice" href="clubice.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES')}"></b:navLink>
-		                    </b:navbarLinks>
+								<b:navLink value="Print Scoresheet for Venue" href="printscoresheetsforvenue.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES')}"></b:navLink>
+							</b:navbarLinks>
 		            </b:navBar>
 				</b:column>
 			</b:row>

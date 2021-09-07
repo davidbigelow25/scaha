@@ -42,7 +42,7 @@
 					<h:outputText value="Set Email Subject and Body"/>
 				</f:facet>
 
-				<b:panelGrid colSpans="10,2" id="sendemail" style="padding: 5;">
+				<b:panelGrid colSpans="9,3" id="sendemail" style="padding: 5;">
 					<h:outputText value=" "/>
 					<b:commandButton id="sendemails" value="Send Email(s)"  actionListener="#{emailmanagersBean.sendEmail()}" look="success"
 									 large-screen="full-width"
@@ -51,7 +51,8 @@
 									 tiny-screen="one-third"/>
 					<h:outputText value=" "/>
 					<h:outputText value=" "/>
-
+					<b:messages id="warnings" showDetail="true" autoUpdate="true" closable="false" />
+					<h:outputText value=" "/>
 				</b:panelGrid>
 				<b:panelGrid colSpans="1,11" id="emailsubject" style="padding: 5;">
 					<h:outputText value="Subject"/>
@@ -62,7 +63,7 @@
 								 tiny-screen="one-third" >
 					</b:inputText>
 					<h:outputText value="Body"/>
-					<p:editor  id="editor" value="#{emailmanagersBean.body}" height="200" width="800"  rendered="true"/>
+					<p:editor  id="editor" value="#{emailmanagersBean.body}" height="200" width="790"  rendered="true"/>
 				</b:panelGrid>
 			</b:panel>
 			<!--  here goes selecting receipients -->
@@ -76,7 +77,7 @@
 				<f:facet name="heading" style="margin-bottom: 0;margin-top: 0;">
 					<h:outputText value="#{profileBean.getCurrentSCAHAHockeySeason().toUpperCase()} Managers"/>
 				</f:facet>
-				<b:panelGrid colSpans="1,3,2,2,2,2" id="panelgrid">
+				<b:panelGrid colSpans="1,3,3,3,2" id="panelgrid">
 					<h:outputText value=" " />
 					<b:selectOneMenu value="#{emailmanagersBean.selectedseasonid}" onchange="ajax:emailmanagersBean.onSeasonChange()" update="@form">
 						<f:selectItem style="font-size:10pt;" itemLabel="Select a Season..." itemValue="0" />
@@ -92,17 +93,42 @@
 						<f:selectItem style="font-size:10pt;" itemLabel="B" itemValue="3" />
 						<f:selectItem style="font-size:10pt;" itemLabel="Gretzky" itemValue="12" />
 					</b:selectOneMenu>
+					<b:selectOneMenu value="#{emailmanagersBean.selecteddivisionid}" onchange="ajax:emailmanagersBean.onScheduleChange()" update="@form">
+						<f:selectItem style="font-size:10pt;" itemLabel="All Skill Levels" itemValue="0" />
+						<f:selectItem style="font-size:10pt;" itemLabel="18U" itemValue="6" />
+						<f:selectItem style="font-size:10pt;" itemLabel="16U" itemValue="5" />
+						<f:selectItem style="font-size:10pt;" itemLabel="14U" itemValue="4" />
+						<f:selectItem style="font-size:10pt;" itemLabel="12U" itemValue="3" />
+						<f:selectItem style="font-size:10pt;" itemLabel="10U" itemValue="2" />
+						<f:selectItem style="font-size:10pt;" itemLabel="8U" itemValue="1" />
+					</b:selectOneMenu>
 					<h:outputText value=" " />
+
 					<h:outputText value=" " />
+					<b:commandButton id="selectall" value="Select All"  onclick="ajax:emailmanagersBean.SelectAll()" update="@form" look="info"
+									 rendered="#{not emailmanagersBean.allselected}"
+									 large-screen="full-width"
+									 medium-screen="one-third"
+									 small-screen="one-third"
+									 tiny-screen="one-third"/>
+					<b:commandButton id="deselectall" value="DeSelect All"  onclick="ajax:emailmanagersBean.DeselectAll()" update="@form" look="info"
+									 rendered="#{emailmanagersBean.allselected}"
+									 large-screen="full-width"
+									 medium-screen="one-third"
+									 small-screen="one-third"
+									 tiny-screen="one-third"/>
+
+					<h:outputText id="selectedstatus" value="All Managers are Selected " rendered="#{emailmanagersBean.allselected}"/>
 				</b:panelGrid>
 				<b:dataTable
 					id="managerslist"
+					widgetVar="managersselectionlist"
 					var="player"
 					value="#{emailmanagersBean.getPlayerdatamodel()}"
 					editable="true" 
 					select="true"
 					selectedItems="rows"
-					selection="#{emailmanagersBean.selectedtournament}"
+					selection="#{emailmanagersBean.selectedplayers}"
 					selectionMode="multiple"
 					paginated="true" 
 					border="true"
@@ -164,8 +190,8 @@
 
 					<br></br>
 					<p:messages id="uploadmessage" showDetail="true" autoUpdate="true" closable="false" />
-				</h:form>
-				<h:form id="fileresults">
+					<!--</h:form>
+                    <h:form id="fileresults">-->
 					<h:outputText value="Copy and past this url into the insert hyperlink option in the text editor."/>
 					<h:outputText value="#{scoresheetBean.filename}"/>
 				</h:form>

@@ -365,9 +365,10 @@ public class scoresheetBean implements Serializable {
 		this.filename = "";
 		if (this.fileuploadcontroller.handleFileUploadForEmail(event, filename)){
 
-			this.filename = "/var/scaha/scoresheets/General/" + filename;
+			this.filename = "/var/scaha/scoresheets/" + filename;
 
 		}
+
 
 	}
 	

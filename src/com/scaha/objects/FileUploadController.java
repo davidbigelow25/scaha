@@ -67,9 +67,9 @@ public class FileUploadController extends ScahaObject implements Serializable {
 		Filename = prefix + "." + suffix;
 
 		try {
-			//String destPath = "/var/scaha/scoresheets/General/" + prefix + "." + suffix;
+			String destPath = "/var/scaha/scoresheets/" + prefix + "." + suffix;
 			//use this one when working in local environment
-			String destPath = "c:/" + prefix + "." + suffix;
+			//String destPath = "c:/" + prefix + "." + suffix;
 
 			File destFile = new File(destPath);
 			stream = event.getFile().getInputstream();

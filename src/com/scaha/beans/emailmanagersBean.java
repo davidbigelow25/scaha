@@ -5,6 +5,7 @@ import com.gbli.common.Utils;
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
 import com.scaha.objects.*;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import javax.annotation.PostConstruct;
 import javax.el.ValueExpression;
@@ -40,15 +41,15 @@ public class emailmanagersBean implements Serializable, MailableObject {
 	private static final Logger LOGGER = Logger.getLogger(ContextManager.getLoggerContext());
 	private static String mail_reg_body = Utils.getMailTemplateFromFile("/mail/generalemail.html");
 
-	@ManagedProperty(value="#{scahaBean}")
-    private ScahaBean scaha;
+	@ManagedProperty(value = "#{scahaBean}")
+	private ScahaBean scaha;
 
-	@ManagedProperty(value="#{profileBean}")
+	@ManagedProperty(value = "#{profileBean}")
 	private ProfileBean pb;
 
 	transient private ResultSet rs = null;
 
-	private Integer profileid=null;
+	private Integer profileid = null;
 	private String to = null;
 	private String subject = null;
 	private String cc = null;
@@ -60,35 +61,30 @@ public class emailmanagersBean implements Serializable, MailableObject {
 	private GeneralSeason selectedseason;
 	private Integer selectedseasonid = null;
 	private ScheduleList schedules;
-	private List<Schedule> schedulelist =  null;
-	private List<Participant> partpicklist =  null;
+	private List<Schedule> schedulelist = null;
+	private List<Participant> partpicklist = null;
 	private ParticipantList partlist = null;
 	private Integer selectedscheduleid = 0;
-
-
-
-
-
-
+	private Integer selecteddivisionid = 0;
+	private Boolean allselected = false;
 
 
 	@PostConstruct
-    public void init() {
+	public void init() {
 		FacesContext context = FacesContext.getCurrentInstance();
-    	Application app = context.getApplication();
+		Application app = context.getApplication();
 
-		ValueExpression expression = app.getExpressionFactory().createValueExpression( context.getELContext(),
-				"#{profileBean}", Object.class );
+		ValueExpression expression = app.getExpressionFactory().createValueExpression(context.getELContext(),
+				"#{profileBean}", Object.class);
 
-		ProfileBean pb = (ProfileBean) expression.getValue( context.getELContext() );
-    	this.setProfid(pb.getProfile().ID);
+		ProfileBean pb = (ProfileBean) expression.getValue(context.getELContext());
+		this.setProfid(pb.getProfile().ID);
 
 		//need to add scaha session object
-		ValueExpression scahaexpression = app.getExpressionFactory().createValueExpression( context.getELContext(),
-				"#{scahaBean}", Object.class );
+		ValueExpression scahaexpression = app.getExpressionFactory().createValueExpression(context.getELContext(),
+				"#{scahaBean}", Object.class);
 
-		scaha = (ScahaBean) scahaexpression.getValue( context.getELContext() );
-
+		scaha = (ScahaBean) scahaexpression.getValue(context.getELContext());
 
 
 		this.setSeasons(scaha.getScahaSeasonList());
@@ -97,12 +93,33 @@ public class emailmanagersBean implements Serializable, MailableObject {
 		this.refreshScheduleList();
 
 		playersDisplay();
+
 	}
 
 
 	public emailmanagersBean() {
-        
-    }
+
+	}
+
+	public Boolean getAllselected() {
+		return allselected;
+	}
+
+	public void setAllselected(Boolean value) {
+		allselected=value;
+	}
+
+	public int getSelecteddivisionid() {
+		return selecteddivisionid;
+	}
+
+
+	/**
+	 * @param selectedscheduleid the selectedscheduleid to set
+	 */
+	public void setSelecteddivisionid(int selectedscheduleid) {
+		this.selecteddivisionid = selectedscheduleid;
+	}
 
 	public int getSelectedscheduleid() {
 		return selectedscheduleid;
@@ -137,19 +154,19 @@ public class emailmanagersBean implements Serializable, MailableObject {
 		this.pb = pb;
 	}
 
-	public List<Player> getPlayers(){
+	public List<Player> getPlayers() {
 		return players;
 	}
 
-	public void setPlayers(List<Player> list){
+	public void setPlayers(List<Player> list) {
 		players = list;
 	}
 
-	public List<Player> getSelectedplayers(){
+	public List<Player> getSelectedplayers() {
 		return selectedplayers;
 	}
 
-	public void setSelectedplayers(List<Player> list){
+	public void setSelectedplayers(List<Player> list) {
 		selectedplayers = list;
 	}
 
@@ -159,7 +176,7 @@ public class emailmanagersBean implements Serializable, MailableObject {
 
 	@SuppressWarnings("unchecked")
 	public List<GeneralSeason> getSeasonlist() {
-		return (List<GeneralSeason>)seasons.getWrappedData();
+		return (List<GeneralSeason>) seasons.getWrappedData();
 	}
 
 	/**
@@ -192,7 +209,7 @@ public class emailmanagersBean implements Serializable, MailableObject {
 
 	@SuppressWarnings("unchecked")
 	private List<Schedule> getScheduleList() {
-		return (List<Schedule>)schedules.getWrappedData();
+		return (List<Schedule>) schedules.getWrappedData();
 	}
 
 	/**
@@ -212,6 +229,7 @@ public class emailmanagersBean implements Serializable, MailableObject {
 		//LOGGER.info("season change request detected new id is:" + this.selectedseasonid);
 		playersDisplay();
 	}
+
 	public void refreshSeasonList() {
 
 		//LOGGER.info("Getting season List");
@@ -236,7 +254,7 @@ public class emailmanagersBean implements Serializable, MailableObject {
 
 			ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 			try {
-				this.schedules = ScheduleList.ListFactory(pb.getProfile(), db,this.selectedseason,scaha.getScahaTeamList());
+				this.schedules = ScheduleList.ListFactory(pb.getProfile(), db, this.selectedseason, scaha.getScahaTeamList());
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -253,7 +271,7 @@ public class emailmanagersBean implements Serializable, MailableObject {
 			if (schedules != null) {
 				if (this.schedules.getRowCount() > 0) {
 					this.schedulelist = this.getScheduleList();
-				}	else {
+				} else {
 					//LOGGER.info("Refresh.. zero list.. leaving null:" + this.schedules.getRowCount());
 				}
 			}
@@ -262,40 +280,41 @@ public class emailmanagersBean implements Serializable, MailableObject {
 	}
 
 	//retrieves list of players
-	public void playersDisplay(){
+	public void playersDisplay() {
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 		List<Player> tempresult = new ArrayList<Player>();
 
-		try{
+		try {
 
-				CallableStatement cs = db.prepareCall("CALL scaha.getAllManagers(?)");
-				cs.setInt("inskilllevel", this.selectedscheduleid);
-				rs = cs.executeQuery();
+			CallableStatement cs = db.prepareCall("CALL scaha.getAllManagers(?,?)");
+			cs.setInt("inskilllevel", this.selectedscheduleid);
+			cs.setInt("indivision", this.selecteddivisionid);
+			rs = cs.executeQuery();
 
-				if (rs != null){
+			if (rs != null) {
 
-					while (rs.next()) {
-						String idplayer = rs.getString("idperson");
-						String managername = rs.getString("managername");
-						String scurrentteam = rs.getString("teamname");
-						String sphone = rs.getString("phone");
-						String semail = rs.getString("altemail");
+				while (rs.next()) {
+					String idplayer = rs.getString("idperson");
+					String managername = rs.getString("managername");
+					String scurrentteam = rs.getString("teamname");
+					String sphone = rs.getString("phone");
+					String semail = rs.getString("altemail");
 
 
-						Player oplayer = new Player();
-						oplayer.setIdplayer(idplayer);
-						oplayer.setFirstname(managername);
-						oplayer.setCurrentteam(scurrentteam);
-						oplayer.setPhone(sphone);
-						oplayer.setEmail1(semail);
-						tempresult.add(oplayer);
-					}
-
-					//LOGGER.info("We have results for lois for the team: " + selectedteam);
-
+					Player oplayer = new Player();
+					oplayer.setIdplayer(idplayer);
+					oplayer.setFirstname(managername);
+					oplayer.setCurrentteam(scurrentteam);
+					oplayer.setPhone(sphone);
+					oplayer.setEmail1(semail);
+					tempresult.add(oplayer);
 				}
 
-				db.cleanup();
+				//LOGGER.info("We have results for lois for the team: " + selectedteam);
+
+			}
+
+			db.cleanup();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -314,11 +333,11 @@ public class emailmanagersBean implements Serializable, MailableObject {
 		PlayerDataModel = new PlayerDataModel(players);
 	}
 
-	public PlayerDataModel getPlayerdatamodel(){
+	public PlayerDataModel getPlayerdatamodel() {
 		return PlayerDataModel;
 	}
 
-	public void setPlayerdatamodel(PlayerDataModel odatamodel){
+	public void setPlayerdatamodel(PlayerDataModel odatamodel) {
 		PlayerDataModel = odatamodel;
 	}
 
@@ -327,11 +346,12 @@ public class emailmanagersBean implements Serializable, MailableObject {
 		// TODO Auto-generated method stub
 		return subject;
 	}
-    
-    public void setSubject(String ssubject){
-    	subject = ssubject;
-    }
-    /**
+
+	public void setSubject(String ssubject) {
+		subject = ssubject;
+	}
+
+	/**
 	 * @return the scaha
 	 */
 	public ScahaBean getScaha() {
@@ -344,8 +364,8 @@ public class emailmanagersBean implements Serializable, MailableObject {
 	public void setScaha(ScahaBean scaha) {
 		this.scaha = scaha;
 	}
-	
-    public String getTextBody() {
+
+	public String getTextBody() {
 		// TODO Auto-generated method stub
 		List<String> myTokens = new ArrayList<String>();
 		myTokens.add("MESSAGE:" + this.body);
@@ -353,13 +373,13 @@ public class emailmanagersBean implements Serializable, MailableObject {
 		return body;
 	}
 
-	
+
 	public String getPreApprovedCC() {
 		// TODO Auto-generated method stub
 		return cc;
 	}
-	
-	public void setPreApprovedCC(String scc){
+
+	public void setPreApprovedCC(String scc) {
 		cc = scc;
 	}
 
@@ -368,7 +388,7 @@ public class emailmanagersBean implements Serializable, MailableObject {
 		return this.body;
 	}
 
-	public void setBody(String sto){
+	public void setBody(String sto) {
 		this.body = sto;
 	}
 
@@ -377,100 +397,47 @@ public class emailmanagersBean implements Serializable, MailableObject {
 		// TODO Auto-generated method stub
 		return to;
 	}
-    
-    public void setToMailAddress(String sto){
-    	to = sto;
-    }
-	
-	public Integer getProfid(){
-    	return profileid;
-    }
-    
-    public void setProfid(Integer idprofile){
-    	profileid = idprofile;
-    }
-    
+
+	public void setToMailAddress(String sto) {
+		to = sto;
+	}
+
+	public Integer getProfid() {
+		return profileid;
+	}
+
+	public void setProfid(Integer idprofile) {
+		profileid = idprofile;
+	}
 
 
+	public void sendEmail() {
 
-	public void sendEmail(){
+		if (this.selectedplayers == null) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "", "At Least 1 Manager Needs to be Selected."));
+		} else {
 
 
-		/*ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
-		
-		try{
+			for (Player player : this.selectedplayers) {
 
-			if (db.setAutoCommit(false)) {
-			
-				//Need to check loi code from family first
- 				//LOGGER.info("verify loi code provided");
- 				CallableStatement cs = db.prepareCall("CALL scaha.getallloibyclub(?)");
- 				cs.setInt("personid", 0);
-    		    
-    		    rs = cs.executeQuery();
-    			
-    		    Integer resultcount = 0;
-    		    if (rs != null){
-    				
-    				while (rs.next()) {
-    					resultcount = rs.getInt("idmember");
-    				}
-    				//LOGGER.info("We have code validation results for player details by person id");
-    				if (resultcount.equals(0)){
-    					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"", "The provided LOI signature code is invalid."));
-    				}
-    			}
-    			rs.close();
-    		    db.cleanup();
-*/
-				for (Player player : this.selectedplayers){
+				to = player.getEmail1();
+				//hard my email address for testing purposes
+				to = "lahockeyfan2@yahoo.com";
+				this.setToMailAddress(to);
+				this.setPreApprovedCC("");
+				this.setSubject(this.subject);
+				this.getTextBody();
+				SendMailSSL mail = new SendMailSSL(this);
+				//LOGGER.info("Finished creating mail object for " + this.firstname + " " + this.lastname + " LOI with " + this.getClubName());
+				mail.sendMail();
 
-					to = player.getEmail1();
-    		        //hard my email address for testing purposes
-	    		    to = "lahockeyfan2@yahoo.com";
-	    		    this.setToMailAddress(to);
-	    		    this.setPreApprovedCC("");
-					this.setSubject(this.subject);
-					this.getTextBody();
-					SendMailSSL mail = new SendMailSSL(this);
-					//LOGGER.info("Finished creating mail object for " + this.firstname + " " + this.lastname + " LOI with " + this.getClubName());
-					mail.sendMail();
-
-					to = "";
-				}
-/*
-					db.commit();
-					db.cleanup();
-					//return "True";
-					
-					FacesContext context = FacesContext.getCurrentInstance();
-		    		String origin = ((HttpServletRequest)context.getExternalContext().getRequest()).getRequestURL().toString();
-					try{
-						context.getExternalContext().redirect("Welcome.xhtml");
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} 
-    		    } else {
-    		    	
-    		    }
-    		   
-
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			LOGGER.info("ERROR IN EMAIL SEND PROCESS");
-			e.printStackTrace();
-			db.rollback();
-		} finally {
-			//
-			// always clean up after yourself..
-			//
-			db.free();
+				to = "";
+			}
+			this.subject = "";
+			this.body = "";
 		}
-*/
-    }
-	
+
+	}
 
 
 	@Override
@@ -489,13 +456,13 @@ public class emailmanagersBean implements Serializable, MailableObject {
 	//the following methods are used for adding/removing the selected managers from the list to be emailed.
 	public void onSelect(Player car) {
 		List<Player> tempresult = new ArrayList<Player>();
-		if (this.selectedplayers !=null){
+		if (this.selectedplayers != null) {
 			tempresult = this.selectedplayers;
 		}
-		if (car != null){
+		if (car != null) {
 			tempresult.add(car);
 		}
-		this.selectedplayers=tempresult;
+		this.selectedplayers = tempresult;
 
 
 		/*if (null != car) {
@@ -515,12 +482,28 @@ public class emailmanagersBean implements Serializable, MailableObject {
 	public void onDeselect(Player car) {
 		if (null != car) {
 			this.selectedplayers.remove(car);
-		} else  {
+		} else {
 			for (Player player : this.selectedplayers) {
-				if (player==car)
-				this.selectedplayers.remove(player);
+				if (player == car)
+					this.selectedplayers.remove(player);
 			}
 		}
+
+
+	}
+
+	//adds entire manager data set to selected list
+	public void SelectAll() {
+		this.selectedplayers = this.players;
+		this.allselected = true;
+	}
+
+	//removes entire manager data set from selected list
+	public void DeselectAll() {
+		this.selectedplayers = null;
+		this.allselected = false;
 	}
 }
+
+
 
