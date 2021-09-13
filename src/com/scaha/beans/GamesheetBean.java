@@ -1349,7 +1349,7 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 			e.printStackTrace();
 		}
 		db.free();
-		this.setAwaypenalties(this.refreshAwayPenalty());
+		//this.setAwaypenalties(this.refreshAwayPenalty());
 		this.setHomepenalties(this.refreshHomePenalty(false));
 		
 	}
@@ -1434,7 +1434,7 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 			e.printStackTrace();
 		}
 		db.free();
-		this.setAwaypenalties(this.refreshAwayPenalty());
+		//this.setAwaypenalties(this.refreshAwayPenalty());
 		this.setHomepenalties(this.refreshHomePenalty(false));
 		
 	}

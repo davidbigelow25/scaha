@@ -422,9 +422,9 @@ public class emailmanagersBean implements Serializable, MailableObject {
 
 				to = player.getEmail1();
 				//hard my email address for testing purposes
-				to = "lahockeyfan2@yahoo.com";
+				//to = "lahockeyfan2@yahoo.com";
 				this.setToMailAddress(to);
-				this.setPreApprovedCC("");
+				this.setPreApprovedCC("lahockeyfan2@yahoo.com");
 				this.setSubject(this.subject);
 				this.getTextBody();
 				SendMailSSL mail = new SendMailSSL(this);
