@@ -368,9 +368,9 @@ public class emailmanagersBean implements Serializable, MailableObject {
 	public String getTextBody() {
 		// TODO Auto-generated method stub
 		List<String> myTokens = new ArrayList<String>();
-		myTokens.add("MESSAGE:" + this.body);
+		myTokens.add("MESSAGE:" + this.body.replace(":","(7654)"));
 		String body = Utils.mergeTokens(emailmanagersBean.mail_reg_body, myTokens);
-		return body;
+		return body.replace("(7654)",":");
 	}
 
 

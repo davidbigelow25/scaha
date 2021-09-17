@@ -52,6 +52,7 @@ public class ScoringList extends ListDataModel<Scoring> implements Serializable,
 		int y=1;
 		while (rs.next()) {
 			int i = 1;
+
 			Scoring score = new Scoring(rs.getInt(i++),_pro, _lg, _tm);
 			
 			//this is used for goals without an assigned player

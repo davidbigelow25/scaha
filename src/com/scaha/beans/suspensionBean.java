@@ -693,9 +693,9 @@ public class suspensionBean implements Serializable {
 			try {
 				//lets get number of games, infraction, teamid and penalty id
 				CallableStatement cs = db.prepareCall("CALL scaha.getpenaltygamecount(?,?)");
-				cs.setInt("inrosterid", this.selectedplayer.getIdroster());
-				//cs.setInt("ingameid", this.selectedlivegame.getIdgame());
-				cs.setInt("ingameid", 9999999);
+				cs.setInt("inrosterid", result.getIdroster());
+				cs.setInt("ingameid", this.selectedlivegame.getIdgame());
+				//cs.setInt("ingameid", 9999999);
 				rs = cs.executeQuery();
 
 				this.numberofgames = "--";
