@@ -2062,7 +2062,7 @@ public class managerBean implements Serializable, MailableObject {
 		FacesContext context = FacesContext.getCurrentInstance();
 
 		try{
-			context.getExternalContext().redirect("setdefaultcoaches.xhtml");
+			context.getExternalContext().redirect("setdefaultcoaches.xhtml?&id=" + this.teamid);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

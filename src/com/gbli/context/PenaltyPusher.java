@@ -41,6 +41,7 @@ public class PenaltyPusher  implements Serializable,  MailableObject {
 	private String servedrows = null;
 	private Boolean isServed = null;
 	private Boolean isRemoved = null;
+
 	
 	public PenaltyPusher (Penalty _pen) {
 		penalty = _pen;
@@ -55,6 +56,7 @@ public class PenaltyPusher  implements Serializable,  MailableObject {
 		mail.sendMail();
 		mail.cleanup();
 	}
+
 	@Override
 	public String getSubject() {
 		return this.emailsubject;
@@ -116,11 +118,11 @@ public class PenaltyPusher  implements Serializable,  MailableObject {
 		List<InternetAddress> data = new ArrayList<InternetAddress>();
 		try {
 			PreparedStatement ps = db.prepareCall("call scaha.getPenaltyPushEmails(?)");
+			ps = db.prepareCall("call scaha.getPenaltyPushEmailsforTeam(?)");
 			if (this.penalty.ID==0){
-				ps = db.prepareCall("call scaha.getPenaltyPushEmailsforTeam(?)");
 				ps.setInt(1, this.penalty.getTeam().ID);
 			}else {
-				ps.setInt(1, this.penalty.ID);
+				ps.setInt(1, this.penalty.getTeam().ID);
 			}
 
 			ResultSet rs = ps.executeQuery();

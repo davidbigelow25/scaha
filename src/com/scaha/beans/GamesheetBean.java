@@ -2448,7 +2448,7 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 			LOGGER.info("updating game results:");
 			this.livegame.updatGameFinalStatus(db);
 			
-			//need to update stats table as game is being finalized.
+			//need to update stats table a	s game is being finalized.
 			//pass in team id and livegame id
 			PreparedStatement ps = db.prepareCall("call scaha.updatestatsforLiveGame(?,?)");
 			ps.setInt(1,this.livegame.ID);
@@ -3533,5 +3533,53 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 		}
 
 		return finalnote;
+	}
+	public void refreshLists(){
+
+		this.refreshBean();
+
+	}
+
+	public void reFinalGames(){
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		LiveGameList templist = this.scaha.getScahaLiveGameList();
+
+		for (LiveGame lg : templist){
+			if (lg.getStatetag().equals("Final") && lg.getSched().ID>600) {
+				try {
+					//LOGGER.info("updating game results:");
+					if (lg.getHometeam().ID==102256 || lg.getAwayteam().ID==102256){
+						LOGGER.info("updating stats for moose 14b:" + lg);
+					}
+
+					//need to update stats table a	s game is being finalized.
+					//pass in team id and livegame id
+					PreparedStatement ps = db.prepareCall("call scaha.updatestatsforLiveGame(?,?)");
+
+					ps.setInt(1, lg.ID);
+					ps.setInt(2, lg.getAwayteam().ID);
+					LOGGER.info("updating stats for away team:");
+					ps.executeQuery();
+
+					ps.setInt(1, lg.ID);
+					ps.setInt(2, lg.getHometeam().ID);
+					LOGGER.info("updating stats for home team:");
+					ps.executeQuery();
+					LOGGER.info("closing prepared statement:");
+					ps.close();
+
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					LOGGER.info("errored:");
+				}
+				//LOGGER.info("setting connection free:");
+			}
+		}
+		db.free();
+
+
 	}
 }	

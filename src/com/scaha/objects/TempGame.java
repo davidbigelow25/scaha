@@ -42,12 +42,67 @@ public class TempGame extends ScahaObject implements Serializable {
 	private Integer fontsizevisitor = null;
 	private Integer homeclubid = null;
 	private Integer awayclubid = null;
-	
-	
+	private String offendingteam = null;
+	private String opponent = null;
+	private String scoresheetstatus = null;
+	private String statusnoreporting = null;
+	private String division = null;
+	private String skilllevel = null;
+
+
+
+
 	public TempGame (){ 
 		
 	}
-	
+	public String getDivision(){
+		return division;
+	}
+
+	public void setDivision(String value){
+		division=value;
+	}
+
+	public String getSkilllevel(){
+		return skilllevel;
+	}
+
+	public void setSkilllevel(String value){
+		skilllevel=value;
+	}
+
+	public String getOffendingteam(){
+		return offendingteam;
+	}
+
+	public void setOffendingteam(String value){
+		offendingteam=value;
+	}
+
+	public String getOpponent(){
+		return opponent;
+	}
+
+	public void setOpponent(String value){
+		opponent=value;
+	}
+
+	public String getScoresheetstatus(){
+		return scoresheetstatus;
+	}
+
+	public void setScoresheetstatus(String value){
+		scoresheetstatus=value;
+	}
+
+	public String getStatusnoreporting(){
+		return statusnoreporting;
+	}
+
+	public void setStatusnoreporting(String value){
+		statusnoreporting=value;
+	}
+
 	public Integer getHomeclubid(){
 		return homeclubid;
 	}

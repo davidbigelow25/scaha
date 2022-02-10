@@ -55,6 +55,14 @@
 			</b:commandButton>
 			<p:spacer width="2" pull="right"/>
 			<b:commandButton id="reviewcmd" pull="right" value="Set Final" actionListener="#{gamesheetBean.setGameFinal()}" look="success" />
+			<p:spacer width="2" pull="right"/>
+			<b:commandButton id="refreshlists" pull="right" value="Refresh Lists" actionListener="#{gamesheetBean.refreshLists()}" look="info" >
+				<f:ajax execute="@this" render="@form" update="@form"/>
+			</b:commandButton>
+			<!--<b:commandButton id="runfinalstats" pull="right" value="Final Games" actionListener="#{gamesheetBean.reFinalGames()}" look="info" >
+				<f:ajax execute="@this" render="@form" update="@form"/>
+			</b:commandButton>-->
+
 			<br></br>
 			<br></br>
 		</b:column>

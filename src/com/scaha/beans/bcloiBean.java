@@ -429,7 +429,7 @@ public class bcloiBean implements Serializable, MailableObject {
     		    
 				SendMailSSL mail = new SendMailSSL(this);
 				//LOGGER.info("Finished creating mail object for " + this.selectedplayer.getFirstname() + " " + this.selectedplayer.getLastname() + " LOI Void with " + this.getClubname());
-				mail.sendMail();
+				//mail.sendMail();
 				
     			
     			FacesContext context = FacesContext.getCurrentInstance();  

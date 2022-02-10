@@ -86,8 +86,9 @@
  					
  					<b:navBar brand="Club Registrar" inverse="false" position="top" sticky="false" fluid="true">
 							<b:navbarLinks>
-				                <b:navLink value="8U Ice Reimbursement" href="https://docs.google.com/forms/d/e/1FAIpQLSee-ri9prgsrvTadmO65vmlsJ70dx0NayxOywa4wMZD0WotiQ/viewform" target="_blank" rendered="#{profileBean.hasRoleList('C-REG;C-PRES;S-STATS')}"></b:navLink>
-				                <b:navLink value="Manage Teams" href="addteams.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES;S-STATS')}"></b:navLink>
+				                <b:navLink value="8U Ice Reimbursement" href="https://forms.gle/qYj2UEXwqorL5RgH7" target="_blank" rendered="#{profileBean.hasRoleList('C-REG;C-PRES;S-STATS')}"></b:navLink>
+				                <!--<b:navLink value="Manage Teams" href="addteams.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES;S-STATS')}"></b:navLink>-->
+				                <!--<b:navLink value="Manage Teams" href="addteams.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES;S-STATS')}"></b:navLink>-->
 								<b:navLink value="View Team PDR Counts" href="reviewteams.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES;S-STATS')}"></b:navLink>
 								<b:navLink value="Player LOI" href="addplayerstoteam.xhtml" rendered="#{profileBean.hasRoleList('C-REG')}"></b:navLink>
 				                <b:navLink value="Coach LOI" href="addcoachestoteam.xhtml" rendered="#{profileBean.hasRoleList('C-REG')}"></b:navLink>
@@ -139,6 +140,8 @@
 		         				<b:navLink value="Manage Suspensions" href="managesuspensionslist.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>
 		         				<b:navLink value="Quick Score" href="reviewscahagamesquickedit.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>
 								<b:navLink value="Email Managers" href="emailmanagers.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>
+								<b:navLink value="View Non Completed Games" href="reviewscahagamesnotcompleted.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>
+								<!--<b:navLink value="Run Finalled" href="processFinaledgames.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>-->
 
 							</b:navbarLinks>
 		            </b:navBar>

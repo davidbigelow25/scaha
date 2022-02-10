@@ -64,6 +64,9 @@ public class LiveGameList extends ListDataModel<LiveGame> implements Serializabl
 			live.setHometeam(_tl.getScahaTeamAt(rs.getInt(i++)));
 			live.setHometeamname(rs.getString(i++));
 			live.setHomescore(rs.getInt(i++));
+			if (live.ID==10000529){
+				LOGGER.info("live game id " + live.ID);
+			}
 			live.setAwayteam(_tl.getScahaTeamAt(rs.getInt(i++)));
 			live.setAwayteamname(rs.getString(i++));
 			live.setAwayscore(rs.getInt(i++));
@@ -77,6 +80,7 @@ public class LiveGameList extends ListDataModel<LiveGame> implements Serializabl
 			live.setHomestatsstatus(rs.getString(i++));
 			live.setAwaystatsstatus(rs.getString(i++));
 			live.setSched(_schl.getRowData(live.getScheduleidstub()+""));
+			LOGGER.info("live game id " + live.ID);
 			live.setHomeclubid(live.getHometeam().getTeamClub().ID);
 			live.setAwayclubid(live.getAwayteam().getTeamClub().ID);
 			live.setHostteam(rs.getBoolean("hostteam"));

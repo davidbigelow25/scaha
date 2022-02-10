@@ -173,7 +173,15 @@
 			            <f:facet name="header">
 					        Option
 					    </f:facet>
-						<b:commandButton value="Edit Player" 
+						<!--<b:commandButton value="Void Player"
+										 action="#{bcloiBean.voidLoi(player)}" update="@form" look="danger"
+										 large-screen="full-width"
+										 medium-screen="full-width"
+										 small-screen="full-width"
+										 tiny-screen="full-width">
+							<f:ajax execute="@this" render="@form" />
+						</b:commandButton>-->
+						<b:commandButton value="Edit Player"
 					                       action="#{editrosterBean.editrosterdetail(player)}" update="@form" look="success"
 					                       large-screen="full-width"
 					    					medium-screen="full-width"
@@ -256,7 +264,15 @@
 			            <f:facet name="header">
 					        Option
 					    </f:facet>
-						<b:commandButton value="Edit Coach" 
+						<!--<b:commandButton value="Void Coach"
+										 action="#{coachbcloiBean.voidLoi(coach)}" update="@form" look="success"
+										 large-screen="full-width"
+										 medium-screen="full-width"
+										 small-screen="full-width"
+										 tiny-screen="full-width">
+							<f:ajax execute="@this" render="@form" />
+						</b:commandButton>-->
+						<b:commandButton value="Edit Coach"
 					                       action="#{editrosterBean.editcoachrosterdetail(coach)}" update="@form" look="success"
 					                       large-screen="full-width"
 					    					medium-screen="full-width"
