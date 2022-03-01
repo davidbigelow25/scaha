@@ -1404,7 +1404,7 @@ public class managerBean implements Serializable, MailableObject {
   			}
   		    rs.close();
   		    
-			cs = db.prepareCall("CALL scaha.getSCAHAStatisticianEmail()");
+			/*cs = db.prepareCall("CALL scaha.getSCAHAStatisticianEmail()");
   		    rs = cs.executeQuery();
   		    if (rs != null){
   				while (rs.next()) {
@@ -1412,7 +1412,8 @@ public class managerBean implements Serializable, MailableObject {
   				}
   			}
   		    rs.close();
-  		    db.cleanup();
+  		    */
+			db.cleanup();
   		    
 			//to = "lahockeyfan2@yahoo.com";
 		    this.setToMailAddress(to);
