@@ -44,7 +44,7 @@ td {
 				<td>Away Team:</td>
 				<td><h:outputText value= "#{TempGame.getVisitor()}" /></td>
 				<td>Division/Level:</td>
-				<td><h:outputText value= "" /></td>
+				<td><h:outputText value= "#{TempGame.getDivision()}" /></td>
 			</tr>
 			<tr>
 				<td>Start Date:</td>
@@ -102,7 +102,7 @@ td {
 								<p:spacer width="1"  /><h:outputText value=" #{spot.lastname} #{spot.firstname}" /><br></br>
 								<p:spacer width="1"  /><h:outputText value=" #{spot.cepinfo}" />
 								<br></br>
-								<br></br>
+
 							</td>
 						</tr>
 						</ui:repeat>
@@ -165,7 +165,7 @@ td {
 								<p:spacer width="1"  /><h:outputText value=" #{spot.lastname} #{spot.firstname}" /><br></br>
 								<p:spacer width="1"  /><h:outputText value=" #{spot.cepinfo}" />
 								<br></br>
-								<br></br>
+
 							</td>
 						</tr>
 						</ui:repeat>
@@ -474,7 +474,7 @@ td {
 							<th align="center" width="65">On</th>
 							
 						</tr>	
-						<ui:repeat value="#{gamesheetBean.getNumberofgrows()}" var="spot" size="16" varStatus="status">
+						<ui:repeat value="#{gamesheetBean.getNumberofgrows()}" var="spot" size="13" varStatus="status">
 						<tr>
 							<td align="center"><h:outputText value= "#{status.index+1}" /></td>
 							<td> </td>
@@ -502,7 +502,7 @@ td {
 							<th align="center" width="65">On</th>
 							
 						</tr>	
-						<ui:repeat value="#{gamesheetBean.getNumberofgrows()}" var="spot" size="16" varStatus="status">
+						<ui:repeat value="#{gamesheetBean.getNumberofgrows()}" var="spot" size="13" varStatus="status">
 						<tr>
 							<td align="center"><h:outputText value= "#{status.index+1}" /></td>
 							<td> </td>
@@ -520,9 +520,9 @@ td {
 			</tr>
 		</table>
 		<br></br>
-		<br></br>
-		<br></br>
-		<br></br>
+		<p style="page-break-after: always;">&nbsp;</p>
+		<p style="page-break-before: always;">&nbsp;</p>
+
 	</center>
 </ui:repeat>
 </ui:define>

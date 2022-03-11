@@ -194,6 +194,7 @@ public class printallscahagamesBean implements Serializable{
     				}
     				Integer homeclubid = rs.getInt("homeclubid");
     				Integer awayclubid = rs.getInt("awayclubid");
+    				String division = rs.getString("division");
     				
     				
     				
@@ -216,6 +217,7 @@ public class printallscahagamesBean implements Serializable{
     				ogame.setFontsizevisitor(awayfontsize);
     				ogame.setHomeclubid(homeclubid);
     				ogame.setAwayclubid(awayclubid);
+    				ogame.setDivision(division);
     				tempresult.add(ogame);
     				
 				}
