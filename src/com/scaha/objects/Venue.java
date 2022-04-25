@@ -29,6 +29,7 @@ public class Venue extends ScahaObject implements Serializable {
 	private String Website = null;
 	private String gmapparms = null;
 	private boolean Primary = false;
+	private Integer venueid = null;
 	
 	public Venue (Profile _pro, int _id) {
 		setProfile(_pro);
@@ -47,7 +48,18 @@ public class Venue extends ScahaObject implements Serializable {
 	public Venue(){
 		
 	}
-	
+
+	public Integer getVenueid() {
+		return venueid;
+	}
+
+	/**
+	 * @param tag the tag to set
+	 */
+	public void setVenueid(Integer tag) {
+		venueid = tag;
+	}
+
 	/**
 	 * @return the tag
 	 */

@@ -86,10 +86,10 @@
  					
  					<b:navBar brand="Club Registrar" inverse="false" position="top" sticky="false" fluid="true">
 							<b:navbarLinks>
-				                <b:navLink value="8U Ice Reimbursement" href="https://forms.gle/qYj2UEXwqorL5RgH7" target="_blank" rendered="#{profileBean.hasRoleList('C-REG;C-PRES;S-STATS')}"></b:navLink>
-				                <!--<b:navLink value="Manage Teams" href="addteams.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES;S-STATS')}"></b:navLink>-->
-				                <!--<b:navLink value="Manage Teams" href="addteams.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES;S-STATS')}"></b:navLink>-->
-								<b:navLink value="View Team PDR Counts" href="reviewteams.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES;S-STATS')}"></b:navLink>
+				                <b:navLink value="8U Ice Reimbursement" href="https://forms.gle/qYj2UEXwqorL5RgH7" target="_blank" rendered="#{profileBean.hasRoleList('C-REG;C-PRES')}"></b:navLink>
+				                <b:navLink value="Manage Teams" href="addteams.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES')}"></b:navLink>
+								<b:navLink value="Manage Tryouts" href="addclubtryouts.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES')}"></b:navLink>
+				                <b:navLink value="View Team PDR Counts" href="reviewteams.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES')}"></b:navLink>
 								<b:navLink value="Player LOI" href="addplayerstoteam.xhtml" rendered="#{profileBean.hasRoleList('C-REG')}"></b:navLink>
 				                <b:navLink value="Coach LOI" href="addcoachestoteam.xhtml" rendered="#{profileBean.hasRoleList('C-REG')}"></b:navLink>
 				                <b:navLink value="Add Coach to Teams" href="addcoachtoadditionalteams.xhtml" rendered="#{profileBean.hasRoleList('C-REG')}"></b:navLink>
