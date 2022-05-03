@@ -101,7 +101,11 @@ public class coachloiBean implements Serializable, MailableObject {
 	private Integer boysteamcount = 0;
 	private Integer girlsteamcount = 0;
 	private String suspended = "";
-	
+	private String aadisplay = "";
+	private String abdisplay = "";
+	private String u8display = "";
+	private String aaadisplay = "";
+
 	//these are used for creating the team select role tables.
 	private TeamDataModel boysteamdatamodel = null;
 	private TeamDataModel girlsteamdatamodel = null;
@@ -195,6 +199,38 @@ public class coachloiBean implements Serializable, MailableObject {
 
 	public void setSuspended(String cyear){
 		suspended=cyear;
+	}
+
+	public String getAaadisplay(){
+		return aaadisplay;
+	}
+
+	public void setAaadisplay(String cyear){
+		aaadisplay=cyear;
+	}
+
+	public String getAadisplay(){
+		return aadisplay;
+	}
+
+	public void setAadisplay(String cyear){
+		aadisplay=cyear;
+	}
+
+	public String getAbdisplay(){
+		return abdisplay;
+	}
+
+	public void setAbdisplay(String cyear){
+		abdisplay=cyear;
+	}
+
+	public String getU8display(){
+		return u8display;
+	}
+
+	public void setU8display(String cyear){
+		u8display=cyear;
 	}
 
 
@@ -413,6 +449,12 @@ public class coachloiBean implements Serializable, MailableObject {
 		myTokens.add("EMAIL: " + this.email);
 		/*myTokens.add("COACHROLE: " + this.coachrole);*/
 		myTokens.add("NOTES: " + this.notes);
+		//need to add logic for displaying the correct link in the email for manager instructions.
+		myTokens.add("AAADisplay: " + this.aaadisplay);
+		myTokens.add("AADisplay: " + this.aadisplay);
+		myTokens.add("ABDisplay: " + this.abdisplay);
+		myTokens.add("8UDisplay: " + this.u8display);
+
 		if (this.sendingnote){
 			return Utils.mergeTokens(coachloiBean.sendingnote_reg_body, myTokens);
 		} else {
@@ -1021,7 +1063,7 @@ public class coachloiBean implements Serializable, MailableObject {
     		    if (rs != null){
     				
     				while (rs.next()) {
-    					resultcount = rs.getInt("idmember");
+						resultcount = rs.getInt("idmember");
     				}
     				//LOGGER.info("We have coach season pass code validation results for coach details by coach id");
     			}
@@ -1124,62 +1166,49 @@ public class coachloiBean implements Serializable, MailableObject {
 	    				}
 	    			}
 	    			
-	    			//we don't need to differentiate anymore.
-	    			//if (!this.coachrole.equals("Manager")) {
-    				//need to save coaches screening and cep stuff
-	    			//LOGGER.info("updating coach record");
-	 				/*cs = db.prepareCall("CALL scaha.updateCoach(?,?,?,?,?,?,?,?,?,?,?,?)");
-	    		    cs.setInt("coachid", this.selectedcoach);
-	    		    cs.setString("screenexpires", this.screeningexpires);
-	    		    cs.setString("cepnum", this.cepnumber);
-	    		    cs.setString("levelcep", this.ceplevel.toString());
-	    		    cs.setString("cepexpire", this.cepexpires);
-	    		    */
-	    		    //need to set values for modules
-	    		    /*Integer u8 = 0;
-	    		    Integer u10 = 0;
-	    		    Integer u12 = 0;
-	    		    Integer u14 = 0;
-	    		    Integer u18 = 0;
-	    		    Integer ugirls = 0;
-	    		    
-	    		    String tempstring = this.cepmodulesselected;
-	    		    String[] arrtempstring = tempstring.split(",");
-	    		    
-	    		    for(String string : arrtempstring) {  
-	    		    	if (string.equalsIgnoreCase("8U")){
-	    		    		u8 = 1;
-	    		    	}
-	    		    	if (string.equalsIgnoreCase("10U")){
-	    		    		u10 = 1;
-	    		    	}
-	    		    	if (string.equalsIgnoreCase("12U")){
-	    		    		u12 = 1;
-	    		    	}
-	    		    	if (string.equalsIgnoreCase("14U")){
-	    		    		u14 = 1;
-	    		    	}
-	    		    	if (string.equalsIgnoreCase("18U")){
-	    		    		u18 = 1;
-	    		    	}
-	    		    	if (string.equalsIgnoreCase("Girls")){
-	    		    		ugirls = 1;
-	    		    	}
-	    		    	
-	    			}
-	    		    
-	    		    cs.setInt("u8", u8);
-	    		    cs.setInt("u10", u10);
-	    		    cs.setInt("u12", u12);
-	    		    cs.setInt("u14", u14);
-	    		    cs.setInt("u18", u18);
-	    		    cs.setInt("ugirls", ugirls);
-	    		    cs.setInt("insafesport", this.safesport);
-	    		    this.setDisplaysafesport(this.safesport.toString());
-	    		    rs = cs.executeQuery();
-	    			rs.close();
-		    		*/
-	    			
+	    			//need to determine if it's a manager which set of website instructions need to be included.
+	    			if (!this.coachrole.equals("Manager")) {
+						this.u8display="none";
+						this.aadisplay="none";
+						this.abdisplay="none";
+						this.aaadisplay="none";
+
+						cs = db.prepareCall("CALL scaha.whatlevelisteam(?)");
+
+						//need to add to the coach roster table for each boys team
+						for(Team team : this.boysteamdatamodel) {
+							if (team.getCoachrole().equals("Manager")){
+								cs.setInt("iteamid", Integer.parseInt(team.getIdteam()));
+								rs = cs.executeQuery();
+
+								if (rs != null){
+
+									while (rs.next()) {
+										String tempaadisplay = rs.getString("aadisplay");
+										String tempabdisplay = rs.getString("abdisplay");
+										String tempu8display = rs.getString("u8display");
+
+										if (tempaadisplay.equals("Block")){
+											this.aadisplay = "Block";
+											this.aaadisplay = "Block";
+										}
+										if (tempabdisplay.equals("Block")){
+											this.abdisplay = "Block";
+											this.aaadisplay = "Block";
+										}
+										if (tempu8display.equals("Block")){
+											this.u8display = "Block";
+											this.aaadisplay = "Block";
+										}
+									}
+									//LOGGER.info("We have coach season pass code validation results for coach details by coach id");
+								}
+
+								rs.close();
+							}
+						}
+					}
+
 	    			to = "";
 	    			//LOGGER.info("Sending email to club registrar, family, and scaha registrar");
 	    			cs = db.prepareCall("CALL scaha.getClubRegistrarEmail(?)");
@@ -1235,7 +1264,7 @@ public class coachloiBean implements Serializable, MailableObject {
 	    			//need to add the coaches email to the to string
 	    			to = to + "," + this.email;
 	    			
-	    			//to = "lahockeyfan2@yahoo.com";
+	    			to = "lahockeyfan2@yahoo.com";
 	    		    this.setToMailAddress(to);
 	    		    this.setPreApprovedCC("");
 	    		    this.setSubject(this.firstname + " " + this.lastname + " LOI with " + this.getClubName());
