@@ -1167,7 +1167,7 @@ public class coachloiBean implements Serializable, MailableObject {
 	    			}
 	    			
 	    			//need to determine if it's a manager which set of website instructions need to be included.
-	    			if (!this.coachrole.equals("Manager")) {
+	    			if (this.coachrole.equals("Manager")) {
 						this.u8display="none";
 						this.aadisplay="none";
 						this.abdisplay="none";
@@ -1264,7 +1264,7 @@ public class coachloiBean implements Serializable, MailableObject {
 	    			//need to add the coaches email to the to string
 	    			to = to + "," + this.email;
 	    			
-	    			to = "lahockeyfan2@yahoo.com";
+	    			//to = "lahockeyfan2@yahoo.com";
 	    		    this.setToMailAddress(to);
 	    		    this.setPreApprovedCC("");
 	    		    this.setSubject(this.firstname + " " + this.lastname + " LOI with " + this.getClubName());

@@ -458,6 +458,7 @@ public class clubtryoutsBean implements Serializable {
 		}
 
 		loadTryoutList();
+		scaha.refreshClubList();
 	}
 
 	public void copyTryout(Tryout tryout){
@@ -468,6 +469,33 @@ public class clubtryoutsBean implements Serializable {
 		this.setNewtryoutlist(data);
 		this.bcopylist = true;
 		this.loadTryoutList();
+	}
+
+	public void deleteTryout(Tryout tryout){
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+
+			CallableStatement cs = null;
+
+			cs = db.prepareCall("CALL scaha.deleteTryout(?)");
+			cs.setInt("inout_Idtryout",tryout.getTryoutid());
+			cs.executeQuery();
+
+			db.cleanup();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN loading teams");
+			e.printStackTrace();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+		loadTryoutList();
+		scaha.refreshClubList();
 	}
 }
 
