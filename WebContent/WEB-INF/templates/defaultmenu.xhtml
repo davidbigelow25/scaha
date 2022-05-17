@@ -24,7 +24,7 @@
 				                <b:navLink icon="stats" value="Stats" href="statscentral.xhtml"></b:navLink>
 				                <b:navLink icon="list-alt" value="Scoreboard" href="gamecentral.xhtml?season=SCAHA-1819&amp;initial=yes"></b:navLink>
 				                <!--<b:navLink iconAwesome="trophy" value="Playoffs" href="playoffscentral.xhtml"></b:navLink>
-								<b:navLink icon="calendar" value="Club Tryours" href="viewalltryouts.xhtml"></b:navLink>-->
+								<b:navLink icon="calendar" value="Club Tryouts" href="viewalltryouts.xhtml"></b:navLink>-->
 								<b:navLink icon="eye-open" value="Suspensions" href="suspensions.xhtml"></b:navLink>
 								<b:navLink icon="glyphicon-modal-window" value="Register for SCAHA" href="manageUSAHockey.xhtml" rendered="#{not empty profileBean.getProfile()}"></b:navLink>
 				                <br></br><b:navLink icon="list" value="Manager Portal" href="managerportal.xhtml" rendered="#{profileBean.getProfile().getScahamanager().getIsmanager()}"></b:navLink>
@@ -102,6 +102,7 @@
 				            	<b:navLink value="View Club Ice" href="clubice.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES')}"></b:navLink>
 				            	<b:navLink value="View Team Tournaments" href="clubreviewtournaments.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES')}"></b:navLink>
 								<b:navLink value="Print Scoresheet for Venue" href="printscoresheetsforvenue.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES')}"></b:navLink>
+								<b:navLink value="Bye Requests" href="https://forms.gle/1sFQDHQMSKru7neL6" target="_blank" rendered="#{profileBean.hasRoleList('C-REG;C-PRES')}"></b:navLink>
 							</b:navbarLinks>
 		            </b:navBar>
 				</b:column>
