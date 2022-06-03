@@ -1683,6 +1683,17 @@ public class coachloiBean implements Serializable, MailableObject {
 			e.printStackTrace();
 		}
 	}
-	
+
+	public void Close(){
+		FacesContext context = FacesContext.getCurrentInstance();
+		origin = ((HttpServletRequest)context.getExternalContext().getRequest()).getRequestURL().toString();
+		try{
+				context.getExternalContext().redirect("addcoachestoteam.xhtml");
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
 

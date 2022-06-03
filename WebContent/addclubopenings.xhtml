@@ -48,7 +48,7 @@
 				<b:dataTable
 						id="addopenings"
 						var="opening"
-						value="#{clubopeningsBeans.getNewopeningslist()}"
+						value="#{clubopeningsBean.getNewopeninglist()}"
 						paginated="true"
 						border="true"
 						searching="false"
@@ -160,110 +160,108 @@
 					<h:outputText value="#{clubopeningsBean.clubname} Existing Openings"/>
 		        </f:facet>
 		        <b:dataTable
-					id="tryouts"
-					var="tryout"
-					value="#{clubtryoutsBean.getTryoutlist()}"
+					id="openings"
+					var="opening"
+					value="#{clubopeningsBean.getOpeninglist()}"
 					paginated="true" 
 					border="true"
 					searching="false"
-					selection="#{clubtryoutsBean.selectedtryout}"
+					selection="#{clubopeningsBean.selectedopening}"
 	 				selectionMode="single" 
 	 				>
-	 				<b:dataTableColumn styleClass="mtrxColumn">
-			            <f:facet name="header">
-					       	Date (MM/DD/YYYY)
-					    </f:facet>
-						<b:inputText id="todate" value="#{tryout.tryoutdate}" style="width:100px;" >
+					<b:dataTableColumn styleClass="mtrxColumn">
+						<f:facet name="header">
+							# of Openings
+						</f:facet>
+						<b:inputText id="numopenings" value="#{opening.openingcount}" style="width:100px;" >
 							<f:ajax event="change" />
 							<f:param name="blockui.disabled" value="true"/>
 						</b:inputText>
 					</b:dataTableColumn>
-			        <b:dataTableColumn styleClass="mtrxColumn">
-			            <f:facet name="header">
-					       	Time (HH:MM, 24HR)
-					    </f:facet>
-						<b:inputText id="hour" value="#{tryout.tryouttime}" style="width:90px;" >
-							<f:ajax event="change" />
-							<f:param name="blockui.disabled" value="true"/>
-						</b:inputText>
-
-			        </b:dataTableColumn>
-			        <b:dataTableColumn styleClass="mtrxColumn" style="white-space: nowrap;" >
-			            <f:facet name="header">
-					       	Division
-					    </f:facet>
-						<b:selectOneMenu styleClass="ddlistbox" id="divisions" value="#{tryout.division}"
+					<b:dataTableColumn styleClass="mtrxColumn" style="white-space: nowrap;" >
+						<f:facet name="header">
+							Division
+						</f:facet>
+						<b:selectOneMenu styleClass="ddlistbox" id="divisions" value="#{opening.division}"
 										 style="width:105px;"
 						>
 							<f:selectItem style="font-size:10pt;" itemLabel="Division..." itemValue="0" />
-							<f:selectItems value="#{clubtryoutsBean.getDivisions()}"  var="division"  itemLabel="#{division.divisionname}" itemValue="#{division.iddivision}"/>
+							<f:selectItems value="#{clubopeningsBean.getDivisions()}"  var="division"  itemLabel="#{division.divisionname}" itemValue="#{division.iddivision}"/>
 							<f:ajax event="change" />
 							<f:param name="blockui.disabled" value="true"/>
 						</b:selectOneMenu>
-			        </b:dataTableColumn>
-			        <b:dataTableColumn styleClass="mtrxColumn">
-			            <f:facet name="header">
-					       	Skill Level
-					    </f:facet>
-						<b:selectOneMenu styleClass="ddlistbox" id="skillleveles" value="#{tryout.level}"
+					</b:dataTableColumn>
+					<b:dataTableColumn styleClass="mtrxColumn">
+						<f:facet name="header">
+							Skill Level
+						</f:facet>
+						<b:selectOneMenu styleClass="ddlistbox" id="skillleveles" value="#{opening.skilllevel}"
 										 style="width:105px;"
 						>
 							<f:selectItem style="font-size:10pt;" itemLabel="Skill Level..." itemValue="0" />
-							<f:selectItems value="#{clubtryoutsBean.getSkilllevels()}"  var="skill"  itemLabel="#{skill.skilllevelname}" itemValue="#{skill.idskilllevel}"/>
+							<f:selectItems value="#{clubopeningsBean.getSkilllevels()}"  var="skill"  itemLabel="#{skill.skilllevelname}" itemValue="#{skill.idskilllevel}"/>
 							<f:ajax event="change" />
 							<f:param name="blockui.disabled" value="true"/>
 						</b:selectOneMenu>
-			        </b:dataTableColumn>
-			        <b:dataTableColumn styleClass="mtrxColumn">
-			            <f:facet name="header">
-					       	Location
-					    </f:facet>
-					    <b:selectOneMenu styleClass="ddlistbox" id="location" value="#{tryout.location}"
-					    	style="width:105px;" 
-					    >
-			   	   			<f:selectItem style="font-size:10pt;" itemLabel="Location..." itemValue="0" />
-			   	   			<f:selectItems value="#{clubtryoutsBean.getVenues()}"  var="venue"  itemLabel="#{venue.description}" itemValue="#{venue.venueid}"/>
-			   	   			<f:ajax event="change" />
-			            	<f:param name="blockui.disabled" value="true"/>
-			       		</b:selectOneMenu>
-			        </b:dataTableColumn>
-			        <b:dataTableColumn styleClass="mtrxColumn">
-			            <f:facet name="header">
-					       	Coach
-					    </f:facet>
-						<b:inputText id="ghour" value="#{tryout.coach}" style="width:120px;" >
+					</b:dataTableColumn>
+					<b:dataTableColumn styleClass="mtrxColumn">
+						<f:facet name="header">
+							Rink
+						</f:facet>
+						<b:selectOneMenu styleClass="ddlistbox" id="location" value="#{opening.rink}"
+										 style="width:105px;"
+						>
+							<f:selectItem style="font-size:10pt;" itemLabel="Location..." itemValue="0" />
+							<f:selectItems value="#{clubopeningsBean.getVenues()}"  var="venue"  itemLabel="#{venue.description}" itemValue="#{venue.venueid}"/>
+							<f:ajax event="change" />
+							<f:param name="blockui.disabled" value="true"/>
+						</b:selectOneMenu>
+					</b:dataTableColumn>
+					<b:dataTableColumn styleClass="mtrxColumn">
+						<f:facet name="header">
+							Contact Name
+						</f:facet>
+						<b:inputText id="ghour" value="#{opening.contactname}" style="width:120px;" >
 							<f:ajax event="change" />
 							<f:param name="blockui.disabled" value="true"/>
 						</b:inputText>
-			        </b:dataTableColumn>
+					</b:dataTableColumn>
 					<b:dataTableColumn styleClass="mtrxColumn">
-			            <f:facet name="header">
-					       Option
-					    </f:facet>
+						<f:facet name="header">
+							Contact Email
+						</f:facet>
+						<b:inputText id="cemail" value="#{opening.contactemail}" style="width:120px;" >
+							<f:ajax event="change" />
+							<f:param name="blockui.disabled" value="true"/>
+						</b:inputText>
+					</b:dataTableColumn>
+
+					<b:dataTableColumn styleClass="mtrxColumn">
+						<f:facet name="header">
+							Option
+						</f:facet>
 						<b:commandButton iconAwesome="save"
-										 action="#{clubtryoutsBean.saveTryout(tryout)}" look="success"
-										 rendered="#{tryout.getTryoutid() ne 0}">
+										 action="#{clubopeningsBean.saveOpening(opening)}" look="success"
+										 rendered="#{opening.getOpeningid() ne 0}">
 							<f:ajax execute="@this" render="@form" update="@form"/>
 						</b:commandButton>
 						<b:commandButton iconAwesome="save"
-										 action="#{clubtryoutsBean.saveTryout(tryout)}" look="success"
-										 rendered="#{tryout.getTryoutid() eq 0}">
+										 action="#{clubopeningsBean.saveOpening(opening)}" look="success"
+										 rendered="#{opening.getOpeningid() eq 0}">
 							<f:ajax execute="@this" render="@form" update="@form"/>
 						</b:commandButton>
 						<b:commandButton iconAwesome="trash"
-					                       action="#{clubtryoutsBean.deleteTryout(tryout)}" look="danger"
-											rendered="#{tryout.getTryoutid() ne 0}">
-					      	<f:ajax execute="@this" render="@form" update="@form"/>
-					    </b:commandButton>
+										 action="#{clubopeningsBean.deleteOpening(opening)}" look="danger"
+										 rendered="#{opening.getOpeningid() ne 0}">
+							<f:ajax execute="@this" render="@form" update="@form"/>
+						</b:commandButton>
 						<b:commandButton iconAwesome="copy"
-										 action="#{clubtryoutsBean.copyTryout(tryout)}" look="info"
-										 rendered="#{tryout.getTryoutid() ne 0}">
+										 action="#{clubopeningsBean.copyOpening(opening)}" look="info"
+										 rendered="#{opening.getOpeningid() ne 0}">
 							<f:ajax execute="@this" render="@form" update="@form"/>
 						</b:commandButton>
 					</b:dataTableColumn>
-			        
-			            
-			    </b:dataTable>
+	 			</b:dataTable>
 			</b:panel>
 		</b:column>
 	</b:row>

@@ -160,7 +160,8 @@
 				<b:panelGrid colSpans="3,3,2,2,2">
 					<h:outputText value=" "/>
 					<h:outputText value=" "/>
-					<b:commandButton value="Close LOI" id="close" look="info" ajax="false" action="addcoachestoteam.xhtml"
+					<b:commandButton value="Close LOI" id="close" look="info" ajax="false"
+									 actionListener="#{coachloiBean.Close()}"
 						large-screen="full-width"
     					medium-screen="full-width"
     					small-screen="full-width"

@@ -233,7 +233,7 @@ public class clubopeningsBean implements Serializable {
 
 		try{
 
-			CallableStatement cs = db.prepareCall("CALL scaha.getClubOpeningInfoforMaintenance(?)");
+			CallableStatement cs = db.prepareCall("CALL scaha.getClubOpeningsInfoforMaintenance(?)");
 			cs.setInt(1,this.clubid);
 			ResultSet rs = cs.executeQuery();
 
@@ -242,9 +242,9 @@ public class clubopeningsBean implements Serializable {
 				Opening o = new Opening();
 				Integer idvision = rs.getInt("division");
 				o.setDivision(idvision.toString());
-				Integer ilevel = rs.getInt("level");
+				Integer ilevel = rs.getInt("skilllevel");
 				o.setSkilllevel(ilevel.toString());
-				Integer ilocation = rs.getInt("location");
+				Integer ilocation = rs.getInt("rink");
 				o.setRink(ilocation.toString());
 				o.setOpeningcount(rs.getString("openingcount"));
 				o.setContactname(rs.getString("contactname"));
@@ -431,6 +431,7 @@ public class clubopeningsBean implements Serializable {
 			cs.setString("in_contactname",opening.getContactname());
 			cs.setString("in_contactemail",opening.getContactemail());
 			cs.setInt("in_clubid",this.clubid);
+			cs.setInt("inout_Idopening",opening.getOpeningid());
 			rs = cs.executeQuery();
 
 			if (rs != null){
