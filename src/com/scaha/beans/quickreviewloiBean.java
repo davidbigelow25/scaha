@@ -155,22 +155,16 @@ public class quickreviewloiBean implements Serializable {
         				String slastname = rs.getString("lastname");
         				String scurrentteam = rs.getString("currentteam");
         				String slastyearteam = rs.getString("lastyearteam");
-        				if (slastyearteam==null){
-        					slastyearteam="N/A";
-        				}else {
-							slastyearteam = "2020-" + slastyearteam;
+        				if (slastyearteam==null) {
+							slastyearteam = "N/A";
 						}
-						String sprioryearteam = rs.getString("prioryearteam");
-						if (sprioryearteam==null){
-							sprioryearteam="N/A";
-						} else {
-							sprioryearteam = "2019-" + sprioryearteam;
+        				String sprioryearteam = rs.getString("prioryearteam");
+						if (sprioryearteam==null) {
+							sprioryearteam = "N/A";
 						}
-						Integer icovid = rs.getInt("covidcount");
+						//this is no longer being used
+						//Integer icovid = rs.getInt("covidcount");
 						Boolean bcovid = false;
-						if (icovid>0){
-							bcovid=true;
-						}
 
 						String sdob = rs.getString("dob");
         				String sloidate = rs.getString("loidate");
@@ -195,7 +189,7 @@ public class quickreviewloiBean implements Serializable {
         				oplayer.setLastname(slastname);
         				oplayer.setCurrentteam(scurrentteam);
         				oplayer.setPreviousteam(slastyearteam);
-						oplayer.setPriorteam(sprioryearteam);
+						/*oplayer.setPriorteam(sprioryearteam);*/
 						oplayer.setBcovid(bcovid);
         				oplayer.setDob(sdob);
         				oplayer.setCitizenship(scitizenship);

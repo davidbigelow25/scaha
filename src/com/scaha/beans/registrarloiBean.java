@@ -190,20 +190,12 @@ public class registrarloiBean implements Serializable {
 						String slastyearteam = rs.getString("lastyearteam");
 						if (slastyearteam==null){
 							slastyearteam="N/A";
-						}else {
-							slastyearteam = "2020-" + slastyearteam;
 						}
 						String sprioryearteam = rs.getString("prioryearteam");
 						if (sprioryearteam==null){
 							sprioryearteam="N/A";
-						} else {
-							sprioryearteam = "2019-" + sprioryearteam;
 						}
-						Integer icovid = rs.getInt("covidcount");
 						Boolean bcovid = false;
-						if (icovid>0){
-							bcovid=true;
-						}
 						String sdob = rs.getString("dob");
         				String sloidate = rs.getString("loidate");
         				String susamember = rs.getString("usamembership");
