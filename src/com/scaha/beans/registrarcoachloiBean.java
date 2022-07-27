@@ -222,6 +222,7 @@ public class registrarcoachloiBean implements Serializable {
     				ocoach.setNotes(notes);
     				ocoach.setSuspended(suspended);
     				tempresult.add(ocoach);
+    				ocoach=null;
 				}
    				rs.close();
    				//LOGGER.info("We have results for lois for the lookup date" + date.toString());
@@ -241,6 +242,7 @@ public class registrarcoachloiBean implements Serializable {
     	
     	//setResults(tempresult);
     	setCoaches(tempresult);
+    	tempresult=null;
     	CoachDataModel = new CoachDataModel(coaches);
     }
 

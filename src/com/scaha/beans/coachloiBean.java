@@ -802,7 +802,7 @@ public class coachloiBean implements Serializable, MailableObject {
         				Team team = new Team(teamname,idteam);
         				team.setCoachrole("No Role");
         				templist.add(team);
-        				
+        				team = null;
         				count++;
     				}
     				//LOGGER.info("We have results for team list by club");
@@ -832,7 +832,7 @@ public class coachloiBean implements Serializable, MailableObject {
     	}
 		
     	setTeams(templist);
-		
+		templist=null;
 		//return templist;
 	}
 	
@@ -981,6 +981,7 @@ public class coachloiBean implements Serializable, MailableObject {
     				//LOGGER.info("We have results for teams for the coach");
     			}
     			this.setBoysteams(tempteams);
+    			tempteams=null;
     			teamname = "";
     			rs.close();
     			db.cleanup();
@@ -1017,6 +1018,7 @@ public class coachloiBean implements Serializable, MailableObject {
     				//LOGGER.info("We have results for teams for the coach");
     			}
     			this.setGirlsteams(tempgirlteams);
+    			tempgirlteams=null;
     			teamname = "";
     			rs.close();
     			db.cleanup();
@@ -1525,6 +1527,7 @@ public class coachloiBean implements Serializable, MailableObject {
     				//LOGGER.info("We have results for teams for the coach");
     			}
     			this.setGirlsteams(tempgirlteams);
+    			tempgirlteams=null;
     			teamname = "";
     			rs.close();
     		
@@ -1556,6 +1559,7 @@ public class coachloiBean implements Serializable, MailableObject {
     				//LOGGER.info("We have results for teams for the coach");
     			}
     			this.setBoysteams(tempteams);
+    			tempteams=null;
     			teamname = "";
     			rs.close();
     			

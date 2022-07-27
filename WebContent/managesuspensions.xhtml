@@ -29,7 +29,7 @@
 			</tr>
 		</table> -->
  		<p:commandButton  id="addsuspension" value="Add Suspension" icon="ui-icon-search"  ajax="true" onclick="msgdlg.show();"/>
- 		<p:dataTable id="suspensionlist" var="suspension" value="#{suspensionBean.getAllSuspensions()}" paginator="true" rows="10" >
+		<p:dataTable id="suspensionlist" var="suspension" value="#{suspensionBean.getAllSuspensions()}" paginator="true" rows="10" >
  		    <p:column headerText="Date" style="text-align: center">  
 	            <h:outputText value="#{suspension.getSuspensiondate()}" />  
 	        </p:column> 
@@ -112,7 +112,7 @@
 				</h:column>
 			</h:panelGrid>
 			 <div align="center"><p:commandButton value="Add Suspension" oncomplete="msgdlg.hide();" actionListener="#{suspensionBean.Addsuspension()}" ajax="true" update="@form" />&nbsp;&nbsp;<p:commandButton value="Close" oncomplete="msgdlg.hide();" /></div>    
-		</p:dialog>	
+		</p:dialog>
  	</p:panel>
  	
 </div>

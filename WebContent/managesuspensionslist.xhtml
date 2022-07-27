@@ -32,11 +32,19 @@
 					<h:outputText value=" "/>
 					<h:outputText value=" "/>
 					<h:outputText value=" "/>
-					<b:commandButton value="Add" iconAwesome="plus" id="addsuspension" look="success" actionListener="#{suspensionBean.addSuspension()}"
+					<b:commandButton value="Add Suspension" iconAwesome="plus" id="addsuspension" look="success" actionListener="#{suspensionBean.addSuspension()}"
 						large-screen="full-width"
     					medium-screen="full-width"
     					small-screen="full-width"
     					tiny-screen="full-width"
+					>
+						<f:ajax execute="@this" render="@form" />
+					</b:commandButton>
+					<b:commandButton value="Add Spectator Ejection" iconAwesome="plus" id="addspectatorejection" look="success" actionListener="#{suspensionBean.addSpectatorEjection()}"
+									 large-screen="full-width"
+									 medium-screen="full-width"
+									 small-screen="full-width"
+									 tiny-screen="full-width"
 					>
 						<f:ajax execute="@this" render="@form" />
 					</b:commandButton>

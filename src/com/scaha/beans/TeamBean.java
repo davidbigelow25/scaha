@@ -215,6 +215,7 @@ public class TeamBean implements Serializable, MailableObject {
     			div.setIddivision(iddivision);
     			templist.add(div);
     			sdivs.add(divisionname);
+    			div = null;
 			}
    			rs.close();
    			cs.close();
@@ -229,7 +230,9 @@ public class TeamBean implements Serializable, MailableObject {
     	}
 		
     	setDivisions(templist);
+    	templist=null;
     	this.setSdivisions(sdivs.toArray(new String[sdivs.size()]));
+    	sdivs = null;
 		return getDivisions();
 	}
 	
@@ -273,6 +276,7 @@ public class TeamBean implements Serializable, MailableObject {
     				level.setIdskilllevel(idskilllevel);
     				sdivs.add(levelsname);
     				templist.add(level);
+    				level = null;
 				}
 			}
 			rs.close();
@@ -289,8 +293,10 @@ public class TeamBean implements Serializable, MailableObject {
     	}
 		
     	setSkilllevels(templist);
+    	templist=null;
     	this.setSskilllevels(sdivs.toArray(new String[sdivs.size()]));
-		return getSkilllevels();
+		sdivs=null;
+    	return getSkilllevels();
 	}
 	
 	public List<SkillLevel> getSkilllevels(){
@@ -906,7 +912,7 @@ public void resetSkillLevel(){
 					oteam.setPdrcount(pdrcount);
 
 					tempresult.add(oteam);
-
+					oteam = null;
 					//LOGGER.info("We have results for team roster");
 					}
 
@@ -930,7 +936,7 @@ public void resetSkillLevel(){
 		}
 
 		this.setTeams(tempresult);
-
+		tempresult=null;
 }
 
 public List<BlockRecruitment> Blockrecruitmentforteam(Team te) {
@@ -960,7 +966,7 @@ public List<BlockRecruitment> Blockrecruitmentforteam(Team te) {
 				}
 
 				tempresult.add(di);
-
+				di = null;
 
 			}
 			//LOGGER.info("We have results for team roster");

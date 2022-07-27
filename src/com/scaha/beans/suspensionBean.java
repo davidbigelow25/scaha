@@ -61,6 +61,8 @@ public class suspensionBean implements Serializable {
 	private String playername = null;
 	private String team = null;
 	private String teamid = null;
+	private String firstname = null;
+	private String lastname = null;
 
 	private Integer penaltyid = null;
 	private LiveGame selectedlivegame = null;
@@ -211,6 +213,21 @@ public class suspensionBean implements Serializable {
 		selectedgamesource = value;
 	}
 
+	public String getFirstname(){
+		return firstname;
+	}
+
+	public void setFirstname(String value){
+		firstname = value;
+	}
+
+	public String getLastname(){
+		return lastname;
+	}
+
+	public void setLastname(String value){
+		lastname = value;
+	}
 
 	public String getEligibility(){
     	return eligibility;
@@ -673,6 +690,17 @@ public class suspensionBean implements Serializable {
 		FacesContext context = FacesContext.getCurrentInstance();
 		try{
 			context.getExternalContext().redirect("addsuspensions.xhtml");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void addSpectatorEjection(){
+
+		FacesContext context = FacesContext.getCurrentInstance();
+		try{
+			context.getExternalContext().redirect("addspectatorejection.xhtml");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

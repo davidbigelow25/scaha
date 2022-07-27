@@ -105,6 +105,7 @@ public class reviewreleaseBean implements Serializable {
         				orelease.setReason(sreason);
         				orelease.setStatus(sstatus);
         				tempresult.add(orelease);
+        				orelease = null;
     				}
     				
     				//LOGGER.info("We have results for release list");
@@ -130,6 +131,7 @@ public class reviewreleaseBean implements Serializable {
     	
     	
     	setReleases(tempresult);
+    	tempresult=null;
     	ReleaseDataModel = new ReleaseDataModel(releases);
     }
 

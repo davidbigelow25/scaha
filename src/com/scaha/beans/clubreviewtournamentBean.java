@@ -241,6 +241,7 @@ public class clubreviewtournamentBean implements Serializable, MailableObject {
     				tournament.setEmail(teammanageremail);
     				
     				templist.add(tournament);
+    				tournament = null;
 				}
 				//LOGGER.info("We have results for all tourney list ");
 			}
@@ -264,6 +265,7 @@ public class clubreviewtournamentBean implements Serializable, MailableObject {
     	}
 		
     	setTournaments(templist);
+    	templist=null;
     	TournamentDataModel = new TournamentDataModel(tournaments);
 	}
 	

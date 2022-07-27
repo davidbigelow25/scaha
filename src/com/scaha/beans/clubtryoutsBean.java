@@ -252,6 +252,7 @@ public class clubtryoutsBean implements Serializable {
 				t.setUsewebsite(rs.getBoolean("usewebsite"));
 				t.setTryoutid(rs.getInt("idclubtryouts"));
 				data.add(t);
+				t=null;
 			}
 			//LOGGER.info("We have results for tryouts for club");
 			rs.close();
@@ -266,7 +267,7 @@ public class clubtryoutsBean implements Serializable {
 		}
 
 		this.setTryoutlist(data);
-
+		data = null;
 		//need to set a blank tryout for the new tryout list
 		if (!bcopylist) {
 			Tryout nt = new Tryout();
@@ -281,6 +282,8 @@ public class clubtryoutsBean implements Serializable {
 			List<Tryout> newdata = new ArrayList<Tryout>();
 			newdata.add(nt);
 			this.setNewtryoutlist(newdata);
+			nt = null;
+			newdata = null;
 		}
 	}
 
@@ -305,6 +308,7 @@ public class clubtryoutsBean implements Serializable {
 				div.setIddivision(iddivision);
 				templist.add(div);
 				sdivs.add(divisionname);
+				div = null;
 			}
 			rs.close();
 			cs.close();
@@ -319,6 +323,7 @@ public class clubtryoutsBean implements Serializable {
 		}
 
 		this.setDivisions(templist);
+		templist = null;
 
 	}
 
@@ -350,6 +355,7 @@ public class clubtryoutsBean implements Serializable {
 					level.setIdskilllevel(idskilllevel);
 					sdivs.add(levelsname);
 					templist.add(level);
+					level = null;
 				}
 			}
 			rs.close();
@@ -367,6 +373,7 @@ public class clubtryoutsBean implements Serializable {
 
 
 		this.setSkilllevels(templist);
+		templist = null;
 
 	}
 
@@ -396,6 +403,7 @@ public class clubtryoutsBean implements Serializable {
 					nvenue.setVenueid(idvenue);
 					nvenue.setDescription(description);
 					templist.add(nvenue);
+					nvenue = null;
 				}
 			}
 			rs.close();
@@ -413,7 +421,7 @@ public class clubtryoutsBean implements Serializable {
 
 
 		this.setVenues(templist);
-
+		templist = null;
 	}
 
 	public void saveTryout(Tryout tryout){

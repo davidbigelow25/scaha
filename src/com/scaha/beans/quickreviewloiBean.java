@@ -229,6 +229,8 @@ public class quickreviewloiBean implements Serializable {
         				oplayer.setConfirmed(confirmed);
         				oplayer.setRosterid(rosterid);
         				tempresult.add(oplayer);
+
+        				oplayer = null;
     				}
     				
     				//LOGGER.info("We have results for lois for the lookup date" + date.toString());
@@ -307,6 +309,8 @@ public class quickreviewloiBean implements Serializable {
         				club.setClubname(clubname);
         						
         				templist.add(club);
+
+        				club = null;
     				}
     				//LOGGER.info("We have results for division list");
     			}

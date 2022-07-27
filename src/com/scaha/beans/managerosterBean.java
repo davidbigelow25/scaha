@@ -88,6 +88,8 @@ public class managerosterBean implements Serializable {
 					club.setClubid(idclub);
 					club.setClubname(clubname);
 					templist.add(club);
+
+					club = null;
 				}
 
 				rs.close();
@@ -115,9 +117,12 @@ public class managerosterBean implements Serializable {
 	        				team.setTotalcoachescount(totalcoachcount);
 	        					        				
 	        				tempteamlist.add(team);
+
+	        				team = null;
 						}
 						c.setTeams(tempteamlist);
 						rssub.close();
+						tempteamlist = null;
 					}
 				}
 				//LOGGER.info("We have results for division list");
@@ -140,6 +145,7 @@ public class managerosterBean implements Serializable {
     	// Return it
     	//
     	return templist;
+
 	}
     
     public List<Club> getClubs(){

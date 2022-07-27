@@ -280,6 +280,8 @@ public class bcloiBean implements Serializable, MailableObject {
         				oplayer.setConfirmed(confirmed);
         				oplayer.setRosterid(rosterid);
         				tempresult.add(oplayer);
+
+        				oplayer = null;
     				}
     				
     				//LOGGER.info("We have results for bc lois for the search criteria:" + this.searchcriteria);

@@ -147,6 +147,7 @@ public class playerreleaseBean implements Serializable {
         				result.setCurrentteam(currentteam);
         				result.setIdroster(idroster);
         				tempresult.add(result);
+        				result=null;
     				}
     				
     				//LOGGER.info("We have results for search criteria " + this.searchcriteria);
@@ -174,6 +175,7 @@ public class playerreleaseBean implements Serializable {
     	}
     	
     	resultDataModel = new ResultDataModel(tempresult);
+    	tempresult=null;
     }
 
     public ResultDataModel getResultdatamodel(){

@@ -251,6 +251,7 @@ public class clubopeningsBean implements Serializable {
 				o.setContactemail(rs.getString("contactemail"));
 				o.setOpeningid(rs.getInt("idclubopenings"));
 				data.add(o);
+				o=null;
 			}
 			//LOGGER.info("We have results for tryouts for club");
 			rs.close();
@@ -265,6 +266,7 @@ public class clubopeningsBean implements Serializable {
 		}
 
 		this.setOpeninglist((data));
+		data = null;
 
 		//need to set a blank opening for the new opening list
 		if (!bcopylist) {
@@ -279,6 +281,7 @@ public class clubopeningsBean implements Serializable {
 			List<Opening> newdata = new ArrayList<Opening>();
 			newdata.add(no);
 			this.setNewopeninglist(newdata);
+			newdata = null;
 		}
 	}
 
@@ -303,6 +306,7 @@ public class clubopeningsBean implements Serializable {
 				div.setIddivision(iddivision);
 				templist.add(div);
 				sdivs.add(divisionname);
+				div = null;
 			}
 			rs.close();
 			cs.close();
@@ -317,7 +321,7 @@ public class clubopeningsBean implements Serializable {
 		}
 
 		this.setDivisions(templist);
-
+		templist=null;
 	}
 
 	public void ListofSkillLevels(){
@@ -348,6 +352,7 @@ public class clubopeningsBean implements Serializable {
 					level.setIdskilllevel(idskilllevel);
 					sdivs.add(levelsname);
 					templist.add(level);
+					level = null;
 				}
 			}
 			rs.close();
@@ -365,7 +370,7 @@ public class clubopeningsBean implements Serializable {
 
 
 		this.setSkilllevels(templist);
-
+		templist = null;
 	}
 
 	public void ListofVenues(){
@@ -394,6 +399,7 @@ public class clubopeningsBean implements Serializable {
 					nvenue.setVenueid(idvenue);
 					nvenue.setDescription(description);
 					templist.add(nvenue);
+					nvenue=null;
 				}
 			}
 			rs.close();
@@ -411,6 +417,7 @@ public class clubopeningsBean implements Serializable {
 
 
 		this.setVenues(templist);
+		templist=null;
 
 	}
 

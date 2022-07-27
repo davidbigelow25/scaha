@@ -258,6 +258,8 @@ public class coachbcloiBean implements Serializable, MailableObject {
         				ocoach.setSportexpires(sportexpires);
         				ocoach.setSuspended(suspended);
         				tempresult.add(ocoach);
+
+        				ocoach = null;
     				}
     				
     				//LOGGER.info("We have results for coach bc lois for the search criteria:" + this.searchcriteria);

@@ -182,6 +182,8 @@ public class quickreviewcoachloiBean implements Serializable {
         				ocoach.setSportexpires(sportexpires);
         				ocoach.setSuspended(suspended);
         				tempresult.add(ocoach);
+
+        				ocoach = null;
     				}
     				rs.close();
     				//LOGGER.info("We have results for last 10 lois");
@@ -255,6 +257,8 @@ public class quickreviewcoachloiBean implements Serializable {
         				club.setClubname(clubname);
         						
         				templist.add(club);
+
+        				club = null;
     				}
     				//LOGGER.info("We have results for division list");
     			}

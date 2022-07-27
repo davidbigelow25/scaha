@@ -238,6 +238,7 @@ public class editrosterdetailBean implements Serializable {
         				
         				Team team = new Team(teamname,idteam);
         				templist.add(team);
+        				team = null;
     				}
     				//LOGGER.info("We have results for team list by club");
     			}
@@ -259,7 +260,7 @@ public class editrosterdetailBean implements Serializable {
     	}
 		
     	setTeams(templist);
-		
+		templist=null;
 		return getTeams();
 	}
 	

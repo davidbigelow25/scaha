@@ -58,6 +58,7 @@ public class editrosterBean implements Serializable {
 		generatePDR();
     	generateBlock();
     	getRoster();
+		//updatePDRAAATeams();
 
     }
 	
@@ -186,6 +187,7 @@ public class editrosterBean implements Serializable {
 					player.setGp(gp);
 					
 					templist.add(player);
+					player = null;
 				}
 				//LOGGER.info("We have results for team roster");
 			}
@@ -226,6 +228,7 @@ public class editrosterBean implements Serializable {
 					coach.setTeamrole(teamrole);
 					
 					tempcoachlist.add(coach);
+					coach = null;
 				}
 				//LOGGER.info("We have results for team roster");
 			}
@@ -247,6 +250,8 @@ public class editrosterBean implements Serializable {
 		
     	setPlayers(templist);
     	setCoaches(tempcoachlist);
+    	templist=null;
+    	tempcoachlist=null;
 		
 	}
     
@@ -381,6 +386,7 @@ public class editrosterBean implements Serializable {
 					player.setGp(gp);
 					
 					templist.add(player);
+					player = null;
 				}
 				//LOGGER.info("We have results for team roster");
 			}
@@ -421,6 +427,7 @@ public class editrosterBean implements Serializable {
 					coach.setTeamrole(teamrole);
 					
 					tempcoachlist.add(coach);
+					coach = null;
 				}
 				//LOGGER.info("We have results for team roster");
 			}
@@ -442,6 +449,8 @@ public class editrosterBean implements Serializable {
 		
     	setPlayers(templist);
     	setCoaches(tempcoachlist);
+    	templist=null;
+    	tempcoachlist=null;
 	
 	}
 	
@@ -481,6 +490,7 @@ public class editrosterBean implements Serializable {
 					player.setBitalics(bitalicize);
 
 					templist.add(player);
+					player = null;
 				}
 				//LOGGER.info("We have results for team roster");
 			}
@@ -500,7 +510,7 @@ public class editrosterBean implements Serializable {
 		}
 
 		setPdr(templist);
-
+		templist = null;
 	}
 
 	public void generateBlock(){
@@ -531,6 +541,7 @@ public class editrosterBean implements Serializable {
 					player.setLastname(lname);
 
 					templist.add(player);
+					player = null;
 				}
 				//LOGGER.info("We have results for team roster");
 			}
@@ -550,6 +561,7 @@ public class editrosterBean implements Serializable {
 		}
 
 		setBlockrecruitment(templist);
+		templist=null;
 
 	}
 
@@ -580,7 +592,7 @@ public class editrosterBean implements Serializable {
 					}
 
 					tempresult.add(di);
-
+					di = null;
 
 				}
 				//LOGGER.info("We have results for team roster");
@@ -605,6 +617,53 @@ public class editrosterBean implements Serializable {
 		}
 
 		return tempresult;
+
+	}
+
+	public void updatePDRAAATeams(){
+		List<Player> templist = new ArrayList<Player>();
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+			//first get team name
+			CallableStatement cs = db.prepareCall("CALL scaha.getTeamsNeedingPDRCleanup()");
+			CallableStatement cs2 = db.prepareCall("CALL scaha.cleanupteamspdrcounts(?,?)");
+
+			rs = cs.executeQuery();
+
+			if (rs != null){
+
+				while (rs.next()) {
+					Integer personid = rs.getInt("idperson");
+					Integer teamid = rs.getInt("idteam");
+
+					cs2.setInt("ipersonid", personid);
+					cs2.setInt("iteamid", teamid);
+
+					cs2.executeQuery();
+
+					personid = null;
+					teamid = null;
+				}
+				//LOGGER.info("We have results for team roster");
+			}
+			rs.close();
+			db.cleanup();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN loading pdr");
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+		setPdr(templist);
 
 	}
 }

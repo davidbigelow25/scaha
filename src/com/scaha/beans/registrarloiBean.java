@@ -273,6 +273,7 @@ public class registrarloiBean implements Serializable {
         				oplayer.setEmail1(semail);
         				oplayer.setEmail2(semail2);
         				tempresult.add(oplayer);
+        				oplayer=null;
     				}
     				
     				//LOGGER.info("We have results for lois for the team: " + selectedteam);
@@ -298,6 +299,7 @@ public class registrarloiBean implements Serializable {
     	
     	//setResults(tempresult);
     	setPlayers(tempresult);
+    	tempresult=null;
     	PlayerDataModel = new PlayerDataModel(players);
     }
 
@@ -358,6 +360,7 @@ public class registrarloiBean implements Serializable {
         				
         				
         				templist.add(team);
+        				team=null;
     				}
     				//LOGGER.info("We have results for team list");
     			}
@@ -378,7 +381,7 @@ public class registrarloiBean implements Serializable {
     	}
 		
     	setTeams(templist);
-		
+		templist=null;
 		return getTeams();
 	}
     

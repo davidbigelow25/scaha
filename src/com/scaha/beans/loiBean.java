@@ -1687,16 +1687,25 @@ public void getClubID(){
     				}
     			}
 				rs.close();
-	    		    
-	    			
-		        cs = db.prepareCall("CALL scaha.getSCAHARegistrarEmail()");
+
+				cs = db.prepareCall("CALL scaha.getFamilyEmailforLoi(?)");
+				cs.setInt("iplayerid", this.selectedplayer);
+				rs = cs.executeQuery();
+				if (rs != null){
+					while (rs.next()) {
+						to = to + ',' + rs.getString("usercode");
+					}
+				}
+				rs.close();
+
+				/*cs = db.prepareCall("CALL scaha.getSCAHARegistrarEmail()");
     		    rs = cs.executeQuery();
     		    if (rs != null){
     				while (rs.next()) {
     					to = to + ',' + rs.getString("usercode");
     				}
     			}
-    		    rs.close();
+    		    rs.close();*/
 		    		    
 		    	//hard my email address for testing purposes
     		    //to = "lahockeyfan2@yahoo.com";
@@ -2012,5 +2021,7 @@ public void getClubID(){
 		setBlockrecruitment(templist);
 
 	}
+
+
 }
 

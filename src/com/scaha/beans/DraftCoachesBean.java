@@ -91,6 +91,7 @@ public class DraftCoachesBean implements Serializable {
 				
 				Team team = new Team(teamname,idteam);
 				templist.add(team);
+				team = null;
 			}
 			//LOGGER.info("We have results for team list by club");
    			rs.close();
@@ -103,6 +104,7 @@ public class DraftCoachesBean implements Serializable {
     	}
 		
     	setTeams(templist);
+    	templist=null;
 		return getTeams();
 	}
 	
@@ -163,6 +165,7 @@ public class DraftCoachesBean implements Serializable {
 				res.setCoachname(coachname);
 				res.setIdcoach(idperson);
 				tempresult.add(res);
+				res = null;
 			}
 				
 			//LOGGER.info("We have results for search criteria " + this.searchcriteria);
@@ -178,7 +181,7 @@ public class DraftCoachesBean implements Serializable {
     	}
     	
     	listofcoaches = new ResultDataModel(tempresult);
-    	
+    	tempresult=null;
     	return listofcoaches;
     }
 
@@ -222,6 +225,7 @@ public class DraftCoachesBean implements Serializable {
 				res.setCoachname(coachname);
 				res.setIdcoach(idperson);
 				tempresult.add(res);
+				res = null;
 			}
 				
 			//LOGGER.info("We have results for search criteria " + this.searchcriteria);
@@ -237,7 +241,7 @@ public class DraftCoachesBean implements Serializable {
     	}
     	
     	listofcoaches = new ResultDataModel(tempresult);
-    	
+    	tempresult=null;
     	return listofcoaches;
     }
     

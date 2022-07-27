@@ -188,7 +188,7 @@ public class DelinquencyBean implements Serializable {
 				oplayer.setEligibility(delyear);
 				
 				tempresult.add(oplayer);
-				
+				oplayer = null;
 				recordcount++;
 			}
     				
@@ -205,6 +205,7 @@ public class DelinquencyBean implements Serializable {
     	}
     	
     	setPlayerlist(new PlayerDataModel(tempresult));
+    	tempresult = null;
     	LOGGER.info("scaha view delinquency list");
     }
 
@@ -243,7 +244,7 @@ public class DelinquencyBean implements Serializable {
 				oplayer.setEligibility(delyear);
 				
 				tempresult.add(oplayer);
-				
+				oplayer = null;
 				recordcount++;
 			}
     				
@@ -259,6 +260,7 @@ public class DelinquencyBean implements Serializable {
     	}
     	
     	setClubplayerlist(new PlayerDataModel(tempresult));
+    	tempresult=null;
     	LOGGER.info("club view delinquency list");
     }
     public void closePage(){
