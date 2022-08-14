@@ -30,7 +30,7 @@ public class MemberDriveBean implements Serializable  {
 	 @PostConstruct
 	 public void init() {
 		 
-		 //LOGGER.info(" *************** POST INIT FOR MemberDriveBean *****************");
+		 LOGGER.info(" *************** POST INIT FOR MemberDriveBean *****************");
 		 
 		 ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
    		 db.getData("call scaha.getMemberSignupsByClub()");

@@ -150,13 +150,13 @@ public class playerreleaseBean implements Serializable {
         				result=null;
     				}
     				
-    				//LOGGER.info("We have results for search criteria " + this.searchcriteria);
+    				LOGGER.info("We have results for search criteria " + this.searchcriteria);
     				
     			}
     			rs.close();	
     			db.cleanup();
 
-    			//LOGGER.info("We have searched players for " + this.searchcriteria);
+    			LOGGER.info("We have searched players for " + this.searchcriteria);
     			//return "true";
     		} else {
     			//return "False";
@@ -203,7 +203,7 @@ public Integer loadClubid(){
 					clubid = rs.getInt("idclub");
 					}
 				rs.close();
-				//LOGGER.info("We have results for club for a profile");
+				LOGGER.info("We have results for club for a profile");
 			}
 			
 			db.cleanup();

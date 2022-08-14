@@ -155,7 +155,7 @@ public class meetingminuteBean implements Serializable {
 			if (db.setAutoCommit(false)) {
 			
 				//Need to provide info to the stored procedure to save the scoresheet filename, game type and game id
- 				//LOGGER.info("remove tournament game from list");
+ 				LOGGER.info("remove tournament game from list");
  				CallableStatement cs = db.prepareCall("CALL scaha.addMeetingMinute(?,?)");
     		    cs.setString("infilename", this.getUploadedreportcard().getFilename());
     		    
@@ -177,7 +177,7 @@ public class meetingminuteBean implements Serializable {
     		    db.commit();
     			db.cleanup();
  				
-    			//LOGGER.info("You have added the ,meeting minute :" + this.getUploadedreportcard().getFilename() + " meeting date:" + this.meetingdate);
+    			LOGGER.info("You have added the ,meeting minute :" + this.getUploadedreportcard().getFilename() + " meeting date:" + this.meetingdate);
     		    //now to reload the meeting minute collection in scaha object for datatable update
     			scaha.setMeetingminutes();
     			

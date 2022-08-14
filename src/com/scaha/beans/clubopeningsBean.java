@@ -194,7 +194,7 @@ public class clubopeningsBean implements Serializable {
 					this.clubid = rs.getInt("idclub");
 				}
 				rs.close();
-				//LOGGER.info("We have results for club for a profile");
+				LOGGER.info("We have results for club for a profile");
 			}
 
 			//now lets retrieve club name
@@ -210,7 +210,7 @@ public class clubopeningsBean implements Serializable {
 					clubname = rs.getString("clubname");
 				}
 				rs.close();
-				//LOGGER.info("We have results for club name");
+				LOGGER.info("We have results for club name");
 			}
 
 			db.cleanup();
@@ -253,7 +253,7 @@ public class clubopeningsBean implements Serializable {
 				data.add(o);
 				o=null;
 			}
-			//LOGGER.info("We have results for tryouts for club");
+			LOGGER.info("We have results for tryouts for club");
 			rs.close();
 			db.cleanup();
 

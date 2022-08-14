@@ -276,7 +276,7 @@ public class registrarloiBean implements Serializable {
         				oplayer=null;
     				}
     				
-    				//LOGGER.info("We have results for lois for the team: " + selectedteam);
+    				LOGGER.info("We have results for lois for the team: " + selectedteam);
     				
     			}
     				
@@ -362,7 +362,7 @@ public class registrarloiBean implements Serializable {
         				templist.add(team);
         				team=null;
     				}
-    				//LOGGER.info("We have results for team list");
+    				LOGGER.info("We have results for team list");
     			}
     			db.cleanup();
     		} else {
@@ -415,7 +415,7 @@ public void loadClubName(){
 					this.clubid = rs.getInt("idclub");
 					
 					}
-				//LOGGER.info("We have results for club for a profile");
+				LOGGER.info("We have results for club for a profile");
 			}
 			
 			db.cleanup();
@@ -432,7 +432,7 @@ public void loadClubName(){
 				while (rs.next()) {
 					clubname = rs.getString("clubname");
 				}
-				//LOGGER.info("We have results for club name");
+				LOGGER.info("We have results for club name");
 			}
 			
 			db.cleanup();

@@ -345,7 +345,7 @@ public class coachrosteractionBean implements Serializable {
     				while (rs.next()) {
     					coachrole = rs.getString("rostertype");
     				}
-    				//LOGGER.info("We have results for coach roster type by coach id");
+    				LOGGER.info("We have results for coach roster type by coach id");
     			}
     			rs.close();
     			setDisplaycoachcredentials(coachrole);
@@ -399,7 +399,7 @@ public class coachrosteractionBean implements Serializable {
         			
         				setCepmodulesselectedstring(templist);
         			}
-    				//LOGGER.info("We have results for coach details by coach id");
+    				LOGGER.info("We have results for coach details by coach id");
     			}
     			rs.close();
     			db.cleanup();
@@ -429,7 +429,7 @@ public class coachrosteractionBean implements Serializable {
 			if (db.setAutoCommit(false)) {
 			
 				//Need to provide info to the stored procedure to save or update
- 				//LOGGER.info("update coach details");
+ 				LOGGER.info("update coach details");
  				CallableStatement cs = db.prepareCall("CALL scaha.updateCoachbyCoachId(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
     		    cs.setInt("coachid", Integer.parseInt(this.selectedcoach));
     		    cs.setString("screenexpires", this.screeningexpires);
@@ -497,7 +497,7 @@ public class coachrosteractionBean implements Serializable {
     		    db.cleanup();
  				
     		    //logging 
-    			//LOGGER.info("We are updating transfer info for coach id:" + this.selectedcoach);
+    			LOGGER.info("We are updating transfer info for coach id:" + this.selectedcoach);
     		    
     			
     			

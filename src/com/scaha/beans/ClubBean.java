@@ -81,14 +81,14 @@ public class ClubBean implements Serializable,  MailableObject {
 	 @PostConstruct
 	 public void init() {
 		 
-		 //LOGGER.info(" *************** POST INIT FOR CLUB BEAN *****************");
+		 LOGGER.info(" *************** POST INIT FOR CLUB BEAN *****************");
 
 	 }
 	 
 	public void handleFileUpload(FileUploadEvent event) {
 	    this.selectedclub.getLogo().setMmObject(event.getFile().getContents());
 	    this.selectedclub.getLogo().setExtension(event.getFile().getContentType());
-	    //LOGGER.info("GET THE INFO:" + event.getFile().getFileName() + ":" + event.getFile().getSize());
+	    LOGGER.info("GET THE INFO:" + event.getFile().getFileName() + ":" + event.getFile().getSize());
 	}
 
 	/**
@@ -156,14 +156,14 @@ public class ClubBean implements Serializable,  MailableObject {
 		boolean bstream = true;
 		FacesContext context = FacesContext.getCurrentInstance();
 		
-		//LOGGER.info("getClub Logo Club is" + _cl);
+		LOGGER.info("getClub Logo Club is" + _cl);
 		if (_cl == null) {
 			bstream = false;
 		} else 	if (_cl.getLogo() == null) {
-			//LOGGER.info("getClub for " + _cl + " get Logo returned null...");
+			LOGGER.info("getClub for " + _cl + " get Logo returned null...");
 			bstream = false;
 		} else if (_cl.getLogo().getMmObject() == null) {
-			//LOGGER.info("getClub for " + _cl + " not mm object.. its null...");
+			LOGGER.info("getClub for " + _cl + " not mm object.. its null...");
 			bstream = false;
 		} else { 
 			
@@ -172,19 +172,19 @@ public class ClubBean implements Serializable,  MailableObject {
 		}
 		if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
 		    // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
-			//LOGGER.info("we are just rendering an empty response.. ");
+			LOGGER.info("we are just rendering an empty response.. ");
 			return  new DefaultStreamedContent();
 			
 		} else {
 
 			if (bstream) {
-				//LOGGER.info("We are going for " + _cl + "'s logo vis getSteamedContent()");
+				LOGGER.info("We are going for " + _cl + "'s logo vis getSteamedContent()");
 				return _cl.getLogo().getStreamedContent();
 			}
             
 			try {
 
-			//LOGGER.info("we cannot stream.. so lets stream a default image.... ");
+			LOGGER.info("we cannot stream.. so lets stream a default image.... ");
 
 			//
 			// ok.. through some text up as a defaul ..
@@ -222,12 +222,12 @@ public class ClubBean implements Serializable,  MailableObject {
     	int id = Integer.parseInt(get);
 	    Club myclub  = scaha.findClubByID(id);
 	    if (myclub == null) {
-			//LOGGER.info("*** Could not find club... for id LOGO ID IS (" + get + ") ");
+			LOGGER.info("*** Could not find club... for id LOGO ID IS (" + get + ") ");
     		//return new DefaultStreamedContent();
 			return scaha.getNoimage().getStreamedContent();
 	    }
 	    
-	   // LOGGER.info("*** club is...("+ myclub + ") for id LOGO ID IS (" + get + ") ");
+	   LOGGER.info("*** club is...("+ myclub + ") for id LOGO ID IS (" + get + ") ");
 		return getClubLogo(myclub);
 	}
 	
@@ -253,12 +253,12 @@ public class ClubBean implements Serializable,  MailableObject {
     	int id = Integer.parseInt(get);
 	    Club myclub  = scaha.findClubByID(id);
 	    if (myclub == null) {
-			//LOGGER.info("*** Could not find club... for id LOGO ID IS (" + get + ") ");
+			LOGGER.info("*** Could not find club... for id LOGO ID IS (" + get + ") ");
     		//return new DefaultStreamedContent();
 			return scaha.getNoimage().getStreamedContent();
 	    }
 	    
-	    //LOGGER.info("*** club is...("+ myclub + ") for id LOGO ID IS (" + get + ") ");
+	    LOGGER.info("*** club is...("+ myclub + ") for id LOGO ID IS (" + get + ") ");
 		return getClubLogo(myclub);
 	}
 	
@@ -283,12 +283,12 @@ public class ClubBean implements Serializable,  MailableObject {
     	int id = Integer.parseInt(get);
 	    Club myclub  = scaha.findClubByID(id);
 	    if (myclub == null) {
-			//LOGGER.info("*** Could not find club... for id LOGO ID IS (" + get + ") ");
+			LOGGER.info("*** Could not find club... for id LOGO ID IS (" + get + ") ");
     		//return new DefaultStreamedContent();
 			return scaha.getNoimage().getStreamedContent();
 	    }
 	    
-	    //LOGGER.info("*** club is...("+ myclub + ") for id LOGO ID IS (" + get + ") ");
+	    LOGGER.info("*** club is...("+ myclub + ") for id LOGO ID IS (" + get + ") ");
 		return getClubLogo(myclub);
 	}
 	
@@ -314,12 +314,12 @@ public class ClubBean implements Serializable,  MailableObject {
     	int id = Integer.parseInt(get);
 	    Club myclub  = scaha.findClubByID(id);
 	    if (myclub == null) {
-			//LOGGER.info("*** Could not find club... for id LOGO ID IS (" + get + ") ");
+			LOGGER.info("*** Could not find club... for id LOGO ID IS (" + get + ") ");
     		//return new DefaultStreamedContent();
 			return scaha.getNoimage().getStreamedContent();
 	    }
 	    
-	    //LOGGER.info("*** club is...("+ myclub + ") for id LOGO ID IS (" + get + ") ");
+	    LOGGER.info("*** club is...("+ myclub + ") for id LOGO ID IS (" + get + ") ");
 		return getClubLogo(myclub);
 	}
 
@@ -343,12 +343,12 @@ public class ClubBean implements Serializable,  MailableObject {
     	int id = Integer.parseInt(get);
 	    Club myclub  = scaha.findClubByID(id);
 	    if (myclub == null) {
-			//LOGGER.info("*** Could not find club... for id LOGO ID IS (" + get + ") ");
+			LOGGER.info("*** Could not find club... for id LOGO ID IS (" + get + ") ");
     		//return new DefaultStreamedContent();
 			return scaha.getNoimage().getStreamedContent();
 	    }
 	    
-	    //LOGGER.info("*** club is...("+ myclub + ") for id LOGO ID IS (" + get + ") ");
+	    LOGGER.info("*** club is...("+ myclub + ") for id LOGO ID IS (" + get + ") ");
 		return getClubLogo(myclub);
 	}
 	
@@ -358,15 +358,15 @@ public class ClubBean implements Serializable,  MailableObject {
 	 * @return
 	 */
 	public String setClub(int _id) {
-		//LOGGER.info("ClubBean received a Club id of:" + + _id);
+		LOGGER.info("ClubBean received a Club id of:" + + _id);
 		this.selectedclub = scaha.findClubByID(_id);
-		//LOGGER.info((this.selectedclub == null ? "setClub found nothing in masterlist!" : "setting to club " + this.selectedclub.getClubname()));
+		LOGGER.info((this.selectedclub == null ? "setClub found nothing in masterlist!" : "setting to club " + this.selectedclub.getClubname()));
 		return "";
 	}
 	
 	public void setClubViaParm() {
 		this.selectedclub = scaha.findClubByID(this.clubid);
-		//LOGGER.info((this.selectedclub == null ? "setClub found nothing in masterlist!" : "setting to club " + this.selectedclub.getClubname()));
+		LOGGER.info((this.selectedclub == null ? "setClub found nothing in masterlist!" : "setting to club " + this.selectedclub.getClubname()));
 	
 	}
 	
@@ -404,13 +404,13 @@ public class ClubBean implements Serializable,  MailableObject {
 	public TeamList getTeams() {
 		
 		if (selectedclub == null) {
-			//LOGGER.info("SELECTED CLUB IS NULL!!!");
+			LOGGER.info("SELECTED CLUB IS NULL!!!");
 			return null;
 		}
 		
 		if (selectedclub.getScahaTeams() != null) return selectedclub.getScahaTeams();
 
-		//LOGGER.info("The Selected Club Has no Teams Set!:" + selectedclub.getClubname());
+		LOGGER.info("The Selected Club Has no Teams Set!:" + selectedclub.getClubname());
 
 		// lets refresh the team base
 		GeneralSeason scahags = scaha.getScahaSeasonList().getCurrentSeason();
@@ -434,7 +434,7 @@ public class ClubBean implements Serializable,  MailableObject {
 
 	
 	 public void setUpStaffEditing() {
-		//LOGGER.info("SetUpStaffEditing for " + getSelectedclub());
+		LOGGER.info("SetUpStaffEditing for " + getSelectedclub());
 		
 		this.setCurrentpresident(getSelectedclub().getCal().getStaffer("C-PRES"));
 		this.setCurrentregistrar(getSelectedclub().getCal().getStaffer("C-REG"));
@@ -484,33 +484,33 @@ public class ClubBean implements Serializable,  MailableObject {
 		        // to make support easier.
 		        //
 		        if (curPres == null && this.currentpresident != null) { 
-		        	//LOGGER.info("Curr President is null.. selected president is NOT");
+		        	LOGGER.info("Curr President is null.. selected president is NOT");
 		        	db.updateClubPresident(pb.getProfile(),this.selectedclub, curPres, this.currentpresident);
 		        } else if (curPres != null && curPres.ID != this.currentpresident.ID) {
-		        	//LOGGER.info("Curr President is NOT null.. selected president and cur president are different");
+		        	LOGGER.info("Curr President is NOT null.. selected president and cur president are different");
 		        	db.updateClubPresident(pb.getProfile(),this.selectedclub, curPres, this.currentpresident);
 		        } else {
-		        	//LOGGER.info("Could Not tell if the president changed");
+		        	LOGGER.info("Could Not tell if the president changed");
 		        }
 	
 		        if (curReg == null && this.currentregistrar != null) { 
-		        	//LOGGER.info("Curr Registrar is null.. selected Registrar is NOT");
+		        	LOGGER.info("Curr Registrar is null.. selected Registrar is NOT");
 		        	db.updateClubRegistrar(pb.getProfile(),this.selectedclub, curReg, this.currentregistrar);
 		        } else if (curReg != null && curReg.ID != this.currentregistrar.ID) {
-		        	//LOGGER.info("Curr Registrar is NOT null.. selected Registrar and cur Registrar are different");
+		        	LOGGER.info("Curr Registrar is NOT null.. selected Registrar and cur Registrar are different");
 		        	db.updateClubRegistrar(pb.getProfile(),this.selectedclub, curReg, this.currentregistrar);
 		        } else {
-		        	//LOGGER.info("Could Not tell if the Registrar changed");
+		        	LOGGER.info("Could Not tell if the Registrar changed");
 		        }
 	
 		        if (curIce == null && this.currenticeconvenor != null) { 
-		        	//LOGGER.info("Curr IceMan is null.. selected IceMan is NOT");
+		        	LOGGER.info("Curr IceMan is null.. selected IceMan is NOT");
 	        	db.updateClubIceConvenor(pb.getProfile(),this.selectedclub, curIce, this.currenticeconvenor);
 		        } else if (curIce != null && curIce.ID != this.currenticeconvenor.ID) {
-		        	//LOGGER.info("Curr IceMan is NOT null.. selected IceMan and cur IceMan are different");
+		        	LOGGER.info("Curr IceMan is NOT null.. selected IceMan and cur IceMan are different");
 		        	db.updateClubIceConvenor(pb.getProfile(),this.selectedclub, curIce, this.currenticeconvenor);
 		        } else {
-		        	//LOGGER.info("Could Not tell if the Ice Man changed");
+		        	LOGGER.info("Could Not tell if the Ice Man changed");
 		        }
 	        
 		        //
@@ -523,7 +523,7 @@ public class ClubBean implements Serializable,  MailableObject {
 				List<ClubAdmin> lca = (List<ClubAdmin>)this.selectedclub.getCal().getWrappedData();
 				lca.clear();
 				PreparedStatement psCa = db.prepareStatement("call scaha.getClubAdminInfo(?)");
-				//LOGGER.info("Reloading the Club Staff Information Back to the Object");
+				LOGGER.info("Reloading the Club Staff Information Back to the Object");
 				this.selectedclub.setCal(ClubAdminList.NewClubAdminListFactory(pb.getProfile(), psCa, selectedclub));
 				psCa.close();
 			} catch (SQLException e) {

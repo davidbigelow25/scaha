@@ -188,7 +188,7 @@ public class GamesheetBean implements Serializable,  MailableObject {
 	 @SuppressWarnings("unchecked")
 	 public void init() {
 		 
-		 //LOGGER.info(" *************** START :POST INIT FOR GAMESHEET  BEAN *****************");
+		 LOGGER.info(" *************** START :POST INIT FOR GAMESHEET  BEAN *****************");
 		 
 		 //lets grab team id so we know which team we are working with
 		 HttpServletRequest hsr = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -215,7 +215,7 @@ public class GamesheetBean implements Serializable,  MailableObject {
 		 } else {
 			 loadLivegame(livegameid);
 		 }
-		 //LOGGER.info("/// here is selected live game.." + this.getLivegame());
+		 LOGGER.info("/// here is selected live game.." + this.getLivegame());
 		 this.setTeamclubid(pb.getClubID());
 		 
 		 
@@ -265,7 +265,7 @@ public class GamesheetBean implements Serializable,  MailableObject {
 			 
 			 //this.setAwaysogs(this.refreshAwaySog());
 		 } else {
-			 //LOGGER.info(" ##### NO LIVE GAME PASSED... IT WAS NULL #####");
+			 LOGGER.info(" ##### NO LIVE GAME PASSED... IT WAS NULL #####");
 			 
 		 }
 		 
@@ -295,7 +295,7 @@ public class GamesheetBean implements Serializable,  MailableObject {
 
 		 this.setDisplayValues();
 
-		 //LOGGER.info(" *************** FINISH :POST INIT FOR GAMESHEET BEAN *****************");
+		 LOGGER.info(" *************** FINISH :POST INIT FOR GAMESHEET BEAN *****************");
 		 
 	 }
 	
@@ -305,7 +305,7 @@ public class GamesheetBean implements Serializable,  MailableObject {
 	  */
 	private void setDisplayValues() {
 		
-		//LOGGER.info("id Live Game is:" + this.livegame.ID);
+		/*LOGGER.info("id Live Game is:" + this.livegame.ID);*/
 		if (this.livegame != null){
 			this.lgdate = this.livegame.getStartdate();
 			this.lgtime = this.livegame.getStarttime();
@@ -660,7 +660,7 @@ public class GamesheetBean implements Serializable,  MailableObject {
 				spot.setTag("");
 				spot.setRank(i+1);
 				list.add(spot);
-				//LOGGER.info("Found a match " + spot);
+				LOGGER.info("Found a match " + spot);
 		}
 
 		return list;
@@ -695,7 +695,7 @@ public class GamesheetBean implements Serializable,  MailableObject {
 			spot.setTag("");
 			spot.setRank(i+1);
 			list.add(spot);
-			//LOGGER.info("Found a match " + spot);
+			LOGGER.info("Found a match " + spot);
 		}
 
 		return list;
@@ -1023,7 +1023,7 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 		//
 		// reinitialize the info to the current selected score
 		//
-		//LOGGER.info("currentscore is: " + currentscore);
+		LOGGER.info("currentscore is: " + currentscore);
 		
 		this.goalperiod = currentscore.getPeriod();
 		String[] ms = currentscore.getTimescored().split(":");
@@ -1136,7 +1136,7 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 	 */
 	public void toggleMIA(LiveGameRosterSpot spot) {
 		
-		//LOGGER.info("toggling MIA for " + spot);
+		LOGGER.info("toggling MIA for " + spot);
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 		try {
 			CallableStatement pc = db.prepareCall("call scaha.toggleMIA(?,?,?)");
@@ -1221,7 +1221,7 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 		List<InternetAddress> data = new ArrayList<InternetAddress>();
 		
-		//LOGGER.info(this.livegame.toString());
+		LOGGER.info(this.livegame.toString());
 		try {
 			PreparedStatement ps = db.prepareCall("call scaha.getLiveGameEmails(?)");
 			ps.setInt(1, this.livegame.ID);
@@ -1234,7 +1234,7 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 			ps.close();
 			
 			for (InternetAddress ia : data) {
-				//LOGGER.info("e-mail:" + ia);
+				LOGGER.info("e-mail:" + ia);
 			}
 
 		} catch (SQLException e) {
@@ -1339,7 +1339,7 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 	
 	public void deletePenalty(Penalty pen) {
 		
-		 //LOGGER.info("we need to delete: " + pen);
+		 LOGGER.info("we need to delete: " + pen);
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 		
 		try {
@@ -1357,7 +1357,7 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 	public void deleteSog(Sog sog) {
 		
 		
-		//LOGGER.info("we need to delete: " + sog);
+		LOGGER.info("we need to delete: " + sog);
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 		
 		try {
@@ -2542,20 +2542,20 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 		this.lghteam = getStringKeyFromValue(this.htpick, this.lghteamval);
 		this.lgateam = getStringKeyFromValue(this.atpick, this.lgateamval);
 		
-		//LOGGER.info("Start Date: " + this.lgdate + ", orig value is " + this.livegame.getStartdate());
-		//LOGGER.info("Start Time: " + this.lgtime + ", orig value is " + this.livegame.getStarttime());
-		//LOGGER.info("Type: " + this.lgtypeval + ":" + this.lgtype + ", orig value is " + this.livegame.getTypetag());
-		//LOGGER.info("State: " + this.lgstateval + ":" + this.lgstate + ", orig value is " + this.livegame.getStatetag());
-		//LOGGER.info("Venue: " + this.lgvenueval + ":" + this.lgvenue + ", orig value is " + this.livegame.getVenuetag());
-		//LOGGER.info("Sheet: " + this.lgsheet +  ", orig value is " + this.livegame.getSheetname());
-		//LOGGER.info("Away Team + " + this.lgateamval + ":" + this.lgateam + ", orig value is " + this.livegame.getAwayteam().ID);
-		//LOGGER.info("Home Team + " + this.lghteamval + ":" + this.lghteam + ", orig value is " + this.livegame.getHometeam().ID);
+		LOGGER.info("Start Date: " + this.lgdate + ", orig value is " + this.livegame.getStartdate());
+		LOGGER.info("Start Time: " + this.lgtime + ", orig value is " + this.livegame.getStarttime());
+		LOGGER.info("Type: " + this.lgtypeval + ":" + this.lgtype + ", orig value is " + this.livegame.getTypetag());
+		LOGGER.info("State: " + this.lgstateval + ":" + this.lgstate + ", orig value is " + this.livegame.getStatetag());
+		LOGGER.info("Venue: " + this.lgvenueval + ":" + this.lgvenue + ", orig value is " + this.livegame.getVenuetag());
+		LOGGER.info("Sheet: " + this.lgsheet +  ", orig value is " + this.livegame.getSheetname());
+		LOGGER.info("Away Team + " + this.lgateamval + ":" + this.lgateam + ", orig value is " + this.livegame.getAwayteam().ID);
+		LOGGER.info("Home Team + " + this.lghteamval + ":" + this.lghteam + ", orig value is " + this.livegame.getHometeam().ID);
 		
 		//
 		// ok.. lets generate the e-mail.. so we can put prior information.. and current information..
 		//
-		//LOGGER.info("HERE IS WHERE WE SAVE EVERYTHING COLLECTED FROM GameChange And Send Mail..");
-		//LOGGER.info("Sending Game Change mail here...");
+		LOGGER.info("HERE IS WHERE WE SAVE EVERYTHING COLLECTED FROM GameChange And Send Mail..");
+		LOGGER.info("Sending Game Change mail here...");
 		SendMailSSL mail = new SendMailSSL(this);
 		mail.sendMail();
 		
@@ -2605,7 +2605,7 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 	
 	public void cancelScheduleInfoChanges() {
 		
-		//LOGGER.info(this.lgvenueval + ":" + this.lgvenue);
+		LOGGER.info(this.lgvenueval + ":" + this.lgvenue);
 		//
 		// reset the display values..
 		//
@@ -3298,7 +3298,7 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 		   
 			   pen.setTimeofpenalty(("00:" + pen.getPenmin() + ":" + pen.getPensec()));
 				
-				//LOGGER.info("updating score for " + pen);
+				LOGGER.info("updating score for " + pen);
 				
 				try {
 					pen.update(db);
@@ -3382,7 +3382,7 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 		   
 			   pen.setTimeofpenalty(("00:" + pen.getPenmin() + ":" + pen.getPensec()));
 				
-				//LOGGER.info("updating score for " + pen);
+				LOGGER.info("updating score for " + pen);
 				
 				try {
 					pen.update(db);
@@ -3415,7 +3415,7 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 				db.commit();
 			    db.cleanup();
 	   		
-	   		//LOGGER.info("We have updated the jersey number rosterid:" + this.IDplayer + "jersey number: " + fname);
+	   		LOGGER.info("We have updated the jersey number rosterid:");
 				
 	   		
 	   	} catch (SQLException e) {
@@ -3441,7 +3441,7 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 
 			
 				//Need to provide info to the stored procedure to save or update
-				//LOGGER.info("get flags for alerts");
+				LOGGER.info("get flags for alerts");
 				CallableStatement cs = db.prepareCall("CALL scaha.SetCoachesAsDefault(?,?)");
 				cs.setInt("teamid",this.teamid);
 				cs.setInt("livegameid",this.livegameid);
@@ -3549,7 +3549,7 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 		for (LiveGame lg : templist){
 			if (lg.getStatetag().equals("Final") && lg.getSched().ID>600) {
 				try {
-					//LOGGER.info("updating game results:");
+					LOGGER.info("updating game results:");
 					if (lg.getHometeam().ID==102256 || lg.getAwayteam().ID==102256){
 						LOGGER.info("updating stats for moose 14b:" + lg);
 					}
@@ -3575,7 +3575,7 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 					e.printStackTrace();
 					LOGGER.info("errored:");
 				}
-				//LOGGER.info("setting connection free:");
+				LOGGER.info("setting connection free:");
 			}
 		}
 		db.free();

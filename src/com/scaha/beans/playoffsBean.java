@@ -303,7 +303,7 @@ public class playoffsBean implements Serializable{
     				tempresult.add(ogame);
     				
 				}
-				//LOGGER.info("We have results for scaha games schedule for review by statistician for schedule:" + this.selectedschedule);
+				LOGGER.info("We have results for scaha games schedule for review by statistician for schedule:" + this.selectedschedule);
 			}
 			
 			
@@ -350,7 +350,7 @@ public class playoffsBean implements Serializable{
     				tempresult.add(oseason);
     				
 				}
-				//LOGGER.info("We have results for scaha games schedule for review by statistician for schedule:" + this.selectedschedule);
+				LOGGER.info("We have results for scaha games schedule for review by statistician for schedule:" + this.selectedschedule);
 			}
 			
 			
@@ -394,7 +394,7 @@ public class playoffsBean implements Serializable{
     				tempresult.add(oschedule);
     				
 				}
-				//LOGGER.info("We have results for scaha playoff schedule " + this.selectedseasonid);
+				LOGGER.info("We have results for scaha playoff schedule " + this.selectedseasonid);
 			}
 			
 			
@@ -461,7 +461,7 @@ public class playoffsBean implements Serializable{
     				tempresult.add(oplayoff);
     				
 				}
-				//LOGGER.info("We have results for scaha playoff details " + this.selectedschedule);
+				LOGGER.info("We have results for scaha playoff details " + this.selectedschedule);
 			}
 			
 			
@@ -605,7 +605,7 @@ public class playoffsBean implements Serializable{
     			
     			part.setSchedule(null);
     			part.setPlace(y++);
-    			//LOGGER.info("Found new Participant for schedule " + selectedschedule + ". " + part);
+    			LOGGER.info("Found new Participant for schedule " + selectedschedule + ". " + part);
     			
     			data.add(part);
     			
@@ -683,7 +683,7 @@ public class playoffsBean implements Serializable{
     				obracket.setNewplace(place);tempresult1.add(obracket);
     				
 				}
-				//LOGGER.info("We have results for playoff bracket one:" + this.selectedschedule);
+				LOGGER.info("We have results for playoff bracket one:" + this.selectedschedule);
 			}
 			
 			
@@ -721,7 +721,7 @@ public class playoffsBean implements Serializable{
     				tempresult2.add(obracket);
     				
 				}
-				//LOGGER.info("We have results for playoff bracket 2:" + this.selectedschedule);
+				LOGGER.info("We have results for playoff bracket 2:" + this.selectedschedule);
 			}
 			
 			

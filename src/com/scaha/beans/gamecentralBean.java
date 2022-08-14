@@ -611,7 +611,7 @@ public class gamecentralBean implements Serializable{
 					game.setHometopgoaliepercentage(hometopgoaliepercentage);
 					templist.add(game);
 				}
-				//LOGGER.info("We have game list results for the daet:" + this.selecteddate);
+				LOGGER.info("We have game list results for the daet:" + this.selecteddate);
 			}
 			rs.close();
 			
@@ -743,7 +743,7 @@ public class gamecentralBean implements Serializable{
 				while (rs.next()) {
 					this.selecteddate=rs.getDate(1);
 				}
-				//LOGGER.info("We have selected date for schedule:" + selectedschedule);
+				LOGGER.info("We have selected date for schedule:" + selectedschedule);
 			}
 			rs.close();
 			cs.close();
@@ -760,7 +760,7 @@ public class gamecentralBean implements Serializable{
 					
 					data.add(sch);
 				}
-				//LOGGER.info("We have results for divisions");
+				LOGGER.info("We have results for divisions");
 			}
 			rs.close();
 			cs.close();
@@ -806,7 +806,7 @@ public class gamecentralBean implements Serializable{
 				while (rs.next()) {
 					this.selecteddate=rs.getDate(1);
 				}
-				//LOGGER.info("We have selected date for schedule:" + selectedschedule);
+				LOGGER.info("We have selected date for schedule:" + selectedschedule);
 			}
 			rs.close();
 			cs.close();
@@ -908,7 +908,7 @@ public class gamecentralBean implements Serializable{
 					
 					templist.add(season);
 				}
-				//LOGGER.info("We have results for seasons");
+				LOGGER.info("We have results for seasons");
 			}
 			rs.close();
 			
@@ -949,7 +949,7 @@ public class gamecentralBean implements Serializable{
 					
 					data.add(sch);
 				}
-				//LOGGER.info("We have results for divisions");
+				LOGGER.info("We have results for divisions");
 			}
 			rs.close();
 			cs.close();
@@ -992,7 +992,7 @@ public class gamecentralBean implements Serializable{
 								
 					gamedate = rs.getDate("actdate");
 				}
-				//LOGGER.info("We have results for divisions");
+				LOGGER.info("We have results for divisions");
 			}
 			rs.close();
 			cs.close();
@@ -1070,7 +1070,7 @@ public class gamecentralBean implements Serializable{
 					game.setRenderboxscore(boxscore);
 					templist.add(game);
 				}
-				//LOGGER.info("We have game list results for the daet:" + this.selecteddate);
+				LOGGER.info("We have game list results for the daet:" + this.selecteddate);
 			}
 			rs.close();
 			
@@ -1289,7 +1289,7 @@ public class gamecentralBean implements Serializable{
 					
 					data.add(sch);
 				}
-				//LOGGER.info("We have results for divisions");
+				LOGGER.info("We have results for divisions");
 			}
 			rs.close();
 			cs.close();

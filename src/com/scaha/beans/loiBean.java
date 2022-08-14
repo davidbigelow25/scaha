@@ -728,7 +728,7 @@ public class loiBean implements Serializable, MailableObject {
     		}
     	} catch (SQLException e) {
     		// TODO Auto-generated catch block
-    		LOGGER.info("ERROR IN loading teams");
+    		//LOGGER.info("ERROR IN loading teams");
     		e.printStackTrace();
     		db.rollback();
     	} finally {
@@ -828,7 +828,7 @@ public class loiBean implements Serializable, MailableObject {
         		    	}
         				
         			}
-    				//LOGGER.info("We have results for player details by player id");
+					//LOGGER.info("We have results for player details by player id");
     			}
     			rs.close();
 
@@ -869,7 +869,7 @@ public class loiBean implements Serializable, MailableObject {
     		}
     	} catch (SQLException e) {
     		// TODO Auto-generated catch block
-    		LOGGER.info("ERROR IN loading player details");
+    		//LOGGER.info("ERROR IN loading player details");
     		e.printStackTrace();
     		db.rollback();
     	} finally {
@@ -920,7 +920,7 @@ public class loiBean implements Serializable, MailableObject {
     		}
     	} catch (SQLException e) {
     		// TODO Auto-generated catch block
-    		LOGGER.info("ERROR IN loading teams");
+    		//LOGGER.info("ERROR IN loading teams");
     		e.printStackTrace();
     		db.rollback();
     	} finally {
@@ -1222,7 +1222,7 @@ public class loiBean implements Serializable, MailableObject {
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			LOGGER.info("ERROR IN LOI Generation Process" + this.selectedplayer);
+			//LOGGER.info("ERROR IN LOI Generation Process" + this.selectedplayer);
 			e.printStackTrace();
 			db.rollback();
 		} finally {
@@ -1281,7 +1281,7 @@ public class loiBean implements Serializable, MailableObject {
 			
     	} catch (SQLException e) {
     		// TODO Auto-generated catch block
-    		LOGGER.info("ERROR IN loading club by profile");
+    		//LOGGER.info("ERROR IN loading club by profile");
     		e.printStackTrace();
     		db.rollback();
     	} finally {
@@ -1349,7 +1349,7 @@ public class loiBean implements Serializable, MailableObject {
     		
 		} catch (SQLException e) {
     		// TODO Auto-generated catch block
-    		LOGGER.info("ERROR IN loading club by profile");
+    		//LOGGER.info("ERROR IN loading club by profile");
     		e.printStackTrace();
     		db.rollback();
     	} finally {
@@ -1390,7 +1390,7 @@ public class loiBean implements Serializable, MailableObject {
     		
 		} catch (SQLException e) {
     		// TODO Auto-generated catch block
-    		LOGGER.info("ERROR IN loading club by profile");
+    		//LOGGER.info("ERROR IN loading club by profile");
     		e.printStackTrace();
     		db.rollback();
     	} finally {
@@ -1552,7 +1552,7 @@ public class loiBean implements Serializable, MailableObject {
 
 		} catch (SQLException e) {
     		// TODO Auto-generated catch block
-    		LOGGER.info("ERROR IN loading club by profile");
+    		//LOGGER.info("ERROR IN loading club by profile");
     		e.printStackTrace();
     		db.rollback();
     	} finally {
@@ -1629,7 +1629,7 @@ public void getClubID(){
 			}
     	} catch (SQLException e) {
     		// TODO Auto-generated catch block
-    		LOGGER.info("ERROR IN loading club by profile");
+    		//LOGGER.info("ERROR IN loading club by profile");
     		e.printStackTrace();
     		db.rollback();
     	} finally {
@@ -1673,7 +1673,7 @@ public void getClubID(){
     			
     		        
     		    to = "";
-    			LOGGER.info("Sending email to club registrar, and scaha registrar");
+    			//LOGGER.info("Sending email to club registrar, and scaha registrar");
     			cs = db.prepareCall("CALL scaha.getClubRegistrarEmailByPersonID(?)");
     		    cs.setInt("personid", this.selectedplayer);
     		    rs = cs.executeQuery();
@@ -1731,7 +1731,7 @@ public void getClubID(){
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			LOGGER.info("ERROR IN Sending Note " + this.selectedplayer);
+			//LOGGER.info("ERROR IN Sending Note " + this.selectedplayer);
 			e.printStackTrace();
 			db.rollback();
 			this.setSendingnote(false);
@@ -1769,7 +1769,7 @@ public void getClubID(){
 			if (db.setAutoCommit(false)) {
 			
 				//Need to store note first
- 				LOGGER.info("storing note for :" + this.selectedplayer);
+ 				//LOGGER.info("storing note for :" + this.selectedplayer);
  				CallableStatement cs = db.prepareCall("CALL scaha.saveNoteSuspend(?,?,?)");
  				cs.setString("innote", this.notes);
  				cs.setInt("personid", this.selectedplayer);
@@ -1786,7 +1786,7 @@ public void getClubID(){
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			LOGGER.info("ERROR IN Updating Note " + this.selectedplayer);
+			//LOGGER.info("ERROR IN Updating Note " + this.selectedplayer);
 			e.printStackTrace();
 			db.rollback();
 			this.setSendingnote(false);
@@ -1862,7 +1862,7 @@ public void getClubID(){
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			LOGGER.info("ERROR IN loading pdr");
+			//LOGGER.info("ERROR IN loading pdr");
 			e.printStackTrace();
 			db.rollback();
 		} finally {
@@ -1916,7 +1916,7 @@ public void getClubID(){
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			LOGGER.info("ERROR IN loading blockrecruitments");
+			//LOGGER.info("ERROR IN loading blockrecruitments");
 			e.printStackTrace();
 			db.rollback();
 		} finally {
@@ -1958,7 +1958,7 @@ public void getClubID(){
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			LOGGER.info("ERROR IN loading pdr");
+			//LOGGER.info("ERROR IN loading pdr");
 			e.printStackTrace();
 			db.rollback();
 		} finally {
@@ -2008,7 +2008,7 @@ public void getClubID(){
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			LOGGER.info("ERROR IN loading blockrecruitments");
+			//LOGGER.info("ERROR IN loading blockrecruitments");
 			e.printStackTrace();
 			db.rollback();
 		} finally {

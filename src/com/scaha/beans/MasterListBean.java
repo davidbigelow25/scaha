@@ -36,7 +36,7 @@ public class MasterListBean implements Serializable  {
 	 @PostConstruct
 	 public void init() {
 		 
-		 //LOGGER.info(" *************** START: POST INIT FOR MasterListBean *****************");
+		 LOGGER.info(" *************** START: POST INIT FOR MasterListBean *****************");
 		 
 		 this.setIdclub(pb.getClubID());
 		 
@@ -51,7 +51,7 @@ public class MasterListBean implements Serializable  {
 		}
    		 
    		db.free();
-   		//LOGGER.info(" *************** FINISH: POST INIT FOR MasterListBean *****************");
+   		LOGGER.info(" *************** FINISH: POST INIT FOR MasterListBean *****************");
    		
 	 }
 

@@ -157,7 +157,7 @@ public class clubviewreleaseBean implements Serializable {
         				tempresult.add(orelease);
     				}
     				
-    				//LOGGER.info("We have results for release list");
+    				LOGGER.info("We have results for release list");
     				
     			}
     				
@@ -238,7 +238,7 @@ public String getClubName(){
 					this.clubid = rs.getInt("idclub");
 					
 					}
-				//LOGGER.info("We have results for club for a profile");
+				LOGGER.info("We have results for club for a profile");
 			}
 			rs.close();
 			db.cleanup();
@@ -255,7 +255,7 @@ public String getClubName(){
 				while (rs.next()) {
 					clubname = rs.getString("clubname");
 				}
-				//LOGGER.info("We have results for club name");
+				LOGGER.info("We have results for club name");
 			}
 			rs.close();
 			db.cleanup();

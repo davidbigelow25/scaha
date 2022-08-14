@@ -706,6 +706,86 @@ public class suspensionBean implements Serializable {
 			e.printStackTrace();
 		}
 	}
+
+	public void AddspectatorejectionToDb(){
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+			//first get team name
+			CallableStatement cs = db.prepareCall("CALL scaha.addSpectatorEjection(?,?,?,?,?,?,?,?,?)");
+			cs.setString("ininfraction", this.infraction);
+			cs.setInt("ismatch", this.match);
+			cs.setInt("served", this.served);
+			cs.setString("susdate", this.suspdate);
+			cs.setString("elgibility", this.eligibility);
+			cs.setInt("inrosterid", this.rosterid);
+			cs.setInt("inlivegameid", this.selectedlivegame.getGameId());
+			cs.executeQuery();
+
+			//LOGGER.info("set suspension for:" + this.selectedplayer.getIdplayer().toString());
+
+			db.commit();
+			db.cleanup();
+
+			//now lets create a penalty object and push email from the object.
+			String temppenaltyrows =  "<tr><td>&nbsp;" + this.playername +"&nbsp;</td><td>&nbsp;";
+			temppenaltyrows = temppenaltyrows + this.numberofgames +" games&nbsp;</td><td>&nbsp;";
+			if (this.match.equals(1)){
+				temppenaltyrows = temppenaltyrows + "Yes&nbsp;</td><td>&nbsp;Infraction(s): ";
+			}else {
+				temppenaltyrows = temppenaltyrows + "NO&nbsp;</td><td>&nbsp;Infraction(s): ";
+			}
+			temppenaltyrows = temppenaltyrows + this.infraction + "&nbsp;</td></tr>";
+
+			ScahaTeam team = sb.getScahaTeamList().getRowData(this.teamid);
+
+			Penalty pen = new Penalty(this.penaltyid,pb.getProfile(), this.selectedlivegame, team);
+
+			if (!this.isscahagamesource){
+				pen.setTeamname(team.getTeamname());
+			}
+			PenaltyPusher pp = new PenaltyPusher();
+			pp.setPenalty(pen);
+			pp.setPenaltyrows(temppenaltyrows);
+			pp.setServedrows(this.eligibility);
+			pp.setLivegame(this.selectedlivegame);
+			pp.setIsServed(false);
+			pp.setIsRemoved(false);
+			pp.setEmailsubject(this.playername + " Suspension Details");
+			pp.pushPenalty();
+
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN settings suspension");
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+		loadAllSuspensions();
+		this.setSelectedplayer(null);
+		this.setInfraction("");
+		this.setMatch(0);
+		this.setServed(0);
+		this.setSuspdate("");
+		this.setNumberofgames("");
+		this.setEligibility("");
+		this.rosterid=0;
+		FacesContext context = FacesContext.getCurrentInstance();
+		Application app = context.getApplication();
+
+		ValueExpression expression = app.getExpressionFactory().createValueExpression( context.getELContext(),
+				"#{playerhistoryBean}", Object.class );
+
+		playerhistoryBean pb = (playerhistoryBean) expression.getValue( context.getELContext() );
+		pb.setSearchcriteria("");
+		closePage();
+	}
 	
 	public void LoadPerson(Result result){
 		this.selectedplayer= result;

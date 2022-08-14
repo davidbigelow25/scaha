@@ -110,14 +110,14 @@ public class FamilyMemberBean  implements Serializable,  MailableObject  {
 
 	public String resendMemberReceipt() {
 		
-		//LOGGER.info("Resending Member Reg for " + this.currentFM);
+		LOGGER.info("Resending Member Reg for " + this.currentFM);
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase", pb.getProfile());
 		
 		Person tper = pb.getProfile().getPerson();
 		Person per = (Person)this.currentFM;
 		
 		if (this.currentFM == null)  {
-			//LOGGER.info("Did not snag currentFM.. cannot send..bailing");
+			LOGGER.info("Did not snag currentFM.. cannot send..bailing");
 			db.free();
 			return "true";
 		}
@@ -144,7 +144,7 @@ public class FamilyMemberBean  implements Serializable,  MailableObject  {
 	
 	public String getMemberReceipt() {
 		
-		//LOGGER.info("getMemberReceipt Reg for " + this.currentFM);
+		LOGGER.info("getMemberReceipt Reg for " + this.currentFM);
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase", pb.getProfile());
 		
 		Person tper = pb.getProfile().getPerson();
@@ -158,7 +158,7 @@ public class FamilyMemberBean  implements Serializable,  MailableObject  {
 	
 	private void buildMailBody(ScahaDatabase _db, Person tper, Person per, String _strUSA, String _strMem) {
 
-		//LOGGER.info("buildMailBody Reg for " + this.currentFM + ":tp:" + tper + ":per:" + per + ":usar:" + _strUSA + ":mem:" + _strMem);
+		LOGGER.info("buildMailBody Reg for " + this.currentFM + ":tp:" + tper + ":per:" + per + ":usar:" + _strUSA + ":mem:" + _strMem);
 		List<String> myTokens = new ArrayList<String>();
 		myTokens.add("PFIRST:" + per.getsFirstName());
 		myTokens.add("PLAST:" + per.getsLastName());
@@ -168,7 +168,7 @@ public class FamilyMemberBean  implements Serializable,  MailableObject  {
 		myTokens.add("SCAHANUM:" + _strMem);
 		myTokens.add("SEASON:" + scaha.getScahaSeasonList().getCurrentSeason().getDescription());
 		
-		//LOGGER.info("buildMailBody Prepare for BC.." );
+		LOGGER.info("buildMailBody Prepare for BC.." );
 			
 		try {
 			if (_db.isPersonPlayer(per.ID)) {
@@ -185,7 +185,7 @@ public class FamilyMemberBean  implements Serializable,  MailableObject  {
 			e.printStackTrace();
 		}
 		
-		//LOGGER.info("buildMailBody:about to merge" + this.currentFM);
+		LOGGER.info("buildMailBody:about to merge" + this.currentFM);
 		this.MergedBody =  Utils.mergeTokens(mail_seasonpass,myTokens);
 		
 	}

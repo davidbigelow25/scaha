@@ -125,7 +125,7 @@ public class managerosterBean implements Serializable {
 						tempteamlist = null;
 					}
 				}
-				//LOGGER.info("We have results for division list");
+				LOGGER.info("We have results for division list");
 				//cs.close();
 				csinner.close();
 			}

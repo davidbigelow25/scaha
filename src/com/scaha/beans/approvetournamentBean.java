@@ -230,7 +230,7 @@ public class approvetournamentBean implements Serializable, MailableObject {
     				
     				templist.add(tournament);
 				}
-				//LOGGER.info("We have results for all tourney list ");
+				LOGGER.info("We have results for all tourney list ");
 			}
 			
 			
@@ -283,7 +283,7 @@ public class approvetournamentBean implements Serializable, MailableObject {
 			if (db.setAutoCommit(false)) {
 			
 				//Need to provide info to the stored procedure to save or update
- 				//LOGGER.info("remove tournament from list");
+ 				LOGGER.info("remove tournament from list");
  				CallableStatement cs = db.prepareCall("CALL scaha.setTournamentApproved(?)");
     		    cs.setInt("tourneyid", tourneyid);
     		    cs.executeQuery();
@@ -306,7 +306,7 @@ public class approvetournamentBean implements Serializable, MailableObject {
     		    this.setSubject(tournament.getTournamentname() + " Approved for " + tournament.getRequestingteam());
     		    
     			SendMailSSL mail = new SendMailSSL(this);
-    			//LOGGER.info("Finished creating mail object for " + tournament.getTournamentname() + " Approved for " + tournament.getRequestingteam());
+    			LOGGER.info("Finished creating mail object for " + tournament.getTournamentname() + " Approved for " + tournament.getRequestingteam());
     			
     			//need to pass the approved status for the email
     			this.selectedtournament.setStatus("Approved");
@@ -343,7 +343,7 @@ public class approvetournamentBean implements Serializable, MailableObject {
 			if (db.setAutoCommit(false)) {
 			
 				//Need to provide info to the stored procedure to save or update
- 				//LOGGER.info("decline tournament");
+ 				LOGGER.info("decline tournament");
  				CallableStatement cs = db.prepareCall("CALL scaha.setTournamentDeclined(?)");
     		    cs.setInt("tourneyid", tourneyid);
     		    cs.executeQuery();
@@ -366,7 +366,7 @@ public class approvetournamentBean implements Serializable, MailableObject {
     		    this.setSubject(tournament.getTournamentname() + " Declined for " + tournament.getRequestingteam());
     		    
     			SendMailSSL mail = new SendMailSSL(this);
-    			//LOGGER.info("Finished creating mail object for " + tournament.getTournamentname() + " Declined for " + tournament.getRequestingteam());
+    			LOGGER.info("Finished creating mail object for " + tournament.getTournamentname() + " Declined for " + tournament.getRequestingteam());
     			
     			//need to pass the approved status for the email
     			this.selectedtournament.setStatus("Declined");

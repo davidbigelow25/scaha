@@ -113,7 +113,7 @@ public class playerhistoryBean implements Serializable {
 				ps.setTeamname(teamname);
    				templist.add(ps);
 			}
-			//LOGGER.info("We have results for penalty history by player");
+			LOGGER.info("We have results for penalty history by player");
 			rs.close();
 			db.cleanup();
 	
@@ -172,7 +172,7 @@ public class playerhistoryBean implements Serializable {
         		tempresult.add(result);
     		}
     				
-    		//LOGGER.info("We have results for search criteria " + this.searchcriteria);
+    		LOGGER.info("We have results for search criteria " + this.searchcriteria);
     		rs.close();
     		db.cleanup();
     		

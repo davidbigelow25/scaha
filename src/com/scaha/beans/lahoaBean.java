@@ -41,7 +41,7 @@ public class lahoaBean implements Serializable  {
 	 @PostConstruct
 	 public void init() {
 		 
-		 //LOGGER.info(" *************** POST INIT FOR IceBean *****************");
+		 LOGGER.info(" *************** POST INIT FOR IceBean *****************");
 		 ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 		 Profile pro = pb.getProfile(); // logged in profile id..
 		 
@@ -59,7 +59,7 @@ public class lahoaBean implements Serializable  {
 			e.printStackTrace();
 		} finally {
 			db.free();
-			 //LOGGER.info(" *************** POST INIT FOR IceBean COMPLETED *****************");
+			 LOGGER.info(" *************** POST INIT FOR IceBean COMPLETED *****************");
 		}
 	 }
 

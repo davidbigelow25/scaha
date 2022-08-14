@@ -528,7 +528,7 @@ public class releaseBean implements Serializable, MailableObject {
         				
         				templist.add(club);
     				}
-    				//LOGGER.info("We have results for club list");
+    				LOGGER.info("We have results for club list");
     			}
     			rs.close();
     			db.cleanup();
@@ -603,7 +603,7 @@ public class releaseBean implements Serializable, MailableObject {
         				}
         				
     				}
-    				//LOGGER.info("We have results for club list");
+    				LOGGER.info("We have results for club list");
     			}
     			rs.close();
     			db.cleanup();
@@ -661,7 +661,7 @@ public class releaseBean implements Serializable, MailableObject {
         				division.setDivisionname(divisionname);
         				templist.add(division);
     				}
-    				//LOGGER.info("We have results for club list");
+    				LOGGER.info("We have results for club list");
     			}
     			rs.close();
     			db.cleanup();
@@ -716,7 +716,7 @@ public class releaseBean implements Serializable, MailableObject {
         				skill.setSkilllevelname(skilllevelname);
         				templist.add(skill);
     				}
-    				//LOGGER.info("We have results for club list");
+    				LOGGER.info("We have results for club list");
     			}
     			rs.close();
     			db.cleanup();
@@ -776,7 +776,7 @@ public class releaseBean implements Serializable, MailableObject {
         				personid = rs.getInt("idperson");
         			}
     				rs.close();
-    				//LOGGER.info("We have results for player details by player id");
+    				LOGGER.info("We have results for player details by player id");
     			}
     			db.cleanup();
     		} else {
@@ -820,7 +820,7 @@ public class releaseBean implements Serializable, MailableObject {
 					
 					}
 				rs.close();
-				//LOGGER.info("We have results for club for a profile");
+				LOGGER.info("We have results for club for a profile");
 			}
 			
 			db.cleanup();
@@ -838,7 +838,7 @@ public class releaseBean implements Serializable, MailableObject {
 					this.clubname = rs.getString("clubname");
 				}
 				rs.close();
-				//LOGGER.info("We have results for club name");
+				LOGGER.info("We have results for club name");
 			}
 			
 			db.cleanup();
@@ -939,7 +939,7 @@ public class releaseBean implements Serializable, MailableObject {
     		    cs.executeQuery();
     			
     		    //need to get display values for all lookup fields for the email sent.
-    		    //LOGGER.info("Sending email to club registrar, family, and scaha registrar");
+    		    LOGGER.info("Sending email to club registrar, family, and scaha registrar");
     			cs = db.prepareCall("CALL scaha.getReleaseLookups(?,?,?,?,?,?)");
     		    cs.setInt("reason", Integer.parseInt(this.selectedreason));
     		    if (!this.displayfreeandclearonly){
@@ -983,7 +983,7 @@ public class releaseBean implements Serializable, MailableObject {
     					this.displayacceptingskilllevel = rs.getString("levelsname");
     					this.displayfinancial = rs.getString("financial");
     				}
-    				//LOGGER.info("We have results for release info");
+    				LOGGER.info("We have results for release info");
     			}
     			rs.close();
     			db.cleanup();
@@ -1015,7 +1015,7 @@ public class releaseBean implements Serializable, MailableObject {
     		    if (this.displayfreeandclearonly){
 				
 	    		    //next receiving club
-	    			//LOGGER.info("Sending email to club registrar, family, and scaha registrar");
+	    			LOGGER.info("Sending email to club registrar, family, and scaha registrar");
 	    			cs = db.prepareCall("CALL scaha.getClubRegistrarEmail(?)");
 	    		    cs.setInt("iclubid", Integer.parseInt(this.getSelectedacceptingclub()));
 	    		    rs = cs.executeQuery();
@@ -1056,7 +1056,7 @@ public class releaseBean implements Serializable, MailableObject {
     		    this.setSubject(this.firstname + " " + this.lastname + " Released from " + this.clubname);
     		    
 				SendMailSSL mail = new SendMailSSL(this);
-				//LOGGER.info("Finished creating mail object for Release");
+				LOGGER.info("Finished creating mail object for Release");
 				mail.sendMail();
 				
     		    

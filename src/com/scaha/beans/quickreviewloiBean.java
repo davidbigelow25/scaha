@@ -233,7 +233,7 @@ public class quickreviewloiBean implements Serializable {
         				oplayer = null;
     				}
     				
-    				//LOGGER.info("We have results for lois for the lookup date" + date.toString());
+    				LOGGER.info("We have results for lois for the lookup date" + date.toString());
     				
     			}
     			rs.close();	
@@ -312,7 +312,7 @@ public class quickreviewloiBean implements Serializable {
 
         				club = null;
     				}
-    				//LOGGER.info("We have results for division list");
+    				LOGGER.info("We have results for division list");
     			}
     			rs.close();
     			db.cleanup();
@@ -370,7 +370,7 @@ public class quickreviewloiBean implements Serializable {
 			if (db.setAutoCommit(false)) {
 			
 				//Need to provide info to the stored procedure to save or update
- 				//LOGGER.info("verify loi code provided");
+ 				LOGGER.info("verify loi code provided");
  				CallableStatement cs = db.prepareCall("CALL scaha.settoVoid(?)");
     		    cs.setInt("playerid", Integer.parseInt(sidplayer));
     		    cs.executeQuery();
@@ -379,8 +379,8 @@ public class quickreviewloiBean implements Serializable {
     			db.cleanup();
  				
     		    //logging 
-    			//LOGGER.info("We are voiding the loi for player id:" + sidplayer);
-    		    
+    			LOGGER.info("We are voiding the loi for player id:" + sidplayer);
+
     			FacesContext context = FacesContext.getCurrentInstance();  
                 context.addMessage(null, new FacesMessage("Successful", "You have voided the loi for:" + playname));
 			} else {
@@ -431,11 +431,11 @@ public class quickreviewloiBean implements Serializable {
 			if (db.setAutoCommit(false)) {
 			
 				//Need to provide info to the stored procedure to save or update
- 				//LOGGER.info("verify loi code provided");
+ 				LOGGER.info("verify loi code provided");
  				CallableStatement cs = db.prepareCall("CALL scaha.confirmCoachLoi(?)");
     		    cs.setInt("icoachid", Integer.parseInt(sidplayer));
     		    cs.executeQuery();
-    		    //LOGGER.info("We have confirmed loi for player id:" + sidplayer);
+    		    LOGGER.info("We have confirmed loi for player id:" + sidplayer);
     			
     			db.commit();
     			db.cleanup();
@@ -479,11 +479,11 @@ public class quickreviewloiBean implements Serializable {
 				if (db.setAutoCommit(false)) {
 				
 					//Need to provide info to the stored procedure to save or update
-	 				//LOGGER.info("confirming player :" + sidplayer);
+	 				LOGGER.info("confirming player :" + sidplayer);
 	 				CallableStatement cs = db.prepareCall("CALL scaha.confirmCoachLoi(?)");
 	    		    cs.setInt("icoachid", sidplayer);
 	    		    cs.executeQuery();
-	    		    //LOGGER.info("We have confirmed loi for player id:" + sidplayer.toString());
+	    		    LOGGER.info("We have confirmed loi for player id:" + sidplayer.toString());
 	    			
 	    			db.commit();
 	    			db.cleanup();
@@ -522,7 +522,7 @@ public class quickreviewloiBean implements Serializable {
 			if (db.setAutoCommit(false)) {
 			
 				//Need to provide info to the stored procedure to save or update
- 				//LOGGER.info("loading loi counts");
+ 				LOGGER.info("loading loi counts");
  				CallableStatement cs = db.prepareCall("CALL scaha.loadLoiCounts()");
     		    rs = cs.executeQuery();
     			
@@ -532,7 +532,7 @@ public class quickreviewloiBean implements Serializable {
     					this.completedloicount = rs.getString("completedcount");
         				this.totalloicount = rs.getString("totalcount");
         			}
-    				//LOGGER.info("We have results for loi counts");
+    				LOGGER.info("We have results for loi counts");
     			}
     			rs.close();
     			db.cleanup();

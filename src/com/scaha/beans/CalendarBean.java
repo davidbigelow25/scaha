@@ -64,7 +64,7 @@ public class CalendarBean implements Serializable{
     				ci.setOrder(i);
     				templist.add(ci);
 				}
-				//LOGGER.info("We have results for calendar list");
+				LOGGER.info("We have results for calendar list");
 			}
    			rs.close();
    			db.cleanup();

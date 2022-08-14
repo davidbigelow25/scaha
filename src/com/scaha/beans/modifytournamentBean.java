@@ -186,7 +186,7 @@ public class modifytournamentBean implements Serializable{
 			if (db.setAutoCommit(false)) {
 			
 				//Need to provide info to the stored procedure to save or update
- 				//LOGGER.info("add tournament to scaha list");
+ 				LOGGER.info("add tournament to scaha list");
  				CallableStatement cs = db.prepareCall("CALL scaha.addScahaTournament(?,?,?,?,?,?,?,?)");
     		    cs.setString("tourneyname", this.tournamentname);
     		    cs.setString("startdate", this.startdate);
@@ -536,7 +536,7 @@ public class modifytournamentBean implements Serializable{
         				link.setLinklabel(description);
         				templist.add(link);
     				}
-    				//LOGGER.info("We have results for get venue list");
+    				LOGGER.info("We have results for get venue list");
     			}
     			rs.close();
     			cs.close();

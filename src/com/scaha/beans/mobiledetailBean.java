@@ -113,7 +113,7 @@ public class mobiledetailBean implements Serializable{
     				xmlstring = xmlstring + "<pims>" + pims + "</pims>";
     				xmlstring = xmlstring + "</homeplayer>";
 				}
-				//LOGGER.info("We have results for scaha games schedule for review by statistician for schedule:" + this.selectedgame);
+				LOGGER.info("We have results for scaha games schedule for review by statistician for schedule:" + this.selectedgame);
 			}
 			
 			//.get home goalies details
@@ -146,7 +146,7 @@ public class mobiledetailBean implements Serializable{
     				xmlstring = xmlstring + "<pims>" + pims + "</pims>";
     				xmlstring = xmlstring + "</homegoalie>";
 				}
-				//LOGGER.info("We have results for scaha games schedule for review by statistician for schedule:" + this.selectedgame);
+				LOGGER.info("We have results for scaha games schedule for review by statistician for schedule:" + this.selectedgame);
 			}
 			
 			//get away players
@@ -175,7 +175,7 @@ public class mobiledetailBean implements Serializable{
     				xmlstring = xmlstring + "<pims>" + pims + "</pims>";
     				xmlstring = xmlstring + "</awayplayer>";
 				}
-				//LOGGER.info("We have results for scaha games schedule for review by statistician for schedule:" + this.selectedgame);
+				LOGGER.info("We have results for scaha games schedule for review by statistician for schedule:" + this.selectedgame);
 			}
 			
 			//get away goalies
@@ -208,7 +208,7 @@ public class mobiledetailBean implements Serializable{
     				xmlstring = xmlstring + "<pims>" + pims + "</pims>";
     				xmlstring = xmlstring + "</homegoalie>";
 				}
-				//LOGGER.info("We have results for scaha games schedule for review by statistician for schedule:" + this.selectedgame);
+				LOGGER.info("We have results for scaha games schedule for review by statistician for schedule:" + this.selectedgame);
 			}
 			
 			xmlstring = xmlstring + "</players>";

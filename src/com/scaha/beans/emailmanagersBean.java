@@ -184,8 +184,8 @@ public class emailmanagersBean implements Serializable, MailableObject {
 	 */
 	public void setSeasons(GeneralSeasonList seasons) {
 		this.seasons = seasons;
-		//LOGGER.info("Here is our General Season:");
-		//LOGGER.info(this.seasons.toString());
+		LOGGER.info("Here is our General Season:");
+		LOGGER.info(this.seasons.toString());
 	}
 
 
@@ -220,19 +220,19 @@ public class emailmanagersBean implements Serializable, MailableObject {
 	}
 
 	public void onSeasonChange() {
-		//LOGGER.info("season change request detected new id is:" + this.selectedseasonid);
+		LOGGER.info("season change request detected new id is:" + this.selectedseasonid);
 		this.selectedseason = this.seasons.getGeneralSeason(this.selectedseasonid);
 		refreshScheduleList();
 	}
 
 	public void onScheduleChange() {
-		//LOGGER.info("season change request detected new id is:" + this.selectedseasonid);
+		LOGGER.info("season change request detected new id is:" + this.selectedseasonid);
 		playersDisplay();
 	}
 
 	public void refreshSeasonList() {
 
-		//LOGGER.info("Getting season List");
+		LOGGER.info("Getting season List");
 		//
 		// ok.. lets do the seasons now..
 		//
@@ -245,7 +245,7 @@ public class emailmanagersBean implements Serializable, MailableObject {
 		//
 		// ok.. lets do the schedules now..
 		//
-		//LOGGER.info("Refreshing Schedule List for season:" + this.selectedseason);
+		LOGGER.info("Refreshing Schedule List for season:" + this.selectedseason);
 		this.schedulelist = null;
 		this.schedules = null;
 		this.partlist = null;
@@ -263,7 +263,7 @@ public class emailmanagersBean implements Serializable, MailableObject {
 			}
 
 
-			//LOGGER.info("season schedule is: " + schedules);
+			LOGGER.info("season schedule is: " + schedules);
 
 			this.schedules = this.selectedseason.getSchedList();
 //			LOGGER.info("season schedule is: " + schedules);
@@ -272,7 +272,7 @@ public class emailmanagersBean implements Serializable, MailableObject {
 				if (this.schedules.getRowCount() > 0) {
 					this.schedulelist = this.getScheduleList();
 				} else {
-					//LOGGER.info("Refresh.. zero list.. leaving null:" + this.schedules.getRowCount());
+					LOGGER.info("Refresh.. zero list.. leaving null:" + this.schedules.getRowCount());
 				}
 			}
 		}
@@ -310,7 +310,7 @@ public class emailmanagersBean implements Serializable, MailableObject {
 					tempresult.add(oplayer);
 				}
 
-				//LOGGER.info("We have results for lois for the team: " + selectedteam);
+				LOGGER.info("We have results for playerdisplay");
 
 			}
 
@@ -428,7 +428,7 @@ public class emailmanagersBean implements Serializable, MailableObject {
 				this.setSubject(this.subject);
 				this.getTextBody();
 				SendMailSSL mail = new SendMailSSL(this);
-				//LOGGER.info("Finished creating mail object for " + this.firstname + " " + this.lastname + " LOI with " + this.getClubName());
+				LOGGER.info("Finished creating mail email managers object for ");
 				mail.sendMail();
 
 				to = "";

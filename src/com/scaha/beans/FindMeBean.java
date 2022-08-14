@@ -42,14 +42,14 @@ public class FindMeBean implements Serializable, MailableObject  {
 	
 	 @PostConstruct
 	 public void init() {
-   		//LOGGER.info("*************** FIND ME BEAN INIT *************");
+   		LOGGER.info("*************** FIND ME BEAN INIT *************");
 	 }
 
 
 	 
 	 public void meSearch(){
 		    
-		 	//LOGGER.info("*************** meSearch(" +  this.searchcriteria + ") called *************");
+		 	LOGGER.info("*************** meSearch(" +  this.searchcriteria + ") called *************");
 
 		 	ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 	    	
@@ -123,7 +123,7 @@ public class FindMeBean implements Serializable, MailableObject  {
 	public String send() {
 		SendMailSSL mail = new SendMailSSL(this);
 		mail.sendMail();
-		//LOGGER.info("Sent out Account Info to " + this.getToMailAddress());
+		LOGGER.info("Sent out Account Info to " + this.getToMailAddress());
 		FacesContext context = FacesContext.getCurrentInstance();
 		context.getExternalContext().getFlash().setKeepMessages(true);			
 		context.addMessage(

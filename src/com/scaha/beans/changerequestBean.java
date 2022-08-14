@@ -125,7 +125,7 @@ public class changerequestBean implements Serializable{
     				
     				templist.add(request);
 				}
-				//LOGGER.info("We have results for all request lists");
+				LOGGER.info("We have results for all request lists");
 			}
 			
 			

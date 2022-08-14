@@ -92,7 +92,7 @@ public class coachlinksBean implements Serializable {
 					
 					tempcerts.add(link);
     					}
-				//LOGGER.info("We have results for certification list");
+				LOGGER.info("We have results for certification list");
 			}
 			rs.close();
 			
@@ -114,7 +114,7 @@ public class coachlinksBean implements Serializable {
 					
 					tempinfo.add(link);
     					}
-				//LOGGER.info("We have results for certification list");
+				LOGGER.info("We have results for certification list");
 			}
 			
 			//first get screening links
@@ -135,7 +135,7 @@ public class coachlinksBean implements Serializable {
 					
 					tempscreen.add(link);
     					}
-				//LOGGER.info("We have results for screening list");
+				LOGGER.info("We have results for screening list");
 			}
 			
 			db.cleanup();

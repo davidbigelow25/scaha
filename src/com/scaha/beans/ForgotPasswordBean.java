@@ -52,7 +52,7 @@ public class ForgotPasswordBean implements Serializable, MailableObject {
 				
 			}
 
-			//LOGGER.info("Forgot Password.. got a good e-mail...");
+			LOGGER.info("Forgot Password.. got a good e-mail...");
 			
 			db.cleanup();
 			v.clear();
@@ -67,10 +67,10 @@ public class ForgotPasswordBean implements Serializable, MailableObject {
 			
 			db.free();
 
-			//LOGGER.info("Forgot Password.. got a good e-mail from db: " + this.getToMailAddress());
+			LOGGER.info("Forgot Password.. got a good e-mail from db: " + this.getToMailAddress());
 			SendMailSSL mail = new SendMailSSL(this);
 			mail.sendMail();
-			//LOGGER.info("Sent out Password to " + this.getToMailAddress());
+			LOGGER.info("Sent out Password to " + this.getToMailAddress());
 			FacesContext context = FacesContext.getCurrentInstance();
 			context.getExternalContext().getFlash().setKeepMessages(true);			
 			context.addMessage(

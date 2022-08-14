@@ -40,7 +40,7 @@ public class MapBean implements Serializable  {
 			lat = Double.parseDouble(coord[0].trim());
 			lng = Double.parseDouble(coord[1].trim());
 		}
-		//LOGGER.info("Creating Map Model for Venue " + currentvenue + ".  Coords are:" +  lat + ":" + lng);
+		LOGGER.info("Creating Map Model for Venue " + currentvenue + ".  Coords are:" +  lat + ":" + lng);
         //Shared coordinates
         LatLng coord1 = new LatLng(lat,lng);
          

@@ -200,7 +200,7 @@ public class printscahagamesBean implements Serializable{
     				tempresult.add(ogame);
     				
 				}
-				//LOGGER.info("We have results for scaha games schedule for review by statistician for schedule:" + this.selectedschedule);
+				LOGGER.info("We have results for scaha games schedule for review by statistician for schedule:" + this.selectedschedule);
 			}
 			
 			
@@ -312,7 +312,7 @@ public class printscahagamesBean implements Serializable{
 		pb.setSelectedlivegame(lg);
 		pb.setLivegameeditreturn("reviewscahagames.xhtml");
 		
-		 //LOGGER.info("!!!!! Real Selected Game is" + selectedlivegame);
+		 LOGGER.info("!!!!! Real Selected Game is" + lg);
 		  
 	     ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
 	     try {
@@ -344,7 +344,7 @@ public class printscahagamesBean implements Serializable{
 					this.setVenueid(rs.getInt("idvenue"));
 					}
 				rs.close();
-				//LOGGER.info("We have results for club for a profile");
+				LOGGER.info("We have results for club for a profile");
 			}
 			db.cleanup();
     	} catch (SQLException e) {

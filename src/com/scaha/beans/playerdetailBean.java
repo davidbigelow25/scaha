@@ -236,7 +236,7 @@ public class playerdetailBean implements Serializable{
 					this.jerseynumber=rs.getString("jerseynumber");
 					this.isgoalie=rs.getBoolean("isgoalie");
 				}
-				//LOGGER.info("We have selected details for person id:" + gameid);
+				LOGGER.info("We have selected details for person id:" + gameid);
 			}
 			rs.close();
 			
@@ -262,7 +262,7 @@ public class playerdetailBean implements Serializable{
 					score.setPpg(rs.getString("shutouts"));
 					tempgoalieseasonstats.add(score);
 				}
-				//LOGGER.info("We have selected season history for person id:" + gameid);
+				LOGGER.info("We have selected season history for person id:" + gameid);
 			}
 			
 			rs.close();
@@ -290,7 +290,7 @@ public class playerdetailBean implements Serializable{
 					score.setGwg(rs.getString("gwg"));
 					tempseasonstats.add(score);
 				}
-				//LOGGER.info("We have selected season history for person id:" + gameid);
+				LOGGER.info("We have selected season history for person id:" + gameid);
 			}
 
 			rs.close();
@@ -322,7 +322,7 @@ public class playerdetailBean implements Serializable{
 							
 					tempcurrentstats.add(score2);
 				}
-				//LOGGER.info("We have selected game by game scoring for person id:" + gameid);
+				LOGGER.info("We have selected game by game scoring for person id:" + gameid);
 			}
 
 			//when rosterid is for a goalie
@@ -346,7 +346,7 @@ public class playerdetailBean implements Serializable{
 
 					tempgoaliecurrentstats.add(score2);
 				}
-				//LOGGER.info("We have selected game by game scoring for person id:" + gameid);
+				LOGGER.info("We have selected game by game scoring for person id:" + gameid);
 			}
 			rs.close();
 			cs.close();

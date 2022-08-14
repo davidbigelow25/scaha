@@ -139,7 +139,7 @@ public class MailTreeBean implements Serializable, MailableObject {
     	// chances are.. teams may or may not be set yet.. 
     	//
 		if (_cl.getScahaTeams() == null) {
-			//LOGGER.info("The Selected Club Has no Teams Set!:" + _cl);
+			LOGGER.info("The Selected Club Has no Teams Set!:" + _cl);
 
 			GeneralSeason scahags = scaha.getScahaSeasonList().getCurrentSeason();
 			ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase", pb.getProfile());
@@ -214,7 +214,7 @@ public class MailTreeBean implements Serializable, MailableObject {
     		// This is only used for Parents tied to a club for a particular season..
     		//
     		for(TreeNode node : selectedNodes) {  
-    			//LOGGER.info(node.getData().getClass().getName());
+    			LOGGER.info(node.getData().getClass().getName());
     			Object obj = node.getData();
     			if (obj instanceof String && node.getData().toString().contains("All Club Families")) {
     				Club c = (Club)node.getParent().getData();
@@ -255,14 +255,14 @@ public class MailTreeBean implements Serializable, MailableObject {
 
     public void sendMail() {
     	
-    	//LOGGER.info("Email: going to send quickmail " + this.subject + ":" + this.body);
+    	LOGGER.info("Email: going to send quickmail " + this.subject + ":" + this.body);
     	
     	this.collectEmails();
 		SendMailSSL mail = new SendMailSSL(this);
 		mail.sendMail();
 		
 		for (InternetAddress s : this.myEmails) {
-	    	//LOGGER.info("Email: going to send quickmail to the following:" + s);
+	    	LOGGER.info("Email: going to send quickmail to the following:" + s);
 		}
     	FacesContext context = FacesContext.getCurrentInstance();  
 		context.addMessage(null, new FacesMessage("Successful", "Your iSite Quick Message has been sent out to all target members."));  
@@ -334,7 +334,7 @@ public class MailTreeBean implements Serializable, MailableObject {
 		this.subject = null;
 		this.setCcemail(null);
 		if (this.selectedNodes == null) {
-			//LOGGER.info("selectedNode are null.." );
+			LOGGER.info("selectedNode are null.." );
 			return;
 		}
 		
@@ -352,11 +352,11 @@ public class MailTreeBean implements Serializable, MailableObject {
 	
 	private void resetChildrenTree(TreeNode _tn)	{
 		for (TreeNode node : _tn.getChildren()) {
-			//LOGGER.info("Before NODE:" + node.toString() + "=" + node.isSelected());
+			LOGGER.info("Before NODE:" + node.toString() + "=" + node.isSelected());
 			node.setSelected(false);
 			node.setPartialSelected(false);
 			node.setExpanded(false);
-			//LOGGER.info("After NODE:" + node.toString() + "=" + node.isSelected());
+			LOGGER.info("After NODE:" + node.toString() + "=" + node.isSelected());
 			resetParentTree(node);
 			this.resetChildrenTree(node);
 		}

@@ -76,7 +76,7 @@ public class LeaderboardBean implements Serializable,  MailableObject {
 	 @PostConstruct
 	 public void init() {
 		 
-		 //LOGGER.info(" *************** START :POST INIT FOR LEADERBOARD BEAN *****************");
+		 LOGGER.info(" *************** START :POST INIT FOR LEADERBOARD BEAN *****************");
 		 //
 		 // for now.. we will borrow what was from scaha for schedule.
 		 // in the end.. we want to pull the schedule based upon the season they choose..
@@ -89,19 +89,19 @@ public class LeaderboardBean implements Serializable,  MailableObject {
 		 this.selectedseasonid = selectedseason.ID;
 		 this.refreshScheduleList();
 		 
-		 //LOGGER.info(" *************** FINISH :POST INIT FOR LEADERBOARD BEAN *****************");
+		 LOGGER.info(" *************** FINISH :POST INIT FOR LEADERBOARD BEAN *****************");
 	 }
 	
 	 @PreDestroy 
 	 public void cleanup() {
-		 //LOGGER.info(" *************** START :PRE DESTROY FOR LEADERBOARD BEAN *****************");
+		 LOGGER.info(" *************** START :PRE DESTROY FOR LEADERBOARD BEAN *****************");
 	 }
 	
 	/**
 	 * Recalc schedule for season..
 	 */
 	public void onSeasonChange() {
-		//LOGGER.info("season change request detected new id is:" + this.selectedseasonid);
+		LOGGER.info("season change request detected new id is:" + this.selectedseasonid);
 		this.selectedseason = this.seasons.getGeneralSeason(this.selectedseasonid);
 		refreshScheduleList();
 	}
@@ -112,7 +112,7 @@ public class LeaderboardBean implements Serializable,  MailableObject {
 	public void onScheduleChange() {
 		
 		this.selectedschedule = this.schedules.getSchedule(this.selectedscheduleid);
-		//LOGGER.info("schedule change request detected new id is:" + this.selectedscheduleid + ":" + this.selectedschedule);
+		LOGGER.info("schedule change request detected new id is:" + this.selectedscheduleid + ":" + this.selectedschedule);
 		this.partlist = null;
 		if (this.selectedschedule != null) {
 			this.partlist = this.selectedschedule.getPartlist();
@@ -128,7 +128,7 @@ public class LeaderboardBean implements Serializable,  MailableObject {
 	public void onPartChange() {
 		
 		this.selectedpart = this.getPartlist().getByKey(this.selectedpartid);
-		//LOGGER.info("participant change request detected new id is:" + this.selectedpartid + ":" + this.selectedpart + " for sched:" + this.selectedschedule);
+		LOGGER.info("participant change request detected new id is:" + this.selectedpartid + ":" + this.selectedpart + " for sched:" + this.selectedschedule);
 		if (this.selectedpart == null) {
 			this.refreshLeaderBoard(0);
 		} else {
@@ -141,7 +141,7 @@ public class LeaderboardBean implements Serializable,  MailableObject {
 		//
 		// ok.. lets do the schedules now..
 		//
-		//LOGGER.info("Refreshing Schedule List for season:" + this.selectedseason);
+		LOGGER.info("Refreshing Schedule List for season:" + this.selectedseason);
 		this.schedulelist = null;	
 		this.schedules = null;
 		this.partlist = null;
@@ -151,7 +151,8 @@ public class LeaderboardBean implements Serializable,  MailableObject {
 
 			this.schedules = this.selectedseason.getSchedList();
 			
-			//LOGGER.info("season schedule is: " + schedules);
+
+			LOGGER.info("season schedule is: " + schedules);
 
 			this.schedules = this.selectedseason.getSchedList();
 
@@ -159,7 +160,7 @@ public class LeaderboardBean implements Serializable,  MailableObject {
 			  if (this.schedules.getRowCount() > 0) {
 				  this.schedulelist = this.getScheduleList();
 			  }	else {
-				//LOGGER.info("Refresh.. zero list.. leaving null:" + this.schedules.getRowCount());
+				LOGGER.info("Refresh.. zero list.. leaving null:" + this.schedules.getRowCount());
 			  } 
 			}
 		}
@@ -169,7 +170,7 @@ public class LeaderboardBean implements Serializable,  MailableObject {
 	
 	public void refreshSeasonList() {
 
-		//LOGGER.info("Getting season List");
+		LOGGER.info("Getting season List");
 		//
 		// ok.. lets do the seasons now..
 		//
@@ -182,7 +183,7 @@ public class LeaderboardBean implements Serializable,  MailableObject {
 	public void refreshLeaderBoard(int _idTeam) {
 		 ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 		 Profile pro = pb.getProfile(); // logged in profile id..
-		 //LOGGER.info("REFRESHING LEADER BOARD FOR: " + this.selectedscheduleid + ", TeamID:" + _idTeam);
+		 LOGGER.info("REFRESHING LEADER BOARD FOR: " + this.selectedscheduleid + ", TeamID:" + _idTeam);
 		 try {
 			 PreparedStatement ps = db.prepareStatement("call scaha.getPlayerLeaderBoard(?,?)");
 			 ps.setInt(1,selectedscheduleid);
@@ -297,8 +298,8 @@ public class LeaderboardBean implements Serializable,  MailableObject {
 	 */
 	public void setSeasons(GeneralSeasonList seasons) {
 		this.seasons = seasons;
-		//LOGGER.info("Here is our General Season:");
-		//LOGGER.info(this.seasons.toString());
+		LOGGER.info("Here is our General Season:");
+		LOGGER.info(this.seasons.toString());
 	}
 
 	

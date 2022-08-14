@@ -38,14 +38,6 @@
 	   	<h:outputText value="SCAHA" style="color:#FFCC00;font-size:36px;" />  
 	</p:notificationBar>
 	
-	<!-- 1st row is for error messages or alerts or warnings -->
-	<b:row>
-		<b:column span="12">
-			
-			<b:messages id="messages" showDetail="true" autoUpdate="true" closable="false" />
-			
-		</b:column>
-	</b:row>
 	<b:row>
 		<b:column span="12">
 			<b:panelGrid colSpans="1,4,3,2,2," id="panelgrid" rendered="#{!managerBean.displaymultiple}">
@@ -71,12 +63,59 @@
 				</b:panelGrid>
 			
 				<br></br>
+			<!--<a id="atrigger" href="#amodal" data-toggle="modal">Trigger (HTML A tag)</a>-->
 		</b:column>
 	</b:row>
+	<!-- 1st row is for  alerts with video links -->
+	<b:row>
+		<b:column span="12">
+			<b:panelGrid colSpans="11,1" id="panelgridforhelp" >
+				<b:panel collapsible="true" look="warning"
+						 large-screen="full-width"
+						 medium-screen="half"
+						 small-screen="one-third"
+						 tiny-screen="one-third"
+
+				>
+					<f:facet name="heading">
+						<h:outputText style="color:white" value="To Do Item's"/>
+					</f:facet>
+
+					<b:dataTable
+						id="alerts"
+						var="alert"
+						value="#{managerBean.getDisplyalerts()}"
+						editable="false"
+						select="false"
+						selectionMode="single"
+						paginated="false"
+						border="true"
+						searching="false"
+				>
+						<b:dataTableColumn styleClass="mtrxColumn">
+							<f:facet name="header">
+								Alert Description
+							</f:facet>
+							<h:outputText value="#{alert.taskdescription}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn styleClass="mtrxColumn">
+							<f:facet name="header">
+								Help Video
+							</f:facet>
+							<a href="#{alert.videourl}" target="_blank"><h:outputText value="#{alert.videourltext}" /></a>
+						</b:dataTableColumn>
+					</b:dataTable>
+				</b:panel>
+				<!--<b:button  look="info" data-target="#amodal" data-toggle="modal"/>-->
+				<b:button iconAwesome="question" look="info" onclick="$('.modalPseudoClass2').modal()" />
+			</b:panelGrid>
+		</b:column>
+	</b:row>
+
 	<!-- 2nd row is 3 columns, column 1 is scaha games, column 2 is tournament and exhibition games, column 3 is penalty count and jersey numbers-->
 	<b:row>
 		<b:column span="9">
-			<b:panel id="panelteams" collapsible="false" look="primary" 
+			<b:panel id="panelteams" collapsible="false" look="primary"
 				large-screen="full-width"
 		    	medium-screen="half"
 		    	small-screen="one-third"
@@ -419,7 +458,38 @@
 			
 		</b:column>
 	</b:row>
-</b:form>	
+
+</b:form>
+	<b:modal id="amodal" title="Manager Portal Help" styleClass="modalPseudoClass2">
+		<b:dataTable
+				id="helplist"
+				var="help"
+				value="#{managerBean.getHelptopics()}"
+				editable="false"
+				select="false"
+				selectionMode="single"
+				paginated="false"
+				border="true"
+				searching="true"
+		>
+			<b:dataTableColumn styleClass="mtrxColumn">
+				<f:facet name="header">
+					Help Description
+				</f:facet>
+				<h:outputText value="#{help.helpdescription}" />
+			</b:dataTableColumn>
+			<b:dataTableColumn styleClass="mtrxColumn">
+				<f:facet name="header">
+					Video
+				</f:facet>
+				<a href="#{help.videourl}" target="_blank"><h:outputText value="#{help.videourltext}" /></a>
+			</b:dataTableColumn>
+		</b:dataTable>
+		<f:facet name="footer">
+			<b:button value="Close" dismiss="modal" />
+		</f:facet>
+
+	</b:modal>
 </b:container>
  
 

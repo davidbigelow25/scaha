@@ -244,7 +244,7 @@ public class nonscahagameBean implements Serializable {
 				this.idclub = rs.getInt("idclub");
 			}
 			rs.close();
-			//LOGGER.info("We have results for club for a profile");
+			LOGGER.info("We have results for club for a profile");
     	} catch (SQLException e) {
     		// TODO Auto-generated catch block
     		LOGGER.info("ERROR IN loading club by profile");
@@ -272,7 +272,7 @@ public class nonscahagameBean implements Serializable {
 				while (rs.next()) {
 					isschool = rs.getInt("result");
 				}
-				//LOGGER.info("We have results for club is a high school");
+				LOGGER.info("We have results for club is a high school");
 				db.cleanup();
 				
 				if (isschool.equals(0)){
@@ -342,7 +342,7 @@ public class nonscahagameBean implements Serializable {
 			db.commit();
 			db.cleanup();
     		
-			//LOGGER.info("manager has updated game:" + this.gameid);
+			LOGGER.info("manager has updated game:" + this.gameid);
     		
 			getTournamentGame();
 			
@@ -404,14 +404,14 @@ public class nonscahagameBean implements Serializable {
     				this.status = rs.getString("status");
     				
     			}
-				//LOGGER.info("We have results for tourney game by team:" + this.gameid);
+				LOGGER.info("We have results for tourney game by team:" + this.gameid);
 			}
 			
 			
 			rs.close();
 			db.cleanup();
     		
-			//LOGGER.info("loaded detail for tournament game:" + this.gameid);
+			LOGGER.info("loaded detail for tournament game:" + this.gameid);
     		
     	} catch (SQLException e) {
     		// TODO Auto-generated catch block
@@ -444,7 +444,7 @@ public class nonscahagameBean implements Serializable {
 			db.commit();
 			db.cleanup();
     		
-			//LOGGER.info("manager has updated game:" + this.gameid);
+			LOGGER.info("manager has updated game:" + this.gameid);
     		
 			getTournamentGame();
 			

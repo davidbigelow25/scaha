@@ -688,7 +688,7 @@ public class coachtoteamBean implements Serializable, MailableObject {
         				team.setCoachrole("No Role");
         				templist.add(team);
     				}
-    				//LOGGER.info("We have results for team list by club");
+    				LOGGER.info("We have results for team list by club");
     			}
     			rs.close();
     			cs.close();
@@ -824,7 +824,7 @@ public class coachtoteamBean implements Serializable, MailableObject {
         				
         				setCepmodulesselected(this.cepmoduledisplaystring);
         			}
-    				//LOGGER.info("We have results for player details by player id");
+    				LOGGER.info("We have results for player details by player id");
     			}
     			rs.close();
     			db.cleanup();
@@ -855,7 +855,7 @@ public class coachtoteamBean implements Serializable, MailableObject {
     					}
     					tempteams.add(teamname + ", " + newcoachrole);
     				}
-    				//LOGGER.info("We have results for teams for the coach");
+    				LOGGER.info("We have results for teams for the coach");
     			}
     			this.setBoysteams(tempteams);
     			teamname = "";
@@ -891,7 +891,7 @@ public class coachtoteamBean implements Serializable, MailableObject {
     					}
     					tempgirlteams.add(teamname + ", " + newcoachrole);
     				}
-    				//LOGGER.info("We have results for teams for the coach");
+    				LOGGER.info("We have results for teams for the coach");
     			}
     			this.setGirlsteams(tempgirlteams);
     			teamname = "";
@@ -935,7 +935,7 @@ public class coachtoteamBean implements Serializable, MailableObject {
     			//need to add to the coach roster table for each boys team
     			for(Team team : this.boysteamdatamodel) {  
     				if (!team.getCoachrole().equals("No Role")){
-						//LOGGER.info("updating coach roster record for:" + team.getIdteam());
+						LOGGER.info("updating coach roster record for:" + team.getIdteam());
 						cs.setInt("ipersonid", this.selectedcoach);
 		    		    cs.setInt("iteamid", Integer.parseInt(team.getIdteam()));
 		    		    cs.setInt("setyear", 2014);
@@ -973,7 +973,7 @@ public class coachtoteamBean implements Serializable, MailableObject {
     			//need to add to the coach roster table for each boys team
     			for(Team team : this.girlsteamdatamodel) {  
     				if (!team.getCoachrole().equals("No Role")){
-    					//LOGGER.info("updating coach roster record for:" + team.getIdteam());
+    					LOGGER.info("updating coach roster record for:" + team.getIdteam());
 						cs.setInt("ipersonid", this.selectedcoach);
 		    		    cs.setInt("iteamid", Integer.parseInt(team.getIdteam()));
 		    		    cs.setInt("setyear", 2014);
@@ -1058,7 +1058,7 @@ public class coachtoteamBean implements Serializable, MailableObject {
     			rs.close();
 		    	*/		
 	    			to = "";
-	    			//LOGGER.info("Sending email to club registrar, family, and scaha registrar");
+	    			LOGGER.info("Sending email to club registrar, family, and scaha registrar");
 	    			cs = db.prepareCall("CALL scaha.getClubRegistrarEmail(?)");
 	    		    cs.setInt("iclubid", this.clubid);
 	    		    rs = cs.executeQuery();
@@ -1118,7 +1118,7 @@ public class coachtoteamBean implements Serializable, MailableObject {
 	    		    this.setSubject(this.firstname + " " + this.lastname + " LOI with " + this.getClubName());
 	    		    
 					SendMailSSL mail = new SendMailSSL(this);
-					//LOGGER.info("Finished creating mail object for ");
+					LOGGER.info("Finished creating mail object for ");
 					mail.sendMail();
 
 					db.commit();
@@ -1174,7 +1174,7 @@ public class coachtoteamBean implements Serializable, MailableObject {
 					this.clubid = rs.getInt("idclub");
 					
 					}
-				//LOGGER.info("We have results for club for a profile");
+				LOGGER.info("We have results for club for a profile");
 			}
 			rs.close();
 			db.cleanup();
@@ -1191,7 +1191,7 @@ public class coachtoteamBean implements Serializable, MailableObject {
 				while (rs.next()) {
 					clubname = rs.getString("clubname");
 				}
-				//LOGGER.info("We have results for club name");
+				LOGGER.info("We have results for club name");
 			}
 			rs.close();
 			db.cleanup();

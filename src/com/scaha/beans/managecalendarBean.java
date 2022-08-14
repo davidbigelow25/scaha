@@ -98,7 +98,7 @@ public class managecalendarBean implements Serializable {
         				tempresult.add(ci);
     				}
     				
-    				//LOGGER.info("We have results for calendar items");
+    				LOGGER.info("We have results for calendar items");
     			}
     			rs.close();
     			db.cleanup();
@@ -151,7 +151,7 @@ public class managecalendarBean implements Serializable {
 			if (db.setAutoCommit(false)) {
 			
 				//Need to provide info to the stored procedure to save or update
- 				//LOGGER.info("remove calendar item from list");
+ 				LOGGER.info("remove calendar item from list");
  				CallableStatement cs = db.prepareCall("CALL scaha.deleteCalendar(?)");
     		    cs.setInt("calendarid", calenderid);
     		    cs.executeQuery();

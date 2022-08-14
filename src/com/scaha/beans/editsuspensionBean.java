@@ -245,7 +245,7 @@ public class editsuspensionBean implements Serializable {
 					this.teamid = isteamid;
 					this.livegameid = islivegameid;
 				}
-				//LOGGER.info("We have results for suspension id:" + this.suspensionid.toString());
+				LOGGER.info("We have results for suspension id:" + this.suspensionid.toString());
 			}
 			
 			
@@ -286,7 +286,7 @@ public class editsuspensionBean implements Serializable {
 			cs.setString("elgibility", this.eligibility);
     		cs.executeQuery();
 			
-			//LOGGER.info("set suspension for:" + this.suspensionid);
+			LOGGER.info("set suspension for:" + this.suspensionid);
 						
 			db.commit();
 			db.cleanup();
@@ -351,7 +351,7 @@ public class editsuspensionBean implements Serializable {
         		tempresult.add(result);
     		}
     				
-    		//LOGGER.info("We have results for search criteria " + this.searchcriteria);
+    		LOGGER.info("We have results for search criteria " + this.searchcriteria);
     		rs.close();
     		db.cleanup();
     		
@@ -391,7 +391,7 @@ public class editsuspensionBean implements Serializable {
 				tempresult.add(result);
 			}
 
-			//LOGGER.info("We have results for search criteria " + this.searchcriteria);
+			LOGGER.info("We have results for search criteria " + this.searchcriteria);
 			rs.close();
 			db.cleanup();
 
@@ -527,7 +527,7 @@ public class editsuspensionBean implements Serializable {
 			cs.setString("elgibility", this.eligibility);
 			cs.executeQuery();
 
-			//LOGGER.info("set suspension for:" + this.suspensionid);
+			LOGGER.info("set suspension for:" + this.suspensionid);
 			//then lets send the email
 			pp.pushPenalty();
 

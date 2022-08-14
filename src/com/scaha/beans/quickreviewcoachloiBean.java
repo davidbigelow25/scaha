@@ -186,7 +186,7 @@ public class quickreviewcoachloiBean implements Serializable {
         				ocoach = null;
     				}
     				rs.close();
-    				//LOGGER.info("We have results for last 10 lois");
+    				LOGGER.info("We have results for last 10 lois");
     				
     			}
     				
@@ -260,7 +260,7 @@ public class quickreviewcoachloiBean implements Serializable {
 
         				club = null;
     				}
-    				//LOGGER.info("We have results for division list");
+    				LOGGER.info("We have results for division list");
     			}
     			rs.close();
     			db.cleanup();
@@ -305,7 +305,7 @@ public class quickreviewcoachloiBean implements Serializable {
 			if (db.setAutoCommit(false)) {
 			
 				//Need to provide info to the stored procedure to save or update
- 				//LOGGER.info("verify loi code provided");
+ 				LOGGER.info("verify loi code provided");
  				CallableStatement cs = db.prepareCall("CALL scaha.setcoachtoVoid(?)");
     		    cs.setInt("coachid", Integer.parseInt(sidcoach));
     		    cs.executeQuery();
@@ -313,7 +313,7 @@ public class quickreviewcoachloiBean implements Serializable {
     			db.cleanup();
  				
     		    //logging 
-    			//LOGGER.info("We are voiding the loi for coach id:" + sidcoach);
+    			LOGGER.info("We are voiding the loi for coach id:" + sidcoach);
     		    
     			FacesContext context = FacesContext.getCurrentInstance();  
                 context.addMessage(null, new FacesMessage("Successful", "You have voided the loi for: " + coachname));
@@ -347,7 +347,7 @@ public class quickreviewcoachloiBean implements Serializable {
 			if (db.setAutoCommit(false)) {
 			
 				//Need to provide info to the stored procedure to save or update
- 				//LOGGER.info("verify loi code provided");
+ 				LOGGER.info("verify loi code provided");
  				CallableStatement cs = db.prepareCall("CALL scaha.getCoachIdByCoachRosterId(?)");
     		    cs.setInt("coachrosterid", Integer.parseInt(sidcoach));
     		    rs=cs.executeQuery();
@@ -358,7 +358,7 @@ public class quickreviewcoachloiBean implements Serializable {
     					Integer idplayer = rs.getInt("idcoach");
     					sidcoach = idplayer.toString();
         			}
-    				//LOGGER.info("We have results for person id by coach");
+    				LOGGER.info("We have results for person id by coach");
     			}
     			rs.close();
     		    db.commit();
@@ -399,7 +399,7 @@ public class quickreviewcoachloiBean implements Serializable {
 			if (db.setAutoCommit(false)) {
 			
 				//Need to provide info to the stored procedure to save or update
- 				//LOGGER.info("verify loi code provided");
+ 				LOGGER.info("verify loi code provided");
  				CallableStatement cs = db.prepareCall("CALL scaha.getPersonIdbyCoachId(?)");
     		    cs.setInt("icoachid", Integer.parseInt(sidcoach));
     		    rs=cs.executeQuery();
@@ -410,7 +410,7 @@ public class quickreviewcoachloiBean implements Serializable {
     					Integer idplayer = rs.getInt("idperson");
     					sidcoach = idplayer.toString();
         			}
-    				//LOGGER.info("We have results for person id by coach");
+    				LOGGER.info("We have results for person id by coach");
     			}
     		    rs.close();
     			db.commit();
@@ -451,11 +451,11 @@ public void confirmLoi(Coach selectedCoach){
 			if (db.setAutoCommit(false)) {
 			
 				//Need to provide info to the stored procedure to save or update
- 				//LOGGER.info("verify loi code provided");
+ 				LOGGER.info("verify loi code provided");
  				CallableStatement cs = db.prepareCall("CALL scaha.confirmCoachLoi(?)");
     		    cs.setInt("icoachid", Integer.parseInt(sidcoach));
     		    cs.executeQuery();
-    		    //LOGGER.info("We have confirmed loi for coach id:" + sidcoach);
+    		    LOGGER.info("We have confirmed loi for coach id:" + sidcoach);
     			
     			db.commit();
     			db.cleanup();
@@ -497,11 +497,11 @@ public void confirmLoi(Coach selectedCoach){
 			if (db.setAutoCommit(false)) {
 			
 				//Need to provide info to the stored procedure to save or update
- 				//LOGGER.info("confirming coach");
+ 				LOGGER.info("confirming coach");
  				CallableStatement cs = db.prepareCall("CALL scaha.confirmCoachLoi(?)");
     		    cs.setInt("icoachid", Integer.parseInt(scoachid));
     		    cs.executeQuery();
-    		    //LOGGER.info("We have confirmed loi for coach id:" + scoachid);
+    		    LOGGER.info("We have confirmed loi for coach id:" + scoachid);
     			
     			db.commit();
     			db.cleanup();
@@ -540,7 +540,7 @@ public void loadLoiCounts(){
 			if (db.setAutoCommit(false)) {
 			
 				//Need to provide info to the stored procedure to save or update
- 				//LOGGER.info("loading loi counts");
+ 				LOGGER.info("loading loi counts");
  				CallableStatement cs = db.prepareCall("CALL scaha.loadcoachLoiCounts()");
     		    rs = cs.executeQuery();
     			
@@ -550,7 +550,7 @@ public void loadLoiCounts(){
     					this.completedloicount = rs.getString("completedcount");
         				this.totalloicount = rs.getString("totalcount");
         			}
-    				//LOGGER.info("We have results for coach loi counts");
+    				LOGGER.info("We have results for coach loi counts");
     			}
     			rs.close();
     			db.cleanup();

@@ -243,7 +243,7 @@ public class clubreviewtournamentBean implements Serializable, MailableObject {
     				templist.add(tournament);
     				tournament = null;
 				}
-				//LOGGER.info("We have results for all tourney list ");
+				LOGGER.info("We have results for all tourney list ");
 			}
 			
 			
@@ -297,7 +297,7 @@ public class clubreviewtournamentBean implements Serializable, MailableObject {
 			if (db.setAutoCommit(false)) {
 			
 				//Need to provide info to the stored procedure to save or update
- 				//LOGGER.info("remove tournament from list");
+ 				LOGGER.info("remove tournament from list");
  				CallableStatement cs = db.prepareCall("CALL scaha.setTournamentApproved(?)");
     		    cs.setInt("tourneyid", tourneyid);
     		    cs.executeQuery();
@@ -320,7 +320,7 @@ public class clubreviewtournamentBean implements Serializable, MailableObject {
     		    this.setSubject(tournament.getTournamentname() + " Approved for " + tournament.getRequestingteam());
     		    
     			SendMailSSL mail = new SendMailSSL(this);
-    			//LOGGER.info("Finished creating mail object for " + tournament.getTournamentname() + " Approved for " + tournament.getRequestingteam());
+    			LOGGER.info("Finished creating mail object for " + tournament.getTournamentname() + " Approved for " + tournament.getRequestingteam());
     			
     			//need to pass the approved status for the email
     			this.selectedtournament.setStatus("Approved");
@@ -357,7 +357,7 @@ public class clubreviewtournamentBean implements Serializable, MailableObject {
 			if (db.setAutoCommit(false)) {
 			
 				//Need to provide info to the stored procedure to save or update
- 				//LOGGER.info("decline tournament");
+ 				LOGGER.info("decline tournament");
  				CallableStatement cs = db.prepareCall("CALL scaha.setTournamentDeclined(?)");
     		    cs.setInt("tourneyid", tourneyid);
     		    cs.executeQuery();
@@ -380,7 +380,7 @@ public class clubreviewtournamentBean implements Serializable, MailableObject {
     		    this.setSubject(tournament.getTournamentname() + " Declined for " + tournament.getRequestingteam());
     		    
     			SendMailSSL mail = new SendMailSSL(this);
-    			//LOGGER.info("Finished creating mail object for " + tournament.getTournamentname() + " Declined for " + tournament.getRequestingteam());
+    			LOGGER.info("Finished creating mail object for " + tournament.getTournamentname() + " Declined for " + tournament.getRequestingteam());
     			
     			//need to pass the approved status for the email
     			this.selectedtournament.setStatus("Declined");
@@ -440,7 +440,7 @@ public void getClubID(){
 				this.idclub = rs.getInt("idclub");
 			}
 			rs.close();
-			//LOGGER.info("We have results for club for a profile");
+			LOGGER.info("We have results for club for a profile");
     	} catch (SQLException e) {
     		// TODO Auto-generated catch block
     		LOGGER.info("ERROR IN loading club by profile");

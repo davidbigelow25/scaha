@@ -117,7 +117,7 @@ public class cahadataBean implements Serializable {
         				tempresult.add(oplayer);
     				}
     				
-    				//LOGGER.info("We have results for caha data dump");
+    				LOGGER.info("We have results for caha data dump");
     				
     			}
     			rs.close();	

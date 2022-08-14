@@ -186,7 +186,7 @@ public class mobileBean implements Serializable{
     				xmlstring = xmlstring + "<submitstatus>" + status + "</submitstatus>";
     				xmlstring = xmlstring + "</game>";
 				}
-				//LOGGER.info("We have results for scaha games schedule for review by statistician for schedule:" + this.selectedschedule);
+				LOGGER.info("We have results for scaha games schedule for review by statistician for schedule:" + this.selectedschedule);
 			}
 			
 			for (Integer i=0;i<gameids.size();i++){
@@ -221,7 +221,7 @@ public class mobileBean implements Serializable{
 	    				xmlstring = xmlstring + "<pims>" + pims + "</pims>";
 	    				xmlstring = xmlstring + "</homeplayer" + gameids.get(i).toString() + ">";
 					}
-					//LOGGER.info("We have results for scaha games schedule for review by statistician for schedule:" + this.selectedgame);
+					LOGGER.info("We have results for scaha games schedule for review by statistician for schedule:" + this.selectedgame);
 				}
 			
 			
@@ -259,7 +259,7 @@ public class mobileBean implements Serializable{
 	    				xmlstring = xmlstring + "<pims>" + pims + "</pims>";
 	    				xmlstring = xmlstring + "</homegoalie" + gameids.get(i).toString() + ">";
 					}
-					//LOGGER.info("We have results for scaha games schedule for review by statistician for schedule:" + this.selectedgame);
+					LOGGER.info("We have results for scaha games schedule for review by statistician for schedule:" + this.selectedgame);
 				}
 				
 				//get away players
@@ -292,7 +292,7 @@ public class mobileBean implements Serializable{
 	    				xmlstring = xmlstring + "<pims>" + pims + "</pims>";
 	    				xmlstring = xmlstring + "</awayplayer" + gameids.get(i).toString() + ">";
 					}
-					//LOGGER.info("We have results for scaha games schedule for review by statistician for schedule:" + this.selectedgame);
+					LOGGER.info("We have results for scaha games schedule for review by statistician for schedule:" + this.selectedgame);
 				}
 				
 				//get away goalies
@@ -329,7 +329,7 @@ public class mobileBean implements Serializable{
 	    				xmlstring = xmlstring + "<pims>" + pims + "</pims>";
 	    				xmlstring = xmlstring + "</awaygoalie" + gameids.get(i).toString() + ">";
 					}
-					//LOGGER.info("We have results for scaha games schedule for review by statistician for schedule:" + this.selectedgame);
+					LOGGER.info("We have results for scaha games schedule for review by statistician for schedule:" + this.selectedgame);
 				}
 				
 				xmlstring = xmlstring + "<homelogo" + gameids.get(i).toString() + ">" + homeimages.get(i) + "</homelogo" + gameids.get(i).toString() + "><awaylogo" + gameids.get(i).toString() + ">" + awayimages.get(i) + "</awaylogo" + gameids.get(i).toString() + ">";

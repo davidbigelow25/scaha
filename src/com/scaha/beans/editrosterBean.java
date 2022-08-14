@@ -145,7 +145,7 @@ public class editrosterBean implements Serializable {
 					this.totalplayercount = rs.getString("totalplayercount");
 					this.pdrcount = rs.getString("pdrcount");
 				}
-				//LOGGER.info("We have results for team name");
+				LOGGER.info("We have results for team name");
 			}
 			rs.close();
 			db.cleanup();
@@ -189,7 +189,7 @@ public class editrosterBean implements Serializable {
 					templist.add(player);
 					player = null;
 				}
-				//LOGGER.info("We have results for team roster");
+				LOGGER.info("We have results for team roster");
 			}
 			rs.close();
 			db.cleanup();
@@ -230,7 +230,7 @@ public class editrosterBean implements Serializable {
 					tempcoachlist.add(coach);
 					coach = null;
 				}
-				//LOGGER.info("We have results for team roster");
+				LOGGER.info("We have results for team roster");
 			}
 			rs.close();
 			db.cleanup();
@@ -344,7 +344,7 @@ public class editrosterBean implements Serializable {
 				while (rs.next()) {
 					this.teamname = rs.getString("teamname");
 				}
-				//LOGGER.info("We have results for team name");
+				LOGGER.info("We have results for team name");
 			}
 			rs.close();
 			db.cleanup();
@@ -388,7 +388,7 @@ public class editrosterBean implements Serializable {
 					templist.add(player);
 					player = null;
 				}
-				//LOGGER.info("We have results for team roster");
+				LOGGER.info("We have results for team roster");
 			}
 			rs.close();
 			db.cleanup();
@@ -429,7 +429,7 @@ public class editrosterBean implements Serializable {
 					tempcoachlist.add(coach);
 					coach = null;
 				}
-				//LOGGER.info("We have results for team roster");
+				LOGGER.info("We have results for team roster");
 			}
 			rs.close();
 			db.cleanup();
@@ -492,7 +492,7 @@ public class editrosterBean implements Serializable {
 					templist.add(player);
 					player = null;
 				}
-				//LOGGER.info("We have results for team roster");
+				LOGGER.info("We have results for team roster");
 			}
 			rs.close();
 			db.cleanup();
@@ -543,7 +543,7 @@ public class editrosterBean implements Serializable {
 					templist.add(player);
 					player = null;
 				}
-				//LOGGER.info("We have results for team roster");
+				LOGGER.info("We have results for block recruitment");
 			}
 			rs.close();
 			db.cleanup();
@@ -595,11 +595,11 @@ public class editrosterBean implements Serializable {
 					di = null;
 
 				}
-				//LOGGER.info("We have results for team roster");
+				LOGGER.info("We have results for team roster brteamlist");
 			}
 
 
-			//LOGGER.info("We have results for team roster");
+			LOGGER.info("We have results for team roster");
 
 			rs.close();
 			db.cleanup();
@@ -646,7 +646,7 @@ public class editrosterBean implements Serializable {
 					personid = null;
 					teamid = null;
 				}
-				//LOGGER.info("We have results for team roster");
+				LOGGER.info("We have results for team roster");
 			}
 			rs.close();
 			db.cleanup();

@@ -114,7 +114,7 @@ public class managecalitemBean implements Serializable {
         				this.enddate = rs.getString("enddate");
         				this.eventlocation = rs.getString("eventlocation");
         			}
-    				//LOGGER.info("We have results for calendar item:" + this.calendarid.toString());
+    				LOGGER.info("We have results for calendar item:" + this.calendarid.toString());
     			}
     			rs.close();
     			db.cleanup();
@@ -158,7 +158,7 @@ public class managecalitemBean implements Serializable {
 			if (db.setAutoCommit(false)) {
 			
 				//Need to provide info to the stored procedure to save or update
- 				//LOGGER.info("remove calendar item from list");
+ 				LOGGER.info("remove calendar item from list");
  				CallableStatement cs = db.prepareCall("CALL scaha.updateCalendar(?,?,?,?,?)");
     		    cs.setInt("calendarid", Integer.parseInt(this.calendarid));
     		    cs.setString("startdate",this.startdate);
