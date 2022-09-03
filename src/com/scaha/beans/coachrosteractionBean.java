@@ -435,14 +435,8 @@ public class coachrosteractionBean implements Serializable {
     		    cs.setString("screenexpires", this.screeningexpires);
     		    cs.setString("cepnum", this.cepnumber);
     		    cs.setInt("levelcep", this.ceplevel);
-    		    if (this.cepexpiresdisplayvalue.equals("N/A")){
-					cs.setString("cepexpire", this.cepexpires);
-				} else {
-    		    	this.cepexpires=this.cepexpiresdisplayvalue;
-					cs.setString("cepexpire", this.cepexpires);
-				}
-
-    		    cs.setString("insafesport", this.safesport);
+    		    cs.setString("cepexpire", this.cepexpires);
+				cs.setString("insafesport", this.safesport);
     		    cs.setString("inrostertype", this.coachrole);
     		    cs.setInt("inrosterid", this.rosterid);
 				//need to set values for modules

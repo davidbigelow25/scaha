@@ -6,11 +6,14 @@ import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
+import javax.el.ValueExpression;
+import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.mail.internet.InternetAddress;
@@ -37,6 +40,7 @@ public class coachbcloiBean implements Serializable, MailableObject {
 	private static final Logger LOGGER = Logger.getLogger(ContextManager.getLoggerContext());
 	private static String mail_reg_body = Utils.getMailTemplateFromFile("/mail/voidloi.html");
 	transient private ResultSet rs = null;
+	transient private ResultSet rs2 = null;
 	private List<Coach> coaches = null;
     private CoachDataModel CoachDataModel = null;
     private Coach selectedcoach = null;
@@ -210,31 +214,30 @@ public class coachbcloiBean implements Serializable, MailableObject {
     			
 				CallableStatement cs = db.prepareCall("CALL scaha.getCoachLoiListByNameSearch(?)");
     			cs.setString("search", this.searchcriteria);
-    			rs = cs.executeQuery();
+    			rs2 = cs.executeQuery();
     			
-    		    if (rs != null){
-    				
-    				while (rs.next()) {
-    					String idcoach = rs.getString("idroster");
-        				String sfirstname = rs.getString("fname");
-        				String slastname = rs.getString("lname");
-        				String steam = rs.getString("teamname");
-        				String sloidate = rs.getString("loidate");
-        				String screeningexpires = rs.getString("screeningexpires");
-        				String cepnumber = rs.getString("cepnumber");
-        				String ceplevel = rs.getString("ceplevel");
-        				String cepexpires = rs.getString("cepexpires");
-        				String u8 = rs.getString("eightu");
-        				String u10 = rs.getString("tenu");
-        				String u12 = rs.getString("twelveu");
-        				String u14 = rs.getString("fourteenu");
-        				String u18 = rs.getString("eighteenu");
-        				String girls = rs.getString("girls");
-        				String safesport = rs.getString("safesport");
-        				String confirmed = rs.getString("confirmed");
-        				String notes = rs.getString("notes");
-        				String sportexpires = rs.getString("sportexpires");
-						String suspended =rs.getString("suspended");
+    		    if (rs2 != null){
+    				while (rs2.next()) {
+    					String idcoach = rs2.getString("idroster");
+        				String sfirstname = rs2.getString("fname");
+        				String slastname = rs2.getString("lname");
+        				String steam = rs2.getString("teamname");
+        				String sloidate = rs2.getString("loidate");
+        				String screeningexpires = rs2.getString("screeningexpires");
+        				String cepnumber = rs2.getString("cepnumber");
+        				String ceplevel = rs2.getString("ceplevel");
+        				String cepexpires = rs2.getString("cepexpires");
+        				String u8 = rs2.getString("eightu");
+        				String u10 = rs2.getString("tenu");
+        				String u12 = rs2.getString("twelveu");
+        				String u14 = rs2.getString("fourteenu");
+        				String u18 = rs2.getString("eighteenu");
+        				String girls = rs2.getString("girls");
+        				Integer safesport = rs2.getInt("safesport");
+        				String confirmed = rs2.getString("confirmed");
+        				String notes = rs2.getString("notes");
+        				String sportexpires = rs2.getString("sportexpires");
+						String suspended =rs2.getString("suspended");
 
         				Coach ocoach = new Coach();
         				ocoach.setIdcoach(idcoach);
@@ -252,20 +255,43 @@ public class coachbcloiBean implements Serializable, MailableObject {
         				ocoach.setU14(u14);
         				ocoach.setU18(u18);
         				ocoach.setGirls(girls);
-        				ocoach.setSafesport(safesport);
+        				ocoach.setSafesportforcoachlist(safesport);
         				ocoach.setConfirmed(confirmed);
         				ocoach.setNotes(notes);
         				ocoach.setSportexpires(sportexpires);
         				ocoach.setSuspended(suspended);
-        				tempresult.add(ocoach);
+
+						String templist = "";
+						if (ocoach.getU8().equals("Yes")){
+							templist = templist.concat("8U");
+						}
+						if (ocoach.getU10().equals("Yes")){
+							templist = templist.concat(",10U");
+						}
+						if (ocoach.getU12().equals("Yes")){
+							templist = templist.concat(",12U");
+						}
+						if (ocoach.getU14().equals("Yes")){
+							templist = templist.concat(",14U");
+						}
+						if (ocoach.getU18().equals("Yes")){
+							templist = templist.concat(",18U");
+						}
+						if (ocoach.getGirls().equals("Yes")){
+							templist = templist.concat(",Girls");
+						}
+						ocoach.setCepmodulesselected(templist);
+
+						tempresult.add(ocoach);
 
         				ocoach = null;
+        				templist=null;
     				}
     				
     				LOGGER.info("We have results for coach bc lois for the search criteria:" + this.searchcriteria);
     				
     			}
-    			rs.close();	
+				rs2.close();
     			db.cleanup();
     		} else {
 
@@ -286,6 +312,7 @@ public class coachbcloiBean implements Serializable, MailableObject {
     	//setResults(tempresult);
     	setCoaches(tempresult);
     	CoachDataModel = new CoachDataModel(coaches);
+    	tempresult=null;
     }
 
     public void closePage(){
@@ -603,5 +630,97 @@ public class coachbcloiBean implements Serializable, MailableObject {
     	}
 
     }
+
+	public void updateCoach(Coach coach){
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+
+			if (db.setAutoCommit(false)) {
+
+				//Need to provide info to the stored procedure to save or update
+				LOGGER.info("update coach details");
+				CallableStatement cs = db.prepareCall("CALL scaha.updateCoachbyCoachIdforlist(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+				cs.setInt("coachid", Integer.parseInt(coach.getIdcoach()));
+				cs.setString("screenexpires", coach.getScreeningexpires());
+				cs.setString("cepnum", coach.getCepnumber());
+				cs.setInt("levelcep", Integer.parseInt(coach.getCeplevel()));
+				cs.setString("cepexpire", coach.getCepexpires());
+				cs.setInt("insafesport",coach.getSafesportforcoachlist());
+				cs.setString("inrostertype", coach.getTeamrole());
+				cs.setInt("inrosterid", Integer.parseInt(coach.getIdcoach()));
+				//need to set values for modules
+				Integer u8 = 0;
+				Integer u10 = 0;
+				Integer u12 = 0;
+				Integer u14 = 0;
+				Integer u18 = 0;
+				Integer ugirls = 0;
+
+				List<String> cepmodulesselectedstring = Arrays.asList(coach.getCepmodulesselected().split(","));
+				for (int i = 0; i < cepmodulesselectedstring.size(); i++) {
+					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("8U")){
+						u8 = 1;
+					}
+					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("10U")){
+						u10 = 1;
+					}
+					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("12U")){
+						u12 = 1;
+					}
+					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("14U")){
+						u14 = 1;
+					}
+					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("18U")){
+						u18 = 1;
+					}
+					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("Girls")){
+						ugirls = 1;
+					}
+				}
+				cs.setInt("u8", u8);
+				cs.setInt("u10", u10);
+				cs.setInt("u12", u12);
+				cs.setInt("u14", u14);
+				cs.setInt("u18", u18);
+				cs.setInt("ugirls", ugirls);
+				cs.setString("infirstname",coach.getFirstname());
+				cs.setString("inlastname",coach.getLastname());
+				cs.setString("sportexpires", coach.getSportexpires());
+				cs.setInt("issuspend_in", 0);
+				rs = cs.executeQuery();
+
+				db.commit();
+				rs.close();
+
+				db.cleanup();
+
+				//logging
+				LOGGER.info("We are updating transfer info for coach id:" + coach);
+
+
+
+				this.coachesDisplay();
+
+
+			} else {
+
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN LOI Generation Process" + this.selectedcoach);
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+	}
+
 }
 

@@ -33,6 +33,7 @@ public class Coach extends ScahaObject implements Serializable {
 	private String u18 = null;
 	private String girls = null;
 	private String safesport = null;
+	private Integer safesportforcoachlist = null;
 	private String sportexpires = null;
 	private String confirmed = null;
 	private String usamembership = null;
@@ -51,10 +52,27 @@ public class Coach extends ScahaObject implements Serializable {
 	private String updated = null;
 	private String teamrole = null;
 	private String suspended = null;
-	
+	private String cepmodulesselected = null;
 	
 	public Coach (){ 
 		
+	}
+
+	public Integer getSafesportforcoachlist(){
+		return safesportforcoachlist;
+	}
+
+	public void setSafesportforcoachlist(Integer fname){
+		safesportforcoachlist=fname;
+	}
+
+
+	public String getCepmodulesselected(){
+		return cepmodulesselected;
+	}
+
+	public void setCepmodulesselected(String fname){
+		cepmodulesselected=fname;
 	}
 
 	public String getSuspended(){

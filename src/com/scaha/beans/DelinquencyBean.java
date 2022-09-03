@@ -188,7 +188,6 @@ public class DelinquencyBean implements Serializable {
 				oplayer.setEligibility(delyear);
 				
 				tempresult.add(oplayer);
-				tempresult.add(oplayer);
 				oplayer = null;
 				recordcount++;
 			}
