@@ -65,8 +65,12 @@ public class GamesheetBean implements Serializable,  MailableObject {
 	private LiveGame livegame = null;
 	private LiveGameRosterSpot selectedhomerosterspot;
 	private LiveGameRosterSpot selectedhomecoachrosterspot;
-	private LiveGameRosterSpot selectedawayrosterspot;	
-	
+	private LiveGameRosterSpot selectedawayrosterspot;
+	private LiveGameRosterSpot selectedteam1rosterspot;
+	private LiveGameRosterSpot selectedteam2rosterspot;
+	private LiveGameRosterSpot selectedteam3rosterspot;
+	private LiveGameRosterSpot selectedteam4rosterspot;
+
 	private Scoring selectedhomescore = null;
 	private Scoring selectedawayscore = null;
 	private Scoring currentscore =null;
@@ -82,7 +86,15 @@ public class GamesheetBean implements Serializable,  MailableObject {
 	private LiveGameRosterSpotList hometeam = null;
 	private LiveGameRosterSpotList hometeamcoach = null;
 	private LiveGameRosterSpotList hometeamforpl = null;
-	
+	private LiveGameRosterSpotList team1 = null;
+	private LiveGameRosterSpotList team2 = null;
+	private LiveGameRosterSpotList team3 = null;
+	private LiveGameRosterSpotList team4 = null;
+	private LiveGameRosterSpotList team1coach = null;
+	private LiveGameRosterSpotList team2coach = null;
+	private LiveGameRosterSpotList team3coach = null;
+	private LiveGameRosterSpotList team4coach = null;
+
 	private ScoringList awayscoring = null;
 	private ScoringList homescoring = null;
 	private PenaltyList homepenalties = null;
@@ -101,6 +113,11 @@ public class GamesheetBean implements Serializable,  MailableObject {
 	private int selectedsogrosterid = 0;
 	
 	private List<LiveGameRosterSpot> penpicklist = null;
+	private List<LiveGameRosterSpot> team1penpicklist = null;
+	private List<LiveGameRosterSpot> team2penpicklist = null;
+	private List<LiveGameRosterSpot> team3penpicklist = null;
+	private List<LiveGameRosterSpot> team4penpicklist = null;
+
 	private ScahaTeam penteam = null;
 	private LiveGameRosterSpotList penroster = null;
 	
@@ -173,6 +190,15 @@ public class GamesheetBean implements Serializable,  MailableObject {
 	private Integer livegameid = null;
 	private Integer numberofgrows = 18;
 	private Integer teamclubid = null;
+	private Integer teamclubid1 = null;
+	private Integer teamclubid2 = null;
+	private Integer teamclubid3 = null;
+	private Integer teamclubid4 = null;
+	private Integer miteteamid1 = null;
+	private Integer miteteamid2 = null;
+	private Integer miteteamid3 = null;
+	private Integer miteteamid4 = null;
+
 	private Boolean home = false;
 	private Integer maxcoachsizehome = 0;
 	private Integer maxcoachsizeaway = 0;
@@ -226,35 +252,39 @@ public class GamesheetBean implements Serializable,  MailableObject {
 	 }
 	 
 	 private void refreshBean(){
-		 if (this.getLivegame() != null) {
-			 if (this.teamid.equals(this.livegame.getHometeam().ID)){
-				 this.setHometeam(this.refreshHomeRoster());
-				 this.setHometeamcoach(this.refreshHomeCoachRoster());
-				 this.setHometeamforpl(this.refreshHomeRosterforpl());
-				 this.scoringpicklist = (List<LiveGameRosterSpot>) this.getHometeamforpl().getWrappedData();
-				 this.setHomescoring(this.refreshHomeScoring(false));
-				 this.sogpicklist = (List<LiveGameRosterSpot>) this.getHometeamforpl().getWrappedData();
-				 this.setHomesogs(this.refreshHomeSog(false));
-				 this.penpicklist = (List<LiveGameRosterSpot>) this.getHometeamforpl().getWrappedData();
-				 this.setHomepenalties(this.refreshHomePenalty(false));
-				 this.setTeamclubid(this.livegame.getHomeclubid());
-				 this.setNote(this.loadNote());
-			 } else {
-				 this.setAwayteam(this.refreshAwayRoster());
-				 this.setHometeam(this.refreshAwayRoster());
-				 this.setHometeamcoach(this.refreshAwayCoachRoster());
-				 this.setAwayteamforpl(this.refreshAwayRosterforpl());
-				 this.scoringpicklist = (List<LiveGameRosterSpot>) this.getAwayteamforpl().getWrappedData();
-				 this.setHomescoring(this.refreshHomeScoring(false));
-				 this.sogpicklist = (List<LiveGameRosterSpot>) this.getAwayteamforpl().getWrappedData();
-				 this.setHomesogs(this.refreshHomeSog(false));
-				 this.penpicklist = (List<LiveGameRosterSpot>) this.getAwayteamforpl().getWrappedData();
-				 this.setHomepenalties(this.refreshHomePenalty(false));
-				 this.setTeamclubid(this.livegame.getAwayclubid());
-				 this.setNote(this.loadNote());
-			 }
-			 
-			 
+		if (this.getLivegame() != null) {
+			if (this.getLivegame().getSheetname().equals("Mites")){
+				refreshMites();
+			}else {
+
+				if (this.teamid.equals(this.livegame.getHometeam().ID)) {
+					this.setHometeam(this.refreshHomeRoster());
+					this.setHometeamcoach(this.refreshHomeCoachRoster());
+					this.setHometeamforpl(this.refreshHomeRosterforpl());
+					this.scoringpicklist = (List<LiveGameRosterSpot>) this.getHometeamforpl().getWrappedData();
+					this.setHomescoring(this.refreshHomeScoring(false));
+					this.sogpicklist = (List<LiveGameRosterSpot>) this.getHometeamforpl().getWrappedData();
+					this.setHomesogs(this.refreshHomeSog(false));
+					this.penpicklist = (List<LiveGameRosterSpot>) this.getHometeamforpl().getWrappedData();
+					this.setHomepenalties(this.refreshHomePenalty(false));
+					this.setTeamclubid(this.livegame.getHomeclubid());
+					this.setNote(this.loadNote());
+				} else {
+					this.setAwayteam(this.refreshAwayRoster());
+					this.setHometeam(this.refreshAwayRoster());
+					this.setHometeamcoach(this.refreshAwayCoachRoster());
+					this.setAwayteamforpl(this.refreshAwayRosterforpl());
+					this.scoringpicklist = (List<LiveGameRosterSpot>) this.getAwayteamforpl().getWrappedData();
+					this.setHomescoring(this.refreshHomeScoring(false));
+					this.sogpicklist = (List<LiveGameRosterSpot>) this.getAwayteamforpl().getWrappedData();
+					this.setHomesogs(this.refreshHomeSog(false));
+					this.penpicklist = (List<LiveGameRosterSpot>) this.getAwayteamforpl().getWrappedData();
+					this.setHomepenalties(this.refreshHomePenalty(false));
+					this.setTeamclubid(this.livegame.getAwayclubid());
+					this.setNote(this.loadNote());
+				}
+
+			}
 			 
 			 //this.setAwayteam(this.refreshAwayRoster());
 			 
@@ -323,14 +353,144 @@ public class GamesheetBean implements Serializable,  MailableObject {
 		}
 	}
 
+	public void setSelectedteam1rosterspot(LiveGameRosterSpot tid){
+		this.selectedteam1rosterspot=tid;
+	}
+
+	public LiveGameRosterSpot getSelectedteam1rosterspot() {
+		return selectedteam1rosterspot;
+	}
+
+	public void setSelectedteam2rosterspot(LiveGameRosterSpot tid){
+		this.selectedteam2rosterspot=tid;
+	}
+
+	public LiveGameRosterSpot getSelectedteam2rosterspot() {
+		return selectedteam2rosterspot;
+	}
+
+	public void setSelectedteam3rosterspot(LiveGameRosterSpot tid){
+		this.selectedteam3rosterspot=tid;
+	}
+
+	public LiveGameRosterSpot getSelectedteam3rosterspot() {
+		return selectedteam3rosterspot;
+	}
+
+	public void setSelectedteam4rosterspot(LiveGameRosterSpot tid){
+		this.selectedteam4rosterspot=tid;
+	}
+
+	public LiveGameRosterSpot getSelectedteam4rosterspot() {
+		return selectedteam4rosterspot;
+	}
+
+	public void setTeam1penpicklist(List<LiveGameRosterSpot> tid){
+		this.team1penpicklist=tid;
+	}
+
+
+	public  List<LiveGameRosterSpot> getTeam1penpicklist() {
+		return team1penpicklist;
+	}
+
+	public void setTeam2penpicklist(List<LiveGameRosterSpot> tid){
+		this.team2penpicklist=tid;
+	}
+
+	public List<LiveGameRosterSpot> getTeam2penpicklist() {
+		return team2penpicklist;
+	}
+
+	public void setTeam3penpicklist(List<LiveGameRosterSpot> tid){
+		this.team3penpicklist=tid;
+	}
+
+	public List<LiveGameRosterSpot> getTeam3penpicklist() {
+		return team3penpicklist;
+	}
+
+	public void setTeam4penpicklist(List<LiveGameRosterSpot> tid){
+		this.team4penpicklist=tid;
+	}
+
+	public List<LiveGameRosterSpot> getTeam4penpicklist() {
+		return team4penpicklist;
+	}
+	public void setTeam1coach(LiveGameRosterSpotList tid){
+		this.team1coach=tid;
+	}
+
+	public LiveGameRosterSpotList getTeam1coach() {
+		return team1coach;
+	}
+
+	public void setTeam2coach(LiveGameRosterSpotList tid){
+		this.team2coach=tid;
+	}
+
+	public LiveGameRosterSpotList getTeam2coach() {
+		return team2coach;
+	}
+
+	public void setTeam3coach(LiveGameRosterSpotList tid){
+		this.team3coach=tid;
+	}
+
+	public LiveGameRosterSpotList getTeam3coach() {
+		return team3coach;
+	}
+
+	public void setTeam4coach(LiveGameRosterSpotList tid){
+		this.team4coach=tid;
+	}
+
+	public LiveGameRosterSpotList getTeam4coach() {
+		return team4coach;
+	}
+
+
+
+	public void setTeam1(LiveGameRosterSpotList tid){
+		this.team1=tid;
+	}
+
+	public LiveGameRosterSpotList getTeam1() {
+		return team1;
+	}
+
+	public void setTeam2(LiveGameRosterSpotList tid){
+		this.team2=tid;
+	}
+
+	public LiveGameRosterSpotList getTeam2() {
+		return team2;
+	}
+
+	public void setTeam3(LiveGameRosterSpotList tid){
+		this.team3=tid;
+	}
+
+	public LiveGameRosterSpotList getTeam3() {
+		return team3;
+	}
+
+	public void setTeam4(LiveGameRosterSpotList tid){
+		this.team4=tid;
+	}
+
+	public LiveGameRosterSpotList getTeam4() {
+		return team4;
+	}
+
+	public String getNote(){
+		return this.note;
+	}
 	public void setNote(String tid){
 		this.note=tid;
 	}
 
 
-	public String getNote(){
-		return this.note;
-	}
 
 
 	public void setLivegameid(Integer tid){
@@ -418,8 +578,107 @@ public class GamesheetBean implements Serializable,  MailableObject {
 	public Integer getTeamclubid(){
 		return teamclubid;
 	}
-	
-	
+
+	public void Miteteamid1(Integer tid){
+		miteteamid1=tid;
+	}
+
+
+	public Integer getMiteteamid1(){
+		return miteteamid1;
+	}
+
+	public void setMiteteamid2(Integer tid){
+		miteteamid2=tid;
+	}
+
+
+	public Integer getMiteteamid2(){
+		return miteteamid2;
+	}
+
+	public void setMiteteamid3(Integer tid){
+		miteteamid3=tid;
+	}
+
+
+	public Integer getMiteteamid3(){
+		return miteteamid3;
+	}
+
+	public void setMiteteamid4(Integer tid){
+		miteteamid4=tid;
+	}
+
+	public Integer setMiteteamid4(){
+		return miteteamid4;
+	}
+
+	public void setTeamclubid1(Integer tid){
+		teamclubid1=tid;
+	}
+
+
+	public Integer getTeamclubid1(){
+		return teamclubid1;
+	}
+
+	public void setTeamclubid2(Integer tid){
+		teamclubid2=tid;
+	}
+
+
+	public Integer getTeamclubid2(){
+		return teamclubid2;
+	}
+
+	public void setTeamclubid3(Integer tid){
+		teamclubid3=tid;
+	}
+
+
+	public Integer getTeamclubid3(){
+		return teamclubid3;
+	}
+
+	public void setTeamclubid4(Integer tid){
+		teamclubid4=tid;
+	}
+
+
+	public Integer getTeamclubid4(){
+		return teamclubid4;
+	}
+
+	public Integer getTeamclubid(String label){
+		Integer clubid = 0;
+		switch(label) {
+			case "Team1":
+				// code block
+				clubid= getTeamclubid1();
+				break;
+			case "Team2":
+				// code block
+				clubid= getTeamclubid2();
+				break;
+			case "Team3":
+				// code block
+				clubid=getTeamclubid3();
+				break;
+			case "Team4":
+				// code block
+				clubid= getTeamclubid4();
+				break;
+			default:
+				// code block
+				clubid=getTeamclubid1();
+		}
+
+		return clubid;
+	}
+
+
+
 	public void setNumpimsadd(Integer tid){
 		numpimsadd=tid;
 	}
@@ -3540,17 +3799,17 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 
 	}
 
-	public void reFinalGames(){
+	public void reFinalGames() {
 
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 
 		LiveGameList templist = this.scaha.getScahaLiveGameList();
 
-		for (LiveGame lg : templist){
-			if (lg.getStatetag().equals("Final") && lg.getSched().ID>600) {
+		for (LiveGame lg : templist) {
+			if (lg.getStatetag().equals("Final") && lg.getSched().ID > 600) {
 				try {
 					LOGGER.info("updating game results:");
-					if (lg.getHometeam().ID==102256 || lg.getAwayteam().ID==102256){
+					if (lg.getHometeam().ID == 102256 || lg.getAwayteam().ID == 102256) {
 						LOGGER.info("updating stats for moose 14b:" + lg);
 					}
 
@@ -3579,7 +3838,67 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 			}
 		}
 		db.free();
-
-
 	}
-}	
+
+		public void refreshMites(){
+			ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+			try {
+
+				//need to get the 4 distinct teamid's, including their club id's.
+
+				PreparedStatement ps = db.prepareCall("call scaha.getMiteEventTeams(?)");
+
+				ps.setInt(1, this.livegame.ID);
+				ResultSet rs = ps.executeQuery();
+				Integer count = 0;
+
+				while (rs.next()) {
+					if (count.equals(0)) {
+						this.miteteamid1 = rs.getInt("idteam");
+						this.teamclubid1 = rs.getInt("idclub");
+					}else if (count.equals(1)) {
+						this.miteteamid2 = rs.getInt("idteam");
+						this.teamclubid2 = rs.getInt("idclub");
+					}else if (count.equals(2)) {
+						this.miteteamid3 = rs.getInt("idteam");
+						this.teamclubid3 = rs.getInt("idclub");
+					}else if (count.equals(3)) {
+						this.miteteamid4 = rs.getInt("idteam");
+						this.teamclubid4 = rs.getInt("idclub");
+					}
+					count++;
+				}
+				rs.close();
+				ps.close();
+
+				this.team1 = LiveGameRosterSpotList.NewListFactoryByTeamid(pb.getProfile(),db,miteteamid1);
+				this.team2 = LiveGameRosterSpotList.NewListFactoryByTeamid(pb.getProfile(),db,miteteamid2);
+				this.team3 = LiveGameRosterSpotList.NewListFactoryByTeamid(pb.getProfile(),db,miteteamid3);
+				this.team4 = LiveGameRosterSpotList.NewListFactoryByTeamid(pb.getProfile(),db,miteteamid4);
+
+				//next load the roster lists for the 4 teams.
+				this.team1 = LiveGameRosterSpotList.NewListFactoryByTeamid(pb.getProfile(),db,miteteamid1);
+				this.team2 = LiveGameRosterSpotList.NewListFactoryByTeamid(pb.getProfile(),db,miteteamid2);
+				this.team3 = LiveGameRosterSpotList.NewListFactoryByTeamid(pb.getProfile(),db,miteteamid3);
+				this.team4 = LiveGameRosterSpotList.NewListFactoryByTeamid(pb.getProfile(),db,miteteamid4);
+
+				/*this.team1coach = LiveGameRosterSpotList.NewListFactoryCoachForTeam(pb.getProfile(),db,miteteamid1);
+				this.team2coach = LiveGameRosterSpotList.NewListFactoryCoachForTeam(pb.getProfile(),db,miteteamid2);
+				this.team3coach = LiveGameRosterSpotList.NewListFactoryCoachForTeam(pb.getProfile(),db,miteteamid3);
+				this.team4coach = LiveGameRosterSpotList.NewListFactoryCoachForTeam(pb.getProfile(),db,miteteamid4);
+				*/
+				ps.close();
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				LOGGER.info("errored:");
+			}
+			LOGGER.info("setting connection free:");
+
+
+			db.free();
+
+		}
+	}

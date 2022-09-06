@@ -35,6 +35,7 @@ public class TempGame extends ScahaObject implements Serializable {
 	private Boolean homecoachflag = null;
 	private Boolean coachcountflag = null;
 	private Boolean printeligibleflag = null;
+	private Boolean mitehostflag = null;
 	private String printurl = null;
 	private Integer idhome = null;
 	private Integer idaway = null;
@@ -162,8 +163,16 @@ public class TempGame extends ScahaObject implements Serializable {
 	public void setPrinturl(String value){
 		printurl=value;
 	}
-	
-	
+
+	public Boolean getMitehostflag(){
+		return mitehostflag;
+	}
+
+	public void setMitehostflag(Boolean value){
+		mitehostflag=value;
+	}
+
+
 	public Boolean getPrinteligibleflag(){
 		return printeligibleflag;
 	}

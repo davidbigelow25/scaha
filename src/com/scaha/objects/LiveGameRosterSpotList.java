@@ -241,6 +241,49 @@ public class LiveGameRosterSpotList extends ListDataModel<LiveGameRosterSpot> im
 
 	}
 
+	public static LiveGameRosterSpotList NewListFactoryCoachForTeam(Profile _pro, ScahaDatabase _db, Integer teamid) throws SQLException {
+		List<LiveGameRosterSpot> data = new ArrayList<LiveGameRosterSpot>();
+		HashMap<String, LiveGameRosterSpot> hm = new HashMap<String,LiveGameRosterSpot>();
+		PreparedStatement ps = _db.prepareStatement("call scaha.getLiveGameCoachRosterSpots(?)");
+
+		ps.setInt(1,teamid);
+		ResultSet rs = ps.executeQuery();
+		while (rs.next()) {
+			int i = 1;
+			LiveGameRosterSpot spot = new LiveGameRosterSpot(rs.getInt(i++),_pro);
+			spot.setIdRoster(rs.getInt(i++));
+			spot.setIdPerson(rs.getInt(i++));
+			spot.setRostertype(rs.getString(i++));
+			spot.setJerseynumber(rs.getString(i++));
+			spot.setLname(rs.getString(i++));
+			spot.setFname(rs.getString(i++));
+			spot.setMia((rs.getInt(i++) == 1 ? true : false));
+			if (spot.getRostertype().equals("Player")) {
+				spot.setTag("PL");
+			} else if (spot.getRostertype().equals("Head Coach")) {
+				spot.setTag("HC");
+			} else if (spot.getRostertype().equals("Assistant Coach")) {
+				spot.setTag("AC");
+			} else if (spot.getRostertype().equals("Student Coach")) {
+				spot.setTag("SC");
+			} else if (spot.getRostertype().equals("Manager")) {
+				spot.setTag("MN");
+			} else if (spot.getRostertype().equals("Assistant Coach/Manager")) {
+				spot.setTag("AC/MN");
+			} else {
+				spot.setTag("UN");
+			}
+			spot.setRank(rs.getInt("rank"));
+			data.add(spot);
+			hm.put(spot.ID+"", spot);
+			//LOGGER.info("Found a match " + spot);
+		}
+		rs.close();
+		ps.close();
+		return new LiveGameRosterSpotList(data,hm);
+
+	}
+
 	@SuppressWarnings("unchecked")
 	public ArrayList<LiveGameRosterSpot> getLiveGameRosterSpotArray() {
 		return (ArrayList<LiveGameRosterSpot>)this.getWrappedData();

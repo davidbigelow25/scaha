@@ -28,6 +28,7 @@ import com.gbli.common.Utils;
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
 import com.scaha.objects.*;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 //import com.gbli.common.SendMailSSL;
 
@@ -66,6 +67,7 @@ public class managerBean implements Serializable, MailableObject {
 	private Boolean ishighschool = null;
 	private String currentpimcount = "0";
 	private String maxpimcount = "0";
+	private Boolean ismite = false;
 	
 	//datamodels for all of the lists on the page
 	private TempGameDataModel TempGameDataModel = null;
@@ -266,6 +268,14 @@ public class managerBean implements Serializable, MailableObject {
 	}
 
 	public String getFrom(){return this.from;}
+
+	public void setIsmite(Boolean value){
+		this.ismite = value;
+	}
+
+	public Boolean getIsmite(){
+		return this.ismite;
+	}
 
 
 	public void setStatus(String value){
@@ -707,6 +717,7 @@ public class managerBean implements Serializable, MailableObject {
     				Boolean homecoachflag = rs.getBoolean("homecoachflag");
     				Boolean coachcountflag = rs.getBoolean("coachcountflag");
     				Boolean printeligibleflag = rs.getBoolean("printeligibleflag");
+    				Boolean mitehostflag = rs.getBoolean("mitehostflag");
     				
     				TempGame ogame = new TempGame();
     				ogame.setIdgame(Integer.parseInt(idgame));
@@ -733,6 +744,7 @@ public class managerBean implements Serializable, MailableObject {
     				}*/
     				ogame.setCoachcountflag(coachcountflag);
     				ogame.setPrinteligibleflag(printeligibleflag);
+					ogame.setMitehostflag(mitehostflag);
     				tempresult.add(ogame);
     				
 				}
@@ -938,6 +950,7 @@ public class managerBean implements Serializable, MailableObject {
 				
 				while (rs.next()) {
 					this.teamname = rs.getString("teamname");
+					this.ismite = rs.getBoolean("ismite");
 				}
 				LOGGER.info("We have results for team name");
 			}
@@ -1800,24 +1813,34 @@ public class managerBean implements Serializable, MailableObject {
     		    if (rs != null){
 
     				while (rs.next()) {
+						//this is for a list of all help videos accessed via the help link.
 						Help help = new Help();
 						help.setAlertid(rs.getInt("idalertvideolinks"));
 						help.setHelpdescription(rs.getString("helpdescription"));
 						help.setVideourl(rs.getString("videourl"));
 						help.setVideourltext(rs.getString("helplinkvalue"));
 
-						if (rs.getBoolean("displayalert")){
+						//this is for alerts displayed on manager portal page specific to the team
+						if (rs.getBoolean("displayalert")) {
 							Alert alert = new Alert();
 							alert.setAlertid(rs.getInt("idalertvideolinks"));
 							alert.setTaskdescription(rs.getString("taskdescription"));
 							alert.setVideourl(rs.getString("videourl"));
 							alert.setVideourltext(rs.getString("videourltext"));
 
-							templist.add(alert);
+							if (this.ismite && rs.getBoolean("is8u")) {
+								templist.add(alert);
+							}else if (!this.ismite && !rs.getBoolean("is8u")){
+								templist.add(alert);
+							}
 							alert = null;
 						}
 
-						temphelplist.add(help);
+						if (this.ismite && rs.getBoolean("is8u")) {
+							temphelplist.add(help);
+						}else if (!this.ismite && !rs.getBoolean("is8u")){
+							temphelplist.add(help);
+						}
     				}
     				//LOGGER.info("We have results for manager team flags list by team:" + this.teamid);
     			}

@@ -197,7 +197,7 @@
 					    </b:commandButton>
 					    <p:spacer width="5"  />
 					    <b:commandButton  iconAwesome="upload"
-					                       action="#{managerBean.uploadSCAHAScoresheet(TempGame)}" look="success">
+					                       action="#{managerBean.uploadSCAHAScoresheet(TempGame)}" look="success" rendered="#{TempGame.mitehostflag}">
 					       <f:ajax execute="@this" render="@form" update=":form1:messages1,:form1:teamlist"/>
 					    </b:commandButton>
 			        </b:dataTableColumn> 

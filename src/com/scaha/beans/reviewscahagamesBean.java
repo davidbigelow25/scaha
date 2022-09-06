@@ -247,6 +247,7 @@ public class reviewscahagamesBean implements Serializable, MailableObject{
     				String location = rs.getString("location");
     				String status = rs.getString("status");
     				String scoresheet = rs.getString("scoresheet");
+    				Boolean is8u = rs.getBoolean("is8u");
     				
     				TempGame ogame = new TempGame();
     				ogame.setIdgame(Integer.parseInt(idgame));
@@ -261,6 +262,7 @@ public class reviewscahagamesBean implements Serializable, MailableObject{
     				ogame.setHomescore(homescore);
     				ogame.setScoresheet(scoresheet);
     				ogame.setStatus(status);
+    				ogame.setIs8u(is8u);
     				tempresult.add(ogame);
     				
 				}
@@ -383,12 +385,17 @@ public class reviewscahagamesBean implements Serializable, MailableObject{
 		LiveGame lg = scaha.getScahaLiveGameList().getByKey(gameid);
 		pb.setSelectedlivegame(lg);
 		pb.setLivegameeditreturn("reviewscahagames.xhtml");
-		
+
+		//need to determine if it's an 8u game.  If so need to display the 8u roster confirmation page.
+		String redirecturl = "scahagamedetailsconfirm.xhtml";
+		if (game.getIs8u()){
+			redirecturl="scahagamedetailsconfirm8u.xhtml";
+		}
 		 //LOGGER.info("!!!!! Real Selected Game is" + selectedlivegame);
 		  
 	     ExternalContext context = FacesContext.getCurrentInstance().getExternalContext(); 
 	     try {
-	    	 context.redirect("scahagamedetailsconfirm.xhtml");
+	    	 context.redirect(redirecturl);
 	     } catch (IOException e) {
 	    	 // TODO Auto-generated catch block
 			e.printStackTrace();
