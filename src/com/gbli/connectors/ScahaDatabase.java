@@ -3,11 +3,14 @@
  */
 package com.gbli.connectors;
 
+import com.gbli.common.ReturnDataResultSet;
+import com.gbli.common.ReturnDataRow;
+import com.gbli.context.ContextManager;
+import com.scaha.objects.*;
+
+import javax.mail.internet.InternetAddress;
 import java.io.UnsupportedEncodingException;
-import java.sql.CallableStatement;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -28,7 +31,6 @@ import com.scaha.objects.ScheduleWeek;
 import com.scaha.objects.Slot;
 import com.scaha.objects.TeamGameInfo;
 
-import java.sql.PreparedStatement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -154,6 +156,7 @@ public class ScahaDatabase extends Database {
 		return super.getData(c_sp_profile, v);
 
 	}
+
 
 	/**
 	 * This will check to see if the user has the proper credentials and will

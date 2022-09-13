@@ -1,5 +1,18 @@
 package com.scaha.beans;
 
+import com.gbli.common.SendMailSSL;
+import com.gbli.common.Utils;
+import com.gbli.connectors.ScahaDatabase;
+import com.gbli.context.ContextManager;
+import com.scaha.objects.MailableObject;
+import com.scaha.objects.Player;
+import com.scaha.objects.PlayerDataModel;
+
+import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.mail.internet.InternetAddress;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.CallableStatement;
