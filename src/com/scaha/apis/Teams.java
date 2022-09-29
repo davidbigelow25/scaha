@@ -1,32 +1,30 @@
 package com.scaha.apis;
-import java.io.IOException;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.gbli.connectors.ScahaDatabase;
+import com.gbli.context.ContextManager;
+import com.scaha.apis.ApisAuthentication;
+import org.primefaces.json.JSONArray;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
 import java.util.ArrayList;
-
-import com.gbli.common.Utils;
-import com.gbli.connectors.ScahaDatabase;
-import com.gbli.context.ContextManager;
-import com.scaha.apis.ApisAuthentication;
+import java.util.List;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+public class Teams extends HttpServlet {
 
-import static java.lang.Integer.parseInt;
-
-
-
-public class Schedules extends HttpServlet {
-
+    private static final JSONArray HTTP = null;
     transient private ResultSet rs = null;
     public static String c_sp_profile = "Call scaha.profile(?,?)";
 
@@ -43,6 +41,12 @@ public class Schedules extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        //lets pull values from the requesting objects clubid, optional teamid, optional year
+
+        ObjectMapper readobjectMapper = new ObjectMapper();
+
+        JsonNode jsonNode = readobjectMapper.readTree(request.getReader());
+        Integer clubid = jsonNode.get("ClubID").asInt();
 
         ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 
@@ -51,7 +55,7 @@ public class Schedules extends HttpServlet {
         ApisAuthentication apisa = new ApisAuthentication();
         Boolean authenticated = apisa.AuthenticateRequest(request,db,rs);
 
-        //lets get the list of schedules for the current season.  The method doesn't need to know what the current season
+        //lets get the list of clubs for the current season.  The method doesn't need to know what the current season
         //is, the stored procedure will look it up and then retrieve the list.
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -63,18 +67,24 @@ public class Schedules extends HttpServlet {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid Credentials");
             };
 
-            CallableStatement cs = db.prepareCall("CALL scaha.getAllSchedulesForCurrentSeason()");
+            CallableStatement cs = db.prepareCall("CALL scaha.getAllTeamsByClub(?)");
+            cs.setInt("in_IdClub",clubid);
             rs = cs.executeQuery();
 
             if (rs != null){
 
                 while (rs.next()) {
                     ObjectNode object = objectMapper.createObjectNode();
-                    object.put ("ScheduleID", rs.getInt("idschedule"));
-                    object.put( "Description", rs.getString("description"));
+                    object.put ("TeamID", rs.getInt("idteams"));
+                    object.put( "ShortName", rs.getString("sname"));
+                    object.put( "LongName", rs.getString("longname"));
+                    object.put( "TeamGender", rs.getString("teamgender"));
+                    object.put( "SkillLevelID", rs.getString("idskilllevel"));
+                    object.put( "SkillLevelTag", rs.getString("skillleveltag"));
+                    object.put( "DivisionID", rs.getString("iddivisions"));
+                    object.put( "DivisionTag", rs.getString("divisiontag"));
                     object.put( "SeasonID", rs.getString("seasontag"));
-                    object.put( "StartDate", rs.getString("startdate"));
-                    object.put( "EndDate", rs.getString("enddate"));
+                    object.put( "Year", rs.getInt("year"));
 
                     templist.add(object);
 

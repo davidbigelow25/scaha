@@ -1,4 +1,4 @@
-package com.gbli.common;
+package com.scaha.apis;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gbli.connectors.ScahaDatabase;
