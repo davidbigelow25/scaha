@@ -93,7 +93,7 @@ public class Games extends HttpServlet {
                     object.put( "AwayScore", rs.getString("awayscore"));
                     object.put( "OTInfo", rs.getString("otinfo"));
                     object.put( "OTWinner", rs.getString("otwinner"));
-
+                    object.put( "Sheetname", rs.getString("sheetname"));
                     templist.add(object);
 
                     object = null;
