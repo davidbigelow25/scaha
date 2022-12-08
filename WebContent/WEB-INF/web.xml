@@ -143,4 +143,59 @@
 	<param-name>net.bootsfaces.blockUI</param-name>
 	<param-value>true</param-value>
   </context-param>
+
+  <servlet>
+    <servlet-name>Schedules</servlet-name>
+    <servlet-class>com.scaha.apis.Schedules</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>Schedules</servlet-name>
+    <url-pattern>/apis/schedules/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Clubs</servlet-name>
+    <servlet-class>com.scaha.apis.Clubs</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>Clubs</servlet-name>
+    <url-pattern>/apis/clubs/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Teams</servlet-name>
+    <servlet-class>com.scaha.apis.Teams</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>Teams</servlet-name>
+    <url-pattern>/apis/teams/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Games</servlet-name>
+    <servlet-class>com.scaha.apis.Games</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>Games</servlet-name>
+    <url-pattern>/apis/games/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>GameDetails</servlet-name>
+    <servlet-class>com.scaha.apis.GameDetails</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>GameDetails</servlet-name>
+    <url-pattern>/apis/gamedetails/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Players</servlet-name>
+    <servlet-class>com.scaha.apis.Players</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>Players</servlet-name>
+    <url-pattern>/apis/players/*</url-pattern>
+  </servlet-mapping>
 </web-app>
