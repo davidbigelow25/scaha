@@ -82,6 +82,7 @@ public class Players extends HttpServlet {
                     object.put( "RoleType", rs.getString("rostertype"));
                     object.put( "IsSuspended", rs.getString("IsSuspended"));
                     object.put( "IsGoalie", rs.getString("IsGoalie"));
+                    object.put( "USAHockey", rs.getString("USAHockeynumber"));
 
                     templist.add(object);
 
