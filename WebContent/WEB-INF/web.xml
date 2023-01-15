@@ -10,7 +10,7 @@
   <env-entry>
     <env-entry-name>scaha/dbpoolcount</env-entry-name>
     <env-entry-type>java.lang.Integer</env-entry-type>
-    <env-entry-value>5</env-entry-value>
+    <env-entry-value>125</env-entry-value>
   </env-entry>
   <env-entry>
     <env-entry-name>scaha/emailauth</env-entry-name>
@@ -197,5 +197,14 @@
   <servlet-mapping>
     <servlet-name>Players</servlet-name>
     <url-pattern>/apis/players/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>SubmitGameDetails</servlet-name>
+    <servlet-class>com.scaha.apis.SubmitGameDetails</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>SubmitGameDetails</servlet-name>
+    <url-pattern>/apis/submitgamedetails/*</url-pattern>
   </servlet-mapping>
 </web-app>
