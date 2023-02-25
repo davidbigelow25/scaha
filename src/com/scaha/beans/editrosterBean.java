@@ -729,7 +729,7 @@ public class editrosterBean implements Serializable {
 
 				//Need to provide info to the stored procedure to save or update
 				LOGGER.info("update coach details");
-				CallableStatement cs = db.prepareCall("CALL scaha.updateCoachbyCoachIdforlistManageRoster(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+				CallableStatement cs = db.prepareCall("CALL scaha.updateCoachbyCoachIdforlistManageRoster(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 				cs.setInt("coachid", Integer.parseInt(coach.getIdcoach()));
 				cs.setString("screenexpires", coach.getScreeningexpires());
 				cs.setString("cepnum", coach.getCepnumber());
@@ -797,6 +797,7 @@ public class editrosterBean implements Serializable {
 					teamrole = "Manager";
 				}
 				cs.setString("in_rostertype", teamrole);
+				cs.setString("in_notes", coach.getNotes());
 
 				rs = cs.executeQuery();
 
