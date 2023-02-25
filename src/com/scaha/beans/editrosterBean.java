@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -129,7 +130,7 @@ public class editrosterBean implements Serializable {
     public void getRoster(){
 		List<Player> templist = new ArrayList<Player>();
 		List<Coach> tempcoachlist = new ArrayList<Coach>();
-		
+
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
     	
     	try{
@@ -195,7 +196,6 @@ public class editrosterBean implements Serializable {
 			db.cleanup();
     		
 			//next get coach roster
-			//TODO			cs = db.prepareCall("CALL scaha.getRosterByTeamId(?)");
 			cs = db.prepareCall("CALL scaha.getRosterCoachesByTeamId(?)");
 			cs.setInt("teamid", this.teamid);
 		    rs = cs.executeQuery();
@@ -213,8 +213,23 @@ public class editrosterBean implements Serializable {
 					String cactive = rs.getString("active");
 					String cupdated = rs.getString("updated");
 					String teamrole = rs.getString("teamrole");
-					
-					
+					String screeningexpires = rs.getString("screeningexpires");
+					String cepnumber = rs.getString("cepnumber");
+					String ceplevel = rs.getString("ceplevel");
+					String cepexpires = rs.getString("cepexpires");
+					String u8 = rs.getString("eightu");
+					String u10 = rs.getString("tenu");
+					String u12 = rs.getString("twelveu");
+					String u14 = rs.getString("fourteenu");
+					String u18 = rs.getString("eighteenu");
+					String girls = rs.getString("girls");
+					Integer safesport = rs.getInt("safesport");
+					String notes = rs.getString("notes");
+					String sportexpires = rs.getString("sportexpires");
+					String suspended =rs.getString("suspended");
+
+
+
 					Coach coach = new Coach();
 					coach.setIdcoach(coachid);
 					coach.setFirstname(cfname);
@@ -226,7 +241,44 @@ public class editrosterBean implements Serializable {
 					coach.setActive(cactive);
 					coach.setUpdated(cupdated);
 					coach.setTeamrole(teamrole);
-					
+					coach.setScreeningexpires(screeningexpires);
+					coach.setCepnumber(cepnumber);
+					coach.setCeplevel(ceplevel);
+					coach.setCepexpires(cepexpires);
+					coach.setU8(u8);
+					coach.setU10(u10);
+					coach.setU12(u12);
+					coach.setU14(u14);
+					coach.setU18(u18);
+					coach.setGirls(girls);
+					coach.setSafesportforcoachlist(safesport);
+					coach.setNotes(notes);
+					coach.setSportexpires(sportexpires);
+					coach.setSuspended(suspended);
+					coach.setSuspend(suspended);
+
+					String coachlist = "";
+					if (coach.getU8().equals("Yes")){
+						coachlist = coachlist.concat("8U");
+					}
+					if (coach.getU10().equals("Yes")){
+						coachlist = coachlist.concat(",10U");
+					}
+					if (coach.getU12().equals("Yes")){
+						coachlist = coachlist.concat(",12U");
+					}
+					if (coach.getU14().equals("Yes")){
+						coachlist = coachlist.concat(",14U");
+					}
+					if (coach.getU18().equals("Yes")){
+						coachlist = coachlist.concat(",18U");
+					}
+					if (coach.getGirls().equals("Yes")){
+						coachlist = coachlist.concat(",Girls");
+					}
+					coach.setCepmodulesselected(coachlist);
+
+
 					tempcoachlist.add(coach);
 					coach = null;
 				}
@@ -664,6 +716,118 @@ public class editrosterBean implements Serializable {
 		}
 
 		setPdr(templist);
+
+	}
+
+	public void updateCoach(Coach coach){
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+
+			if (db.setAutoCommit(false)) {
+
+				//Need to provide info to the stored procedure to save or update
+				LOGGER.info("update coach details");
+				CallableStatement cs = db.prepareCall("CALL scaha.updateCoachbyCoachIdforlistManageRoster(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+				cs.setInt("coachid", Integer.parseInt(coach.getIdcoach()));
+				cs.setString("screenexpires", coach.getScreeningexpires());
+				cs.setString("cepnum", coach.getCepnumber());
+				cs.setInt("levelcep", Integer.parseInt(coach.getCeplevel()));
+				cs.setString("cepexpire", coach.getCepexpires());
+				cs.setInt("insafesport",coach.getSafesportforcoachlist());
+				cs.setString("inrostertype", coach.getTeamrole());
+				cs.setInt("inrosterid", Integer.parseInt(coach.getIdcoach()));
+				//need to set values for modules
+				Integer u8 = 0;
+				Integer u10 = 0;
+				Integer u12 = 0;
+				Integer u14 = 0;
+				Integer u18 = 0;
+				Integer ugirls = 0;
+
+				List<String> cepmodulesselectedstring = Arrays.asList(coach.getCepmodulesselected().split(","));
+				for (int i = 0; i < cepmodulesselectedstring.size(); i++) {
+					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("8U")){
+						u8 = 1;
+					}
+					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("10U")){
+						u10 = 1;
+					}
+					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("12U")){
+						u12 = 1;
+					}
+					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("14U")){
+						u14 = 1;
+					}
+					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("18U")){
+						u18 = 1;
+					}
+					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("Girls")){
+						ugirls = 1;
+					}
+				}
+				cs.setInt("u8", u8);
+				cs.setInt("u10", u10);
+				cs.setInt("u12", u12);
+				cs.setInt("u14", u14);
+				cs.setInt("u18", u18);
+				cs.setInt("ugirls", ugirls);
+				cs.setString("infirstname",coach.getFirstname());
+				cs.setString("inlastname",coach.getLastname());
+				cs.setString("sportexpires", coach.getSportexpires());
+				cs.setInt("issuspend_in", Integer.parseInt(coach.getSuspend()));
+				String teamrole = "";
+				if (coach.getTeamrole().equals("PL")){
+					teamrole="Player";
+				}
+				if (coach.getTeamrole().equals("AC")){
+					teamrole = "Assistant Coach";
+				}
+				if (coach.getTeamrole().equals("SC")){
+					teamrole = "Student Coach";
+				}
+				if (coach.getTeamrole().equals("HC")){
+					teamrole = "Head Coach";
+				}
+				if (coach.getTeamrole().equals("AM")){
+					teamrole = "Assistnt Coach/Manager";
+				}
+				if (coach.getTeamrole().equals("MA")){
+					teamrole = "Manager";
+				}
+				cs.setString("in_rostertype", teamrole);
+
+				rs = cs.executeQuery();
+
+				db.commit();
+				rs.close();
+
+				db.cleanup();
+
+				//logging
+				LOGGER.info("We are updating transfer info for coach id:" + coach);
+
+
+
+				this.getRoster();
+
+
+			} else {
+
+			}
+
+		} catch (SQLException e) {
+			/*TODO Auto-generated catch block*/
+			LOGGER.info("ERROR IN LOI Generation Process" + this.selectedcoach);
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
 
 	}
 }

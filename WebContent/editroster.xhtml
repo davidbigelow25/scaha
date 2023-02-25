@@ -208,19 +208,40 @@
 			            <f:facet name="header">
 					        <h:outputText value=" " />
 					    </f:facet>
-			            <h:outputText value="#{coach.getTeamrole()}" />
+			            <!--<h:outputText value="#{coach.getTeamrole()}" />-->
+						<b:selectOneMenu value="#{coach.teamrole}"
+										 large-screen="full-width"
+										 medium-screen="full-width"
+										 small-screen="full-width"
+										 tiny-screen="full-width"
+						>
+							<f:selectItem itemLabel="Select One" itemValue="0"/>
+							<f:selectItem itemLabel="PL" itemValue="PL"/>
+							<f:selectItem itemLabel="AC" itemValue="AC"/>
+							<f:selectItem itemLabel="SC" itemValue="SC"/>
+							<f:selectItem itemLabel="HC" itemValue="HC"/>
+							<f:selectItem itemLabel="AM" itemValue="AM"/>
+							<f:selectItem itemLabel="MA" itemValue="MA"/>
+
+						</b:selectOneMenu>
 			        </b:dataTableColumn>
 					<b:dataTableColumn >
 			            <f:facet name="header">
 					        Last Name
 					    </f:facet>
-			            <h:outputText value="#{coach.getLastname()}" />
+						<b:inputText id="lastname" value="#{coach.lastname}" style="width:75px;" >
+
+						</b:inputText>
+						<!--<h:outputText value="#{coach.getLastname()}" />-->
 			        </b:dataTableColumn>
 					<b:dataTableColumn >
 			            <f:facet name="header">
 					        First Name
 					    </f:facet>
-			            <h:outputText value="#{coach.getFirstname()}" />
+						<b:inputText id="firstname" value="#{coach.firstname}" style="width:75px;" >
+
+						</b:inputText>
+						<!--<h:outputText value="#{coach.getFirstname()}" />-->
 			        </b:dataTableColumn>
 					<b:dataTableColumn >
 			            <f:facet name="header">
@@ -253,6 +274,100 @@
 			            <h:outputText value="#{coach.getActive()}" />
 			        </b:dataTableColumn>
 					<b:dataTableColumn >
+						<f:facet name="header">
+							Safe<br/>sport
+						</f:facet>
+						<b:selectOneMenu value="#{coach.safesportforcoachlist}">
+							<f:selectItem itemLabel="No" itemValue="0"/>
+							<f:selectItem itemLabel="Yes" itemValue="1"/>
+
+						</b:selectOneMenu>
+					</b:dataTableColumn>
+					<b:dataTableColumn >
+						<f:facet name="header">
+							Sport<br/>Exp
+						</f:facet>
+						<b:inputText id="sportexp" value="#{coach.sportexpires}" style="width:90px;" >
+
+						</b:inputText>
+					</b:dataTableColumn>
+					<b:dataTableColumn >
+						<f:facet name="header">
+							Scrn<br/>Exp
+						</f:facet>
+						<b:inputText id="screenexpire" value="#{coach.screeningexpires}" style="width:90px;" >
+
+						</b:inputText>
+					</b:dataTableColumn>
+					<b:dataTableColumn >
+						<f:facet name="header">
+							CEP<br/>#
+						</f:facet>
+						<b:inputText id="cepnum" value="#{coach.cepnumber}" style="width:80px;" >
+
+						</b:inputText>
+					</b:dataTableColumn>
+					<b:dataTableColumn >
+						<f:facet name="header">
+							CEP<br/>Level
+						</f:facet>
+						<b:selectOneMenu value="#{coach.ceplevel}"
+										 large-screen="full-width"
+										 medium-screen="full-width"
+										 small-screen="full-width"
+										 tiny-screen="full-width"
+						>
+							<f:selectItem itemLabel="Select One" itemValue="0"/>
+							<f:selectItem itemLabel="Level 1" itemValue="1"/>
+							<f:selectItem itemLabel="Level 2" itemValue="2"/>
+							<f:selectItem itemLabel="Level 3" itemValue="3"/>
+							<f:selectItem itemLabel="Level 4" itemValue="4"/>
+							<f:selectItem itemLabel="Level 5" itemValue="5"/>
+						</b:selectOneMenu>
+					</b:dataTableColumn>
+					<b:dataTableColumn >
+						<f:facet name="header">
+							CEP<br/>Exp
+						</f:facet>
+						<b:inputText id="cepexpires" value="#{coach.cepexpires}"  style="width:95px;" >
+
+						</b:inputText>
+					</b:dataTableColumn>
+					<b:dataTableColumn >
+						<f:facet name="header">
+							Mods
+						</f:facet>
+						<b:selectMultiMenu id="cepmodules" style="width: 100%;" includeSelectAllOption="true" value="#{coach.cepmodulesselected}"
+										   large-screen="full-width"
+										   medium-screen="full-width"
+										   small-screen="full-width"
+										   tiny-screen="full-width"
+						>
+							<f:selectItem itemLabel="8U" itemValue="8U" />
+							<f:selectItem itemLabel="10U" itemValue="10U" />
+							<f:selectItem itemLabel="12U" itemValue="12U" />
+							<f:selectItem itemLabel="14U" itemValue="14U" />
+							<f:selectItem itemLabel="18U" itemValue="18U" />
+							<f:selectItem itemLabel="Girls" itemValue="Girls" />
+						</b:selectMultiMenu>
+					</b:dataTableColumn>
+					<b:dataTableColumn >
+						<f:facet name="header">
+							Susp
+						</f:facet>
+						<!--<h:outputText value="#{coach.getSuspended()}" />-->
+						<b:selectOneMenu value="#{coach.suspend}"
+										 large-screen="full-width"
+										 medium-screen="full-width"
+										 small-screen="full-width"
+										 tiny-screen="full-width"
+						>
+							<f:selectItem itemLabel="No" itemValue="0"/>
+							<f:selectItem itemLabel="Yes" itemValue="1"/>
+						</b:selectOneMenu>
+					</b:dataTableColumn>
+
+					<b:dataTableColumn >
 			            <f:facet name="header">
 					        Updated
 					    </f:facet>
@@ -280,6 +395,15 @@
 					    					tiny-screen="full-width">
 					       <f:ajax execute="@this" render="@form" />
 					    </b:commandButton>
+						<b:commandButton id="updatecoachrow" value="Update Coach" look="success" actionListener="#{editrosterBean.updateCoach(coach)}"
+										 large-screen="full-width"
+										 medium-screen="full-width"
+										 small-screen="full-width"
+										 tiny-screen="full-width"
+						>
+							<f:ajax execute="@form" render="@form" update="listofplayers"/>
+						</b:commandButton>
+
 					</b:dataTableColumn> 
 			    </b:dataTable>
 			             
