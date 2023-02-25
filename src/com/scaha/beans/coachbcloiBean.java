@@ -260,6 +260,8 @@ public class coachbcloiBean implements Serializable, MailableObject {
         				ocoach.setNotes(notes);
         				ocoach.setSportexpires(sportexpires);
         				ocoach.setSuspended(suspended);
+						ocoach.setSuspend(suspended);
+
 
 						String templist = "";
 						if (ocoach.getU8().equals("Yes")){
@@ -688,7 +690,7 @@ public class coachbcloiBean implements Serializable, MailableObject {
 				cs.setString("infirstname",coach.getFirstname());
 				cs.setString("inlastname",coach.getLastname());
 				cs.setString("sportexpires", coach.getSportexpires());
-				cs.setInt("issuspend_in", 0);
+				cs.setInt("issuspend_in", Integer.parseInt(coach.getSuspend()));
 				rs = cs.executeQuery();
 
 				db.commit();
@@ -709,7 +711,7 @@ public class coachbcloiBean implements Serializable, MailableObject {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			/*TODO Auto-generated catch block*/
 			LOGGER.info("ERROR IN LOI Generation Process" + this.selectedcoach);
 			e.printStackTrace();
 			db.rollback();

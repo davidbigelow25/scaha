@@ -862,7 +862,7 @@ public class coachloiBean implements Serializable, MailableObject {
     		
     			Vector<Integer> v = new Vector<Integer>();
     			v.add(selectedcoach);
-    			db.getData("CALL scaha.getCoachInfoByPersonId(?)", v);
+    			db.getData("CALL scaha.getCoachInfoByRosterId(?)", v);
     		    
     			if (db.getResultSet() != null){
     				//need to add to an array
@@ -885,7 +885,12 @@ public class coachloiBean implements Serializable, MailableObject {
         				sportexpires = rs.getString("sportexpires");
         				notes = rs.getString("notes");
         				suspended = rs.getString("displayissuspended");
-        				this.setDisplaysafesport(safesport.toString());
+						if (suspended.equals("Yes")){
+							suspended="1";
+						}else{
+							suspended="0";
+						}
+						this.setDisplaysafesport(safesport.toString());
         				
         				if (ceplevel.equals(1)){
         					cepleveldisplay = "Level 1";
@@ -1491,9 +1496,10 @@ public class coachloiBean implements Serializable, MailableObject {
 			
 				//Need to store note first
  				LOGGER.info("storing note for :" + this.selectedcoach);
- 				CallableStatement cs = db.prepareCall("CALL scaha.saveNote(?,?)");
+ 				CallableStatement cs = db.prepareCall("CALL scaha.saveNote(?,?,?)");
  				cs.setString("innote", this.notes);
  				cs.setInt("personid", this.selectedcoach);
+				 cs.setInt("in_suspend", Integer.parseInt(this.suspended));
     		    
     		    cs.executeQuery();
     			
@@ -1648,11 +1654,12 @@ public class coachloiBean implements Serializable, MailableObject {
 			
 				//Need to store note first
  				LOGGER.info("storing note for :" + this.selectedcoach);
- 				CallableStatement cs = db.prepareCall("CALL scaha.saveNote(?,?)");
- 				cs.setString("innote", this.notes);
- 				cs.setInt("personid", this.selectedcoach);
-    		    
-    		    cs.executeQuery();
+				CallableStatement cs = db.prepareCall("CALL scaha.saveNote(?,?,?)");
+				cs.setString("innote", this.notes);
+				cs.setInt("personid", this.selectedcoach);
+				cs.setInt("in_suspend", Integer.parseInt(this.suspended));
+
+				cs.executeQuery();
     			cs.close();
     		    
     		} else {

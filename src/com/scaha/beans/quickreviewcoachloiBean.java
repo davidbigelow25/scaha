@@ -6,6 +6,7 @@ import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -177,11 +178,41 @@ public class quickreviewcoachloiBean implements Serializable {
         				ocoach.setU18(u18);
         				ocoach.setGirls(girls);
         				ocoach.setSafesport(safesport);
+						ocoach.setSafesportforcoachlist(Integer.parseInt(safesport));
         				ocoach.setConfirmed(confirmed);
         				ocoach.setNotes(notes);
         				ocoach.setSportexpires(sportexpires);
         				ocoach.setSuspended(suspended);
-        				tempresult.add(ocoach);
+						if (suspended.equals("Y")){
+							ocoach.setSuspend("1");
+						}
+						else {
+							ocoach.setSuspend("0");
+						}
+
+
+						String templist = "";
+						if (ocoach.getU8().equals("Yes")){
+							templist = templist.concat("8U");
+						}
+						if (ocoach.getU10().equals("Yes")){
+							templist = templist.concat(",10U");
+						}
+						if (ocoach.getU12().equals("Yes")){
+							templist = templist.concat(",12U");
+						}
+						if (ocoach.getU14().equals("Yes")){
+							templist = templist.concat(",14U");
+						}
+						if (ocoach.getU18().equals("Yes")){
+							templist = templist.concat(",18U");
+						}
+						if (ocoach.getGirls().equals("Yes")){
+							templist = templist.concat(",Girls");
+						}
+						ocoach.setCepmodulesselected(templist);
+
+						tempresult.add(ocoach);
 
         				ocoach = null;
     				}
@@ -392,7 +423,7 @@ public class quickreviewcoachloiBean implements Serializable {
 		
 		String sidcoach = selectedCoach.getIdcoach();
 		
-		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		/*ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 		
 		try{
 
@@ -429,7 +460,7 @@ public class quickreviewcoachloiBean implements Serializable {
 			// always clean up after yourself..
 			//
 			db.free();
-		}
+		}*/
 		
 		FacesContext context = FacesContext.getCurrentInstance();
 		try{
@@ -573,6 +604,97 @@ public void loadLoiCounts(){
 		}
 	
 		
+	}
+
+	public void updateCoach(Coach coach){
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+
+			if (db.setAutoCommit(false)) {
+
+				//Need to provide info to the stored procedure to save or update
+				LOGGER.info("update coach details");
+				CallableStatement cs = db.prepareCall("CALL scaha.updateCoachbyCoachIdforlist(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+				cs.setInt("coachid", Integer.parseInt(coach.getIdcoach()));
+				cs.setString("screenexpires", coach.getScreeningexpires());
+				cs.setString("cepnum", coach.getCepnumber());
+				cs.setInt("levelcep", Integer.parseInt(coach.getCeplevel()));
+				cs.setString("cepexpire", coach.getCepexpires());
+				cs.setInt("insafesport",coach.getSafesportforcoachlist());
+				cs.setString("inrostertype", coach.getTeamrole());
+				cs.setInt("inrosterid", Integer.parseInt(coach.getIdcoach()));
+				//need to set values for modules
+				Integer u8 = 0;
+				Integer u10 = 0;
+				Integer u12 = 0;
+				Integer u14 = 0;
+				Integer u18 = 0;
+				Integer ugirls = 0;
+
+				List<String> cepmodulesselectedstring = Arrays.asList(coach.getCepmodulesselected().split(","));
+				for (int i = 0; i < cepmodulesselectedstring.size(); i++) {
+					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("8U")){
+						u8 = 1;
+					}
+					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("10U")){
+						u10 = 1;
+					}
+					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("12U")){
+						u12 = 1;
+					}
+					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("14U")){
+						u14 = 1;
+					}
+					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("18U")){
+						u18 = 1;
+					}
+					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("Girls")){
+						ugirls = 1;
+					}
+				}
+				cs.setInt("u8", u8);
+				cs.setInt("u10", u10);
+				cs.setInt("u12", u12);
+				cs.setInt("u14", u14);
+				cs.setInt("u18", u18);
+				cs.setInt("ugirls", ugirls);
+				cs.setString("infirstname",coach.getFirstname());
+				cs.setString("inlastname",coach.getLastname());
+				cs.setString("sportexpires", coach.getSportexpires());
+				cs.setInt("issuspend_in", Integer.parseInt(coach.getSuspend()));
+				rs = cs.executeQuery();
+
+				db.commit();
+				rs.close();
+
+				db.cleanup();
+
+				//logging
+				LOGGER.info("We are updating transfer info for coach id:" + coach);
+
+
+
+				this.coachesDisplay();
+
+
+			} else {
+
+			}
+
+		} catch (SQLException e) {
+			/*TODO Auto-generated catch block*/
+			LOGGER.info("ERROR IN LOI Generation Process" + this.selectedcoach);
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
 	}
 	
 }

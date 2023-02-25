@@ -62,6 +62,7 @@ public class Player extends ScahaObject implements Serializable {
 	private String suspended = null;
 	private Boolean bitalics = false;
 	private Boolean bcovid = false;
+	private String suspendedmessage = null;
 
 	public Player (){ 
 		
@@ -73,6 +74,14 @@ public class Player extends ScahaObject implements Serializable {
 
 	public void setSuspended(String value){
 		suspended=value;
+	}
+
+	public String getSuspendedmessage(){
+		return suspendedmessage;
+	}
+
+	public void setSuspendedmessage(String value){
+		suspendedmessage=value;
 	}
 
 	public String getSafesport(){

@@ -264,7 +264,13 @@ public class bcloiBean implements Serializable, MailableObject {
         				oplayer.setNotes(notes);
         				oplayer.setSafesport(safesport);
         				oplayer.setSuspended(suspended);
-        				if (scitizenship!=null){
+						if (suspended.equals("Y")){
+							oplayer.setSuspendedmessage("UnSuspend LOI");
+						}else{
+							oplayer.setSuspendedmessage("Suspend LOI");
+						}
+
+						if (scitizenship!=null){
 	        				if (!scitizenship.equals("USA")){
 		        				if (sindefinite!=null){
 		        					if (sindefinite.equals("1")){
@@ -623,5 +629,49 @@ public class bcloiBean implements Serializable, MailableObject {
     	}
 
     }
+
+	public void suspendLoi(Player selectedPlayer){
+
+		String sidplayer = selectedPlayer.getRosterid();
+		String ssuspended = selectedPlayer.getSuspended();
+		Integer suspend = 1;
+		if (ssuspended.equals("Y")){
+			suspend = 0;
+		}
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+
+			if (db.setAutoCommit(false)) {
+
+				//Need to provide info to the stored procedure to save or update
+				LOGGER.info("verify loi code provided");
+				CallableStatement cs = db.prepareCall("CALL scaha.setSuspendLoi(?,?)");
+				cs.setInt("rosterid", Integer.parseInt(sidplayer));
+				cs.setInt("in_suspend", suspend);
+				cs.executeQuery();
+				LOGGER.info("We have confirmed loi for player id:" + sidplayer);
+
+				db.commit();
+				db.cleanup();
+			} else {
+
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN Confirming player id " + sidplayer);
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+		//this loads the number of completed and total number of lois to be done.
+		playersDisplay();
+	}
 }
 
