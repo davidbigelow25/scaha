@@ -196,6 +196,20 @@
 		        <p:column headerText="Location">  
 		            <h:outputText value="#{TempGame.getLocation()}" />  
 		        </p:column>
+				<p:column headerText="overtime options">
+					<p:commandButton type="button" styleClass="ui-button-info" value="OT Home" action="#{playoffsBean.setOT(TempGame,'home','OT')}">
+						<p:ajax process="@this" listener="#{playoffsBean.setOT(TempGame,'home','OT')}" event="click" update=":form"  />
+					</p:commandButton>
+					<p:commandButton type="button" styleClass="ui-button-info" value="OT Away" action="#{playoffsBean.setOT(TempGame,'away','OT')}">
+						<p:ajax process="@this" listener="#{playoffsBean.setOT(TempGame,'away','OT')}" event="click" update=":form"  />
+					</p:commandButton>
+					<p:commandButton type="button" styleClass="ui-button-info" value="SO Home" action="#{playoffsBean.setOT(TempGame,'home','SO')}">
+						<p:ajax process="@this" listener="#{playoffsBean.setOT(TempGame,'home','SO')}" event="click" update=":form"  />
+					</p:commandButton>
+					<p:commandButton type="button" styleClass="ui-button-info" value="SO Home" action="#{playoffsBean.setOT(TempGame,'away','SO')}">
+						<p:ajax process="@this" listener="#{playoffsBean.setOT(TempGame,'away','SO')}" event="click" update=":form"  />
+					</p:commandButton>
+				</p:column>
 		    </p:dataTable>
 			<br></br>	
 			<p:dataTable  id= "parts" var="part" value="#{playoffsBean.getPartlist()}"

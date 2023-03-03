@@ -803,5 +803,34 @@ public class playoffsBean implements Serializable{
 		this.setSelectedschedule(scheduleidformobile);
 		onScheduleChange();
 	}
+
+	public void setOT(TempGame tempGame,String homeaway, String otso){
+
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+			PreparedStatement ps = db.prepareStatement("call scaha.setPlayoffGameOT(?,?,?)");
+			ps.setInt(1,tempGame.getIdgame());
+			ps.setString(2,otso);
+			ps.setString(3,homeaway);
+
+			ps.executeQuery();
+			ps.close();
+			db.cleanup();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN setting ot home/away results");
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+	}
 }
 
