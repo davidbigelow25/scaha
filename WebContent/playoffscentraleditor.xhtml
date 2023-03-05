@@ -104,7 +104,14 @@
 	                   	<f:facet name="input"><p:inputText id="game3bracket1Input" value="#{playoffbracket.newgame3}" style="width:25px"/></f:facet>  
                		</p:cellEditor>  
 	        	</p:column>
-		        <p:column headerText="Total" style="width:40px;">  
+				<p:column headerText="Game 3" style="width:40px;" rendered="#{playoffbracket.getRendergame4()}">
+					<p:cellEditor>
+						<f:facet name="output"><h:outputText value="#{playoffbracket.getGame4()}" /></f:facet>
+						<f:facet name="input"><p:inputText id="game4bracket1Input" value="#{playoffbracket.newgame4}" style="width:25px"/></f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Total" style="width:40px;">
 		        	<p:cellEditor>  
 	                   	<f:facet name="output"><h:outputText value="#{playoffbracket.getGametotal()}" /></f:facet>  
 	                   	<f:facet name="input"><p:inputText id="totalbracket1Input" value="#{playoffbracket.newgametotal}" style="width:25px"/></f:facet>  
@@ -119,8 +126,8 @@
 		        
 		     </p:dataTable>
 			 <br></br>
-			<!-- lets put playoff bracket2 here -->
-			<p:dataTable id="playoffbracket2" var="playoffbracket" value="#{playoffsBean.getPlayoffbracket2datamodel()}" editable="true" editMode="cell" selectionMode="single">
+			<!-- lets put playoff bracket2 here when it has 4 games -->
+			<p:dataTable id="playoffbracket2w4games" var="playoffbracket" value="#{playoffsBean.getPlayoffbracket2datamodel()}" editable="true" editMode="cell" selectionMode="single" rendered="#{playoffsBean.getDisplaygame4()}">
                 <f:facet name="header">
 			        Bracket 2
 			    </f:facet>
@@ -147,7 +154,13 @@
 	                   	<f:facet name="input"><p:inputText id="game3bracket1Input" value="#{playoffbracket.newgame3}" style="width:25px"/></f:facet>  
                		</p:cellEditor>  
 	        	</p:column>
-		        <p:column headerText="Total" style="width:40px;">  
+				<p:column headerText="Game 4" style="width:40px;">
+					<p:cellEditor>
+						<f:facet name="output"><h:outputText value="#{playoffbracket.getGame4()}" /></f:facet>
+						<f:facet name="input"><p:inputText id="game4bracket1Input" value="#{playoffbracket.newgame4}" style="width:25px"/></f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Total" style="width:40px;">
 		        	<p:cellEditor>  
 	                   	<f:facet name="output"><h:outputText value="#{playoffbracket.getGametotal()}" /></f:facet>  
 	                   	<f:facet name="input"><p:inputText id="totalbracket1Input" value="#{playoffbracket.newgametotal}" style="width:25px"/></f:facet>  
@@ -161,9 +174,51 @@
 		        </p:column>
 		        
 		     </p:dataTable>
-			
-			
-	    </p:layoutUnit>
+			<!-- lets put playoff bracket2 here when it doesn't 4 games -->
+			<p:dataTable id="playoffbracket2" var="playoffbracket" value="#{playoffsBean.getPlayoffbracket2datamodel()}" editable="true" editMode="cell" selectionMode="single" rendered="#{not playoffsBean.getDisplaygame4()}">
+				<f:facet name="header">
+					Bracket 2
+				</f:facet>
+				<p:column headerText="Team Name" style="width:80px;">
+					<h:outputText value="#{playoffbracket.getTeamname()}" />
+				</p:column>
+				<p:column headerText="Game 1" style="width:40px;">
+					<p:cellEditor>
+						<f:facet name="output"><h:outputText value="#{playoffbracket.getGame1()}" /></f:facet>
+						<f:facet name="input"><p:inputText id="game1bracket1Input" value="#{playoffbracket.newgame1}" style="width:25px"/></f:facet>
+					</p:cellEditor>
+
+
+				</p:column>
+				<p:column headerText="Game 2" style="width:40px;">
+					<p:cellEditor>
+						<f:facet name="output"><h:outputText value="#{playoffbracket.getGame2()}" /></f:facet>
+						<f:facet name="input"><p:inputText id="game2bracket1Input" value="#{playoffbracket.newgame2}" style="width:25px"/></f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Game 3" style="width:40px;">
+					<p:cellEditor>
+						<f:facet name="output"><h:outputText value="#{playoffbracket.getGame3()}" /></f:facet>
+						<f:facet name="input"><p:inputText id="game3bracket1Input" value="#{playoffbracket.newgame3}" style="width:25px"/></f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Total" style="width:40px;">
+					<p:cellEditor>
+						<f:facet name="output"><h:outputText value="#{playoffbracket.getGametotal()}" /></f:facet>
+						<f:facet name="input"><p:inputText id="totalbracket1Input" value="#{playoffbracket.newgametotal}" style="width:25px"/></f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Place" style="width:40px;">
+					<p:cellEditor>
+						<f:facet name="output"><h:outputText value="#{playoffbracket.getPlace()}" /></f:facet>
+						<f:facet name="input"><p:inputText id="placebracket1Input" value="#{playoffbracket.newplace}" style="width:25px"/></f:facet>
+					</p:cellEditor>
+				</p:column>
+
+			</p:dataTable>
+
+
+		</p:layoutUnit>
 		<p:layoutUnit id="center" position="center" >
 			<p:dataTable id="playoffgames" var="TempGame" value="#{playoffsBean.getTempGamedatamodel()}" editable="true" editMode="cell" selectionMode="single" paginator="true" rows="10" autoupdate="false" >
 		        <f:facet name="header">
@@ -206,7 +261,7 @@
 					<p:commandButton type="button" styleClass="ui-button-info" value="SO Home" action="#{playoffsBean.setOT(TempGame,'home','SO')}">
 						<p:ajax process="@this" listener="#{playoffsBean.setOT(TempGame,'home','SO')}" event="click" update=":form"  />
 					</p:commandButton>
-					<p:commandButton type="button" styleClass="ui-button-info" value="SO Home" action="#{playoffsBean.setOT(TempGame,'away','SO')}">
+					<p:commandButton type="button" styleClass="ui-button-info" value="SO Away" action="#{playoffsBean.setOT(TempGame,'away','SO')}">
 						<p:ajax process="@this" listener="#{playoffsBean.setOT(TempGame,'away','SO')}" event="click" update=":form"  />
 					</p:commandButton>
 				</p:column>

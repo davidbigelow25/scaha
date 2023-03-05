@@ -26,6 +26,7 @@ import com.scaha.objects.ScahaTeam;
 import com.scaha.objects.Schedule;
 import com.scaha.objects.TempGame;
 import com.scaha.objects.TempGameDataModel;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 //import com.gbli.common.SendMailSSL;
 
@@ -57,6 +58,7 @@ public class playoffsBean implements Serializable{
     
 	//bean level properties used by multiple methods
 	private Integer profileid = 0;
+	private Boolean displaygame4 = false;
 	
 	//datamodels for all of the lists on the page
 	private TempGameDataModel TempGameDataModel = null;
@@ -91,9 +93,17 @@ public class playoffsBean implements Serializable{
 	
     public playoffsBean() {  
         
-    }  
-    
-    public String getScheduletitle(){
+    }
+
+	public Boolean getDisplaygame4(){
+		return displaygame4;
+	}
+
+	public void setDisplaygame4(Boolean tdate){
+		displaygame4=tdate;
+	}
+
+	public String getScheduletitle(){
     	return scheduletitle;
     }
     
@@ -665,6 +675,8 @@ public class playoffsBean implements Serializable{
     				String game1 = rs.getString("game1");
     				String game2 = rs.getString("game2");
     				String game3 = rs.getString("game3");
+					String game4 = rs.getString("game4");
+					Boolean displaygame4 = rs.getBoolean("displaygame4");
     				String gametotal = rs.getString("gametotal");
     				String place = rs.getString("place");
     				
@@ -677,6 +689,10 @@ public class playoffsBean implements Serializable{
     				obracket.setNewgame2(game2);
     				obracket.setGame3(game3);
     				obracket.setNewgame3(game3);
+					obracket.setGame4(game4);
+					obracket.setNewgame4(game4);
+					obracket.setRendergame4(displaygame4);
+					this.setDisplaygame4(displaygame4);
     				obracket.setGametotal(gametotal);
     				obracket.setNewgametotal(gametotal);
     				obracket.setPlace(place);
@@ -702,7 +718,9 @@ public class playoffsBean implements Serializable{
 					String game1 = rs.getString("game1");
     				String game2 = rs.getString("game2");
     				String game3 = rs.getString("game3");
-    				String gametotal = rs.getString("gametotal");
+					String game4 = rs.getString("game4");
+					Boolean displaygame4 = rs.getBoolean("displaygame4");
+					String gametotal = rs.getString("gametotal");
     				String place = rs.getString("place");
     				
     				Playoffbracket obracket = new Playoffbracket();
@@ -714,7 +732,11 @@ public class playoffsBean implements Serializable{
     				obracket.setNewgame2(game2);
     				obracket.setGame3(game3);
     				obracket.setNewgame3(game3);
-    				obracket.setGametotal(gametotal);
+					obracket.setGame4(game4);
+					obracket.setNewgame4(game4);
+					obracket.setRendergame4(displaygame4);
+					this.setDisplaygame4(displaygame4);
+					obracket.setGametotal(gametotal);
     				obracket.setNewgametotal(gametotal);
     				obracket.setPlace(place);
     				obracket.setNewplace(place);

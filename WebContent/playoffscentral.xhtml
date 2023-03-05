@@ -154,54 +154,55 @@
 							<f:facet name="heading">
 						        Bracket 1
 						    </f:facet>
-		                
-					    	<b:dataTable 
-								id="playoffbracket1" 
-								var="playoffbracket"
-								value="#{playoffsBean.getPlayoffbrackets1()}" 
-								editable="false" 
-								select="false"
-								paginated="false" 
-								border="true"
-								searching="false"
-								>
+
+							<b:dataTable
+									id="playoffbracket1"
+									var="playoffbracket"
+									value="#{playoffsBean.getPlayoffbrackets1()}"
+									editable="false"
+									select="false"
+									paginated="false"
+									border="true"
+									searching="false"
+
+							>
 								<b:dataTableColumn styleClass="mtrxColumn" >
-						            <f:facet name="header">
-								         Team
-								    </f:facet>
-								    <h:outputText style="font-size:11pt;"  value="#{playoffbracket.getTeamname()}" />
-						        </b:dataTableColumn>
-						        <b:dataTableColumn styleClass="mtrxColumn">
-						            <f:facet name="header">
-								        Game 1
-								    </f:facet>
-						            <h:outputText style="font-size:11pt;"  value="#{playoffbracket.getGame1()}" />
-						        </b:dataTableColumn>
+									<f:facet name="header">
+										Team
+									</f:facet>
+									<h:outputText style="font-size:11pt;"  value="#{playoffbracket.getTeamname()}" />
+								</b:dataTableColumn>
+								<b:dataTableColumn styleClass="mtrxColumn">
+									<f:facet name="header">
+										Game 1
+									</f:facet>
+									<h:outputText style="font-size:11pt;"  value="#{playoffbracket.getGame1()}" />
+								</b:dataTableColumn>
 								<b:dataTableColumn styleClass="mtrxColumn" >
-						            <f:facet name="header">
-								        Game 2
-								    </f:facet>
-						            <h:outputText style="font-size:11pt;"  value="#{playoffbracket.getGame2()}" />
-						        </b:dataTableColumn>
-						        <b:dataTableColumn styleClass="mtrxColumn" >
-						            <f:facet name="header">
-								        Game 3
-								    </f:facet>
-						            <h:outputText style="font-size:11pt;"  value="#{playoffbracket.getGame3()}" />
-						        </b:dataTableColumn>
-						        <b:dataTableColumn styleClass="mtrxColumn" >
-						            <f:facet name="header">
-								        Total
-								    </f:facet>
-						            <h:outputText style="font-size:11pt;"  value="#{playoffbracket.getGametotal()}" />
-						        </b:dataTableColumn>
-						        <b:dataTableColumn styleClass="mtrxColumn" >
-						            <f:facet name="header">
-								        Place
-								    </f:facet>
-						            <h:outputText style="font-size:11pt;"  value="#{playoffbracket.getPlace()}" />
-						        </b:dataTableColumn>
-					    	</b:dataTable>
+									<f:facet name="header">
+										Game 2
+									</f:facet>
+									<h:outputText style="font-size:11pt;"  value="#{playoffbracket.getGame2()}" />
+								</b:dataTableColumn>
+								<b:dataTableColumn styleClass="mtrxColumn" >
+									<f:facet name="header">
+										Game 3
+									</f:facet>
+									<h:outputText style="font-size:11pt;"  value="#{playoffbracket.getGame3()}" />
+								</b:dataTableColumn>
+								<b:dataTableColumn styleClass="mtrxColumn" >
+									<f:facet name="header">
+										Total
+									</f:facet>
+									<h:outputText style="font-size:11pt;"  value="#{playoffbracket.getGametotal()}" />
+								</b:dataTableColumn>
+								<b:dataTableColumn styleClass="mtrxColumn" >
+									<f:facet name="header">
+										Place
+									</f:facet>
+									<h:outputText style="font-size:11pt;"  value="#{playoffbracket.getPlace()}" />
+								</b:dataTableColumn>
+								</b:dataTable>
 					    </b:panel>
 				    	<br></br>
 				    	<b:panel id="bracket2p" collapsible="false" look="primary" 
@@ -213,8 +214,9 @@
 							<f:facet name="heading">
 						        Bracket 2
 						    </f:facet>
+							<!-- this is for when the bracket has 4 games-->
 			                <b:dataTable 
-								id="playoffbracket2" 
+								id="playoffbracket2wgame4"
 								var="playoffbracket"
 								value="#{playoffsBean.getPlayoffbrackets2()}" 
 								editable="false" 
@@ -222,7 +224,9 @@
 								paginated="false" 
 								border="true"
 								searching="false"
-								>
+								rendered="#{playoffsBean.getDisplaygame4()}"
+
+							>
 								<b:dataTableColumn styleClass="mtrxColumn" >
 						            <f:facet name="header">
 								         Team
@@ -247,7 +251,13 @@
 								    </f:facet>
 						            <h:outputText style="font-size:11pt;"  value="#{playoffbracket.getGame3()}" />
 						        </b:dataTableColumn>
-						        <b:dataTableColumn styleClass="mtrxColumn" >
+								<b:dataTableColumn styleClass="mtrxColumn" >
+									<f:facet name="header">
+										Game 4
+									</f:facet>
+									<h:outputText style="font-size:11pt;"  value="#{playoffbracket.getGame4()}" />
+								</b:dataTableColumn>
+								<b:dataTableColumn styleClass="mtrxColumn" >
 						            <f:facet name="header">
 								        Total
 								    </f:facet>
@@ -260,6 +270,56 @@
 						            <h:outputText style="font-size:11pt;"  value="#{playoffbracket.getPlace()}" />
 						        </b:dataTableColumn>
 					    	</b:dataTable>
+							<!-- this is for when the bracket does not 4 games-->
+							<b:dataTable
+									id="playoffbracket2"
+									var="playoffbracket"
+									value="#{playoffsBean.getPlayoffbrackets2()}"
+									editable="false"
+									select="false"
+									paginated="false"
+									border="true"
+									searching="false"
+									rendered="#{not playoffsBean.getDisplaygame4()}"
+
+							>
+								<b:dataTableColumn styleClass="mtrxColumn" >
+									<f:facet name="header">
+										Team
+									</f:facet>
+									<h:outputText style="font-size:11pt;"  value="#{playoffbracket.getTeamname()}" />
+								</b:dataTableColumn>
+								<b:dataTableColumn styleClass="mtrxColumn">
+									<f:facet name="header">
+										Game 1
+									</f:facet>
+									<h:outputText style="font-size:11pt;"  value="#{playoffbracket.getGame1()}" />
+								</b:dataTableColumn>
+								<b:dataTableColumn styleClass="mtrxColumn" >
+									<f:facet name="header">
+										Game 2
+									</f:facet>
+									<h:outputText style="font-size:11pt;"  value="#{playoffbracket.getGame2()}" />
+								</b:dataTableColumn>
+								<b:dataTableColumn styleClass="mtrxColumn" >
+									<f:facet name="header">
+										Game 3
+									</f:facet>
+									<h:outputText style="font-size:11pt;"  value="#{playoffbracket.getGame3()}" />
+								</b:dataTableColumn>
+								<b:dataTableColumn styleClass="mtrxColumn" >
+									<f:facet name="header">
+										Total
+									</f:facet>
+									<h:outputText style="font-size:11pt;"  value="#{playoffbracket.getGametotal()}" />
+								</b:dataTableColumn>
+								<b:dataTableColumn styleClass="mtrxColumn" >
+									<f:facet name="header">
+										Place
+									</f:facet>
+									<h:outputText style="font-size:11pt;"  value="#{playoffbracket.getPlace()}" />
+								</b:dataTableColumn>
+							</b:dataTable>
 					    </b:panel>
 				    	
 					</b:column>

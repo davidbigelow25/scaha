@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 public class Playoffbracket extends ScahaObject implements Serializable {
 	
@@ -18,11 +19,14 @@ public class Playoffbracket extends ScahaObject implements Serializable {
 	private String game1 = null;
 	private String game2 = null;
 	private String game3 = null;
+	private String game4 = null;
+	private Boolean rendergame4 = null;
 	private String gametotal = null;
 	private String place = null;
 	private String newgame1 = null;
 	private String newgame2 = null;
 	private String newgame3 = null;
+	private String newgame4 = null;
 	private String newgametotal = null;
 	private String newplace = null;
 	
@@ -68,6 +72,22 @@ public class Playoffbracket extends ScahaObject implements Serializable {
 	
 	public String getGame3() {
 		return game3;
+	}
+
+	public void setGame4(String _tag) {
+		game4 = _tag;
+	}
+
+	public String getGame4() {
+		return game4;
+	}
+
+	public void setRendergame4(Boolean _tag) {
+		rendergame4 = _tag;
+	}
+
+	public Boolean getRendergame4() {
+		return rendergame4;
 	}
 	
 	public void setGametotal(String _tag) {
@@ -211,7 +231,49 @@ public class Playoffbracket extends ScahaObject implements Serializable {
 	public String getNewgame3() {
 		return newgame3;
 	}
-	
+
+	public void setNewgame4(String _tag) {
+		if (_tag!=this.game4){
+			//need to set and execute db call here
+			ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+			try{
+				//first get team name
+				CallableStatement cs = db.prepareCall("CALL scaha.updateplayoffbracket(?,?,?)");
+				cs.setInt("bracketid", this.idbracket);
+				cs.setString("newvalue", _tag);
+				cs.setString("bracketcell", "game4");
+				cs.executeQuery();
+				db.commit();
+				db.cleanup();
+
+				//LOGGER.info("We have updated the bracket for game:" + this.idbracket + "game3");
+
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				LOGGER.info("ERROR IN updating bracket cell game 4");
+				e.printStackTrace();
+				db.rollback();
+			} finally {
+				//
+				// always clean up after yourself..
+				//
+				db.free();
+			}
+
+			//finaly set the old name to match what we saved in the db
+			game4=_tag;
+			newgame4=_tag;
+		}else{
+			newgame4 = _tag;
+		}
+	}
+
+	public String getNewgame4() {
+		return newgame4;
+	}
+
 	public void setNewgametotal(String _tag) {
 		if (_tag!=this.gametotal){
 			//need to set and execute db call here
