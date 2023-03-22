@@ -3806,7 +3806,7 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 		LiveGameList templist = this.scaha.getScahaLiveGameList();
 
 		for (LiveGame lg : templist) {
-			if (lg.getStatetag().equals("Final") ) {
+			if (lg.getStatetag().equals("Final") && lg.getScheduleidstub()>695) {
 				try {
 					//need to update stats table a	s game is being finalized.
 					//pass in team id and livegame id

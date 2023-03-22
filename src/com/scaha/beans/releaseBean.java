@@ -1100,6 +1100,12 @@ public class releaseBean implements Serializable, MailableObject {
 			this.displayfreeandclearonly = false;
 			//need to set value of the reason drop down
 			this.selectedreason="3";
+		} else if (releasetype.equals("eos")){
+			this.displaytemporary = true;
+			this.displaypermanent = false;
+			this.displayfreeandclearonly = true;
+			//need to set value of the reason drop down
+			this.selectedreason="3";
 		} else {
 			this.displaypermanent = false;
 			this.displaytemporary = true;

@@ -101,6 +101,15 @@
 						    				   tiny-screen="full-width">
 						       <f:ajax execute="@this" render="@form" />
 						    </b:commandButton>
+							<p:spacer width="50" height="10" />
+							<b:commandButton value="End of Season Free and Clear"
+											 action="#{playerreleaseBean.startTemporaryRelease(result,'eos')}" look="info"
+											 large-screen="full-width"
+											 medium-screen="full-width"
+											 small-screen="full-width"
+											 tiny-screen="full-width">
+								<f:ajax execute="@this" render="@form" />
+							</b:commandButton>
 				        </b:dataTableColumn> 
 					</b:dataTable>
 					<b:panelGrid colSpans="4,2,2,2,2">

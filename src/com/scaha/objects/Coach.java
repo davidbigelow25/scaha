@@ -21,6 +21,13 @@ public class Coach extends ScahaObject implements Serializable {
 	private String lastname = null;
 	private String IDcoach = null;
 	private String teamname = null;
+	private String currentteam = null;
+	private String previousteam = null;
+	private String dob = null;
+	private String citizenship = null;
+	private String citizenshiptransfer = null;
+	private String citizenshipexpirationdate = null;
+	private String ctverified = null;
 	private String loidate = null;
 	private String screeningexpires = null;
 	private String cepnumber = null;
@@ -53,11 +60,205 @@ public class Coach extends ScahaObject implements Serializable {
 	private String teamrole = null;
 	private String suspended = null;
 	private String suspend = null;
-
+	private Boolean bcovid = null;
+	private Integer birthcertificate = null;
+	private String bcverified = null;
+	private String playerup = null;
+	private String rosterid = null;
+	private String suspendedmessage = null;
 	private String cepmodulesselected = null;
-	
+	private String citizenshiplabel = null;
+	private Integer transferid = null;
+	private Integer transfer = null;
+	private Integer transferindefinite = null;
+	private String expirationdate = null;
+	private String safesportfor18 = "N"; //this one is for capturing whether or not has safesport
+	private Boolean is18safesport = false; //this one is for displaying the is 18 checkbox
+	private String safesportfor18display = null; //this one is for displaying in the email and printable loi
+private Integer usaroster = null;
+
 	public Coach (){ 
 		
+	}
+
+	public Integer getUsaroster() {
+		return usaroster;
+	}
+
+	public void setUsaroster(Integer usaroster) {
+		this.usaroster = usaroster;
+	}
+
+	public String getSafesportfor18() {
+		return safesportfor18;
+	}
+
+	public void setSafesportfor18(String safesportfor18) {
+		this.safesportfor18 = safesportfor18;
+	}
+
+	public Boolean getIs18safesport() {
+		return is18safesport;
+	}
+
+	public void setIs18safesport(Boolean is18safesport) {
+		this.is18safesport = is18safesport;
+	}
+
+	public String getSafesportfor18display() {
+		return safesportfor18display;
+	}
+
+	public void setSafesportfor18display(String safesportfor18display) {
+		this.safesportfor18display = safesportfor18display;
+	}
+
+	public String getExpirationdate() {
+		return expirationdate;
+	}
+
+	public void setExpirationdate(String expirationdate) {
+		this.expirationdate = expirationdate;
+	}
+
+	public Integer getTransferindefinite() {
+		return transferindefinite;
+	}
+
+	public void setTransferindefinite(Integer transferindefinite) {
+		this.transferindefinite = transferindefinite;
+	}
+
+	public Integer getTransfer() {
+		return transfer;
+	}
+
+	public void setTransfer(Integer transfer) {
+		this.transfer = transfer;
+	}
+
+	public Integer getTransferid() {
+		return transferid;
+	}
+
+	public void setTransferid(Integer transferid) {
+		this.transferid = transferid;
+	}
+
+	public String getCitizenshiplabel() {
+		return citizenshiplabel;
+	}
+
+	public void setCitizenshiplabel(String citizenshiplabel) {
+		this.citizenshiplabel = citizenshiplabel;
+	}
+
+	public String getSuspendedmessage() {
+		return suspendedmessage;
+	}
+
+	public void setSuspendedmessage(String suspendedmessage) {
+		this.suspendedmessage = suspendedmessage;
+	}
+
+	public String getRosterid() {
+		return rosterid;
+	}
+
+	public void setRosterid(String rosterid) {
+		this.rosterid = rosterid;
+	}
+
+	public String getPlayerup() {
+		return playerup;
+	}
+
+	public void setPlayerup(String playerup) {
+		this.playerup = playerup;
+	}
+
+	public void setBcovid(Boolean bcovid) {
+		this.bcovid = bcovid;
+	}
+
+	public String getBcverified() {
+		return bcverified;
+	}
+
+	public void setBcverified(String bcverified) {
+		this.bcverified = bcverified;
+	}
+
+	public Integer getBirthcertificate() {
+		return birthcertificate;
+	}
+
+	public void setBirthcertificate(Integer birthcertificate) {
+		this.birthcertificate = birthcertificate;
+	}
+
+	public String getCTExpirationdate(){
+		return citizenshipexpirationdate;
+	}
+
+	public void setCTExpirationdate(String sname){
+		citizenshipexpirationdate = sname;
+	}
+
+	public String getCtverified() {
+		return ctverified;
+	}
+
+	public void setCtverified(String ctverified) {
+		this.ctverified = ctverified;
+	}
+
+	public String getCitizenshiptransfer() {
+		return citizenshiptransfer;
+	}
+
+	public void setCitizenshiptransfer(String citizenshiptransfer) {
+		this.citizenshiptransfer = citizenshiptransfer;
+	}
+	public String getCitizenship(){
+		return citizenship;
+	}
+
+	public void setCitizenship(String fname){
+		citizenship=fname;
+	}
+
+	public String getDob(){
+		return dob;
+	}
+
+	public void setDob(String fname){
+		dob=fname;
+	}
+
+	public Boolean getBcovid(){
+		return bcovid;
+	}
+
+	public void setCurrentteam(Boolean fname){
+		bcovid=fname;
+	}
+
+
+	public String getCurrentteam(){
+		return currentteam;
+	}
+
+	public void setCurrentteam(String fname){
+		currentteam=fname;
+	}
+
+	public String getPreviousteam(){
+		return previousteam;
+	}
+
+	public void setPreviousteam(String fname){
+		previousteam=fname;
 	}
 
 	public Integer getSafesportforcoachlist(){

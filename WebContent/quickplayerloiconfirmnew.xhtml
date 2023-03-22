@@ -48,13 +48,19 @@
 				            <f:facet name="header">
 						        First Name
 						    </f:facet>
-				            <h:outputText value="#{player.getFirstname()}" />
+				            <!--<h:outputText value="#{player.getFirstname()}" />-->
+							<b:inputText id="firstname" value="#{player.firstname}" style="width:100px;" >
+
+							</b:inputText>
 				        </b:dataTableColumn>
 				        <b:dataTableColumn >
 				            <f:facet name="header">
 						        Last Name
 						    </f:facet>
-				            <h:outputText value="#{player.getLastname()}" />
+				            <!--<h:outputText value="#{player.getLastname()}" />-->
+							<b:inputText id="lastname" value="#{player.lastname}" style="width:100px;" >
+
+							</b:inputText>
 				        </b:dataTableColumn>
 				        <b:dataTableColumn >
 				            <f:facet name="header">
@@ -72,14 +78,17 @@
 				            <f:facet name="header">
 						        DOB
 						    </f:facet>
-				            <h:outputText value="#{player.getDob()}" />
+				            <!--<h:outputText value="#{player.getDob()}" />-->
+							<b:inputText id="dob" value="#{player.dob}" style="width:90px;" >
+
+							</b:inputText>
 				        </b:dataTableColumn>
 				        <b:dataTableColumn >
 				            <f:facet name="header">
 						        Player Up
 						    </f:facet>
 				            <h:outputText value="#{player.getPlayerup()}" />
-				        </b:dataTableColumn>
+						</b:dataTableColumn>
 				        <b:dataTableColumn >
 				            <f:facet name="header">
 						        LOI Date
@@ -90,37 +99,105 @@
 				            <f:facet name="header">
 						        Safesport
 						    </f:facet>
-				            <h:outputText value="#{player.getSafesport()}" />
+				            <h:outputText value="N/A" rendered="#{!player.safesportfor18}"/>
+							<b:selectOneMenu value="#{player.safesportfor18}"
+											 large-screen="full-width"
+											 medium-screen="full-width"
+											 small-screen="full-width"
+											 tiny-screen="full-width"
+											 rendered="#{player.is18safesport}"
+							>
+								<f:selectItem itemLabel="No" itemValue="N"/>
+								<f:selectItem itemLabel="Yes" itemValue="Y"/>
+							</b:selectOneMenu>
 				        </b:dataTableColumn>
 				        <b:dataTableColumn >
 				            <f:facet name="header">
 						        Ctznship
 						    </f:facet>
-				            <h:outputText value="#{player.citizenshiplabel}" rendered="#{player.ctverified}" />
-				        </b:dataTableColumn>
+				            <!--<h:outputText value="#{player.citizenshiplabel}" rendered="#{player.ctverified}" />-->
+							<b:selectOneMenu id="citizenship" value="#{player.citizenship}">
+								<f:selectItem itemLabel="USA" itemValue="USA"/>
+								<f:selectItem itemLabel="Canada" itemValue="CAN"/>
+								<f:selectItem itemLabel="Other" itemValue="OTH"/>
+						</b:selectOneMenu>
+						</b:dataTableColumn>
 				        <b:dataTableColumn >
 				            <f:facet name="header">
 						        Birth Cert.
 						    </f:facet>
-				            <h:outputText value="#{player.birthcertificate}" />
-				        </b:dataTableColumn> 
-			        	<b:dataTableColumn >
-				            <f:facet name="header">
-						        Confirmed
-						    </f:facet>
-				            <h:outputText value="#{player.confirmed}" />
-				        </b:dataTableColumn>
+				            <!--<h:outputText value="#{player.birthcertificate}" />-->
+							<b:selectOneMenu id="birthcertificateverified" value="#{player.birthcertificate}" >
+								<f:selectItem itemLabel="Yes" itemValue="1"/>
+								<f:selectItem itemLabel="No" itemValue="0"/>
+							</b:selectOneMenu>
+
+						</b:dataTableColumn>
 						<b:dataTableColumn >
 							<f:facet name="header">
-								Susp
+								Transfer Indefinite/Exists/Expire Date
 							</f:facet>
-							<h:outputText value="#{player.suspended}" />
+							<b:selectOneMenu id="transferindefinite" value="#{player.transferindefinite}" >
+								<f:selectItem itemLabel="Yes" itemValue="1"/>
+								<f:selectItem itemLabel="No" itemValue="0"/>
+							</b:selectOneMenu>
+							<br></br>
+							<b:selectOneMenu id="transferexists" value="#{player.transfer}" >
+								<f:selectItem itemLabel="Yes" itemValue="1"/>
+								<f:selectItem itemLabel="No" itemValue="0"/>
+							</b:selectOneMenu>
+							<br></br>
+							<b:inputText id="expirationdate" style="width:100px;" value="#{player.expirationdate}" />
 						</b:dataTableColumn>
+						<b:dataTableColumn >
+							<f:facet name="header">
+								Loi Suspended?
+							</f:facet>
+							<!--<h:outputText value="#{coach.getSuspended()}" />-->
+							<b:selectOneMenu value="#{player.suspended}"
+											 large-screen="full-width"
+											 medium-screen="full-width"
+											 small-screen="full-width"
+											 tiny-screen="full-width"
+							>
+								<f:selectItem itemLabel="No" itemValue="0"/>
+								<f:selectItem itemLabel="Yes" itemValue="1"/>
+							</b:selectOneMenu>
+						</b:dataTableColumn>
+						<b:dataTableColumn >
+							<f:facet name="header">
+								On USA Roster?
+							</f:facet>
+							<!--<h:outputText value="#{coach.getSuspended()}" />-->
+							<b:selectOneMenu value="#{player.usaroster}"
+											 large-screen="full-width"
+											 medium-screen="full-width"
+											 small-screen="full-width"
+											 tiny-screen="full-width"
+							>
+								<f:selectItem itemLabel="No" itemValue="0"/>
+								<f:selectItem itemLabel="Yes" itemValue="1"/>
+							</b:selectOneMenu>
+						</b:dataTableColumn>
+						<b:dataTableColumn >
+							<f:facet name="header">
+								Confirmed
+							</f:facet>
+							<h:outputText value="#{player.confirmed}" />
+						</b:dataTableColumn>
+
 						<b:dataTableColumn >
 				            <f:facet name="header">
 						        Notes
 						    </f:facet>
-				            <h:outputText value="#{player.notes}" />
+				            <!--<h:outputText value="#{player.notes}" />-->
+							<b:inputTextarea value="#{player.notes}" rows="2" span="1"
+											 large-screen="full-width"
+											 medium-screen="full-width"
+											 small-screen="full-width"
+											 tiny-screen="full-width"
+											 style="width:50px;"
+							/>
 				        </b:dataTableColumn> 
 			        	<b:dataTableColumn >
 				            <f:facet name="header">
@@ -151,14 +228,23 @@
 						                       >
 						       <f:ajax execute="@this" render="@form" />
 						    </b:commandButton>
-							<b:commandButton value="#{player.getSuspendedmessage()}"
+							<b:commandButton id="updatecoachrow" value="Update Player" look="success" actionListener="#{quickreviewloiBean.completeTransfer(player)}"
+											 large-screen="full-width"
+											 medium-screen="full-width"
+											 small-screen="full-width"
+											 tiny-screen="full-width"
+							>
+								<f:ajax execute="@form" render="@form" update="listofplayers"/>
+							</b:commandButton>
+
+							<!--<b:commandButton value="#{player.getSuspendedmessage()}"
 											 action="#{quickreviewloiBean.suspendLoi(player)}" update="@form" look="danger"
 											 large-screen="full-width"
 											 medium-screen="full-width"
 											 small-screen="full-width"
 											 tiny-screen="full-width">
 								<f:ajax execute="@this" render="@form" />
-							</b:commandButton>
+							</b:commandButton>-->
 
 						</b:dataTableColumn>
 			        </b:dataTable>
