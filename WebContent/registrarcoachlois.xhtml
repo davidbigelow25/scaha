@@ -147,7 +147,13 @@
 						    </f:facet>
 							<h:outputText value="#{coach.getGirls()}" />    
 				        </b:dataTableColumn>
-				    	<b:dataTableColumn style="font-size: 85%;">
+						<b:dataTableColumn style="font-size: 85%;">
+							<f:facet name="header">
+								<h:outputText value="On USA Roster?"  />
+							</f:facet>
+							<h:outputText value="#{coach.getUsarosterdisplay()}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn style="font-size: 85%;">
 				            <f:facet name="header">
 						        Notes
 						    </f:facet>

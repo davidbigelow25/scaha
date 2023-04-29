@@ -63,7 +63,7 @@
 					</b:dataTableColumn>
 					<b:dataTableColumn >
 						<f:facet name="header">
-							2022<br/>Team
+							2023<br/>Team
 						</f:facet>
 						<h:outputText value="#{coach.getTeamname()}" />
 					</b:dataTableColumn>
@@ -151,6 +151,21 @@
 							<f:selectItem itemLabel="Girls" itemValue="Girls" />
 						</b:selectMultiMenu>
 					</b:dataTableColumn>
+					<b:dataTableColumn >
+						<f:facet name="header">
+							On USA Roster?
+						</f:facet>
+						<b:selectOneMenu value="#{coach.usaroster}"
+										 large-screen="full-width"
+										 medium-screen="full-width"
+										 small-screen="full-width"
+										 tiny-screen="full-width"
+						>
+							<f:selectItem itemLabel="No" itemValue="0"/>
+							<f:selectItem itemLabel="Yes" itemValue="1"/>
+						</b:selectOneMenu>
+					</b:dataTableColumn>
+
 					<b:dataTableColumn >
 						<f:facet name="header">
 							Conf

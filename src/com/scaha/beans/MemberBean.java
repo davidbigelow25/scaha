@@ -401,9 +401,9 @@ public class MemberBean implements Serializable, MailableObject {
 		Person tper = tpro.getPerson();
 		
 		LOGGER.info("SendMail To:" + tpro.getUserName() + (tper.getsEmail() != null ? "," + tper.getsEmail() : ""));
-		
-		return tpro.getUserName() + (tper.getsEmail() != null ? "," + tper.getsEmail() : "")  + 
-				"";
+
+		//return "lahockeyfan2@yahoo.com";
+		return tpro.getUserName() + (tper.getsEmail() != null ? "," + tper.getsEmail() : "")  + "";
 		
 		//			(this.selectedPerson.getsEmail() != null ? "," + this.selectedPerson : "");
 		

@@ -63,9 +63,18 @@ public class Player extends ScahaObject implements Serializable {
 	private Boolean bitalics = false;
 	private Boolean bcovid = false;
 	private String suspendedmessage = null;
+	private String usaroster = null;
 
 	public Player (){ 
 		
+	}
+
+	public String getUsaroster() {
+		return usaroster;
+	}
+
+	public void setUsaroster(String usaroster) {
+		this.usaroster = usaroster;
 	}
 
 	public String getSuspended(){

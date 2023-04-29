@@ -7,6 +7,9 @@ import com.gbli.context.ContextManager;
 import com.scaha.objects.MailableObject;
 import com.scaha.objects.Player;
 import com.scaha.objects.PlayerDataModel;
+import com.scaha.objects.Coach;
+import com.scaha.objects.CoachDataModel;
+
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -48,9 +51,9 @@ public class bcloiBean implements Serializable, MailableObject {
 	private static final Logger LOGGER = Logger.getLogger(ContextManager.getLoggerContext());
 	private static String mail_reg_body = Utils.getMailTemplateFromFile("/mail/voidloi.html");
 	transient private ResultSet rs = null;
-	private List<Player> players = null;
-    private PlayerDataModel PlayerDataModel = null;
-    private Player selectedplayer = null;
+	private List<Coach> players = null;
+    private CoachDataModel PlayerDataModel = null;
+    private Coach selectedplayer = null;
 	private String selectedtabledisplay = null;
 	private String selectedplayerid = null;
 	private String notes = null;
@@ -65,8 +68,8 @@ public class bcloiBean implements Serializable, MailableObject {
 	
  	@PostConstruct
     public void init() {
-		players = new ArrayList<Player>();  
-        PlayerDataModel = new PlayerDataModel(players);
+		players = new ArrayList<Coach>();
+        PlayerDataModel = new CoachDataModel(players);
         this.setSelectedtabledisplay("1");
         
       //will need to load player profile information for displaying loi
@@ -185,19 +188,19 @@ public class bcloiBean implements Serializable, MailableObject {
 		selectedtabledisplay = selectedTabledisplay;
 	}
     
-    public Player getSelectedplayer(){
+    public Coach getSelectedplayer(){
 		return selectedplayer;
 	}
 	
-	public void setSelectedplayer(Player selectedPlayer){
+	public void setSelectedplayer(Coach selectedPlayer){
 		selectedplayer = selectedPlayer;
 	}
     
-	public List<Player> getPlayers(){
+	public List<Coach> getPlayers(){
 		return players;
 	}
 	
-	public void setPlayers(List<Player> list){
+	public void setPlayers(List<Coach> list){
 		players = list;
 	}
 	
@@ -205,7 +208,7 @@ public class bcloiBean implements Serializable, MailableObject {
     //retrieves list of players
     public void playersDisplay(){
     	ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
-    	List<Player> tempresult = new ArrayList<Player>();
+    	List<Coach> tempresult = new ArrayList<Coach>();
     	
     	try{
 
@@ -239,22 +242,31 @@ public class bcloiBean implements Serializable, MailableObject {
         				if (scitizenshiptransfer==null){
         					scitizenshiptransfer="0";
         				}
-        				String sbirthcertificate = rs.getString("birthcertificate");
-        				String splayerup = rs.getString("isplayerup");
+						String sbirthcertificate = rs.getString("birthcertificate");
+						String splayerup = rs.getString("isplayerup");
         				String sindefinite = rs.getString("indefinite");
         				String confirmed = rs.getString("confirmed");
         				String rosterid = rs.getString("idroster");
         				String notes = rs.getString("notes");
         				String safesport = rs.getString("safesportindicator");
         				String suspended = rs.getString("issuspended");
+						Integer transferid = rs.getInt("idcitizenshiptransfers");
+						Integer transfer = rs.getInt("citizenshiptransfers");
+						Integer transferindefinite = rs.getInt("indefinite");
+						Integer birthcertificate = rs.getInt("birthcertificate");
+						String citizenship = rs.getString("citizenship");
+						Boolean is18safesport = rs.getBoolean("is18display");
+						String safesportfor18 = rs.getString("safesportfor18");
+						String expirationdate = rs.getString("expirationdate");
+						Integer usaroster = rs.getInt("usaroster");
 
-        				Player oplayer = new Player();
-        				oplayer.setIdplayer(idplayer);
-        				oplayer.setFirstname(sfirstname);
+        				Coach oplayer = new Coach();
+						oplayer.setIdcoach(idplayer);
+						oplayer.setFirstname(sfirstname);
         				oplayer.setLastname(slastname);
         				oplayer.setCurrentteam(scurrentteam);
 						oplayer.setPreviousteam(slastyearteam);
-						oplayer.setPriorteam(sprioryearteam);
+						//oplayer.setPriorteam(sprioryearteam);
 						oplayer.setBcovid(bcovid);
 						oplayer.setDob(sdob);
         				oplayer.setCitizenship(scitizenship);
@@ -291,13 +303,22 @@ public class bcloiBean implements Serializable, MailableObject {
 		        				}
 	        				}
         				}
-        				
-        				oplayer.setBirthcertificate(sbirthcertificate);
-        				oplayer.setBcverified(sbirthcertificate);
-        				oplayer.setLoidate(sloidate);
+
+						oplayer.setBirthcertificate(birthcertificate);
+						oplayer.setBcverified(sbirthcertificate);
+						oplayer.setLoidate(sloidate);
         				oplayer.setPlayerup(IsPlayerup(splayerup));
         				oplayer.setConfirmed(confirmed);
         				oplayer.setRosterid(rosterid);
+						oplayer.setTransferid (transferid);
+						oplayer.setTransfer(transfer);
+						oplayer.setTransferindefinite(transferindefinite);
+						oplayer.setExpirationdate(expirationdate);
+						oplayer.setBirthcertificate(birthcertificate);
+						oplayer.setCitizenship(citizenship);
+						oplayer.setIs18safesport(is18safesport);
+						oplayer.setSafesportfor18(safesportfor18);
+						oplayer.setUsaroster(usaroster);
         				tempresult.add(oplayer);
 
         				oplayer = null;
@@ -326,14 +347,14 @@ public class bcloiBean implements Serializable, MailableObject {
     	
     	//setResults(tempresult);
     	setPlayers(tempresult);
-    	PlayerDataModel = new PlayerDataModel(players);
+    	PlayerDataModel = new CoachDataModel(players);
     }
 
-    public PlayerDataModel getPlayerdatamodel(){
+    public CoachDataModel getPlayerdatamodel(){
     	return PlayerDataModel;
     }
     
-    public void setPlayerdatamodel(PlayerDataModel odatamodel){
+    public void setPlayerdatamodel(CoachDataModel odatamodel){
     	PlayerDataModel = odatamodel;
     }
     
@@ -356,10 +377,10 @@ public class bcloiBean implements Serializable, MailableObject {
     	
     }
     
-    public void addTransferCitizenship(Player selectedPlayer){
-	
-		String sidplayer = selectedPlayer.getIdplayer();
-		
+    public void addTransferCitizenship(Coach selectedPlayer){
+
+		String sidplayer = selectedPlayer.getIdcoach();
+
 		FacesContext context = FacesContext.getCurrentInstance();
 		try{
 			context.getExternalContext().redirect("addtransfercitizenship.xhtml?playerid=" + sidplayer + "&page=bcloi&search=" + this.searchcriteria);
@@ -369,9 +390,9 @@ public class bcloiBean implements Serializable, MailableObject {
 		} 
 	}
 	
-	public void voidLoi(Player selectedPlayer){
-		
-		String sidplayer = selectedPlayer.getRosterid();
+	public void voidLoi(Coach selectedPlayer){
+
+		String sidplayer = selectedPlayer.getIdcoach();
 		String playname = selectedPlayer.getFirstname() + ' ' + selectedPlayer.getLastname();
 		this.setSelectedplayer(selectedPlayer);
 		
@@ -467,9 +488,9 @@ public class bcloiBean implements Serializable, MailableObject {
 		playersDisplay();
 	}
 	
-	public void viewLoi(Player selectedPlayer){
-		
-		String sidplayer = selectedPlayer.getIdplayer();
+	public void viewLoi(Coach selectedPlayer){
+
+		String sidplayer = selectedPlayer.getIdcoach();
 		String sidroster = selectedPlayer.getRosterid();
 				
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -481,7 +502,7 @@ public class bcloiBean implements Serializable, MailableObject {
 		}
 	}
 	
-	public void confirmLoi(Player selectedPlayer){
+	public void confirmLoi(Coach selectedPlayer){
 	
 	String sidplayer = selectedPlayer.getRosterid();
 		
@@ -630,7 +651,7 @@ public class bcloiBean implements Serializable, MailableObject {
 
     }
 
-	public void suspendLoi(Player selectedPlayer){
+	public void suspendLoi(Coach selectedPlayer){
 
 		String sidplayer = selectedPlayer.getRosterid();
 		String ssuspended = selectedPlayer.getSuspended();
@@ -672,6 +693,108 @@ public class bcloiBean implements Serializable, MailableObject {
 
 		//this loads the number of completed and total number of lois to be done.
 		playersDisplay();
+	}
+
+	public void completeTransfer(Coach coach){
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+
+			if (db.setAutoCommit(false)) {
+
+				//Need to provide info to the stored procedure to save or update
+				//LOGGER.info("verify loi code provided");
+				CallableStatement cs = db.prepareCall("CALL scaha.saveTransfer(?,?,?,?,?,?,?,?,?,?)");
+				cs.setInt("transferid", coach.getTransferid());
+				cs.setInt("playerid", Integer.parseInt(coach.getIdcoach()));
+				cs.setInt("transfer", coach.getTransfer());
+				cs.setInt("transferindefinite", coach.getTransferindefinite());
+				if (coach.getExpirationdate().equals("")){
+					cs.setString("sexpirationdate",null);
+				}else{
+					cs.setString("sexpirationdate",coach.getExpirationdate());
+				}
+				cs.setString("incitizenship", coach.getCitizenship());
+				if (coach.getIs18safesport()){
+					cs.setString("safesportindicator_in",coach.getSafesportfor18());
+				}else{
+					cs.setString("safesportindicator_in",null);
+				}
+				cs.setInt("suspended_in",Integer.parseInt(coach.getSuspended()));
+				cs.setString("innotes",coach.getNotes());
+				cs.setInt("inusaroster",coach.getUsaroster());
+				cs.executeQuery();
+
+				db.commit();
+				db.cleanup();
+
+				//logging
+				//LOGGER.info("We are updating transfer info for player id:" + this.selectedplayer);
+
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null, new FacesMessage("Successful", "You ave updated the Transfer"));
+			} else {
+
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN LOI Generation Process" + this.selectedplayer);
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+		//now lets do the name information
+		completeCertificate(coach);
+	}
+
+	public void completeCertificate(Coach coach){
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+
+			if (db.setAutoCommit(false)) {
+
+				//Need to provide info to the stored procedure to save or update
+				//LOGGER.info("verify loi code provided");
+				CallableStatement cs = db.prepareCall("CALL scaha.saveCertificateandDOB(?,?,?,?,?)");
+				cs.setInt("playerid", Integer.parseInt(coach.getIdcoach()));
+				cs.setInt("certificate", coach.getBirthcertificate());
+				cs.setString("indob", coach.getDob());
+				cs.setString("firstname", coach.getFirstname());
+				cs.setString("lastname", coach.getLastname());
+				cs.executeQuery();
+
+				db.commit();
+				db.cleanup();
+
+				//logging
+				//LOGGER.info("We are updating birth certificate for player id:" + this.selectedplayer);
+
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null, new FacesMessage("Successful", "You ave updated the Birth Certificate"));
+			} else {
+
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN LOI Generation Process" + this.selectedplayer);
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
 	}
 }
 

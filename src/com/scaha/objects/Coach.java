@@ -75,10 +75,46 @@ public class Coach extends ScahaObject implements Serializable {
 	private String safesportfor18 = "N"; //this one is for capturing whether or not has safesport
 	private Boolean is18safesport = false; //this one is for displaying the is 18 checkbox
 	private String safesportfor18display = null; //this one is for displaying in the email and printable loi
-private Integer usaroster = null;
+	private Integer usaroster = null;
+	private String usarosterdisplay = null;
+	private String rosterdate = null;
+	private String jerseynumber = null;
+	private String gp = null;
 
 	public Coach (){ 
 		
+	}
+
+	public String getGp() {
+		return gp;
+	}
+
+	public void setGp(String gp) {
+		this.gp = gp;
+	}
+
+	public String getJerseynumber() {
+		return jerseynumber;
+	}
+
+	public void setJerseynumber(String jerseynumber) {
+		this.jerseynumber = jerseynumber;
+	}
+
+	public String getRosterdate() {
+		return rosterdate;
+	}
+
+	public void setRosterdate(String rosterdate) {
+		this.rosterdate = rosterdate;
+	}
+
+	public String getUsarosterdisplay() {
+		return usarosterdisplay;
+	}
+
+	public void setUsarosterdisplay(String usarosterdisplay) {
+		this.usarosterdisplay = usarosterdisplay;
 	}
 
 	public Integer getUsaroster() {

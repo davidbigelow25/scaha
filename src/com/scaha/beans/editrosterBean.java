@@ -33,7 +33,7 @@ public class editrosterBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = Logger.getLogger(ContextManager.getLoggerContext());
 	transient private ResultSet rs = null;
-	private List<Player> players = null;
+	private List<Coach> players = null;
 	private List<Coach> coaches = null;
 	private Coach selectedcoach = null;
 	private List<Player> pdr = null;
@@ -128,7 +128,7 @@ public class editrosterBean implements Serializable {
     
     
     public void getRoster(){
-		List<Player> templist = new ArrayList<Player>();
+		List<Coach> templist = new ArrayList<Coach>();
 		List<Coach> tempcoachlist = new ArrayList<Coach>();
 
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
@@ -172,9 +172,30 @@ public class editrosterBean implements Serializable {
 					String jerseynumber = rs.getString("jerseynumber");
 					String dob = rs.getString("dob");
 					String gp = rs.getString("gp");
-					
-					Player player = new Player();
-					player.setIdplayer(playerid);
+					String scitizenship = rs.getString("citizenship");
+					String scitizenshipexpiredate = rs.getString("citizenshipexpiredate");
+					String scitizenshiptransfer = rs.getString("citizenshiptransfer");
+					if (scitizenshiptransfer==null){
+						scitizenshiptransfer="0";
+					}
+					String sbirthcertificate = rs.getString("birthcertificate");
+					String sindefinite = rs.getString("indefinite");
+					String safesport = rs.getString("safesportindicator");
+					String suspended =rs.getString("suspended");
+					Integer transferid = rs.getInt("idcitizenshiptransfers");
+					Integer transfer = rs.getInt("citizenshiptransfers");
+					Integer transferindefinite = rs.getInt("indefinite");
+					Integer birthcertificate = rs.getInt("birthcertificate");
+					String citizenship = rs.getString("citizenship");
+					Boolean is18safesport = rs.getBoolean("is18display");
+					String safesportfor18 = rs.getString("safesportfor18");
+					String expirationdate = rs.getString("expirationdate");
+					Integer usaroster = rs.getInt("usaroster");
+					String notes = rs.getString("notes");
+
+
+					Coach player = new Coach();
+					player.setIdcoach(playerid);
 					player.setFirstname(fname);
 					player.setLastname(lname);
 					player.setEligibility(loidate);
@@ -186,7 +207,48 @@ public class editrosterBean implements Serializable {
 					player.setJerseynumber(jerseynumber);
 					player.setDob(dob);
 					player.setGp(gp);
-					
+					player.setCitizenship(scitizenship);
+					player.setCitizenshiptransfer(scitizenshiptransfer);
+					player.setCtverified(scitizenshiptransfer);
+					player.setCTExpirationdate(scitizenshipexpiredate);
+					player.setNotes(notes);
+					player.setSafesport(safesport);
+					player.setSuspended(suspended);
+					if (scitizenship!=null){
+						if (!scitizenship.equals("USA")){
+							if (sindefinite!=null){
+								if (sindefinite.equals("1")){
+									player.setCitizenshiplabel("Transfer does not expire");
+								} else if (sindefinite.equals("1") && scitizenshiptransfer.equals("1")){
+									player.setCitizenshiplabel("Transfer expires " + scitizenshipexpiredate);
+								} else if (sindefinite.equals("0") && scitizenshiptransfer.equals("1")){
+									player.setCitizenshiplabel("Transfer expires " + scitizenshipexpiredate);
+								} else if (sindefinite.equals("0") && scitizenshiptransfer.equals("0")){
+									player.setCitizenshiplabel("Transfer is needed.");
+								} else if (sindefinite.equals("1") && scitizenshiptransfer.equals("0")){
+									player.setCitizenshiplabel("Transfer is needed.");
+								} else {
+									player.setCitizenshiplabel("Transfer is needed.");
+								}
+							} else {
+								player.setCitizenshiplabel("Transfer is needed.");
+							}
+						}
+					}
+
+					player.setBirthcertificate(birthcertificate);
+					player.setBcverified(sbirthcertificate);
+					player.setTransferid (transferid);
+					player.setTransfer(transfer);
+					player.setTransferindefinite(transferindefinite);
+					player.setExpirationdate(expirationdate);
+					player.setBirthcertificate(birthcertificate);
+					player.setCitizenship(citizenship);
+					player.setIs18safesport(is18safesport);
+					player.setSafesportfor18(safesportfor18);
+					player.setUsaroster(usaroster);
+
+
 					templist.add(player);
 					player = null;
 				}
@@ -316,11 +378,11 @@ public class editrosterBean implements Serializable {
 	}
 	
     
-    public List<Player> getPlayers(){
+    public List<Coach> getPlayers(){
 		return players;
 	}
 	
-	public void setPlayers(List<Player> list){
+	public void setPlayers(List<Coach> list){
 		players = list;
 	}
 
@@ -373,7 +435,7 @@ public class editrosterBean implements Serializable {
 		this.enteredrosterdate = team.getNewdate();
 		
 		
-		List<Player> templist = new ArrayList<Player>();
+		List<Coach> templist = new ArrayList<Coach>();
 		List<Coach> tempcoachlist = new ArrayList<Coach>();
 		
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
@@ -423,8 +485,8 @@ public class editrosterBean implements Serializable {
 					String dob = rs.getString("dob");
 					String gp = rs.getString("gp");
 					
-					Player player = new Player();
-					player.setIdplayer(playerid);
+					Coach player = new Coach();
+					player.setIdcoach(playerid);
 					player.setFirstname(fname);
 					player.setLastname(lname);
 					player.setEligibility(loidate);
