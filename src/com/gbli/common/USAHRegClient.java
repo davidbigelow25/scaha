@@ -69,7 +69,27 @@ public class USAHRegClient {
 				myUSAHockey.setPGSMName(usaResponse.data.PGSM_name);
 			}
 		}
-
+/*
+		myUSAHockey.setUSAHnum("093401741XXHOP");
+		myUSAHockey.setFirstName("BRIDGET");
+		myUSAHockey.setMiddleInit("M");
+		myUSAHockey.setLastName("HOPKINSON");
+		myUSAHockey.setAddress("9636 BORSON ST");
+		myUSAHockey.setCity("DOWNEY");
+		myUSAHockey.setZipcode("902424927");
+		myUSAHockey.setState("CA");
+		myUSAHockey.setCountry("USA");
+		myUSAHockey.setCitizen("USA");
+		myUSAHockey.setForZip("");
+		myUSAHockey.setDOB("08/06/1965");
+		myUSAHockey.setGender("F");
+		myUSAHockey.setHPhone("7148226077");
+		myUSAHockey.setBPhone("5623020297");
+		myUSAHockey.setEmail("HOPKINSONBRIDGET@GMAIL.COM");
+		myUSAHockey.setPGSFName("JUSTIN");
+		myUSAHockey.setPGSLName("HOPKINSON");
+		myUSAHockey.setPGSMName("");
+*/
 		// lets return our answer
         return myUSAHockey;
 

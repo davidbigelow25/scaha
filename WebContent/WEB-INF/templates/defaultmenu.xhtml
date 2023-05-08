@@ -19,14 +19,14 @@
 				            
 				            <b:navbarLinks pull="left">
 				                <b:navLink icon="home" href="Welcome.xhtml"></b:navLink>
-								<b:navLink iconAwesome="trophy" value="Playoffs" href="playoffscentral.xhtml"></b:navLink>
+								<!--<b:navLink iconAwesome="trophy" value="Playoffs" href="playoffscentral.xhtml"></b:navLink>-->
 
                                 <!--<b:navLink icon="time" value="Tryouts" href="viewalltryouts.xhtml"></b:navLink>-->
 								<!--<b:navLink icon="time" value="Team Openings" href="viewallopenings.xhtml"></b:navLink>-->
 				                <b:navLink icon="calendar" value="Sched./Standings" href="scoreboard.xhtml"></b:navLink>
 				                <b:navLink icon="stats" value="Stats" href="statscentral.xhtml"></b:navLink>
-				                <b:navLink icon="list-alt" value="Scoreboard" href="gamecentral.xhtml?season=SCAHA-1819&amp;initial=yes"></b:navLink>
-				                <!--<b:navLink icon="calendar" value="Club Tryouts" href="viewalltryouts.xhtml"></b:navLink>-->
+				                <b:navLink icon="list-alt" value="Scoreboard" href="gamecentral.xhtml?season=SCAHA-2324&amp;initial=yes"></b:navLink>
+				                <b:navLink icon="calendar" value="Club Tryouts" href="viewalltryouts.xhtml"></b:navLink>
 								<b:navLink icon="eye-open" value="Suspensions" href="suspensions.xhtml"></b:navLink>
 								<b:navLink icon="glyphicon-modal-window" value="Register for SCAHA" href="manageUSAHockey.xhtml" rendered="#{not empty profileBean.getProfile()}"></b:navLink>
 				                <br></br><b:navLink icon="list" value="Manager Portal" href="managerportal.xhtml" rendered="#{profileBean.getProfile().getScahamanager().getIsmanager()}"></b:navLink>
@@ -176,7 +176,17 @@
 		            </b:navBar>
 				</b:column>
 			</b:row>
-			
+			<b:row style="margin-top: 0px !important; margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;" rendered="#{profileBean.hasRoleList('A-DLIST')}">
+				<b:column >
+					<b:navBar brand="Rink Admin" inverse="false" position="top" sticky="false" fluid="true" >
+						<b:navbarLinks>
+							<b:navLink value="Delinquency List" href="viewdelinquencylist.xhtml" rendered="#{profileBean.hasRoleList('A-DLIST')}"></b:navLink>
+
+
+						</b:navbarLinks>
+					</b:navBar>
+				</b:column>
+			</b:row>
 			
 			<p:menuitem style="font-size: 10pt;width:225px;"
 							value="" 

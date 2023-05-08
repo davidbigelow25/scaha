@@ -1271,7 +1271,7 @@ public class coachloiBean implements Serializable, MailableObject {
 	    			//need to add the coaches email to the to string
 	    			to = to + "," + this.email;
 	    			
-	    			to = "lahockeyfan2@yahoo.com";
+	    			//to = "lahockeyfan2@yahoo.com";
 	    		    this.setToMailAddress(to);
 	    		    this.setPreApprovedCC("");
 	    		    this.setSubject(this.firstname + " " + this.lastname + " LOI with " + this.getClubName());
