@@ -425,16 +425,16 @@ public class quickreviewcoachloiBean implements Serializable {
 		
 		String sidcoach = selectedCoach.getIdcoach();
 		
-		/*ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 		
 		try{
 
 			if (db.setAutoCommit(false)) {
 			
 				//Need to provide info to the stored procedure to save or update
- 				LOGGER.info("verify loi code provided");
- 				CallableStatement cs = db.prepareCall("CALL scaha.getPersonIdbyCoachId(?)");
-    		    cs.setInt("icoachid", Integer.parseInt(sidcoach));
+ 				LOGGER.info("retrieve person id from the roster id");
+ 				CallableStatement cs = db.prepareCall("CALL scaha.getPersonIdByRosterId(?)");
+    		    cs.setInt("rosterid", Integer.parseInt(sidcoach));
     		    rs=cs.executeQuery();
     		    
     		    if (rs != null){
@@ -462,7 +462,7 @@ public class quickreviewcoachloiBean implements Serializable {
 			// always clean up after yourself..
 			//
 			db.free();
-		}*/
+		}
 		
 		FacesContext context = FacesContext.getCurrentInstance();
 		try{

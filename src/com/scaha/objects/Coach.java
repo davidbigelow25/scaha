@@ -80,9 +80,18 @@ public class Coach extends ScahaObject implements Serializable {
 	private String rosterdate = null;
 	private String jerseynumber = null;
 	private String gp = null;
+	private Integer pdrapply = null;
 
 	public Coach (){ 
 		
+	}
+
+	public Integer getPdrapply() {
+		return pdrapply;
+	}
+
+	public void setPdrapply(Integer pdrapply) {
+		this.pdrapply = pdrapply;
 	}
 
 	public String getGp() {

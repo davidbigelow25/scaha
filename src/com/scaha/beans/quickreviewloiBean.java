@@ -195,6 +195,7 @@ public class quickreviewloiBean implements Serializable {
 						String safesportfor18 = rs.getString("safesportfor18");
 						String expirationdate = rs.getString("expirationdate");
 						Integer usaroster = rs.getInt("usaroster");
+						Integer applypdr = rs.getInt("pdrapply");
 
 
 						Coach oplayer = new Coach();
@@ -256,6 +257,7 @@ public class quickreviewloiBean implements Serializable {
 						oplayer.setIs18safesport(is18safesport);
 						oplayer.setSafesportfor18(safesportfor18);
 						oplayer.setUsaroster(usaroster);
+						oplayer.setPdrapply(applypdr);
 
 						tempresult.add(oplayer);
 
@@ -700,12 +702,14 @@ public class quickreviewloiBean implements Serializable {
 
 				//Need to provide info to the stored procedure to save or update
 				//LOGGER.info("verify loi code provided");
-				CallableStatement cs = db.prepareCall("CALL scaha.saveCertificateandDOB(?,?,?,?,?)");
+				CallableStatement cs = db.prepareCall("CALL scaha.saveCertificateandDOB(?,?,?,?,?,?,?)");
 				cs.setInt("playerid", Integer.parseInt(coach.getIdcoach()));
 				cs.setInt("certificate", coach.getBirthcertificate());
 				cs.setString("indob", coach.getDob());
 				cs.setString("firstname", coach.getFirstname());
 				cs.setString("lastname", coach.getLastname());
+				cs.setInt("inrosterid",Integer.parseInt(coach.getRosterid()));
+				cs.setInt("pdrapplyin", coach.getPdrapply());
 				cs.executeQuery();
 
 				db.commit();
