@@ -418,7 +418,7 @@ public class bcloiBean implements Serializable, MailableObject {
 				//Need to provide info to the stored procedure to save or update
  				LOGGER.info("verify loi code provided");
  				cs = db.prepareCall("CALL scaha.settoVoid(?)");
-    		    cs.setInt("playerid", Integer.parseInt(sidplayer));
+    		    cs.setInt("playerid", Integer.parseInt(selectedPlayer.getRosterid()));
     		    cs.executeQuery();
     		    
     		    db.commit();

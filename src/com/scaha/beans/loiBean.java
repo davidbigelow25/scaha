@@ -1191,7 +1191,7 @@ public class loiBean implements Serializable, MailableObject {
 	    		    }
 	    		    
 	    		    //hard my email address for testing purposes
-	    		    to = "lahockeyfan2@yahoo.com";
+	    		    //to = "lahockeyfan2@yahoo.com";
 	    		    this.setToMailAddress(to);
 	    		    this.setPreApprovedCC("");
 	    		    this.setSubject(this.firstname + " " + this.lastname + " LOI with " + this.getClubName());
@@ -1882,11 +1882,11 @@ public void getClubID(){
 
 		try{
 			//first get team name
-			CallableStatement cs = db.prepareCall("CALL scaha.getTeamBlockRecruitment(?)");
+			//CallableStatement cs = db.prepareCall("CALL scaha.getTeamBlockRecruitment(?,?)");
 
 			//next get pdr
 //TODO			cs = db.prepareCall("CALL scaha.getRosterByTeamId(?)");
-			cs = db.prepareCall("CALL scaha.getTeamBlockRecruitmentforLOI(?,?)");
+			CallableStatement cs = db.prepareCall("CALL scaha.getTeamBlockRecruitmentforLOI(?,?)");
 			if (sourceteam.equals("M")){
 				cs.setInt("teamid", Integer.parseInt(this.selectedteam));
 			}else {

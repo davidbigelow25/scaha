@@ -351,11 +351,11 @@ public class Coach extends ScahaObject implements Serializable {
 	public String getTeamrole(){
     	return teamrole;
     }
-    
-    public void setTeamrole(String fname){
-    	teamrole=fname;
-    } 
-	
+	public void setTeamrole(String fname){
+		teamrole=fname;
+	}
+
+
     public String getUpdated(){
     	return updated;
     }
