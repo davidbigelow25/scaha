@@ -239,6 +239,8 @@ public class coachbcloiBean implements Serializable, MailableObject {
         				String sportexpires = rs2.getString("sportexpires");
 						String suspended =rs2.getString("suspended");
 						Integer usaroster = rs2.getInt("usaroster");
+						String coachrole = rs2.getString("typeroster");
+
 
         				Coach ocoach = new Coach();
         				ocoach.setIdcoach(idcoach);
@@ -263,7 +265,6 @@ public class coachbcloiBean implements Serializable, MailableObject {
         				ocoach.setSuspended(suspended);
 						ocoach.setSuspend(suspended);
 
-
 						String templist = "";
 						if (ocoach.getU8().equals("Yes")){
 							templist = templist.concat("8U");
@@ -285,6 +286,7 @@ public class coachbcloiBean implements Serializable, MailableObject {
 						}
 						ocoach.setCepmodulesselected(templist);
 						ocoach.setUsaroster(usaroster);
+						ocoach.setTeamrole(coachrole);
 
 						tempresult.add(ocoach);
 

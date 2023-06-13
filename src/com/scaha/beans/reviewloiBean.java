@@ -725,7 +725,7 @@ public class reviewloiBean implements Serializable, MailableObject {
 			else if (spage.equals("quick")){
 				context.getExternalContext().redirect("quickplayerloiconfirm.xhtml");
 			}else{
-				context.getExternalContext().redirect("confirmlois.xhtml");
+				context.getExternalContext().redirect("quickplayerloiconfirm.xhtml");
 			}
 			
 		} catch (IOException e) {

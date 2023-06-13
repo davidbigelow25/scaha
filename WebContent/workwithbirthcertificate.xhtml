@@ -66,58 +66,63 @@
 						>
 					<b:dataTableColumn >
 						<f:facet name="header">
-							First Name
+							<h:outputText value="FName" style="font-size:10px" />
 						</f:facet>
 						<!--<h:outputText value="#{player.getFirstname()}" />-->
-						<b:inputText id="firstname" value="#{player.firstname}" style="width:100px;" >
+						<b:inputText id="firstname" value="#{player.firstname}" style="width:60px;font-size:10px" >
 
 						</b:inputText>
 					</b:dataTableColumn>
 					<b:dataTableColumn >
 						<f:facet name="header">
-							Last Name
+							<h:outputText value="LName" style="font-size:10px" />
 						</f:facet>
 						<!--<h:outputText value="#{player.getLastname()}" />-->
-						<b:inputText id="lastname" value="#{player.lastname}" style="width:100px;" >
+						<b:inputText id="lastname" value="#{player.lastname}" style="width:60px;font-size:10px" >
 
 						</b:inputText>
 					</b:dataTableColumn>
 					<b:dataTableColumn >
 						<f:facet name="header">
-							2023 Team
+							<h:outputText value="2023 Team" style="font-size:10px" />
 						</f:facet>
-						<h:outputText value="#{player.getCurrentteam()}" />
+						<h:outputText value="#{player.getCurrentteam()}" style="font-size:10px"/>
 					</b:dataTableColumn>
 					<b:dataTableColumn >
 						<f:facet name="header">
-							2022 Team
+							<h:outputText value="2022 Team" style="font-size:10px" />
 						</f:facet>
-						<h:outputText value="#{player.getPreviousteam()}"/>
+						<h:outputText value="#{player.getPreviousteam()}" style="font-size:10px"/>
 					</b:dataTableColumn>
 					<b:dataTableColumn >
 						<f:facet name="header">
-							DOB
+							<h:outputText value="Apply PDR?" style="font-size:10px" />
+						</f:facet>
+						<b:selectOneMenu id="pdr" value="#{player.pdrapply}" style="width:65px;font-size:10px">
+							<f:selectItem itemLabel="Yes" itemValue="1"/>
+							<f:selectItem itemLabel="No" itemValue="0"/>
+						</b:selectOneMenu>
+
+					</b:dataTableColumn>
+
+					<b:dataTableColumn >
+						<f:facet name="header">
+							<h:outputText value="DOB" style="font-size:10px" />
 						</f:facet>
 						<!--<h:outputText value="#{player.getDob()}" />-->
-						<b:inputText id="dob" value="#{player.dob}" style="width:90px;" >
+						<b:inputText id="dob" value="#{player.dob}" style="width:75px;font-size:10px" >
 
 						</b:inputText>
 					</b:dataTableColumn>
 					<b:dataTableColumn >
 						<f:facet name="header">
-							Player Up
+							<h:outputText value="LOI Date" style="font-size:10px" />
 						</f:facet>
-						<h:outputText value="#{player.getPlayerup()}" />
+						<h:outputText value="#{player.getLoidate()}" style="font-size:10px"/>
 					</b:dataTableColumn>
 					<b:dataTableColumn >
 						<f:facet name="header">
-							LOI Date
-						</f:facet>
-						<h:outputText value="#{player.getLoidate()}" />
-					</b:dataTableColumn>
-					<b:dataTableColumn >
-						<f:facet name="header">
-							Safesport
+							<h:outputText value="Safesport" style="font-size:10px" />
 						</f:facet>
 						<h:outputText value="N/A" rendered="#{!player.is18safesport}"/>
 						<b:selectOneMenu value="#{player.safesportfor18}"
@@ -126,6 +131,7 @@
 										 small-screen="full-width"
 										 tiny-screen="full-width"
 										 rendered="#{player.is18safesport}"
+										 style="width:65px;font-size:10px"
 						>
 							<f:selectItem itemLabel="No" itemValue="N"/>
 							<f:selectItem itemLabel="Yes" itemValue="Y"/>
@@ -133,10 +139,10 @@
 					</b:dataTableColumn>
 					<b:dataTableColumn >
 						<f:facet name="header">
-							Ctznship
+							<h:outputText value="CShip" style="font-size:10px" />
 						</f:facet>
 						<!--<h:outputText value="#{player.citizenshiplabel}" rendered="#{player.ctverified}" />-->
-						<b:selectOneMenu id="citizenship" value="#{player.citizenship}">
+						<b:selectOneMenu id="citizenship" value="#{player.citizenship}" style="width:65px;font-size:10px">
 							<f:selectItem itemLabel="USA" itemValue="USA"/>
 							<f:selectItem itemLabel="Canada" itemValue="CAN"/>
 							<f:selectItem itemLabel="Other" itemValue="OTH"/>
@@ -144,10 +150,10 @@
 					</b:dataTableColumn>
 					<b:dataTableColumn >
 						<f:facet name="header">
-							Birth Cert.
+							<h:outputText value="BCert" style="font-size:10px" />
 						</f:facet>
 						<!--<h:outputText value="#{player.birthcertificate}" />-->
-						<b:selectOneMenu id="birthcertificateverified" value="#{player.birthcertificate}" >
+						<b:selectOneMenu id="birthcertificateverified" value="#{player.birthcertificate}" style="width:65px;font-size:10px">
 							<f:selectItem itemLabel="Yes" itemValue="1"/>
 							<f:selectItem itemLabel="No" itemValue="0"/>
 						</b:selectOneMenu>
@@ -155,23 +161,23 @@
 					</b:dataTableColumn>
 					<b:dataTableColumn >
 						<f:facet name="header">
-							Transfer Indefinite/Exists/Expire Date
+							<h:outputText value="T Indef/ Exists/ Ex Date " style="font-size:10px" />
 						</f:facet>
-						<b:selectOneMenu id="transferindefinite" value="#{player.transferindefinite}" >
+						<b:selectOneMenu id="transferindefinite" value="#{player.transferindefinite}" style="width:65px;font-size:10px">
 							<f:selectItem itemLabel="Yes" itemValue="1"/>
 							<f:selectItem itemLabel="No" itemValue="0"/>
 						</b:selectOneMenu>
 						<br></br>
-						<b:selectOneMenu id="transferexists" value="#{player.transfer}" >
+						<b:selectOneMenu id="transferexists" value="#{player.transfer}" style="width:65px;font-size:10px">
 							<f:selectItem itemLabel="Yes" itemValue="1"/>
 							<f:selectItem itemLabel="No" itemValue="0"/>
 						</b:selectOneMenu>
 						<br></br>
-						<b:inputText id="expirationdate" style="width:100px;" value="#{player.expirationdate}" />
+						<b:inputText id="expirationdate" style="width:75px;font-size:10px" value="#{player.expirationdate}" />
 					</b:dataTableColumn>
 					<b:dataTableColumn >
 						<f:facet name="header">
-							Loi Suspended?
+							<h:outputText value="LOI Sus?" style="font-size:10px" />
 						</f:facet>
 						<!--<h:outputText value="#{coach.getSuspended()}" />-->
 						<b:selectOneMenu value="#{player.suspended}"
@@ -179,6 +185,7 @@
 										 medium-screen="full-width"
 										 small-screen="full-width"
 										 tiny-screen="full-width"
+										 style="width:65px;font-size:10px"
 						>
 							<f:selectItem itemLabel="No" itemValue="0"/>
 							<f:selectItem itemLabel="Yes" itemValue="1"/>
@@ -186,13 +193,14 @@
 					</b:dataTableColumn>
 					<b:dataTableColumn >
 						<f:facet name="header">
-							On USA Roster?
+							<h:outputText value="USA Rost?" style="font-size:10px" />
 						</f:facet>
 						<b:selectOneMenu value="#{player.usaroster}"
 										 large-screen="full-width"
 										 medium-screen="full-width"
 										 small-screen="full-width"
 										 tiny-screen="full-width"
+										 style="width:65px;font-size:10px"
 						>
 							<f:selectItem itemLabel="No" itemValue="0"/>
 							<f:selectItem itemLabel="Yes" itemValue="1"/>
@@ -200,24 +208,11 @@
 					</b:dataTableColumn>
 					<b:dataTableColumn >
 						<f:facet name="header">
-							Confirmed
+							<h:outputText value="Conf" style="font-size:10px" />
 						</f:facet>
-						<h:outputText value="#{player.confirmed}" />
+						<h:outputText value="#{player.confirmed}" style="font-size:10px"/>
 					</b:dataTableColumn>
 
-					<b:dataTableColumn >
-						<f:facet name="header">
-							Notes
-						</f:facet>
-						<!--<h:outputText value="#{player.notes}" />-->
-						<b:inputTextarea value="#{player.notes}" rows="2" span="1"
-										 large-screen="full-width"
-										 medium-screen="full-width"
-										 small-screen="full-width"
-										 tiny-screen="full-width"
-										 style="width:50px;"
-						/>
-					</b:dataTableColumn>
 					<b:dataTableColumn >
 				            <f:facet name="header">
 						        Option

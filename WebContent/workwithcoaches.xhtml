@@ -69,37 +69,47 @@
 				>
 					<b:dataTableColumn >
 			            <f:facet name="header">
-					        First<br/>Name
+							<h:outputText value="FName" style="font-size:10px" />
 					    </f:facet>
-							<b:inputText id="firstname" value="#{coach.firstname}" style="width:75px;" >
+							<b:inputText id="firstname" value="#{coach.firstname}" style="width:60px;font-size:10px" >
 
 							</b:inputText>
 			        </b:dataTableColumn>
 			        <b:dataTableColumn >
 			            <f:facet name="header">
-					        Last<br/>Name
+							<h:outputText value="LName" style="font-size:10px" />
 					    </f:facet>
-						<b:inputText id="lastname" value="#{coach.lastname}"  style="width:75px;" >
+						<b:inputText id="lastname" value="#{coach.lastname}"  style="width:60px;font-size:10px" >
 
 						</b:inputText>
 					</b:dataTableColumn>
 			        <b:dataTableColumn >
 			            <f:facet name="header">
-					        2023<br/>Team
+							<h:outputText value="2023 Team" style="font-size:10px" /><br></br>
+							<h:outputText value="Role" style="font-size:10px" />
 					    </f:facet>
-			            <h:outputText value="#{coach.getTeamname()}" />
+			            <h:outputText value="#{coach.getTeamname()}" style="font-size:10px"/><br></br>
+						<b:selectOneMenu value="#{coach.teamrole}"
+										 style="width:100px;font-size:10px"
+						>
+							<f:selectItem itemLabel="HCoach" itemValue="Head Coach"/>
+							<f:selectItem itemLabel="ACoach" itemValue="Assistant Coach"/>
+							<f:selectItem itemLabel="SCoach" itemValue="Student Coach"/>
+							<f:selectItem itemLabel="Manager" itemValue="Manager"/>
+							<f:selectItem itemLabel="ACoach/Manager" itemValue="Assistant Coach/Manager"/>
+						</b:selectOneMenu>
 			        </b:dataTableColumn>
 			        <b:dataTableColumn >
 			            <f:facet name="header">
-					        LOI<br/>Date
+							<h:outputText value="LOI Date" style="font-size:10px" />
 					    </f:facet>
 			            <h:outputText value="#{coach.getLoidate()}" />
 			        </b:dataTableColumn>
 			    	<b:dataTableColumn >
 			            <f:facet name="header">
-					        Safe<br/>sport
+							<h:outputText value="SafeSport" style="font-size:10px" />
 					    </f:facet>
-						<b:selectOneMenu value="#{coach.safesportforcoachlist}">
+						<b:selectOneMenu value="#{coach.safesportforcoachlist}" style="width:65px;font-size:10px">
 							<f:selectItem itemLabel="No" itemValue="0"/>
 							<f:selectItem itemLabel="Yes" itemValue="1"/>
 
@@ -107,37 +117,38 @@
 					</b:dataTableColumn>
 			        <b:dataTableColumn >
 			            <f:facet name="header">
-					        Sport<br/>Exp
+							<h:outputText value="Sport Exp" style="font-size:10px" />
 					    </f:facet>
-						<b:inputText id="sportexp" value="#{coach.sportexpires}" style="width:90px;" >
+						<b:inputText id="sportexp" value="#{coach.sportexpires}" style="width:60px;font-size:10px" >
 
 						</b:inputText>
 					</b:dataTableColumn>
 			        <b:dataTableColumn >
 			            <f:facet name="header">
-					        Scrn<br/>Exp
+							<h:outputText value="Scrn Exp" style="font-size:10px" />
 					    </f:facet>
-						<b:inputText id="screenexpire" value="#{coach.screeningexpires}" style="width:90px;" >
+						<b:inputText id="screenexpire" value="#{coach.screeningexpires}" style="width:60px;font-size:10px" >
 
 						</b:inputText>
 					</b:dataTableColumn>
 			        <b:dataTableColumn >
 			            <f:facet name="header">
-					        CEP<br/>#
+							<h:outputText value="CEP #" style="font-size:10px" />
 					    </f:facet>
-						<b:inputText id="cepnum" value="#{coach.cepnumber}" style="width:80px;" >
+						<b:inputText id="cepnum" value="#{coach.cepnumber}" style="width:60px;font-size:10px" >
 
 						</b:inputText>
 			        </b:dataTableColumn>
 			        <b:dataTableColumn >
 			            <f:facet name="header">
-					        CEP<br/>Level
+							<h:outputText value="CEP Level" style="font-size:10px" />
 					    </f:facet>
 						<b:selectOneMenu value="#{coach.ceplevel}"
 										 large-screen="full-width"
 										 medium-screen="full-width"
 										 small-screen="full-width"
 										 tiny-screen="full-width"
+										 style="width:85px;font-size:10px"
 						>
 							<f:selectItem itemLabel="Select One" itemValue="0"/>
 							<f:selectItem itemLabel="Level 1" itemValue="1"/>
@@ -149,15 +160,15 @@
 			        </b:dataTableColumn>
 			        <b:dataTableColumn >
 			            <f:facet name="header">
-					        CEP<br/>Exp
+							<h:outputText value="CEP Exp" style="font-size:10px" />
 					    </f:facet>
-						<b:inputText id="cepexpires" value="#{coach.cepexpires}"  style="width:95px;" >
+						<b:inputText id="cepexpires" value="#{coach.cepexpires}"  style="width:75px;font-size:10px" >
 
 						</b:inputText>
 			        </b:dataTableColumn>
 			        <b:dataTableColumn >
 			            <f:facet name="header">
-					        Mods
+							<h:outputText value="MODS" style="font-size:10px" />
 					    </f:facet>
 						<b:selectMultiMenu id="cepmodules" style="width: 100%;" includeSelectAllOption="true" value="#{coach.cepmodulesselected}"
 										   large-screen="full-width"
@@ -175,13 +186,10 @@
 			        </b:dataTableColumn>
 					<b:dataTableColumn >
 						<f:facet name="header">
-							On USA Roster?
+							<h:outputText value="USA?" style="font-size:10px" />
 						</f:facet>
 						<b:selectOneMenu value="#{coach.usaroster}"
-										 large-screen="full-width"
-										 medium-screen="full-width"
-										 small-screen="full-width"
-										 tiny-screen="full-width"
+										 style="width:65px;font-size:10px"
 						>
 							<f:selectItem itemLabel="No" itemValue="0"/>
 							<f:selectItem itemLabel="Yes" itemValue="1"/>
@@ -190,32 +198,23 @@
 
 					<b:dataTableColumn >
 			            <f:facet name="header">
-					        Conf
+							<h:outputText value="Conf" style="font-size:10px" />
 					    </f:facet>
-			            <h:outputText value="#{coach.getConfirmed()}" />
+			            <h:outputText value="#{coach.getConfirmed()}" style="font-size:10px"/>
 			        </b:dataTableColumn>
 					<b:dataTableColumn >
 						<f:facet name="header">
-							Susp
+							<h:outputText value="Susp" style="font-size:10px" />
 						</f:facet>
 						<!--<h:outputText value="#{coach.getSuspended()}" />-->
 						<b:selectOneMenu value="#{coach.suspend}"
-										 large-screen="full-width"
-										 medium-screen="full-width"
-										 small-screen="full-width"
-										 tiny-screen="full-width"
+										 style="width:65px;font-size:10px"
 						>
 							<f:selectItem itemLabel="No" itemValue="0"/>
 							<f:selectItem itemLabel="Yes" itemValue="1"/>
 						</b:selectOneMenu>
 					</b:dataTableColumn>
 					<b:dataTableColumn >
-			            <f:facet name="header">
-					        Notes
-					    </f:facet>
-			            <h:outputText value="#{coach.getNotes()}" />
-			        </b:dataTableColumn>
-			    	<b:dataTableColumn >
 				            <f:facet name="header">
 						        Option
 						    </f:facet>
