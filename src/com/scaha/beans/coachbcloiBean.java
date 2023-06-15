@@ -647,7 +647,7 @@ public class coachbcloiBean implements Serializable, MailableObject {
 
 				//Need to provide info to the stored procedure to save or update
 				LOGGER.info("update coach details");
-				CallableStatement cs = db.prepareCall("CALL scaha.updateCoachbyCoachIdforlist(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+				CallableStatement cs = db.prepareCall("CALL scaha.updateCoachbyCoachIdforlist(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 				cs.setInt("coachid", Integer.parseInt(coach.getIdcoach()));
 				cs.setString("screenexpires", coach.getScreeningexpires());
 				cs.setString("cepnum", coach.getCepnumber());
@@ -696,6 +696,7 @@ public class coachbcloiBean implements Serializable, MailableObject {
 				cs.setString("sportexpires", coach.getSportexpires());
 				cs.setInt("issuspend_in", Integer.parseInt(coach.getSuspend()));
 				cs.setInt("inusaroster",coach.getUsaroster());
+				cs.setString("inteamrole",coach.getTeamrole());
 
 				rs = cs.executeQuery();
 

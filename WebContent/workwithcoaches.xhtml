@@ -67,7 +67,7 @@
 						paginator="true"
 
 				>
-					<b:dataTableColumn >
+					<b:dataTableColumn orderable="false">
 			            <f:facet name="header">
 							<h:outputText value="FName" style="font-size:10px" />
 					    </f:facet>
@@ -75,7 +75,7 @@
 
 							</b:inputText>
 			        </b:dataTableColumn>
-			        <b:dataTableColumn >
+			        <b:dataTableColumn orderable="false">
 			            <f:facet name="header">
 							<h:outputText value="LName" style="font-size:10px" />
 					    </f:facet>
@@ -83,29 +83,30 @@
 
 						</b:inputText>
 					</b:dataTableColumn>
-			        <b:dataTableColumn >
+			        <b:dataTableColumn orderable="false">
 			            <f:facet name="header">
 							<h:outputText value="2023 Team" style="font-size:10px" /><br></br>
 							<h:outputText value="Role" style="font-size:10px" />
 					    </f:facet>
 			            <h:outputText value="#{coach.getTeamname()}" style="font-size:10px"/><br></br>
 						<b:selectOneMenu value="#{coach.teamrole}"
-										 style="width:100px;font-size:10px"
+										 style="width:65px;font-size:10px"
 						>
-							<f:selectItem itemLabel="HCoach" itemValue="Head Coach"/>
-							<f:selectItem itemLabel="ACoach" itemValue="Assistant Coach"/>
-							<f:selectItem itemLabel="SCoach" itemValue="Student Coach"/>
-							<f:selectItem itemLabel="Manager" itemValue="Manager"/>
-							<f:selectItem itemLabel="ACoach/Manager" itemValue="Assistant Coach/Manager"/>
+							<f:selectItem itemLabel="HC" itemValue="Head Coach"/>
+							<f:selectItem itemLabel="AC" itemValue="Assistant Coach"/>
+							<f:selectItem itemLabel="SC" itemValue="Student Coach"/>
+							<f:selectItem itemLabel="MR" itemValue="Manager"/>
+							<f:selectItem itemLabel="AM" itemValue="Assistant Coach/Manager"/>
 						</b:selectOneMenu>
-			        </b:dataTableColumn>
-			        <b:dataTableColumn >
+
+					</b:dataTableColumn>
+			        <b:dataTableColumn orderable="false">
 			            <f:facet name="header">
 							<h:outputText value="LOI Date" style="font-size:10px" />
 					    </f:facet>
-			            <h:outputText value="#{coach.getLoidate()}" />
+			            <h:outputText value="#{coach.getLoidate()}" style="font-size:10px"/>
 			        </b:dataTableColumn>
-			    	<b:dataTableColumn >
+			    	<b:dataTableColumn orderable="false">
 			            <f:facet name="header">
 							<h:outputText value="SafeSport" style="font-size:10px" />
 					    </f:facet>
@@ -115,7 +116,7 @@
 
 						</b:selectOneMenu>
 					</b:dataTableColumn>
-			        <b:dataTableColumn >
+			        <b:dataTableColumn orderable="false">
 			            <f:facet name="header">
 							<h:outputText value="Sport Exp" style="font-size:10px" />
 					    </f:facet>
@@ -123,7 +124,7 @@
 
 						</b:inputText>
 					</b:dataTableColumn>
-			        <b:dataTableColumn >
+			        <b:dataTableColumn orderable="false">
 			            <f:facet name="header">
 							<h:outputText value="Scrn Exp" style="font-size:10px" />
 					    </f:facet>
@@ -131,7 +132,7 @@
 
 						</b:inputText>
 					</b:dataTableColumn>
-			        <b:dataTableColumn >
+			        <b:dataTableColumn orderable="false">
 			            <f:facet name="header">
 							<h:outputText value="CEP #" style="font-size:10px" />
 					    </f:facet>
@@ -139,7 +140,7 @@
 
 						</b:inputText>
 			        </b:dataTableColumn>
-			        <b:dataTableColumn >
+			        <b:dataTableColumn orderable="false">
 			            <f:facet name="header">
 							<h:outputText value="CEP Level" style="font-size:10px" />
 					    </f:facet>
@@ -158,7 +159,7 @@
 							<f:selectItem itemLabel="Level 5" itemValue="5"/>
 						</b:selectOneMenu>
 			        </b:dataTableColumn>
-			        <b:dataTableColumn >
+			        <b:dataTableColumn orderable="false">
 			            <f:facet name="header">
 							<h:outputText value="CEP Exp" style="font-size:10px" />
 					    </f:facet>
@@ -166,7 +167,7 @@
 
 						</b:inputText>
 			        </b:dataTableColumn>
-			        <b:dataTableColumn >
+			        <b:dataTableColumn orderable="false">
 			            <f:facet name="header">
 							<h:outputText value="MODS" style="font-size:10px" />
 					    </f:facet>
@@ -184,7 +185,7 @@
 							<f:selectItem itemLabel="Girls" itemValue="Girls" />
 						</b:selectMultiMenu>
 			        </b:dataTableColumn>
-					<b:dataTableColumn >
+					<b:dataTableColumn orderable="false">
 						<f:facet name="header">
 							<h:outputText value="USA?" style="font-size:10px" />
 						</f:facet>
@@ -196,13 +197,13 @@
 						</b:selectOneMenu>
 					</b:dataTableColumn>
 
-					<b:dataTableColumn >
+					<b:dataTableColumn orderable="false">
 			            <f:facet name="header">
 							<h:outputText value="Conf" style="font-size:10px" />
 					    </f:facet>
 			            <h:outputText value="#{coach.getConfirmed()}" style="font-size:10px"/>
 			        </b:dataTableColumn>
-					<b:dataTableColumn >
+					<b:dataTableColumn orderable="false">
 						<f:facet name="header">
 							<h:outputText value="Susp" style="font-size:10px" />
 						</f:facet>
@@ -214,7 +215,7 @@
 							<f:selectItem itemLabel="Yes" itemValue="1"/>
 						</b:selectOneMenu>
 					</b:dataTableColumn>
-					<b:dataTableColumn >
+					<b:dataTableColumn orderable="false">
 				            <f:facet name="header">
 						        Option
 						    </f:facet>

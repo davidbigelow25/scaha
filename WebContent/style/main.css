@@ -9,6 +9,9 @@ img { border-style: none; }
     margin: 0 auto;
 }
 
+.multiselect-selected-text{
+	font-size: 10px;
+}
 ul.ui-menu-child {
     white-space: nowrap;
     width: auto !important;
