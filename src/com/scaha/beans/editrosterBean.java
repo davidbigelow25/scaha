@@ -18,20 +18,25 @@ import javax.el.ValueExpression;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
+import com.gbli.common.SendMailSSL;
+import com.gbli.common.Utils;
 import com.scaha.objects.*;
 
 //import com.gbli.common.SendMailSSL;
 
+public class editrosterBean implements Serializable, MailableObject {
 
-public class editrosterBean implements Serializable {
+//public class  implements Serializable {
 
 	// Class Level Variables
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = Logger.getLogger(ContextManager.getLoggerContext());
+	private static String mail_reg_body = Utils.getMailTemplateFromFile("/mail/voidloi.html");
 	transient private ResultSet rs = null;
 	private List<Coach> players = null;
 	private List<Coach> coaches = null;
@@ -45,7 +50,15 @@ public class editrosterBean implements Serializable {
 	private String newrosterdate = null;
 	private String pdrcount = null;
 	private String totalplayercount = null;
-	
+	private String to = null;
+	private String subject = null;
+	private String cc = null;
+	private Integer clubid = null;
+	private String clubname = null;
+
+
+
+
 	@PostConstruct
     public void init() {
         // In @PostConstruct (will be invoked immediately after construction and dependency/property injection).
@@ -67,6 +80,89 @@ public class editrosterBean implements Serializable {
     	    	
 		
     }
+
+	public String getClubname() {
+		return clubname;
+	}
+
+	public void setClubname(String clubname) {
+		this.clubname = clubname;
+	}
+
+	@Override
+	public String getPreApprovedCC() {
+		// TODO Auto-generated method stub
+		return cc;
+	}
+
+	public void setPreApprovedCC(String scc){
+		cc = scc;
+	}
+
+	@Override
+	public InternetAddress[] getToMailIAddress() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public InternetAddress[] getPreApprovedICC() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public String getToMailAddress() {
+		// TODO Auto-generated method stub
+		return to;
+	}
+
+	public void setToMailAddress(String sto){
+		to = sto;
+	}
+
+	public String getTextBody() {
+		// TODO Auto-generated method stub
+		List<String> myTokens = new ArrayList<String>();
+		myTokens.add("FIRSTNAME:" + this.selectedplayer.getFirstname());
+		myTokens.add("LASTNAME:" + this.selectedplayer.getLastname());
+		myTokens.add("CLUBNAME:" + this.getClubname());
+
+		return Utils.mergeTokens(editrosterBean.mail_reg_body,myTokens);
+
+	}
+
+
+	public Integer getClubid() {
+		return clubid;
+	}
+
+	public void setClubid(Integer clubid) {
+		this.clubid = clubid;
+	}
+
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+
+	public String getCc() {
+		return cc;
+	}
+
+	public void setCc(String cc) {
+		this.cc = cc;
+	}
+
+	public String getTo() {
+		return to;
+	}
+
+	public void setTo(String to) {
+		this.to = to;
+	}
 
 	public String getPdrcount(){
 		return pdrcount;
@@ -892,6 +988,148 @@ public class editrosterBean implements Serializable {
 			db.free();
 		}
 
+	}
+
+	public void voidLoi(Coach selectedPlayer){
+
+		String sidcoach = selectedPlayer.getIdcoach();
+		String coachname = selectedPlayer.getFirstname() + " " + selectedPlayer.getLastname();
+
+		//need to set to void
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+
+			if (db.setAutoCommit(false)) {
+
+				//Need to provide info to the stored procedure to save or update
+				LOGGER.info("verify loi code provided");
+				CallableStatement cs = db.prepareCall("CALL scaha.setcoachtoVoid(?)");
+				cs.setInt("coachid", Integer.parseInt(sidcoach));
+				cs.executeQuery();
+				db.commit();
+				db.cleanup();
+
+				//logging
+				LOGGER.info("We are voiding the loi for coach id:" + sidcoach);
+
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null, new FacesMessage("Successful", "You have voided the loi for: " + coachname));
+			} else {
+
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN LOI Generation Process" + this.selectedcoach);
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+		this.getRoster();
+	}
+
+	public void voidplayerLoi(Coach selectedPlayer){
+
+		String sidplayer = selectedPlayer.getIdcoach();
+		String playname = selectedPlayer.getFirstname() + ' ' + selectedPlayer.getLastname();
+
+		//getClubID(sidplayer);
+		///need to set to void
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+
+			if (db.setAutoCommit(false)) {
+				//need to get club id first before setting the loi to void.
+				CallableStatement cs = db.prepareCall("CALL scaha.getClubIdbyRosterID(?)");
+				/*cs.setInt("rosterid", Integer.parseInt(sidplayer));
+				rs = cs.executeQuery();
+
+				if (rs != null) {
+
+					while (rs.next()) {
+						this.clubid = rs.getInt("idclub");
+					}
+				}*/
+
+				//Need to provide info to the stored procedure to save or update
+				LOGGER.info("verify loi code provided");
+				cs = db.prepareCall("CALL scaha.settoVoid(?)");
+				cs.setInt("playerid", Integer.parseInt(sidplayer));
+				cs.executeQuery();
+
+				db.commit();
+				db.cleanup();
+
+				//logging
+				LOGGER.info("We are voiding the loi for player id:" + sidplayer);
+
+				//need to send an email acknowledging the loi is voided.
+				/*to = "";
+				LOGGER.info("Sending void loi email to club registrar, and family");
+				cs = db.prepareCall("CALL scaha.getClubRegistrarEmail(?)");
+				cs.setInt("iclubid", this.clubid);
+				rs = cs.executeQuery();
+				if (rs != null){
+					while (rs.next()) {
+						if (!to.equals("")){
+							to = to + "," + rs.getString("usercode");
+						}else {
+							to = rs.getString("usercode");
+						}
+					}
+				}
+				rs.close();
+
+				cs = db.prepareCall("CALL scaha.getFamilyEmail(?)");
+				cs.setInt("iplayerid", Integer.parseInt(sidplayer));
+				rs = cs.executeQuery();
+				if (rs != null){
+					while (rs.next()) {
+						to = to + ',' + rs.getString("usercode");
+					}
+				}
+				rs.close();
+
+
+				//hard my email address for testing purposes
+				to = "lahockeyfan2@yahoo.com";
+				this.setSubject(this.selectedplayer.getFirstname() + " " + this.selectedplayer.getLastname() + " LOI Void with " + this.getClubname());
+
+
+				SendMailSSL mail = new SendMailSSL(this);
+				LOGGER.info("Finished creating mail object for " + this.selectedplayer.getFirstname() + " " + this.selectedplayer.getLastname() + " LOI Void with " + this.getClubname());
+				mail.sendMail();
+
+
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null, new FacesMessage("Successful", "You have voided the loi for:" + playname));
+
+				 */
+			} else {
+
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN LOI Generation Process" + this.selectedplayer);
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+		//now we need to reload the data object for the loi list
+		getRoster();
 	}
 }
 
