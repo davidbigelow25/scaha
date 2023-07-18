@@ -22,7 +22,10 @@ public class Scoresheet extends ScahaObject implements Serializable {
 	private Integer idgame = null;
 	private Integer idscoresheet = null;
 	private String uploaddate = null;
-	
+	private Integer idteam = null;
+	private String gamedate = null;
+	private String gametime = null;
+
 	public Scoresheet (){ 
 		
 	}
@@ -92,4 +95,28 @@ public class Scoresheet extends ScahaObject implements Serializable {
     public void setIdscoresheet(Integer fname){
     	idscoresheet=fname;
     }
+
+	public Integer getIdteam() {
+		return idteam;
+	}
+
+	public void setIdteam(Integer idteam) {
+		this.idteam = idteam;
+	}
+
+	public String getGamedate() {
+		return gamedate;
+	}
+
+	public void setGamedate(String gamedate) {
+		this.gamedate = gamedate;
+	}
+
+	public String getGametime() {
+		return gametime;
+	}
+
+	public void setGametime(String gametime) {
+		this.gametime = gametime;
+	}
 }

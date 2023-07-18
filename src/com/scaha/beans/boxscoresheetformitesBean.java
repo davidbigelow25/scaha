@@ -115,7 +115,7 @@ public class boxscoresheetformitesBean implements Serializable {
 
 	}
 
-	public boxscoresheetformitesBean() {
+	public void boxscoresheetformitesBean() {
 
 	}
 

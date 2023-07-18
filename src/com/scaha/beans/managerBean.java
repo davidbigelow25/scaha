@@ -132,6 +132,10 @@ public class managerBean implements Serializable, MailableObject {
 	private Integer	assistantcoach3 = null;
 	private List<LiveGameRosterSpot> penpicklist = null;
 
+	//boolean for displaying tournament exhibition game area
+	private Boolean isaaoraaa = null;
+	private String NumberofTournaments = null;
+
 
 	@PostConstruct
     public void init() {
@@ -204,11 +208,31 @@ public class managerBean implements Serializable, MailableObject {
 		} else {
 			this.selectedgame = null;
 		}
+
+		//now lets check if the manager has added any tournament info if not let's redirect them to the tournament page.
+		checkTournaments();
+		checkForAAorAAA();
 	}
 	
     public managerBean() {  
         
     }
+
+	public String getNumberofTournaments() {
+		return NumberofTournaments;
+	}
+
+	public void setNumberofTournaments(String numberofTournaments) {
+		NumberofTournaments = numberofTournaments;
+	}
+
+	public Boolean getIsaaoraaa() {
+		return isaaoraaa;
+	}
+
+	public void setIsaaoraaa(Boolean isaaoraaa) {
+		this.isaaoraaa = isaaoraaa;
+	}
 
 	public AlertDataModel getAlertsDataModel() {
 		return AlertsDataModel;
@@ -1250,7 +1274,7 @@ public class managerBean implements Serializable, MailableObject {
 	        setAlerts();
 	}
 	
-	public void deleteTournament(Tournament tourn){
+	/*public void deleteTournament(Tournament tourn){
 		//need to set to void
     	Integer tournamentid = tourn.getIdtournament();
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
@@ -1288,7 +1312,7 @@ public class managerBean implements Serializable, MailableObject {
 		//now we need to reload the data object for the tournament list and the alerts
 		getTournament();
 		setAlerts();
-	}
+	}*/
 	
 	public void editTournamentDetail(Tournament tournament){
 		String tourneyid = tournament.getIdtournament().toString();
@@ -1980,6 +2004,10 @@ public class managerBean implements Serializable, MailableObject {
 
         //now lets highlight the areas needing action.
         setAlerts();
+
+		//now lets check if the manager has added any tournament info if not let's redirect them to the tournament page.
+		checkTournaments();
+		checkForAAorAAA();
 	}
 	
 	public void isMultipleTeamManager(){
@@ -1996,6 +2024,17 @@ public class managerBean implements Serializable, MailableObject {
 		
 		try{
 			context.getExternalContext().redirect("addtournamentmanager.xhtml?id="+this.teamid);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void navigatetomanagetournament(){
+		FacesContext context = FacesContext.getCurrentInstance();
+
+		try{
+			context.getExternalContext().redirect("managerconfirmtournaments.xhtml?id="+this.teamid);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -2254,4 +2293,69 @@ public class managerBean implements Serializable, MailableObject {
 
 	}
 
+	private void checkTournaments(){
+		//let's check the count of tournament notification records.  If equal to 0 then we redirect.
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		Integer Notournaments = 0;
+		this.setNumberofTournaments("0");
+		try{
+			Vector<Integer> v = new Vector<Integer>();
+			v.add(this.teamid);
+			db.getData("CALL scaha.AnyTeamTourmanetNotificationRecords(?)", v);
+			ResultSet rs = db.getResultSet();
+			while (rs.next()) {
+				Notournaments = rs.getInt("result");
+				this.setNumberofTournaments(Notournaments.toString());
+			}
+			LOGGER.info("We have results for no tournament notification lookup");
+			db.cleanup();
+
+			if (Notournaments.equals(0)) {
+				FacesContext context = FacesContext.getCurrentInstance();
+				try{
+					context.getExternalContext().redirect("managerconfirmtournaments.xhtml?id="+this.teamid);
+				} catch (Exception e){
+					e.printStackTrace();
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN loading tournament notification counts for team");
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+	}
+
+	private void checkForAAorAAA(){
+		//let's check the count of tournament notification records.  If equal to 0 then we redirect.
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		this.isaaoraaa = true;
+		try{
+			Vector<Integer> v = new Vector<Integer>();
+			v.add(this.teamid);
+			db.getData("CALL scaha.IsTeamAAorAAA(?)", v);
+			ResultSet rs = db.getResultSet();
+			while (rs.next()) {
+				this.isaaoraaa = rs.getBoolean("result");
+			}
+			LOGGER.info("We have results for if team is aa or aaa");
+			db.cleanup();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN loading tournament notification counts for team");
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+	}
 }

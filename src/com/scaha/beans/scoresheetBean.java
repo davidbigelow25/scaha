@@ -109,7 +109,13 @@ public class scoresheetBean implements Serializable {
 			}
 
 	  	}
-	  	getGameScoresheets();
+
+	    if (this.teamid.equals(0)){
+			getGameScoresheets();
+		}else{
+			getGameScoresheetsForTeam();
+		}
+
 	}
 	
     public scoresheetBean() {  
@@ -432,7 +438,8 @@ public class scoresheetBean implements Serializable {
 	    				String gametype = rs.getString("gametype");
 	    				String displayname = rs.getString("displayname");
 	    				String uploaddate = rs.getString("uploaddate");
-	    				
+
+
 	    				Scoresheet scoresheet = new Scoresheet();
 	    				scoresheet.setFilename(filename);
 	    				scoresheet.setGametype(gametype);
@@ -549,5 +556,102 @@ public class scoresheetBean implements Serializable {
     	}
 		
     }
+
+	public void getGameScoresheetsForTeam() {
+		List<Scoresheet> templist = new ArrayList<Scoresheet>();
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		if (this.teamid!=null){
+			try{
+				//first get team name
+				CallableStatement cs = db.prepareCall("CALL scaha.getScoresheetsForTeam(?,?)");
+				cs.setInt("inteamid", this.teamid);
+				cs.setInt("ingameid", this.idgame);
+
+				rs = cs.executeQuery();
+
+				if (rs != null){
+
+					while (rs.next()) {
+						Integer idscoresheets = rs.getInt("idscoresheets");
+						String filename = rs.getString("filename");
+						String gametype = rs.getString("gametype");
+						String displayname = rs.getString("displayname");
+						String uploaddate = rs.getString("uploaddate");
+						String gamedate = rs.getString("gamedate");
+						String gametime = rs.getString("gametime");
+
+						Scoresheet scoresheet = new Scoresheet();
+						scoresheet.setFilename(filename);
+						scoresheet.setGametype(gametype);
+						scoresheet.setIdscoresheet(idscoresheets);
+						scoresheet.setUploaddate(uploaddate);
+						scoresheet.setFiledisplayname(displayname);
+						scoresheet.setGamedate(gamedate);
+						scoresheet.setGametime(gametime);
+						scoresheet.setIdteam(this.teamid);
+						scoresheet.setIdgame(this.idgame);
+
+						templist.add(scoresheet);
+					}
+					//LOGGER.info("We have results for scoresheets for game:" + this.idgame);
+				}
+
+
+				rs.close();
+				db.cleanup();
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				LOGGER.info("ERROR IN getting scoresheet list for team:" + this.teamid);
+				e.printStackTrace();
+				db.rollback();
+			} finally {
+				//
+				// always clean up after yourself..
+				//
+				db.free();
+			}
+		}
+
+
+		setScoresheets(templist);
+		ScoresheetDataModel = new ScoresheetDataModel(scoresheets);
+	}
+
+	public void updateGame(Scoresheet scoresheet){
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		if (this.teamid!=null){
+			try{
+				//first get team name
+				CallableStatement cs = db.prepareCall("CALL scaha.updateScoresheetDetailforGame(?,?,?,?)");
+				cs.setInt("inteamid", scoresheet.getIdteam());
+				cs.setInt("ingameid", scoresheet.getIdgame());
+				cs.setString("ingamedate", scoresheet.getGamedate());
+				cs.setString("ingametime", scoresheet.getGametime());
+
+
+				rs = cs.executeQuery();
+
+				rs.close();
+				db.cleanup();
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				LOGGER.info("ERROR IN updating scoresheet game details:" + scoresheet.getIdgame());
+				e.printStackTrace();
+				db.rollback();
+			} finally {
+				//
+				// always clean up after yourself..
+				//
+				db.free();
+			}
+		}
+
+
+		getGameScoresheetsForTeam();
+	}
 }
 

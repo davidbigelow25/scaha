@@ -209,14 +209,17 @@
 		    	medium-screen="half"
 		    	small-screen="one-third"
 		    	tiny-screen="one-third"
+                     rendered="#{managerBean.isaaoraaa}"
 			>
 				<f:facet name="heading" style="margin-bottom: 0;margin-top: 0;">
 					<h:outputText value="#{profileBean.getCurrentSCAHAHockeySeason().toUpperCase()} TOURNAMENTS PLAYING IN"/>
-				</f:facet> 
-				<b:commandButton value="Add Tournament" iconAwesome="plus" 
-		           action="#{managerBean.navigatetoaddtournament()}" look="success" style="float: right;">
+				</f:facet>
+				<h:outputText value="The team is currently playing in #{managerBean.getNumberofTournaments()} tournament(s)."/>
+				<b:commandButton value="Manage Tournaments" iconAwesome="plus"
+		           action="#{managerBean.navigatetomanagetournament()}" look="success" style="float: right;">
 			    </b:commandButton>
-				<b:dataTable 
+
+				<!--<b:dataTable
 					id="tournamentsnew" 
 					var="tournament"
 					value="#{managerBean.getTournamentdatamodel()}" 
@@ -258,15 +261,13 @@
 					    </f:facet>
 					    <b:commandButton iconAwesome="edit"
 					                       rendered="#{tournament.rendered}" action="#{managerBean.editTournamentDetail(tournament)}" look="info">
-					       <!-- <f:ajax execute="@this" render="@form" update=":form1:messages1,:form1:teamlist"/> -->
 					    </b:commandButton>
 					    <p:spacer width="5"  />
 					    <b:commandButton  iconAwesome="trash"
 					                       rendered="#{tournament.rendered}" action="#{managerBean.deleteTournament(tournament)}" look="danger">
-					       <!-- <f:ajax execute="@this" render="@form" update=":form1:messages1,:form1:teamlist"/> -->
 					    </b:commandButton>
 			        </b:dataTableColumn> 
-				</b:dataTable>
+				</b:dataTable>-->
 			</b:panel>
 			<!-- exhibition -->
 			<b:panel id ="gamespanels" collapsible="false" look="primary" 
@@ -274,6 +275,7 @@
 		    	medium-screen="half"
 		    	small-screen="one-third"
 		    	tiny-screen="one-third"
+                     rendered="#{managerBean.isaaoraaa}"
 			>
 				<f:facet name="heading">
 					<h:outputText value="#{profileBean.getCurrentSCAHAHockeySeason().toUpperCase()} TOURNAMENT/EXHIBITION GAMES"/> 

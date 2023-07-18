@@ -73,43 +73,95 @@
 										>
 										<b:dataTableColumn >
 								            <f:facet name="header">
-										         <h:outputText value="Team" />
+										         <h:outputText value="Team" style="font-size:10px"/>
 										    </f:facet>
-										    <h:outputText value="#{team.getTeamname()}" />
+										    <h:outputText value="#{team.getTeamname()}" style="font-size:10px"/>
 										</b:dataTableColumn>
 										<b:dataTableColumn >
 								            <f:facet name="header">
-										         <h:outputText value="Active Players" />
+										         <h:outputText value="Active Players" style="font-size:10px"/>
 										    </f:facet>
-										    <h:outputText value="#{team.getActiveplayercount()}" />
+										    <h:outputText value="#{team.getActiveplayercount()}" style="font-size:10px"/>
 										</b:dataTableColumn> 
 										<b:dataTableColumn >
 								            <f:facet name="header">
-										         <h:outputText value="Total Players" />
+										         <h:outputText value="Total Players" style="font-size:10px"/>
 										    </f:facet>
 										    <h:outputText value="#{team.getTotalplayercount()}" />
 										</b:dataTableColumn>
 										<b:dataTableColumn >
 								            <f:facet name="header">
-										         <h:outputText value="Total Coaches" />
+										         <h:outputText value="Total Coaches" style="font-size:10px"/>
 										    </f:facet>
-										    <h:outputText value="#{team.getTotalcoachescount()}" />
+										    <h:outputText value="#{team.getTotalcoachescount()}" style="font-size:10px"/>
 										</b:dataTableColumn> 
 										<b:dataTableColumn >
 								            <f:facet name="header">
-										        Team Roster Date
-										    </f:facet>
-											<b:inputText value="#{team.newdate}" style="width:130px;" >
+												<h:outputText value="Team Roster Date" style="font-size:10px"/>
+											</f:facet>
+											<b:inputText value="#{team.newdate}" style="width:75px;font-size:10px" >
 												<f:ajax event="change" listener="#{managerosterBean.updateTeamRostereffectivedate(team,team.newdate)}"/>
 								            	<f:param name="blockui.disabled" value="true"/>
 								            </b:inputText>
-								            
-											
-											
+								        </b:dataTableColumn>
+										<b:dataTableColumn >
+											<f:facet name="header">
+												<h:outputText value="Labor Day" style="font-size:10px"/>
+											</f:facet>
+											<b:navCommandLink value="Yes" actionListener="#{managerosterBean.loadTournamentDetails('labor',team)}" rendered="#{team.getLaborday()}" style="font-size:10px">
+											</b:navCommandLink>
+											<h:outputText value="#{team.getLabordayattend()}" style="font-size:10px" rendered="#{not team.getLaborday()}"/>
+
+										</b:dataTableColumn>
+										<b:dataTableColumn >
+											<f:facet name="header">
+												<h:outputText value="T-Giving" style="font-size:10px"/>
+											</f:facet>
+											<b:navLink value="Yes" actionListener="#{managerosterBean.loadTournamentDetails('tgiving',team)}" rendered="#{team.tgiving}">
+											</b:navLink>
+											<h:outputText value="#{team.getTgivingattend()}" style="font-size:10px" rendered="#{not team.tgiving}"/>
+
+										</b:dataTableColumn>
+										<b:dataTableColumn >
+											<f:facet name="header">
+												<h:outputText value="XMAS" style="font-size:10px"/>
+											</f:facet>
+											<b:navLink value="Yes" actionListener="#{managerosterBean.loadTournamentDetails('xmas',team)}" rendered="#{team.xmas}">
+											</b:navLink>
+											<h:outputText value="#{team.getXmasattend()}" style="font-size:10px" rendered="#{not team.xmas}"/>
+
+										</b:dataTableColumn>
+
+										<b:dataTableColumn >
+											<f:facet name="header">
+												<h:outputText value="MLK" style="font-size:10px"/>
+											</f:facet>
+											<b:navLink value="Yes" actionListener="#{managerosterBean.loadTournamentDetails('mlk',team)}" rendered="#{team.mlk}">
+											</b:navLink>
+											<h:outputText value="#{team.getMlkattend()}" style="font-size:10px" rendered="#{not team.mlk}"/>
+
+										</b:dataTableColumn>
+										<b:dataTableColumn >
+											<f:facet name="header">
+												<h:outputText value="PDay" style="font-size:10px"/>
+											</f:facet>
+											<b:navLink value="Yes" actionListener="#{managerosterBean.loadTournamentDetails('pday',team)}" rendered="#{team.pday}">
+												</b:navLink>
+											<h:outputText value="#{team.getPdayattend()}" style="font-size:10px" rendered="#{not team.pday}"/>
+
+										</b:dataTableColumn>
+										<b:dataTableColumn >
+											<f:facet name="header">
+												<h:outputText value="Bye Wkd" style="font-size:10px"/>
+											</f:facet>
+											<b:navLink value="Yes" actionListener="#{managerosterBean.loadTournamentDetails('byewkd',team)}" rendered="#{team.byewkd}">
+												<h:outputText value="#{team.getByewkdattend()}" style="font-size:10px" rendered="#{not team.byewkd}"/>
+											</b:navLink>
+											<h:outputText value="#{team.getByewkdattend()}" style="font-size:10px" rendered="#{not team.byewkd}"/>
 										</b:dataTableColumn>
 										<b:dataTableColumn >
 								            <f:facet name="header">
-										        Option
+										        <h:outputText value="Option" style="font-size:10px"/>
 										    </f:facet>
 											<b:commandButton icon="edit"
 										                       action="#{managerosterBean.viewroster(team)}" update="@form" look="success"
@@ -129,61 +181,6 @@
 		</b:column>
 	</b:row>
 </b:container>
-<!--   
-<b:container>
-	<b:row>
-		<b:column>
-			<b:form>
-			<b:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-			<b:panel id ="panel" collapsible="false" look="primary">
-				<f:facet name="heading">
-					<h:outputText value="View Rosters" />
-				</f:facet>
-				<b:dataTable 
-					id="listofteams" 
-					var="team"
-					value="#{managerosterBean.getClubs()}"
-					selection="#{managerrosterBean.selectedteam}"
-					searching="true"
-					editable="true" 
-					select="true"
-					selectionMode="single" 
-					paginated="false"
-					rowGroup="1"
-					>
-					<b:dataTableColumn >
-			            <f:facet name="header">
-					        Team
-					    </f:facet>
-			            <h:outputText value="#{team.getTeamname()}" />
-			        </b:dataTableColumn>
-			        <b:dataTableColumn >
-			            <f:facet name="header">
-					        Club
-					    </f:facet>
-			            <h:outputText value="#{team.getSkillname()}" />
-			        </b:dataTableColumn>
-			        
-			        <b:dataTableColumn >
-			            <f:facet name="header">
-					        Option
-					    </f:facet>
-						<b:commandButton value="Edit Roster" 
-					                       action="#{managerosterBean.viewroster(team)}" update="@form" look="success"
-					                       large-screen="full-width"
-					    					medium-screen="full-width"
-					    					small-screen="full-width"
-					    					tiny-screen="full-width">
-					       <f:ajax execute="@this" render="@form" />
-					    </b:commandButton>
-					</b:dataTableColumn> 
-		        </b:dataTable>         
-				        
-			</b:panel>
-			</b:form>
-		</b:column>
-	</b:row>
-</b:container> -->
 </ui:define>
 </ui:composition>
 </html>

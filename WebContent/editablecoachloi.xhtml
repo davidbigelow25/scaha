@@ -78,7 +78,10 @@ $(document).ready(function() {
 							    	<f:selectItem itemLabel="Assistant Coach/Manager" itemValue="Assistant Coach/Manager"/>
 							    	<f:selectItem itemLabel="Student Coach" itemValue="Student Coach"/>
 							    	<f:selectItem itemLabel="Manager" itemValue="Manager"/>
-							    </b:selectOneMenu>
+									<f:selectItem itemLabel="Manager/Locker Room Attendant" itemValue="Manager/Locker Room Attendant"/>
+									<f:selectItem itemLabel="Assistant Coach/Locker Room Attendant" itemValue="Assistant Coach/Locker Room Attendant"/>
+
+								</b:selectOneMenu>
 							</b:dataTableColumn>  
 					    </b:dataTable>
 						<h:outputText style="font-weight: bold;" value="#{coachloiBean.getCurrentyear()} Girls Team(s):" />

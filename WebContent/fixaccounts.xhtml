@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:b="http://bootsfaces.net/ui">
+
+<f:metadata>
+	<f:event type="preRenderView" listener="#{profileBean.verifyHasRoles('S-REG;A-DLIST')}" />
+</f:metadata>
+
+<ui:composition template="/WEB-INF/templates/layoutadmin.xhtml">
+<ui:define name="content">
+<b:container>
+	<b:row>
+		<b:column>
+			<b:form>
+			<b:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+			<b:panel id ="panel" collapsible="false" look="primary">
+				<f:facet name="heading">
+					<h:outputText value="Accounts to Fix" />
+				</f:facet>
+				<b:dataTable 
+						id="listofaccounts"
+						var="acccount"
+ 						value="#{fixaccountsBean.accounts}"
+ 						editable="true" 
+						select="true"
+						selection="#{fixaccountsBean.selectedaccount}"
+						selectionMode="single" 
+						paginated="true"
+						searching="true" 
+						border="true"
+						excel="true"
+			            pdf="true"
+						
+						>
+						<b:dataTableColumn >
+							<f:facet name="header">
+								Person ID
+							</f:facet>
+							<h:outputText value="#{account.getPersonid()}" />
+						</b:dataTableColumn>
+
+						<b:dataTableColumn >
+				            <f:facet name="header">
+						        F Name
+						    </f:facet>
+							<h:outputText value="#{account.getFname()}" />
+				        </b:dataTableColumn>
+				        <b:dataTableColumn >
+				            <f:facet name="header">
+						        L Name
+						    </f:facet>
+							<h:outputText value="#{account.getLname()}" />
+				        </b:dataTableColumn>
+				        <b:dataTableColumn >
+				            <f:facet name="header">
+						        DOB
+						    </f:facet>
+							<h:outputText value="#{account.getDob()}" />
+				        </b:dataTableColumn>
+						<b:dataTableColumn >
+							<f:facet name="header">
+								USA #
+							</f:facet>
+							<h:outputText value="#{account.getUsahockeynumber()}" />
+						</b:dataTableColumn>
+
+						<b:dataTableColumn >
+				            <f:facet name="header">
+						        Comp PID
+						    </f:facet>
+							<h:outputText value="#{account.getComparepersonid()}" />
+				        </b:dataTableColumn>
+						<b:dataTableColumn >
+							<f:facet name="header">
+								Comp FName
+							</f:facet>
+							<h:outputText value="#{account.getFnamecompare()}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn >
+							<f:facet name="header">
+								Comp LName
+							</f:facet>
+							<h:outputText value="#{account.getLnamecompare()}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn >
+							<f:facet name="header">
+								Comp DOB
+							</f:facet>
+							<h:outputText value="#{account.getDobcompare()}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn >
+				            <f:facet name="header">
+						        <h:outputText value="Option" />
+						    </f:facet>
+							<!--<b:commandButton value="Delete" iconAwesome="trash"
+					            action="#{delinquencyBean.removePlayer(player)}" look="danger"
+					         	large-screen="full-width"
+	    						medium-screen="full-width"
+	    						small-screen="full-width"
+	    						tiny-screen="full-width"
+											 rendered="#{profileBean.hasRoleList('S-REG')}"
+	    					 >
+					       <f:ajax execute="@this" render="@form" />
+					    </b:commandButton>
+						    -->
+						</b:dataTableColumn> 
+					</b:dataTable>
+					<p:spacer width="10" height="5" />
+					<b:panelGrid colSpans="3,2,2,2,3">
+						<h:outputText value=" "/>
+						<h:outputText value=" "/>
+						<b:commandButton value="Close" id="close" look="info" ajax="false" actionListener="#{fixaccountsBean.closePage()}"
+							large-screen="full-width"
+	    					medium-screen="full-width"
+	    					small-screen="full-width"
+	    					tiny-screen="full-width"
+						/>
+						<h:outputText value=" "/>
+						<h:outputText value=" "/>
+					</b:panelGrid>
+			</b:panel>
+			</b:form>
+		</b:column>
+	</b:row>
+</b:container>
+</ui:define>
+</ui:composition>
+</html>

@@ -58,7 +58,10 @@
 				    	<f:selectItem itemLabel="Student Coach" itemValue="Student Coach"/>
 				    	<f:selectItem itemLabel="Manager" itemValue="Manager"/>
 				    	<f:selectItem itemLabel="Assistant Coach/Manager" itemValue="Assistant Coach/Manager"/>
-				    	<p:ajax process="@this" listener="#{coachrosteractionBean.checkRole()}" event="change" update="@form"  />
+						<f:selectItem itemLabel="Manager/Locker Room Attendant" itemValue="Manager/Locker Room Attendant"/>
+						<f:selectItem itemLabel="Assistant Coach/Locker Room Attendant" itemValue="Assistant Coach/Locker Room Attendant"/>
+
+						<p:ajax process="@this" listener="#{coachrosteractionBean.checkRole()}" event="change" update="@form"  />
 				    </b:selectOneMenu>
 					<h:outputText value=" " />
 					<h:outputText value=" " />

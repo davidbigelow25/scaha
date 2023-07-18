@@ -28,7 +28,14 @@ public class Tournament extends ScahaObject implements Serializable {
 	private List<Venue> venues = null;
 	private List<TournamentDivision> divisions = null;
 	private String requestingteam = null;
-	
+
+	//used for manager confirming tournament weekends
+	private Integer tournamentweekendid = null;
+	private Integer isparticipating = null;
+	private String levelplayed = null;
+	private String tournamentweekendname = null;
+	private Integer teamtournamentnotificationid = null;
+
 	public Tournament (){ 
 		
 	}
@@ -168,5 +175,44 @@ public class Tournament extends ScahaObject implements Serializable {
     public void setStatus(String fname){
     	status=fname;
     }
-	    	
+
+	public Integer getTournamentweekendid() {
+		return tournamentweekendid;
+	}
+
+	public void setTournamentweekendid(Integer tournamentweekendid) {
+		this.tournamentweekendid = tournamentweekendid;
+	}
+
+	public Integer getIsparticipating() {
+		return isparticipating;
+	}
+
+	public void setIsparticipating(Integer isparticipating) {
+		this.isparticipating = isparticipating;
+	}
+
+	public String getLevelplayed() {
+		return levelplayed;
+	}
+
+	public void setLevelplayed(String levelplayed) {
+		this.levelplayed = levelplayed;
+	}
+
+	public String getTournamentweekendname() {
+		return tournamentweekendname;
+	}
+
+	public void setTournamentweekendname(String tournamentweekendname) {
+		this.tournamentweekendname = tournamentweekendname;
+	}
+
+	public Integer getTeamtournamentnotificationid() {
+		return teamtournamentnotificationid;
+	}
+
+	public void setTeamtournamentnotificationid(Integer teamtournamentnotificationid) {
+		this.teamtournamentnotificationid = teamtournamentnotificationid;
+	}
 }

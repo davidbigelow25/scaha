@@ -42,8 +42,19 @@ public class Team extends ScahaObject implements Serializable {
 	private String blockrecruitment = null;
 	private String blockrecruitmentteam = null;
 
-
-
+	//these are used for displaying tournament attendance
+	private String labordayattend = null;
+	private String tgivingattend = null;
+	private String xmasattend = null;
+	private String mlkattend = null;
+	private String pdayattend = null;
+	private String byewkdattend = null;
+	private Boolean laborday = null;
+	private Boolean tgiving = null;
+	private Boolean xmas = null;
+	private Boolean mlk = null;
+	private Boolean pday = null;
+	private Boolean byewkd = null;
 
 	//this is used for assigning coach role to teams on the coach loi process.
 	private String coachrole = null;
@@ -228,7 +239,100 @@ public class Team extends ScahaObject implements Serializable {
 	public void setIdteam(String steamid){
 		IDteam = steamid;
 	}
-	
-	
-		
+
+	public String getLabordayattend() {
+		return labordayattend;
+	}
+
+	public void setLabordayattend(String labordayattend) {
+		this.labordayattend = labordayattend;
+	}
+
+	public String getTgivingattend() {
+		return tgivingattend;
+	}
+
+	public void setTgivingattend(String tgivingattend) {
+		this.tgivingattend = tgivingattend;
+	}
+
+	public String getXmasattend() {
+		return xmasattend;
+	}
+
+	public void setXmasattend(String xmasattend) {
+		this.xmasattend = xmasattend;
+	}
+
+	public String getMlkattend() {
+		return mlkattend;
+	}
+
+	public void setMlkattend(String mlkattend) {
+		this.mlkattend = mlkattend;
+	}
+
+	public String getPdayattend() {
+		return pdayattend;
+	}
+
+	public void setPdayattend(String pdayattend) {
+		this.pdayattend = pdayattend;
+	}
+
+	public String getByewkdattend() {
+		return byewkdattend;
+	}
+
+	public void setByewkdattend(String byewkdattend) {
+		this.byewkdattend = byewkdattend;
+	}
+
+	public Boolean getLaborday() {
+		return laborday;
+	}
+
+	public void setLaborday(Boolean laborday) {
+		this.laborday = laborday;
+	}
+
+	public Boolean getTgiving() {
+		return tgiving;
+	}
+
+	public void setTgiving(Boolean tgiving) {
+		this.tgiving = tgiving;
+	}
+
+	public Boolean getXmas() {
+		return xmas;
+	}
+
+	public void setXmas(Boolean xmas) {
+		this.xmas = xmas;
+	}
+
+	public Boolean getMlk() {
+		return mlk;
+	}
+
+	public void setMlk(Boolean mlk) {
+		this.mlk = mlk;
+	}
+
+	public Boolean getPday() {
+		return pday;
+	}
+
+	public void setPday(Boolean pday) {
+		this.pday = pday;
+	}
+
+	public Boolean getByewkd() {
+		return byewkd;
+	}
+
+	public void setByewkd(Boolean byewkd) {
+		this.byewkd = byewkd;
+	}
 }

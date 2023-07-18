@@ -72,11 +72,28 @@
 						    </f:facet>
 				            <h:outputText value="#{scoresheet.getUploaddate()}" />
 				        </b:dataTableColumn>
-				        <b:dataTableColumn styleClass="mtrxColumn">
+						<b:dataTableColumn styleClass="mtrxColumn">
+							<f:facet name="header">
+								Game Date
+							</f:facet>
+							<b:inputText id="gamedate" value="#{scoresheet.gamedate}" style="width:60px;font-size: 10px;"/>
+						</b:dataTableColumn>
+						<b:dataTableColumn styleClass="mtrxColumn">
+							<f:facet name="header">
+								Game Time
+							</f:facet>
+							<b:inputText id="gametime" value="#{scoresheet.gametime}" style="width:60px;font-size: 10px;"/>
+						</b:dataTableColumn>
+						<b:dataTableColumn styleClass="mtrxColumn">
 				            <f:facet name="header">
 						        Options
 						    </f:facet>
-						    <b:commandButton value="View Scoresheet" iconAwesome="ui-icon-extlink"
+							<b:commandButton value="Update Scoresheet"
+											 action="#{managerosterBean.updateGame(scoresheet)}" update="@form"
+											  look="success">
+								<f:ajax execute="@this" render="@form" />
+							</b:commandButton>
+							<b:commandButton value="View Scoresheet" iconAwesome="ui-icon-extlink"
 						                       onclick="openscoresheet('#{scoresheet.getGametype()}_#{scoresheet.getFilename()}')" look="info">
 						    </b:commandButton>
 						    <b:commandButton value="Delete Scoresheet" iconAwesome="trash"

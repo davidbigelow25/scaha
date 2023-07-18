@@ -140,6 +140,11 @@
 		<managed-bean-scope>view</managed-bean-scope>
 	</managed-bean>
 	<managed-bean>
+		<managed-bean-name>managerconfirmtournamentBean</managed-bean-name>
+		<managed-bean-class>com.scaha.beans.managerconfirmtournamentBean</managed-bean-class>
+		<managed-bean-scope>view</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
 		<managed-bean-name>editrosterBean</managed-bean-name>
 		<managed-bean-class>com.scaha.beans.editrosterBean</managed-bean-class>
 		<managed-bean-scope>view</managed-bean-scope>
@@ -154,7 +159,12 @@
 		<managed-bean-class>com.scaha.beans.groupemailBean</managed-bean-class>
 		<managed-bean-scope>view</managed-bean-scope>
 	</managed-bean>
-	
+	<managed-bean>
+		<managed-bean-name>fixaccountsBean</managed-bean-name>
+		<managed-bean-class>com.scaha.beans.fixaccountsBean</managed-bean-class>
+		<managed-bean-scope>view</managed-bean-scope>
+	</managed-bean>
+
 	<validator>
 		<description>This will validate the Username to ensure its unique in the system</description>
 		<display-name>User Name Validator</display-name>

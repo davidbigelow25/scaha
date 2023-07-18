@@ -107,16 +107,61 @@ public class managerosterBean implements Serializable {
 	        				String activeplayercount = rssub.getString("activeplayercount");
 	        				String totalplayercount = rssub.getString("totalplayercount");
 	        				String totalcoachcount = rssub.getString("totalcoachcount");
-	        				
-	        				
+
+							//these are for displaying tournaments attending
+	        				String labordayattend = rssub.getString("labordayattend");
+							Boolean laborday = false;
+							if (labordayattend.equals("yes")){
+								laborday=true;
+							}
+							String tgivingattend = rssub.getString("tgivingattend");
+							Boolean tgiving = false;
+							if (tgivingattend.equals("yes")){
+								tgiving=true;
+							}
+							String xmasattend = rssub.getString("xmasattend");
+							Boolean xmas = false;
+							if (xmasattend.equals("yes")){
+								xmas=true;
+							}
+							String mlkattend = rssub.getString("mlkattend");
+							Boolean mlk = false;
+							if (mlkattend.equals("yes")){
+								mlk=true;
+							}
+							String pdayattend = rssub.getString("pdayattend");
+							Boolean pday = false;
+							if (pdayattend.equals("yes")){
+								pday=true;
+							}
+							String byewkdattend = rssub.getString("byewkdattend");
+							Boolean byewkd = false;
+							if (byewkdattend.equals("yes")){
+								byewkd=true;
+							}
+
 	        				Team team = new Team(teamname,idteam);
 	        				team.setIdteam(idteam);
 	        				team.setTeamname(teamname);
 	        				team.setActiveplayercount(activeplayercount);
 	        				team.setTotalplayercount(totalplayercount);
 	        				team.setTotalcoachescount(totalcoachcount);
-	        					        				
-	        				tempteamlist.add(team);
+
+							//these are for displaying tournaments attending
+							team.setLabordayattend(labordayattend);
+							team.setTgivingattend(tgivingattend);
+							team.setXmasattend(xmasattend);
+							team.setMlkattend(mlkattend);
+							team.setPdayattend(pdayattend);
+							team.setByewkdattend(byewkdattend);
+							team.setLaborday(laborday);
+							team.setTgiving(tgiving);
+							team.setXmas(xmas);
+							team.setMlk(mlk);
+							team.setPday(pday);
+							team.setByewkd(byewkd);
+
+							tempteamlist.add(team);
 
 	        				team = null;
 						}
@@ -198,6 +243,18 @@ public void updateTeamRostereffectivedate(Team team,String newdate){
 		
     	
 	}
-	
+
+	private void loadTournamentDetails(String tournament, Team steam){
+		String idteam = steam.getIdteam();
+
+		FacesContext context = FacesContext.getCurrentInstance();
+		try{
+			context.getExternalContext().redirect("viewtournamentdetails.xhtml?id=" + idteam + "&t="+tournament);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 }
 
