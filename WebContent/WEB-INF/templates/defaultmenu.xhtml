@@ -188,8 +188,18 @@
 					</b:navBar>
 				</b:column>
 			</b:row>
-			
-			<p:menuitem style="font-size: 10pt;width:225px;"
+		<b:row style="margin-top: 0px !important; margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;" rendered="#{profileBean.hasRoleList('A-REG')}">
+			<b:column >
+				<b:navBar brand="Associate Registrar" inverse="false" position="top" sticky="false" fluid="true" >
+					<b:navbarLinks>
+						<b:navLink value="Manage Rosters" href="managerosters.xhtml" rendered="#{profileBean.hasRoleList('A-REG')}"></b:navLink>
+					</b:navbarLinks>
+				</b:navBar>
+			</b:column>
+		</b:row>
+
+
+		<p:menuitem style="font-size: 10pt;width:225px;"
 							value="" 
 							url=""
 							rendered="" />

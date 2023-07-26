@@ -1600,7 +1600,7 @@ public class coachloiBean implements Serializable, MailableObject {
     		    rs.close();
 		    		    
 		    	//hard my email address for testing purposes
-    		    to = "lahockeyfan2@yahoo.com";
+    		    //to = "lahockeyfan2@yahoo.com";
     		    this.setToMailAddress(to);
     		    this.setPreApprovedCC("");
     		    this.setSubject("SCAHA LOI Review Note for: " + this.firstname + " " + this.lastname + " LOI");

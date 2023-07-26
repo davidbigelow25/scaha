@@ -60,7 +60,12 @@ public class scoresheetBean implements Serializable {
 	
 	//datamodels for all of the lists on the page
 	private ScoresheetDataModel ScoresheetDataModel = null;
-    
+
+	//for the header of the new scoresheet form
+	String tournamentweekend = null;
+	String tournamentname = null;
+	Integer tournamentid = null;
+
 	//properties for uploading scoresheet
 	private FileUploadController fileuploadcontroller;
 	
@@ -84,7 +89,13 @@ public class scoresheetBean implements Serializable {
 	    } else {
 	    	this.teamid = 0;
 	    }
-	  	
+
+		if(hsr.getParameter("ttid") != null)
+		{
+			this.tournamentid = Integer.parseInt(hsr.getParameter("ttid").toString());
+		} else {
+			this.tournamentid = 0;
+		}
 	  	
 	  	this.isscaha="no";
 	  	if(hsr.getParameter("scaha") != null)
@@ -110,17 +121,46 @@ public class scoresheetBean implements Serializable {
 
 	  	}
 
-	    if (this.teamid.equals(0)){
-			getGameScoresheets();
-		}else{
-			getGameScoresheetsForTeam();
+		if (this.tournamentid.equals(0)){
+			if (this.teamid.equals(0)){
+				getGameScoresheets();
+			}else{
+				getGameScoresheetsForTeam();
+			}
+		}else {
+			loadtournamentscoresheets();
 		}
+
 
 	}
 	
     public scoresheetBean() {  
         
     }
+
+	public String getTournamentweekend() {
+		return tournamentweekend;
+	}
+
+	public void setTournamentweekend(String tournamentweekend) {
+		this.tournamentweekend = tournamentweekend;
+	}
+
+	public String getTournamentname() {
+		return tournamentname;
+	}
+
+	public void setTournamentname(String tournamentname) {
+		this.tournamentname = tournamentname;
+	}
+
+	public Integer getTournamentid() {
+		return tournamentid;
+	}
+
+	public void setTournamentid(Integer tournamentid) {
+		this.tournamentid = tournamentid;
+	}
 
 	public String getFilename(){
 		return filename;
@@ -653,5 +693,69 @@ public class scoresheetBean implements Serializable {
 
 		getGameScoresheetsForTeam();
 	}
+
+	public void loadtournamentscoresheets() {
+		List<Scoresheet> templist = new ArrayList<Scoresheet>();
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		if (this.teamid!=null){
+			try{
+				//first get team name, tournament weekend, and tournament name
+				CallableStatement cs = db.prepareCall("CALL scaha.getScoresheetsForTeamTournament(?)");
+				cs.setInt("inteamid", this.tournamentid);
+
+				rs = cs.executeQuery();
+
+				if (rs != null){
+
+					while (rs.next()) {
+						Integer idscoresheets = rs.getInt("idscoresheets");
+						String filename = rs.getString("filename");
+						//String gametype = rs.getString("gametype");
+						this.tournamentweekend = rs.getString("tournamentweekend");
+						this.tournamentname = rs.getString("tournamentname");
+						String uploaddate = rs.getString("uploaddate");
+						String gamedate = rs.getString("gamedate");
+						String gametime = rs.getString("gametime");
+
+
+						Scoresheet scoresheet = new Scoresheet();
+						scoresheet.setFilename(filename);
+						//scoresheet.setGametype(gametype);
+						scoresheet.setIdscoresheet(idscoresheets);
+						scoresheet.setUploaddate(uploaddate);
+						//scoresheet.setFiledisplayname(displayname);
+						scoresheet.setGamedate(gamedate);
+						scoresheet.setGametime(gametime);
+						//scoresheet.setIdteam(this.teamid);
+						//scoresheet.setIdgame(this.idgame);
+
+						templist.add(scoresheet);
+					}
+					//LOGGER.info("We have results for scoresheets for game:" + this.idgame);
+				}
+
+
+				rs.close();
+				db.cleanup();
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				LOGGER.info("ERROR IN getting scoresheet list for team:" + this.teamid);
+				e.printStackTrace();
+				db.rollback();
+			} finally {
+				//
+				// always clean up after yourself..
+				//
+				db.free();
+			}
+		}
+
+
+		setScoresheets(templist);
+		ScoresheetDataModel = new ScoresheetDataModel(scoresheets);
+	}
+
 }
 

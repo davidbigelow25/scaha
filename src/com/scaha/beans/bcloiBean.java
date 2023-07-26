@@ -259,7 +259,7 @@ public class bcloiBean implements Serializable, MailableObject {
 						String safesportfor18 = rs.getString("safesportfor18");
 						String expirationdate = rs.getString("expirationdate");
 						Integer usaroster = rs.getInt("usaroster");
-						Integer pdr = rs.getInt("usaroster");
+						Integer pdr = rs.getInt("pdrapply");
 
         				Coach oplayer = new Coach();
 						oplayer.setIdcoach(idplayer);
@@ -777,6 +777,14 @@ public class bcloiBean implements Serializable, MailableObject {
 				cs.executeQuery();
 
 				db.commit();
+
+				/*cs = db.prepareCall("CALL scaha.updateteamspder(?,?)");
+				cs.setString("inrosterid", coach.getRosterid());
+				cs.setInt("pdrapplyin", coach.getPdrapply());
+
+				cs.executeQuery();
+				db.commit();*/
+
 				db.cleanup();
 
 				//logging

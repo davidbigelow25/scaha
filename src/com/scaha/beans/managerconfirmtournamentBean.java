@@ -457,7 +457,7 @@ public class managerconfirmtournamentBean implements Serializable {
 
 		FacesContext context = FacesContext.getCurrentInstance();
 		try{
-			context.getExternalContext().redirect("manageraddscoresheetsfortournament.xhtml?id=" + tourney.getTeamtournamentnotificationid() + "&amp;teamid=" + this.teamid);
+			context.getExternalContext().redirect("manageraddscoresheetsfortournament.xhtml?ttid=" + tourney.getTeamtournamentnotificationid() + "&amp;teamid=" + this.teamid);
 		} catch (Exception e){
 			e.printStackTrace();
 		}

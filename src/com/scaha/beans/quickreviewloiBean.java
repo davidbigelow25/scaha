@@ -736,5 +736,17 @@ public class quickreviewloiBean implements Serializable {
 			db.free();
 		}
 	}
+
+	public void editrosterdetail(Player splayer, String teamid){
+		String idroster = splayer.getIdplayer();
+
+		FacesContext context = FacesContext.getCurrentInstance();
+		try{
+			context.getExternalContext().redirect("editrosterdetail.xhtml?playerid=" + idroster + "&teamid=" + teamid);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
 

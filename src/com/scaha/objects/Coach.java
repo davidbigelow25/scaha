@@ -680,5 +680,23 @@ public class Coach extends ScahaObject implements Serializable {
 	public void setTeamname(String sName){
 		teamname = sName;
 	}
+
+	public String getYesno(String originalvalue){
+		String display = "";
+		if (originalvalue.equals("1")){
+			display="Yes";
+		}
+		else if (originalvalue.equals("0")) {
+			display="No";
+		}
+		else if (originalvalue.equals("N")){
+			display="No";
+		}
+		else if (originalvalue.equals("Y")){
+			display="Yes";
+		}
+
+		return display;
+	}
 		
 }

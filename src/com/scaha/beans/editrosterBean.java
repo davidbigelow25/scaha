@@ -499,8 +499,8 @@ public class editrosterBean implements Serializable, MailableObject {
 	}
 
 
-	public void editrosterdetail(Player splayer){
-		String idplayer = splayer.getIdplayer();
+	public void editrosterdetail(Coach splayer){
+		String idplayer = splayer.getIdcoach();
 		
 		FacesContext context = FacesContext.getCurrentInstance();
 		try{
@@ -510,7 +510,8 @@ public class editrosterBean implements Serializable, MailableObject {
 			e.printStackTrace();
 		}
 	}
-	
+
+
 	public void editcoachrosterdetail(Coach scoach){
 		String idplayer = scoach.getIdcoach();
 		

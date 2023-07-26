@@ -87,7 +87,7 @@
 								            <f:facet name="header">
 										         <h:outputText value="Total Players" style="font-size:10px"/>
 										    </f:facet>
-										    <h:outputText value="#{team.getTotalplayercount()}" />
+										    <h:outputText value="#{team.getTotalplayercount()}" style="font-size:10px"/>
 										</b:dataTableColumn>
 										<b:dataTableColumn >
 								            <f:facet name="header">
@@ -99,7 +99,7 @@
 								            <f:facet name="header">
 												<h:outputText value="Team Roster Date" style="font-size:10px"/>
 											</f:facet>
-											<b:inputText value="#{team.newdate}" style="width:75px;font-size:10px" >
+											<b:inputText value="#{team.newdate}" style="width:75px;font-size:10px" rendered="#{profileBean.hasRoleList('S-REG')}">
 												<f:ajax event="change" listener="#{managerosterBean.updateTeamRostereffectivedate(team,team.newdate)}"/>
 								            	<f:param name="blockui.disabled" value="true"/>
 								            </b:inputText>

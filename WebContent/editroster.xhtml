@@ -30,7 +30,7 @@
 				<f:facet name="heading">
 					<h:outputText value="#{editrosterBean.teamname} Roster" />
 				</f:facet>
-				<div align="right"><b:commandButton value="View Scoresheets" id="viewscoresheet" ajax="true" action="#{editrosterBean.viewScoresheets()}" look="info"/></div>
+				<div align="right"><b:commandButton value="View Scoresheets" id="viewscoresheet" ajax="true" action="#{editrosterBean.viewScoresheets()}" look="info" rendered="#{profileBean.hasRoleList('S-REG')}"/></div>
 				<!-- this is for the pdr/block recruitment section -->
 				<b:panel id ="pdrpanel" collapsible="true" look="primary">
 					<f:facet name="heading">
@@ -96,7 +96,7 @@
 					id="listofplayers"
 					var="player"
 					value="#{editrosterBean.getPlayers()}"
-					selection="#{managerrosterBean.selectedteam}"
+					selection="#{editrosterBean.selectedplayer}"
 					searching="false"
 					editable="true" 
 					select="true"
@@ -114,18 +114,20 @@
 							<h:outputText value="First" style="font-size:10px" />
 						</f:facet>
 						<!--<h:outputText value="#{player.getFirstname()}" />-->
-						<b:inputText id="firstname" value="#{player.firstname}" style="width:60px;font-size: 10px;" >
+						<b:inputText id="firstname" value="#{player.firstname}" style="width:60px;font-size: 10px;" rendered="#{profileBean.hasRoleList('S-REG')}">
 
 						</b:inputText>
+						<h:outputText value="#{player.firstname}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG')}"/>
 					</b:dataTableColumn>
 					<b:dataTableColumn >
 						<f:facet name="header">
 							<h:outputText value="Last" style="font-size:10px" />
 						</f:facet>
 						<!--<h:outputText value="#{player.getLastname()}" />-->
-						<b:inputText id="lastname" value="#{player.lastname}" style="width:60px;font-size: 10px;" >
+						<b:inputText id="lastname" value="#{player.lastname}" style="width:60px;font-size: 10px;" rendered="#{profileBean.hasRoleList('S-REG')}">
 
 						</b:inputText>
+						<h:outputText value="#{player.lastname}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG')}"/>
 					</b:dataTableColumn>
 					<b:dataTableColumn >
 			            <f:facet name="header">
@@ -137,10 +139,11 @@
 			            <f:facet name="header">
 							<h:outputText value="DOB" style="font-size:10px" />
 					    </f:facet>
-						<b:inputText id="dob" value="#{player.dob}" style="width:60px;font-size: 10px;" >
+						<b:inputText id="dob" value="#{player.dob}" style="width:60px;font-size: 10px;" rendered="#{profileBean.hasRoleList('S-REG')}">
 
 						</b:inputText>
-			        </b:dataTableColumn>
+						<h:outputText value="#{player.dob}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG')}"/>
+					</b:dataTableColumn>
 					<b:dataTableColumn >
 			            <f:facet name="header">
 							<h:outputText value="LOI Date" style="font-size:10px" />
@@ -177,50 +180,56 @@
 						</f:facet>
 						<!--<h:outputText value="N/A" rendered="#{!player.safesportfor18}"/>-->
 						<b:selectOneMenu value="#{player.safesportfor18}"
-										 rendered="#{player.is18safesport}"
+										 rendered="#{player.is18safesport and profileBean.hasRoleList('S-REG')}"
 										 style="width:65px;font-size: 10px;"
 						>
 							<f:selectItem itemLabel="No" itemValue="N"/>
 							<f:selectItem itemLabel="Yes" itemValue="Y"/>
 						</b:selectOneMenu>
+						<h:outputText value="#{player.getYesno(player.safesportfor18)}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG')}"/>
 					</b:dataTableColumn>
 					<b:dataTableColumn >
 						<f:facet name="header">
 							<h:outputText value="Cshp" style="font-size:10px" />
 						</f:facet>
 						<!--<h:outputText value="#{player.citizenshiplabel}" rendered="#{player.ctverified}" />-->
-						<b:selectOneMenu id="citizenship" value="#{player.citizenship}" style="width:65px;font-size: 10px;">
+						<b:selectOneMenu id="citizenship" value="#{player.citizenship}" style="width:65px;font-size: 10px;" rendered="#{profileBean.hasRoleList('S-REG')}">
 							<f:selectItem itemLabel="USA" itemValue="USA"/>
 							<f:selectItem itemLabel="Canada" itemValue="CAN"/>
 							<f:selectItem itemLabel="Other" itemValue="OTH"/>
 						</b:selectOneMenu>
+						<h:outputText value="#{player.citizenship}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG')}"/>
 					</b:dataTableColumn>
 					<b:dataTableColumn >
 						<f:facet name="header">
 							<h:outputText value="BCert" style="font-size:10px" />
 						</f:facet>
 						<!--<h:outputText value="#{player.birthcertificate}" />-->
-						<b:selectOneMenu id="birthcertificateverified" value="#{player.birthcertificate}" style="width:65px;font-size: 10px;">
+						<b:selectOneMenu id="birthcertificateverified" value="#{player.birthcertificate}" style="width:65px;font-size: 10px;" rendered="#{profileBean.hasRoleList('S-REG')}">
 							<f:selectItem itemLabel="Yes" itemValue="1"/>
 							<f:selectItem itemLabel="No" itemValue="0"/>
 						</b:selectOneMenu>
-
+						<h:outputText value="#{player.getYesno(player.birthcertificate)}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG')}"/>
 					</b:dataTableColumn>
 					<b:dataTableColumn >
 						<f:facet name="header">
 							<h:outputText value="T Indef/ Exists/ Ex Date " style="font-size:10px" />
 						</f:facet>
-						<b:selectOneMenu id="transferindefinite" value="#{player.transferindefinite}" style="width:65px;font-size: 10px;">
+						<b:selectOneMenu id="transferindefinite" value="#{player.transferindefinite}" style="width:65px;font-size: 10px;" rendered="#{profileBean.hasRoleList('S-REG')}">
 							<f:selectItem itemLabel="Yes" itemValue="1"/>
 							<f:selectItem itemLabel="No" itemValue="0"/>
 						</b:selectOneMenu>
+						<h:outputText value="#{player.getYesno(player.transferindefinite)}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG')}"/>
 						<br></br>
-						<b:selectOneMenu id="transferexists" value="#{player.transfer}" style="width:65px;font-size: 10px;">
+						<b:selectOneMenu id="transferexists" value="#{player.transfer}" style="width:65px;font-size: 10px;" rendered="#{profileBean.hasRoleList('S-REG')}">
 							<f:selectItem itemLabel="Yes" itemValue="1"/>
 							<f:selectItem itemLabel="No" itemValue="0"/>
 						</b:selectOneMenu>
+						<h:outputText value="#{player.getYesno(player.transfer)}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG')}"/>
 						<br></br>
-						<b:inputText id="expirationdate" value="#{player.expirationdate}" style="width:60px;font-size: 10px;"/>
+						<b:inputText id="expirationdate" value="#{player.expirationdate}" style="width:60px;font-size: 10px;" rendered="#{profileBean.hasRoleList('S-REG')}"/>
+						<h:outputText value="#{player.expirationdate}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG')}"/>
+
 					</b:dataTableColumn>
 					<b:dataTableColumn >
 						<f:facet name="header">
@@ -229,10 +238,12 @@
 						<!--<h:outputText value="#{coach.getSuspended()}" />-->
 						<b:selectOneMenu value="#{player.suspended}"
 										 style="width:60px;font-size: 10px;"
+										 rendered="#{profileBean.hasRoleList('S-REG')}"
 						>
 							<f:selectItem itemLabel="No" itemValue="0"/>
 							<f:selectItem itemLabel="Yes" itemValue="1"/>
 						</b:selectOneMenu>
+						<h:outputText value="#{player.getYesno(player.suspended)}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG')}"/>
 					</b:dataTableColumn>
 					<b:dataTableColumn >
 						<f:facet name="header">
@@ -241,10 +252,12 @@
 						<!--<h:outputText value="#{coach.getSuspended()}" />-->
 						<b:selectOneMenu value="#{player.usaroster}"
 										 style="width:60px;font-size: 10px;"
+										 rendered="#{profileBean.hasRoleList('S-REG')}"
 						>
 							<f:selectItem itemLabel="No" itemValue="0"/>
 							<f:selectItem itemLabel="Yes" itemValue="1"/>
 						</b:selectOneMenu>
+						<h:outputText value="#{player.getYesno(player.usaroster)}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG')}"/>
 					</b:dataTableColumn>
 					<b:dataTableColumn >
 			            <f:facet name="header">
@@ -261,22 +274,27 @@
 										 large-screen="full-width"
 										 medium-screen="full-width"
 										 small-screen="full-width"
-										 tiny-screen="full-width">
+										 tiny-screen="full-width"
+										 rendered="#{profileBean.hasRoleList('S-REG')}"
+						>
 							<f:ajax execute="@this" render="@form" />
 						</b:commandButton>
 						<b:commandButton value="Edit Player"
-					                       action="#{editrosterBean.editrosterdetail(player)}" update="@form" look="success"
+										 actionListener="#{editrosterBean.editrosterdetail(player)}" look="success"
 					                       large-screen="full-width"
 					    					medium-screen="full-width"
 					    					small-screen="full-width"
-					    					tiny-screen="full-width">
-					       <f:ajax execute="@this" render="@form" />
+					    					tiny-screen="full-width"
+										 rendered="#{profileBean.hasRoleList('S-REG')}"
+						>
+							<f:ajax execute="@form" render="@form" update="@form"/>
 					    </b:commandButton>
 						<b:commandButton id="updatecoachrow" value="Update Player" look="success" actionListener="#{quickreviewloiBean.completeTransfer(player)}"
 										 large-screen="full-width"
 										 medium-screen="full-width"
 										 small-screen="full-width"
 										 tiny-screen="full-width"
+										 rendered="#{profileBean.hasRoleList('S-REG')}"
 						>
 							<f:ajax execute="@form" render="@form" update="@form"/>
 						</b:commandButton>
@@ -301,7 +319,7 @@
 					    </f:facet>
 			            <!--<h:outputText value="#{coach.getTeamrole()}" />-->
 						<b:selectOneMenu value="#{coach.teamrole}" style="width:65px;font-size:10px"
-
+										 rendered="#{profileBean.hasRoleList('S-REG')}"
 						>
 							<f:selectItem itemLabel="Select One" itemValue="0"/>
 							<f:selectItem itemLabel="PL" itemValue="PL"/>
@@ -312,25 +330,26 @@
 							<f:selectItem itemLabel="MA" itemValue="MA"/>
 
 						</b:selectOneMenu>
-			        </b:dataTableColumn>
+						<h:outputText value="#{coach.teamrole}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG')}"/>
+					</b:dataTableColumn>
 					<b:dataTableColumn orderable="false">
 			            <f:facet name="header">
 							<h:outputText value="Last" style="font-size:10px" />
 					    </f:facet>
-						<b:inputText id="lastname" value="#{coach.lastname}" style="width:60px;font-size:10px">
+						<b:inputText id="lastname" value="#{coach.lastname}" style="width:60px;font-size:10px" rendered="#{profileBean.hasRoleList('S-REG')}">
 
 						</b:inputText>
-						<!--<h:outputText value="#{coach.getLastname()}" />-->
-			        </b:dataTableColumn>
+						<h:outputText value="#{coach.lastname}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG')}"/>
+					</b:dataTableColumn>
 					<b:dataTableColumn orderable="false">
 			            <f:facet name="header">
 							<h:outputText value="First" style="font-size:10px" />
 					    </f:facet>
-						<b:inputText id="firstname" value="#{coach.firstname}" style="width:60px;font-size:10px" >
+						<b:inputText id="firstname" value="#{coach.firstname}" style="width:60px;font-size:10px" rendered="#{profileBean.hasRoleList('S-REG')}">
 
 						</b:inputText>
-						<!--<h:outputText value="#{coach.getFirstname()}" />-->
-			        </b:dataTableColumn>
+						<h:outputText value="#{coach.firstname}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG')}"/>
+					</b:dataTableColumn>
 					<b:dataTableColumn orderable="false">
 			            <f:facet name="header">
 							<h:outputText value="LOI Date" style="font-size:10px" />
@@ -365,41 +384,47 @@
 						<f:facet name="header">
 							<h:outputText value="Safe Sport" style="font-size:10px" />
 						</f:facet>
-						<b:selectOneMenu value="#{coach.safesportforcoachlist}" style="width:65px;font-size:10px">
+						<b:selectOneMenu value="#{coach.safesportforcoachlist}" style="width:65px;font-size:10px" rendered="#{profileBean.hasRoleList('S-REG')}">
 							<f:selectItem itemLabel="No" itemValue="0"/>
 							<f:selectItem itemLabel="Yes" itemValue="1"/>
 
 						</b:selectOneMenu>
+						<h:outputText value="#{coach.getYesno(coach.safesportforcoachlist)}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG')}"/>
 					</b:dataTableColumn>
 					<b:dataTableColumn orderable="false">
 						<f:facet name="header">
 							<h:outputText value="Sport Exp" style="font-size:10px" />
 						</f:facet>
-						<b:inputText id="sportexp" value="#{coach.sportexpires}" style="width:60px;font-size:10px" >
+						<b:inputText id="sportexp" value="#{coach.sportexpires}" style="width:60px;font-size:10px" rendered="#{profileBean.hasRoleList('S-REG')}">
 
 						</b:inputText>
+						<h:outputText value="#{coach.sportexpires}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG')}"/>
+
 					</b:dataTableColumn>
 					<b:dataTableColumn orderable="false">
 						<f:facet name="header">
 							<h:outputText value="Scrn Exp" style="font-size:10px" />
 						</f:facet>
-						<b:inputText id="screenexpire" value="#{coach.screeningexpires}" style="width:60px;font-size:10px" >
+						<b:inputText id="screenexpire" value="#{coach.screeningexpires}" style="width:60px;font-size:10px" rendered="#{profileBean.hasRoleList('S-REG')}">
 
 						</b:inputText>
+						<h:outputText value="#{coach.screeningexpires}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG')}"/>
+
 					</b:dataTableColumn>
 					<b:dataTableColumn orderable="false">
 						<f:facet name="header">
 							<h:outputText value="CEP No" style="font-size:10px" />
 						</f:facet>
-						<b:inputText id="cepnum" value="#{coach.cepnumber}" style="width:60px;font-size:10px" >
+						<b:inputText id="cepnum" value="#{coach.cepnumber}" style="width:60px;font-size:10px" rendered="#{profileBean.hasRoleList('S-REG')}">
 
 						</b:inputText>
+						<h:outputText value="#{coach.cepnumber}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG')}"/>
 					</b:dataTableColumn>
 					<b:dataTableColumn orderable="false">
 						<f:facet name="header">
 							<h:outputText value="CEP Lvl" style="font-size:10px" />
 						</f:facet>
-						<b:selectOneMenu value="#{coach.ceplevel}" style="width:65px;font-size:10px"
+						<b:selectOneMenu value="#{coach.ceplevel}" style="width:65px;font-size:10px" rendered="#{profileBean.hasRoleList('S-REG')}"
 
 						>
 							<f:selectItem itemLabel="Select One" itemValue="0"/>
@@ -414,16 +439,18 @@
 						<f:facet name="header">
 							<h:outputText value="CEP Exp" style="font-size:10px" />
 						</f:facet>
-						<b:inputText id="cepexpires" value="#{coach.cepexpires}"  style="width:60px;font-size:10px" >
+						<b:inputText id="cepexpires" value="#{coach.cepexpires}"  style="width:60px;font-size:10px" rendered="#{profileBean.hasRoleList('S-REG')}">
 
 						</b:inputText>
+						<h:outputText value="#{coach.cepexpires}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG')}"/>
+
 					</b:dataTableColumn>
 					<b:dataTableColumn orderable="false">
 						<f:facet name="header">
 							<h:outputText value="MODS" style="font-size:10px" />
 						</f:facet>
 						<b:selectMultiMenu id="cepmodules"  includeSelectAllOption="true" value="#{coach.cepmodulesselected}"
-										   style="width:65 !important;"
+										   style="width:65 !important;" rendered="#{profileBean.hasRoleList('S-REG')}"
 
 						>
 							<f:selectItem itemLabel="8U" itemValue="8U" />
@@ -440,11 +467,12 @@
 						</f:facet>
 						<!--<h:outputText value="#{coach.getSuspended()}" />-->
 						<b:selectOneMenu value="#{coach.suspend}"
-										 style="width:65px;font-size:10px"
+										 style="width:65px;font-size:10px" rendered="#{profileBean.hasRoleList('S-REG')}"
 						>
 							<f:selectItem itemLabel="No" itemValue="0"/>
 							<f:selectItem itemLabel="Yes" itemValue="1"/>
 						</b:selectOneMenu>
+						<h:outputText value="#{player.getYesno(coach.suspend)}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG')}"/>
 					</b:dataTableColumn>
 					<b:dataTableColumn orderable="false">
 			            <f:facet name="header">
@@ -463,7 +491,8 @@
 										 large-screen="full-width"
 										 medium-screen="full-width"
 										 small-screen="full-width"
-										 tiny-screen="full-width">
+										 tiny-screen="full-width"
+										 rendered="#{profileBean.hasRoleList('S-REG')}">
 							<f:ajax execute="@this" render="@form" />
 						</b:commandButton>
 						<b:commandButton value="Edit Coach"
@@ -471,7 +500,8 @@
 					                       large-screen="full-width"
 					    					medium-screen="full-width"
 					    					small-screen="full-width"
-					    					tiny-screen="full-width">
+					    					tiny-screen="full-width"
+										 rendered="#{profileBean.hasRoleList('S-REG')}">
 					       <f:ajax execute="@this" render="@form" />
 					    </b:commandButton>
 						<b:commandButton id="updatecoachrow" value="Update Coach" look="success" actionListener="#{editrosterBean.updateCoach(coach)}"
@@ -479,6 +509,7 @@
 										 medium-screen="full-width"
 										 small-screen="full-width"
 										 tiny-screen="full-width"
+										 rendered="#{profileBean.hasRoleList('S-REG')}"
 						>
 							<f:ajax execute="@form" render="@form" update="listofplayers"/>
 						</b:commandButton>
