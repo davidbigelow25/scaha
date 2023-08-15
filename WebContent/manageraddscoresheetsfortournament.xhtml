@@ -18,7 +18,7 @@
 						#{scoresheetBean.getTournamentweekend()} - #{scoresheetBean.getTournamentname()} Scoresheet(s)
 					</f:facet>
 					<h:form id="fileupload">
-					<p:fileUpload fileUploadListener="#{scoresheetBean.handleFileUpload}" mode="advanced"  
+					<p:fileUpload fileUploadListener="#{scoresheetBean.handleFileUploadforTournaments}" mode="advanced"
             			update=":fileresults" label="Select File" dragDropSupport="false" multiple="false" auto="false" sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpeg|jpg|png|pdf)$/"/>
             		<!-- update=":fileresults:scoresheets" -->
             		
@@ -55,32 +55,32 @@
 						    </f:facet>
 				            <h:outputText value="#{scoresheet.getUploaddate()}" />
 				        </b:dataTableColumn>
-						<b:dataTableColumn styleClass="mtrxColumn">
+						<!--<b:dataTableColumn styleClass="mtrxColumn">
 							<f:facet name="header">
 								Game Date
 							</f:facet>
-							<b:inputText id="gamedate" value="#{scoresheet.gamedate}" style="width:60px;font-size: 10px;"/>
+							<b:inputText id="gamedate" value="#{scoresheet.gamedate}" style="width:100px;font-size: 10px;"/>
 						</b:dataTableColumn>
 						<b:dataTableColumn styleClass="mtrxColumn">
 							<f:facet name="header">
 								Game Time
 							</f:facet>
-							<b:inputText id="gametime" value="#{scoresheet.gametime}" style="width:60px;font-size: 10px;"/>
-						</b:dataTableColumn>
+							<b:inputText id="gametime" value="#{scoresheet.gametime}" style="width:100px;font-size: 10px;"/>
+						</b:dataTableColumn>-->
 						<b:dataTableColumn styleClass="mtrxColumn">
 				            <f:facet name="header">
 						        Options
 						    </f:facet>
-							<b:commandButton value="Update Scoresheet"
-											 action="#{managerosterBean.updateGame(scoresheet)}" update="@form"
+							<!--<b:commandButton value="Update Scoresheet"
+											 action="#{scoresheetBean.updatenonscahaGame(scoresheet)}" update="@form"
 											  look="success">
 								<f:ajax execute="@this" render="@form" />
-							</b:commandButton>
+							</b:commandButton>-->
 							<b:commandButton value="View Scoresheet" iconAwesome="ui-icon-extlink"
 						                       onclick="openscoresheet('#{scoresheet.getGametype()}_#{scoresheet.getFilename()}')" look="info">
 						    </b:commandButton>
 						    <b:commandButton value="Delete Scoresheet" iconAwesome="trash"
-						                       action="#{scoresheetBean.deleteScoresheet(scoresheet)}" look="danger">
+						                       action="#{scoresheetBean.deleteScoresheetforTournament(scoresheet)}" look="danger">
 						       <!-- <f:ajax execute="@this" render="@form" update=":form1:messages1,:form1:teamlist"/> -->
 						    </b:commandButton>
 				        </b:dataTableColumn> 

@@ -135,7 +135,7 @@ public class scoresheetBean implements Serializable {
 	}
 	
     public scoresheetBean() {  
-        
+
     }
 
 	public String getTournamentweekend() {
@@ -459,6 +459,49 @@ public class scoresheetBean implements Serializable {
 		
 	}
 
+	public void deleteScoresheetforTournament(Scoresheet scoresheet){
+
+		Integer idscoresheet= scoresheet.getIdscoresheet();
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+
+			if (db.setAutoCommit(false)) {
+
+				//Need to provide info to the stored procedure to delete the scoresheet
+				//LOGGER.info("remove scoresheet from list for the game");
+				CallableStatement cs = db.prepareCall("CALL scaha.deleteScoresheetfortournament(?,?)");
+				cs.setInt("scoresheetid", idscoresheet);
+				cs.setInt("ingameid", scoresheet.getIdgame());
+
+				cs.executeQuery();
+				db.commit();
+				db.cleanup();
+
+				//LOGGER.info("You have deleted the scoresheet :" + idscoresheet);
+				//now to reload the scoresheet collection for datatable update to display without hte scoresheet
+				getGameScoresheets();
+			} else {
+				//add error message here...
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"", "Unable to delete the scoresheet " + idscoresheet));
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN adding scoresheet for game id:" + this.idgame);
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+
+	}
+
 	public void getGameScoresheets() {  
 		List<Scoresheet> templist = new ArrayList<Scoresheet>();
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
@@ -603,10 +646,10 @@ public class scoresheetBean implements Serializable {
 
 		if (this.teamid!=null){
 			try{
-				//first get team name
+
 				CallableStatement cs = db.prepareCall("CALL scaha.getScoresheetsForTeam(?,?)");
 				cs.setInt("inteamid", this.teamid);
-				cs.setInt("ingameid", this.idgame);
+				cs.setInt("inttid", this.tournamentid);
 
 				rs = cs.executeQuery();
 
@@ -701,8 +744,26 @@ public class scoresheetBean implements Serializable {
 		if (this.teamid!=null){
 			try{
 				//first get team name, tournament weekend, and tournament name
-				CallableStatement cs = db.prepareCall("CALL scaha.getScoresheetsForTeamTournament(?)");
-				cs.setInt("inteamid", this.tournamentid);
+				//first get team name and tournament info
+				CallableStatement cs = db.prepareCall("CALL scaha.getTournamentcoresheetsForTeam(?,?)");
+				cs.setInt("inteamid", this.teamid);
+				cs.setInt("inttid", this.tournamentid);
+
+				rs = cs.executeQuery();
+
+				if (rs != null) {
+					while (rs.next()) {
+
+						this.tournamentweekend = rs.getString("tournamentweekend");
+						this.tournamentname = rs.getString("tournamentname");
+					}
+				}
+
+				//cs.close();
+
+				cs = db.prepareCall("CALL scaha.getScoresheetsForTeamTournament(?,?)");
+				cs.setInt("inteamid", this.teamid);
+				cs.setInt("intournamentid", this.tournamentid);
 
 				rs = cs.executeQuery();
 
@@ -711,24 +772,23 @@ public class scoresheetBean implements Serializable {
 					while (rs.next()) {
 						Integer idscoresheets = rs.getInt("idscoresheets");
 						String filename = rs.getString("filename");
-						//String gametype = rs.getString("gametype");
-						this.tournamentweekend = rs.getString("tournamentweekend");
-						this.tournamentname = rs.getString("tournamentname");
+						String gametype = rs.getString("gametype");
+						String displayname = rs.getString("displayname");
 						String uploaddate = rs.getString("uploaddate");
 						String gamedate = rs.getString("gamedate");
 						String gametime = rs.getString("gametime");
-
+						this.idgame = rs.getInt(("idgame"));
 
 						Scoresheet scoresheet = new Scoresheet();
 						scoresheet.setFilename(filename);
-						//scoresheet.setGametype(gametype);
+						scoresheet.setGametype(gametype);
 						scoresheet.setIdscoresheet(idscoresheets);
 						scoresheet.setUploaddate(uploaddate);
-						//scoresheet.setFiledisplayname(displayname);
+						scoresheet.setFiledisplayname(displayname);
 						scoresheet.setGamedate(gamedate);
 						scoresheet.setGametime(gametime);
-						//scoresheet.setIdteam(this.teamid);
-						//scoresheet.setIdgame(this.idgame);
+						scoresheet.setIdteam(this.teamid);
+						scoresheet.setIdgame(this.idgame);
 
 						templist.add(scoresheet);
 					}
@@ -755,6 +815,102 @@ public class scoresheetBean implements Serializable {
 
 		setScoresheets(templist);
 		ScoresheetDataModel = new ScoresheetDataModel(scoresheets);
+	}
+
+	//this method is for the new tournament add scoresheet page.  The difference from the old page is we add the tournament game at the same
+	//time the scoresheet is added.
+	public void handleFileUploadforTournaments(FileUploadEvent event) {
+
+		Scoresheet scoresheet = new Scoresheet();
+		scoresheet.setIdgame(this.idgame);
+		scoresheet.setGametype("Tournament");
+
+		if (this.fileuploadcontroller.handleFileUpload(event,scoresheet)){
+
+			ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+			try{
+
+				if (db.setAutoCommit(false)) {
+
+					//Need to provide info to the stored procedure to save the scoresheet filename, game type and game id
+					//LOGGER.info("remove tournament game from list");
+					CallableStatement cs = db.prepareCall("CALL scaha.addScoresheetForTournamentGame(?,?,?,?)");
+					cs.setInt("teamid", this.teamid);
+					cs.setInt("teamtournamentid", this.tournamentid);
+					cs.setString("infilename", scoresheet.getFilename());
+					cs.setString("indisplayname",scoresheet.getFiledisplayname());
+					cs.executeQuery();
+					db.commit();
+					db.cleanup();
+
+					//LOGGER.info("You have added the scoresheet :" + scoresheet.getFilename() + " gameid:" + this.idgame.toString());
+					//now to reload the scoresheet collection for datatable update
+					loadtournamentscoresheets();
+				} else {
+					//add error message here...
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"", "Unable to upload file " + scoresheet.getFiledisplayname()));
+				}
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				LOGGER.info("ERROR IN adding scoresheet for game id:" + this.idgame);
+				e.printStackTrace();
+				db.rollback();
+			} finally {
+				//
+				// always clean up after yourself..
+				//
+				db.free();
+			}
+
+		}
+
+	}
+
+	//this method is for the new tournament add scoresheet page.  The difference from the old page is we add the tournament game at the same
+	//time the scoresheet is added.
+	public void updatenonscahaGame(Scoresheet scoresheet) {
+
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+
+			if (db.setAutoCommit(false)) {
+
+				//Need to provide info to the stored procedure to save the scoresheet filename, game type and game id
+				//LOGGER.info("remove tournament game from list");
+				CallableStatement cs = db.prepareCall("CALL scaha.updatenonscahagame(?,?,?)");
+				cs.setInt("ingameid", scoresheet.getIdgame());
+				cs.setString("ingamedate", scoresheet.getGamedate());
+				cs.setString("ingametime", scoresheet.getGametime());
+				cs.executeQuery();
+				db.commit();
+				db.cleanup();
+
+				//LOGGER.info("You have added the scoresheet :" + scoresheet.getFilename() + " gameid:" + this.idgame.toString());
+				//now to reload the scoresheet collection for datatable update
+				loadtournamentscoresheets();
+			} else {
+				//add error message here...
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"", "Unable to update the scoresheet details"));
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN updating scoresheet for game id:" + this.idgame);
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+		//}
+
 	}
 
 }

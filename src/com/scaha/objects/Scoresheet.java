@@ -109,6 +109,7 @@ public class Scoresheet extends ScahaObject implements Serializable {
 	}
 
 	public void setGamedate(String gamedate) {
+
 		this.gamedate = gamedate;
 	}
 

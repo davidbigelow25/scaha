@@ -1356,7 +1356,7 @@ public class managerBean implements Serializable, MailableObject {
     	
     	try{
     		//first get team name
-    		CallableStatement cs = db.prepareCall("CALL scaha.getTournamentGamesForTeam(?)");
+    		CallableStatement cs = db.prepareCall("CALL scaha.getExhibitionGamesForTeamNew(?)");
 			cs.setInt("teamid", this.teamid);
 			rs = cs.executeQuery();
 			
