@@ -332,7 +332,7 @@
 						</b:selectOneMenu>
 						<h:outputText value="#{coach.teamrole}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG')}"/>
 					</b:dataTableColumn>
-					<b:dataTableColumn orderable="false">
+					<b:dataTableColumn orderable="true" order-by="dom-text" data-type="text" data-order="#{coach.lastname}">
 			            <f:facet name="header">
 							<h:outputText value="Last" style="font-size:10px" />
 					    </f:facet>

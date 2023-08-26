@@ -643,7 +643,7 @@ public class quickreviewloiBean implements Serializable {
 
 				//Need to provide info to the stored procedure to save or update
 				//LOGGER.info("verify loi code provided");
-				CallableStatement cs = db.prepareCall("CALL scaha.saveTransfer(?,?,?,?,?,?,?,?,?,?)");
+				CallableStatement cs = db.prepareCall("CALL scaha.saveTransferforManageRoster(?,?,?,?,?,?,?,?,?,?)");
 				cs.setInt("transferid", coach.getTransferid());
 				cs.setInt("playerid", Integer.parseInt(coach.getIdcoach()));
 				cs.setInt("transfer", coach.getTransfer());

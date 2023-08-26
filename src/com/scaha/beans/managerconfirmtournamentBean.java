@@ -347,7 +347,7 @@ public class managerconfirmtournamentBean implements Serializable {
 					tournament.setStartdate(startdate);
     				tournament.setEnddate(enddate);
     				tournament.setIsparticipating(isparticipating);
-					tournament.setLocation(sanction);
+					tournament.setSanction(sanction);
 					tournament.setStatus(status);
 					tournament.setLevelplayed(levelplayed);
 					tournament.setTeamtournamentnotificationid(teamtournamentnotificationid);
