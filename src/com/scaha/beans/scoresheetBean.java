@@ -110,7 +110,7 @@ public class scoresheetBean implements Serializable {
 	    	this.redirect = "managerportal.xhtml";
 	    }
 	  	
-	  	
+	  	//this loads the list of scaha games.
 	  	this.fileuploadcontroller = new FileUploadController();
 	  	if (this.isscaha.equals("yes")){
 	  		getScahaGame();
@@ -121,15 +121,20 @@ public class scoresheetBean implements Serializable {
 
 	  	}
 
-		if (this.tournamentid.equals(0)){
-			if (this.teamid.equals(0)){
-				getGameScoresheets();
-			}else{
-				getGameScoresheetsForTeam();
+		  if (this.isscaha.equals("yes")) {
+			  getSCAHAGameScoresheets();
+		  }
+		  else {
+			if (this.tournamentid.equals(0)){
+				if (this.teamid.equals(0)){
+					getGameScoresheets();
+				}else{
+					getGameScoresheetsForTeam();
+				}
+			}else {
+				loadtournamentscoresheets();
 			}
-		}else {
-			loadtournamentscoresheets();
-		}
+		  }
 
 
 	}
@@ -554,6 +559,60 @@ public class scoresheetBean implements Serializable {
 		
     	setScoresheets(templist);
     	ScoresheetDataModel = new ScoresheetDataModel(scoresheets);
+	}
+
+	public void getSCAHAGameScoresheets() {
+		List<Scoresheet> templist = new ArrayList<Scoresheet>();
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		if (this.idgame!=null){
+			try{
+				//first get team name
+				CallableStatement cs = db.prepareCall("CALL scaha.getScoresheetsForGame(?)");
+				cs.setInt("gameid", this.idgame);
+				rs = cs.executeQuery();
+
+				if (rs != null){
+
+					while (rs.next()) {
+						Integer idscoresheets = rs.getInt("idscoresheets");
+						String filename = rs.getString("filename");
+						String gametype = rs.getString("gametype");
+						String displayname = rs.getString("displayname");
+						String uploaddate = rs.getString("uploaddate");
+
+
+						Scoresheet scoresheet = new Scoresheet();
+						scoresheet.setFilename(filename);
+						scoresheet.setGametype(gametype);
+						scoresheet.setIdscoresheet(idscoresheets);
+						scoresheet.setUploaddate(uploaddate);
+						scoresheet.setFiledisplayname(displayname);
+						templist.add(scoresheet);
+					}
+					//LOGGER.info("We have results for scoresheets for game:" + this.idgame);
+				}
+
+
+				rs.close();
+				db.cleanup();
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				LOGGER.info("ERROR IN getting scoresheet list for game:" + this.idgame);
+				e.printStackTrace();
+				db.rollback();
+			} finally {
+				//
+				// always clean up after yourself..
+				//
+				db.free();
+			}
+		}
+
+
+		setScoresheets(templist);
+		ScoresheetDataModel = new ScoresheetDataModel(scoresheets);
 	}
 	
 	
