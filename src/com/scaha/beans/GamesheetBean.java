@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Logger;
 
+
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -45,13 +46,14 @@ import com.scaha.objects.ScoringList;
 import com.scaha.objects.Sog;
 import com.scaha.objects.SogList;
 import net.bootsfaces.utils.FacesMessages;
+import com.scaha.objects.ScahaCoach;
 
 @ManagedBean
 @ViewScoped
 public class GamesheetBean implements Serializable,  MailableObject {
 	
 	private static String mail_reg_body = Utils.getMailTemplateFromFile("/mail/gamechange.html");
-	
+	private static String mail_teampims_body = Utils.getMailTemplateFromFile("/mail/teampims.html");
 
 	@ManagedProperty(value="#{scahaBean}")
     private ScahaBean scaha;
@@ -204,6 +206,17 @@ public class GamesheetBean implements Serializable,  MailableObject {
 	private Integer maxcoachsizeaway = 0;
 	private Boolean iscoachselectedforgame = false;
 	private Boolean navigatetoprint = false;
+
+	//bean variables for emailing deputy commissioner when team ecxeeds pims guideline
+	private String totalpims = "";
+	private String pimsteamname = "";
+	private String managerrows = "";
+	private String playerrows = "";
+	private String todaysdate = "";
+	private Boolean hometeamexceeds = false;
+	private Boolean awayteamexceeds = false;
+
+
 	//
 	// lets go get it!
 	//
@@ -1430,34 +1443,49 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 
 	@Override
 	public String getSubject() {
-		return "SCAHA Game Change Notification for " + this.getLivegame();
+		String subject = "";
+		if (hometeamexceeds || awayteamexceeds) {
+			subject = this.pimsteamname + " Exceeded Penalty Minute Threshold";
+		}else {
+			subject = "SCAHA Game Change Notification for " + this.getLivegame();
+		}
+		return subject;
 	}
 
 	@Override
 	public String getTextBody() {
 		List<String> myTokens = new ArrayList<String>();
-		myTokens.add("SCHEDULE|" + this.livegame.getSched().getDescription());
-		myTokens.add("HOMETEAM|" + this.livegame.getHometeamname());
-		myTokens.add("AWAYTEAM|" + this.livegame.getAwayteamname());
-		
-		myTokens.add("GAMENUMBER|" + this.livegame.ID+"");
-		myTokens.add("OLDTYPE|" + this.livegame.getTypetag());
-		myTokens.add("OLDSTATE|" + this.livegame.getStatetag());
-		myTokens.add("OLDHOMETEAM|" + this.livegame.getHometeamname());
-		myTokens.add("OLDAWAYTEAM|" + this.livegame.getAwayteamname());
-		myTokens.add("OLDVENUE|" + getStringKeyFromValue(this.venues,this.livegame.getVenuetag()));
-		myTokens.add("OLDSHEET|" + this.livegame.getSheetname());
-		myTokens.add("OLDDATE|" + this.livegame.getStartdate());
-		myTokens.add("OLDTIME|" + this.livegame.getStarttime());
-		myTokens.add("NEWTYPE|" + this.lgtypeval);
-		myTokens.add("NEWSTATE|" + this.lgstate);
-		myTokens.add("NEWHOMETEAM|" + this.lghteam);
-		myTokens.add("NEWAWAYTEAM|" + this.lgateam);
-		myTokens.add("NEWVENUE|" + this.lgvenue);
-		myTokens.add("NEWSHEET|" + this.lgsheet);
-		myTokens.add("NEWDATE|" + this.lgdate);
-		myTokens.add("NEWTIME|" + this.lgtime);
-		return Utils.mergeTokens(GamesheetBean.mail_reg_body,myTokens,"\\|");
+		if (hometeamexceeds || awayteamexceeds){
+			myTokens.add("TOTALPIMS|" + this.totalpims);
+			myTokens.add("SENDDATE|" + this.todaysdate);
+			myTokens.add("TEAMNAME|" + this.pimsteamname);
+			myTokens.add("MANAGERROWS|" + this.managerrows);
+			myTokens.add("PLAYERROWS|" + this.playerrows);
+			return Utils.mergeTokens(this.mail_teampims_body, myTokens, "\\|");
+		}else {
+			myTokens.add("SCHEDULE|" + this.livegame.getSched().getDescription());
+			myTokens.add("HOMETEAM|" + this.livegame.getHometeamname());
+			myTokens.add("AWAYTEAM|" + this.livegame.getAwayteamname());
+
+			myTokens.add("GAMENUMBER|" + this.livegame.ID+"");
+			myTokens.add("OLDTYPE|" + this.livegame.getTypetag());
+			myTokens.add("OLDSTATE|" + this.livegame.getStatetag());
+			myTokens.add("OLDHOMETEAM|" + this.livegame.getHometeamname());
+			myTokens.add("OLDAWAYTEAM|" + this.livegame.getAwayteamname());
+			myTokens.add("OLDVENUE|" + getStringKeyFromValue(this.venues,this.livegame.getVenuetag()));
+			myTokens.add("OLDSHEET|" + this.livegame.getSheetname());
+			myTokens.add("OLDDATE|" + this.livegame.getStartdate());
+			myTokens.add("OLDTIME|" + this.livegame.getStarttime());
+			myTokens.add("NEWTYPE|" + this.lgtypeval);
+			myTokens.add("NEWSTATE|" + this.lgstate);
+			myTokens.add("NEWHOMETEAM|" + this.lghteam);
+			myTokens.add("NEWAWAYTEAM|" + this.lgateam);
+			myTokens.add("NEWVENUE|" + this.lgvenue);
+			myTokens.add("NEWSHEET|" + this.lgsheet);
+			myTokens.add("NEWDATE|" + this.lgdate);
+			myTokens.add("NEWTIME|" + this.lgtime);
+			return Utils.mergeTokens(GamesheetBean.mail_reg_body,myTokens,"\\|");
+		}
 	}
 
 	@Override
@@ -1476,36 +1504,51 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 	public InternetAddress[] getToMailIAddress() {
 		//
 		// Here is where we get all the e-mails we need to get
-		//
-		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
-		List<InternetAddress> data = new ArrayList<InternetAddress>();
-		
-		LOGGER.info(this.livegame.toString());
-		try {
-			PreparedStatement ps = db.prepareCall("call scaha.getLiveGameEmails(?)");
-			ps.setInt(1, this.livegame.ID);
-			ResultSet rs = ps.executeQuery();
+		//R
+		if (hometeamexceeds || awayteamexceeds) {
+			List<InternetAddress> data = new ArrayList<InternetAddress>();
+			try {
 
-			while (rs.next()) {
-				data.add(new InternetAddress(rs.getString(2),rs.getString(1)));
-			}
-			rs.close();
-			ps.close();
-			
-			for (InternetAddress ia : data) {
-				LOGGER.info("e-mail:" + ia);
-			}
+				data.add(new InternetAddress("lahockeyfan2@yahoo.com", "Rob Foster"));
+				data.add(new InternetAddress("rvoulelikas@gmail.com", "Rosemary Voulelikas"));
 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return data.toArray(new InternetAddress[data.size()]);
 		}
-		db.free();
-		
-		return data.toArray(new InternetAddress[data.size()]);
+		else {
+			ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+			List<InternetAddress> data = new ArrayList<InternetAddress>();
+
+			LOGGER.info(this.livegame.toString());
+			try {
+				PreparedStatement ps = db.prepareCall("call scaha.getLiveGameEmails(?)");
+				ps.setInt(1, this.livegame.ID);
+				ResultSet rs = ps.executeQuery();
+
+				while (rs.next()) {
+					data.add(new InternetAddress(rs.getString(2), rs.getString(1)));
+				}
+				rs.close();
+				ps.close();
+
+				for (InternetAddress ia : data) {
+					LOGGER.info("e-mail:" + ia);
+				}
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			db.free();
+
+			return data.toArray(new InternetAddress[data.size()]);
+		}
 	}
 
 	@Override
@@ -2701,7 +2744,12 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 		//this.livegame.setHomescore(getDerivedHomeScore());
 		this.livegame.setStatetag("Final");
 		pb.setLivegameeditreturn("reviewscahagames.xhtml");
-		
+		this.hometeamexceeds = false;
+		this.awayteamexceeds = false;
+		String hometeamtotalpims = "0";
+		String awayteamtotalpims = "0";
+
+
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 		try {
 			LOGGER.info("updating game results:");
@@ -2719,24 +2767,126 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 			ps.setInt(2,this.livegame.getHometeam().ID);
 			LOGGER.info("updating stats for home team:");
 			ps.executeQuery();
+
+			//need to add a check for a teams total penalty minutes to send an email to deputy commissioner.
+			ps = db.prepareCall("call scaha.doteamshaveextensivepenaltymins(?)");
+			ps.setInt(1,this.livegame.ID);
+			ResultSet rs = ps.executeQuery();
+
+			if (rs != null){
+
+				while (rs.next()) {
+					this.hometeamexceeds = rs.getBoolean("hometeamexceeds");
+					this.awayteamexceeds = rs.getBoolean("awayteamexceeds");
+					hometeamtotalpims = rs.getString("hometeampims");
+					awayteamtotalpims = rs.getString("awayteampims");
+					this.todaysdate = rs.getString("todaysdate");
+				}
+				//LOGGER.info("We have results for scoresheets for game:" + this.idgame);
+			}
+
+
+			rs.close();
 			LOGGER.info("closing prepared statement:");
 			ps.close();
-			
+
+			//first check home team to see if they exceeded pims
+			if (this.hometeamexceeds){
+				this.totalpims = hometeamtotalpims;
+				this.pimsteamname = this.livegame.getHometeam().getTeamname() + this.livegame.getHometeam().getDivisiontag()+ this.livegame.getHometeam().getSkillleveltag();
+				for (ScahaCoach i: this.livegame.getHometeam().getCoachs()){
+					managerrows = managerrows + "<tr>";
+					managerrows = managerrows + "<td>" + i.getsFirstName() + " " + i.getsLastName() + "</td>";
+					managerrows = managerrows + "<td>" + i.getGenatt().get("ROSTERTYPE") + "</td>";
+					managerrows = managerrows + "<td>" + i.getsEmail() + "</td>";
+					managerrows = managerrows + "</tr>";
+
+
+				}
+
+				//now grab the top 3 penalty minute leaders
+				ps = db.prepareCall("call scaha.getteamspenaltyminuteleaders(?)");
+				ps.setInt(1,this.livegame.getHometeam().ID);
+				rs = ps.executeQuery();
+
+				if (rs != null){
+
+					while (rs.next()) {
+						String playername = rs.getString("fname") + " " + rs.getString("lname");
+						Integer pims = rs.getInt("pims");
+
+						playerrows = playerrows + "<tr>";
+						playerrows = playerrows + "<td>" + playername + "</td>";
+						playerrows = playerrows + "<td>" + pims + "</td>";
+						playerrows = playerrows + "</tr>";
+
+					}
+					//LOGGER.info("We have results for scoresheets for game:" + this.idgame);
+				}
+
+
+				//this.setSubject(this.pimsteamname + "Exceeded Penalty Minute Threshold");
+				SendMailSSL mail = new SendMailSSL(this);
+				LOGGER.info("Finished creating mail object for team penalty minutes");
+
+				mail.sendMail();
+
+			}
+
+			//next check away team if penalty mins have been exceeded
+			if (this.awayteamexceeds){
+				this.totalpims = hometeamtotalpims;
+				this.pimsteamname = this.livegame.getAwayteam().getTeamname() + this.livegame.getAwayteam().getDivisiontag()+ this.livegame.getAwayteam().getSkillleveltag();
+				for (ScahaCoach i: this.livegame.getAwayteam().getCoachs()){
+					managerrows = managerrows + "<tr>";
+					managerrows = managerrows + "<td>" + i.getsFirstName() + " " + i.getsLastName() + "</td>";
+					managerrows = managerrows + "<td>" + i.getGenatt().get("ROSTERTYPE") + "</td>";
+					managerrows = managerrows + "<td>" + i.getsEmail() + "</td>";
+					managerrows = managerrows + "</tr>";
+
+				}
+
+				//now grab the top 3 penalty minute leaders
+				ps = db.prepareCall("call scaha.getteamspenaltyminuteleaders(?)");
+				ps.setInt(1,this.livegame.getAwayteam().ID);
+				rs = ps.executeQuery();
+
+				if (rs != null){
+
+					while (rs.next()) {
+						String playername = rs.getString("fname") + " " + rs.getString("lname");
+						Integer pims = rs.getInt("pims");
+
+						playerrows = playerrows + "<tr>";
+						playerrows = playerrows + "<td>" + playername + "</td>";
+						playerrows = playerrows + "<td>" + pims + "</td>";
+						playerrows = playerrows + "</tr>";
+
+					}
+					//LOGGER.info("We have results for scoresheets for game:" + this.idgame);
+				}
+				//this.setSubject(this.pimsteamname + "Exceeded Penalty Minute Threshold");
+				SendMailSSL mail = new SendMailSSL(this);
+				LOGGER.info("Finished creating mail object for team penalty minutes");
+
+				mail.sendMail();
+
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			LOGGER.info("errored:");
 		}
 		LOGGER.info("setting connection free:");
-		db.free();
-		
-		
-		
-		//
+
+
+
+
+		//This code isn't needed anymore.  Suspensions are emailed from a different page. leaving code just in case we need to return this functionality back
 		// ok.. now we want to check all penalties from both sides..and report any game misconducts
 		// or matches..
 		//
-		LOGGER.info("pushing penalties:");
+		/*LOGGER.info("pushing penalties:");
 		PenaltyPusher pp = new PenaltyPusher();
 		String temppenaltyrows = "";
 		this.setTeamid(this.livegame.getAwayteam().ID);
@@ -2782,10 +2932,10 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 		}
 		
 		pp.setPenaltyrows(temppenaltyrows);
-		pp.pushPenalty();
+		pp.pushPenalty();*/
 		
-		//need to reset for away teams
-		temppenaltyrows = "";
+		//need to reset
+		db.free();
 		scaha.refreshLiveGameList();
 		gamesheetClose();
 	}
@@ -3835,7 +3985,7 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 		db.free();
 	}
 
-		public void refreshMites(){
+	public void refreshMites(){
 			ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 
 			try {
@@ -3896,4 +4046,5 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 			db.free();
 
 		}
-	}
+}
+
