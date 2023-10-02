@@ -950,7 +950,7 @@ public class editrosterBean implements Serializable, MailableObject {
 					teamrole = "Head Coach";
 				}
 				if (coach.getTeamrole().equals("AM")){
-					teamrole = "Assistnt Coach/Manager";
+					teamrole = "Assistant Coach/Manager";
 				}
 				if (coach.getTeamrole().equals("MA")){
 					teamrole = "Manager";
