@@ -79,7 +79,9 @@
 		                <b:navLink value="Add Delinquency" href="addplayerdelinquent.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
 		                <b:navLink value="Releases" href="confirmrelease.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
 		                <b:navLink value="LOI Form" icon="ui-icon-arrowthickstop-1-s" href="downloads/SCAHA_LOI_AUTHORIZATION.docx" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
-		            </b:navbarLinks>
+						<b:navLink value="Process Bullying with Issues" href="processbullyingwithissues.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
+
+						</b:navbarLinks>
 		            </b:navBar>
 				</b:column>
 			</b:row>
@@ -148,6 +150,7 @@
 								<b:navLink value="View Non Completed Games" href="reviewscahagamesnotcompleted.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>
 								<!--<b:navLink value="Run Finalled" href="processFinaledgames.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>-->
 								<b:navLink value="Fix Accounts" href="fixaccounts.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>
+								<b:navLink value="Process Bullying" href="processbullying.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>
 
 							</b:navbarLinks>
 		            </b:navBar>

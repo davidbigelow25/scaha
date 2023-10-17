@@ -145,6 +145,12 @@
 		<managed-bean-scope>view</managed-bean-scope>
 	</managed-bean>
 	<managed-bean>
+		<managed-bean-name>cahabullyingbean</managed-bean-name>
+		<managed-bean-class>com.scaha.beans.cahabullyingbean</managed-bean-class>
+		<managed-bean-scope>view</managed-bean-scope>
+	</managed-bean>
+
+	<managed-bean>
 		<managed-bean-name>editrosterBean</managed-bean-name>
 		<managed-bean-class>com.scaha.beans.editrosterBean</managed-bean-class>
 		<managed-bean-scope>view</managed-bean-scope>

@@ -288,7 +288,7 @@ public class editrosterBean implements Serializable, MailableObject {
 					String expirationdate = rs.getString("expirationdate");
 					Integer usaroster = rs.getInt("usaroster");
 					String notes = rs.getString("notes");
-
+					String isbullying = rs.getString("isbullying");
 
 					Coach player = new Coach();
 					player.setIdcoach(playerid);
@@ -343,7 +343,7 @@ public class editrosterBean implements Serializable, MailableObject {
 					player.setIs18safesport(is18safesport);
 					player.setSafesportfor18(safesportfor18);
 					player.setUsaroster(usaroster);
-
+					player.setIsbullying(isbullying);
 
 					templist.add(player);
 					player = null;
@@ -385,7 +385,7 @@ public class editrosterBean implements Serializable, MailableObject {
 					String notes = rs.getString("notes");
 					String sportexpires = rs.getString("sportexpires");
 					String suspended =rs.getString("suspended");
-
+					String isbullying = rs.getString("isbullying");
 
 
 					Coach coach = new Coach();
@@ -435,7 +435,7 @@ public class editrosterBean implements Serializable, MailableObject {
 						coachlist = coachlist.concat(",Girls");
 					}
 					coach.setCepmodulesselected(coachlist);
-
+					coach.setIsbullying(isbullying);
 
 					tempcoachlist.add(coach);
 					coach = null;

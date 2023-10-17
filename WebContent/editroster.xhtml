@@ -259,6 +259,13 @@
 						</b:selectOneMenu>
 						<h:outputText value="#{player.getYesno(player.usaroster)}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG;S-VICE')}"/>
 					</b:dataTableColumn>
+					<b:dataTableColumn orderable="false">
+						<f:facet name="header">
+							<h:outputText value="Bullying" style="font-size:10px" />
+						</f:facet>
+						<h:outputText value="#{player.getIsbullying()}" style="font-size:10px"/>
+					</b:dataTableColumn>
+
 					<b:dataTableColumn >
 			            <f:facet name="header">
 							<h:outputText value="Updated" style="font-size:10px" />
@@ -471,6 +478,12 @@
 							<f:selectItem itemLabel="Yes" itemValue="1"/>
 						</b:selectOneMenu>
 						<h:outputText value="#{player.getYesno(coach.suspend)}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG')}"/>
+					</b:dataTableColumn>
+					<b:dataTableColumn orderable="false">
+						<f:facet name="header">
+							<h:outputText value="Bullying" style="font-size:10px" />
+						</f:facet>
+						<h:outputText value="#{coach.getIsbullying()}" style="font-size:10px"/>
 					</b:dataTableColumn>
 					<b:dataTableColumn orderable="false">
 			            <f:facet name="header">

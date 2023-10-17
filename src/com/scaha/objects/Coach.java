@@ -81,6 +81,7 @@ public class Coach extends ScahaObject implements Serializable {
 	private String jerseynumber = null;
 	private String gp = null;
 	private Integer pdrapply = null;
+	private String isbullying = null;
 
 	public Coach (){ 
 		
@@ -698,5 +699,12 @@ public class Coach extends ScahaObject implements Serializable {
 
 		return display;
 	}
-		
+
+	public String getIsbullying() {
+		return isbullying;
+	}
+
+	public void setIsbullying(String isbullying) {
+		this.isbullying = isbullying;
+	}
 }

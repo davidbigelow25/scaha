@@ -220,7 +220,7 @@ public class registrarloiBean implements Serializable {
         				String safesportindicator = rs.getString("safesportindicator");
 						String suspended = rs.getString("issuspended");
 						String usaroster = rs.getString("usaroster");
-
+						String isbullying = rs.getString("isbullying");
 
         				Player oplayer = new Player();
         				oplayer.setIdplayer(idplayer);
@@ -274,6 +274,7 @@ public class registrarloiBean implements Serializable {
         				oplayer.setEmail1(semail);
         				oplayer.setEmail2(semail2);
 						oplayer.setUsaroster(usaroster);
+						oplayer.setIsbullying(isbullying);
         				tempresult.add(oplayer);
         				oplayer=null;
     				}

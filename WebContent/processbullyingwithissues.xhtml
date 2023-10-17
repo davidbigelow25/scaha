@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui" 
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+     xmlns:b="http://bootsfaces.net/ui"
+>
+<f:view contentType="text/html">
+<h:head>
+	 <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+     </f:facet>
+	<!-- <f:metadata>
+		<f:event type="preRenderView" listener="#{profileBean.verifySU()}" />
+	</f:metadata> -->
+</h:head>
+<h:body >	
+<ui:composition template="/WEB-INF/templates/layoutadmin.xhtml">
+<ui:define name="content">
+<b:container>
+	<b:form>
+	<b:row>
+		<b:column span="12">
+			<b:panel id="panelgames" collapsible="false" look="primary" 
+				large-screen="full-width"
+		    	medium-screen="full-width"
+		    	small-screen="one-third"
+		    	tiny-screen="one-third"
+			>
+				<f:facet name="heading">
+					<h:outputText value="CAHA Bullying Records with Issues"/>
+		        </f:facet>
+				<b:dataTable
+					id="processedvullying"
+					var="coach"
+					value="#{cahabullyingbean.getCoacheswithissues()}"
+					editable="true" 
+					select="true"
+					selection="#{cahabullyingbean.selectedcoach}"
+					selectionMode="single" 
+					paginated="true" 
+					border="true"
+					searching="true"
+					>
+			   		<b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        First Name
+					    </f:facet>
+			            <h:outputText value="#{coach.getFirstname()}" />
+			        </b:dataTableColumn>
+			        <b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Last Name
+					    </f:facet>
+			            <h:outputText value="#{coach.getLastname()}" />
+			        </b:dataTableColumn>
+					<b:dataTableColumn styleClass="mtrxColumn">
+						<f:facet name="header">
+							DOB
+						</f:facet>
+						<h:outputText value="#{coach.getDob()}" />
+					</b:dataTableColumn>
+					<b:dataTableColumn styleClass="mtrxColumn">
+						<f:facet name="header">
+							Team Name
+						</f:facet>
+						<h:outputText value="#{coach.getCurrentteam()}" />
+					</b:dataTableColumn>
+					<b:dataTableColumn styleClass="mtrxColumn">
+						<f:facet name="header">
+							Roster Type
+						</f:facet>
+						<h:outputText value="#{coach.getPreviousteam()}" />
+					</b:dataTableColumn>
+					<b:dataTableColumn styleClass="mtrxColumn">
+						<f:facet name="header">
+							USA Number
+						</f:facet>
+						<h:outputText value="#{coach.getCepnumber()}" />
+					</b:dataTableColumn>
+					<b:dataTableColumn styleClass="mtrxColumn">
+					<f:facet name="header">
+						Loaded First Name
+					</f:facet>
+					<h:outputText value="#{coach.getCitizenship()}" />
+				</b:dataTableColumn>
+				<b:dataTableColumn styleClass="mtrxColumn">
+					<f:facet name="header">
+						Loaded Last Name
+					</f:facet>
+					<h:outputText value="#{coach.getCitizenshiptransfer()}" />
+				</b:dataTableColumn>
+				<b:dataTableColumn styleClass="mtrxColumn">
+					<f:facet name="header">
+						Loaded DOB
+					</f:facet>
+					<h:outputText value="#{coach.getCTExpirationdate()}" />
+				</b:dataTableColumn>
+				<b:dataTableColumn styleClass="mtrxColumn">
+			            <f:facet name="header">
+					        Certificate Number
+					    </f:facet>
+			            <h:outputText value="#{coach.getEligibility()}" />
+			        </b:dataTableColumn>
+					<b:dataTableColumn styleClass="mtrxColumn">
+						<f:facet name="header">
+							Loaded USA Number
+						</f:facet>
+						<h:outputText value="#{coach.getCoachname()}" />
+					</b:dataTableColumn>
+
+
+					<b:dataTableColumn styleClass="mtrxColumn">
+					<f:facet name="header">
+						Options
+					</f:facet>
+					<b:commandButton iconAwesome="edit" value="Process Bullying"
+									 action="#{cahabullyingbean.updateInvidualbullying(coach)}" look="success">
+						<f:ajax execute="@this" render="@form" update=":form:processedbullying"/>
+					</b:commandButton>
+
+				</b:dataTableColumn>
+			</b:dataTable>
+			</b:panel>
+		</b:column>
+	</b:row>
+	</b:form>
+</b:container>
+</ui:define>
+</ui:composition>
+</h:body>
+</f:view>
+</html>

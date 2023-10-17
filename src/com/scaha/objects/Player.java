@@ -64,6 +64,7 @@ public class Player extends ScahaObject implements Serializable {
 	private Boolean bcovid = false;
 	private String suspendedmessage = null;
 	private String usaroster = null;
+	private String isbullying = null;
 
 	public Player (){ 
 		
@@ -484,5 +485,12 @@ public class Player extends ScahaObject implements Serializable {
 	public Boolean getBcovid() {return bcovid;}
 
 	public void setBcovid(Boolean steamid) {bcovid=steamid;}
-		
+
+	public String getIsbullying() {
+		return isbullying;
+	}
+
+	public void setIsbullying(String isbullying) {
+		this.isbullying = isbullying;
+	}
 }

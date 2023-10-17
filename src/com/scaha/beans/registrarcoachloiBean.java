@@ -194,7 +194,7 @@ public class registrarcoachloiBean implements Serializable {
     				String notes = rs.getString("notes");
     				String suspended = rs.getString("suspended");
 					String usarosterdisplay = rs.getString("usaroster");
-
+					String isbullying = rs.getString("isbullying");
     				Coach ocoach = new Coach();
     				ocoach.setIdcoach(idcoach);
     				ocoach.setFirstname(sfirstname);
@@ -223,6 +223,7 @@ public class registrarcoachloiBean implements Serializable {
     				ocoach.setNotes(notes);
     				ocoach.setSuspended(suspended);
 					ocoach.setUsarosterdisplay(usarosterdisplay);
+					ocoach.setIsbullying(isbullying);
     				tempresult.add(ocoach);
     				ocoach=null;
 				}

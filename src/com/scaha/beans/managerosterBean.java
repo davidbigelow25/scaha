@@ -139,6 +139,7 @@ public class managerosterBean implements Serializable {
 							if (byewkdattend.equals("yes")){
 								byewkd=true;
 							}
+							Integer bullyingcount = rssub.getInt("bullyingcount");
 
 	        				Team team = new Team(teamname,idteam);
 	        				team.setIdteam(idteam);
@@ -161,6 +162,8 @@ public class managerosterBean implements Serializable {
 							team.setPday(pday);
 							team.setByewkd(byewkd);
 
+							//this is for displaying bullying count
+							team.setBullyingcount(bullyingcount);
 							tempteamlist.add(team);
 
 	        				team = null;

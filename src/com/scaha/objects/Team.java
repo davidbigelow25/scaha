@@ -58,7 +58,10 @@ public class Team extends ScahaObject implements Serializable {
 
 	//this is used for assigning coach role to teams on the coach loi process.
 	private String coachrole = null;
-	
+
+	//this is used for displaying count of players on a team that have passed the bullying requirement
+	private Integer bullyingcount=null;
+
 	public Team (String sName, String teamid){ 
 		teamname = sName;
 		IDteam = teamid;
@@ -334,5 +337,13 @@ public class Team extends ScahaObject implements Serializable {
 
 	public void setByewkd(Boolean byewkd) {
 		this.byewkd = byewkd;
+	}
+
+	public Integer getBullyingcount() {
+		return bullyingcount;
+	}
+
+	public void setBullyingcount(Integer bullyingcount) {
+		this.bullyingcount = bullyingcount;
 	}
 }

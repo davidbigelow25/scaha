@@ -106,6 +106,12 @@
 								        </b:dataTableColumn>
 										<b:dataTableColumn >
 											<f:facet name="header">
+												<h:outputText value="Bullying" style="font-size:10px"/>
+											</f:facet>
+											<h:outputText value="#{team.getBullyingcount()}" style="font-size:10px"/>
+										</b:dataTableColumn>
+										<b:dataTableColumn >
+											<f:facet name="header">
 												<h:outputText value="Labor Day" style="font-size:10px"/>
 											</f:facet>
 											<b:navCommandLink value="Yes" actionListener="#{managerosterBean.loadTournamentDetails('labor',team)}" rendered="#{team.getLaborday()}" style="font-size:10px">
