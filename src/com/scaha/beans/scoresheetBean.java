@@ -126,7 +126,7 @@ public class scoresheetBean implements Serializable {
 		  }
 		  else {
 			if (this.tournamentid.equals(0)){
-				if (this.teamid.equals(0)){
+				if (!this.idgame.equals(0)){
 					getGameScoresheets();
 				}else{
 					getGameScoresheetsForTeam();
