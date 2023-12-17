@@ -77,7 +77,7 @@ public class coachbcloiBean implements Serializable, MailableObject {
         }else{
         	searchcriteria = "";
         }
-        
+
         if (!searchcriteria.equals("")){
         	coachesDisplay();
         }

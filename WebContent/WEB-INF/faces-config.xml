@@ -149,6 +149,12 @@
 		<managed-bean-class>com.scaha.beans.cahabullyingbean</managed-bean-class>
 		<managed-bean-scope>view</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>playoffmanagerlistBean</managed-bean-name>
+		<managed-bean-class>com.scaha.beans.playoffmanagerlistBean</managed-bean-class>
+		<managed-bean-scope>view</managed-bean-scope>
+	</managed-bean>
+
 
 	<managed-bean>
 		<managed-bean-name>editrosterBean</managed-bean-name>

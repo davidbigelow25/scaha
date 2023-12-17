@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<f:metadata>
+<f:event type="preRenderView" listener="#{profileBean.verifyUserLogin()}" />
+</f:metadata>
+
+<ui:composition template="/WEB-INF/templates/layoutadmin.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://bootsfaces.net/ui">
+	
+<ui:define name="content">
+<b:container>
+	<b:row>
+		<b:column>
+			<b:form>
+				<b:panel id ="panel" collapsible="false" look="primary">
+					<f:facet name="heading">
+						<h:outputText value="View Manager Contact Info:" />
+					</f:facet>
+
+					<b:panelGrid colSpans="1,3,2,2,2,2" id="panelgrid">
+						<h:outputText value=" " />
+						<b:selectOneMenu value="#{scoreboardBean.selectedseasonid}" onchange="ajax:scoreboardBean.onSeasonChange()" update="@form">
+							<f:selectItem style="font-size:10pt;" itemLabel="Select a Season..." itemValue="0" />
+							<f:selectItems value="#{scoreboardBean.getSeasonlist()}"  var="season"  itemLabel="#{season.getDescription()}" itemValue="#{season.getKey()}"/>
+						</b:selectOneMenu>
+						<b:selectOneMenu value="#{playoffmanagerlistBean.selectedscheduleid}" onchange="ajax:playoffmanagerlistBean.onScheduleChange()" update="@form">
+							<f:selectItem style="font-size:10pt;" itemLabel="Select a Schedule..." itemValue="0" />
+							<f:selectItems  value="#{scoreboardBean.getSchedulelist()}" var="schedule" itemLabel="#{schedule.getDescription()}" itemValue="#{schedule.getKey()}" />
+						</b:selectOneMenu>
+					</b:panelGrid>
+					<Br></Br>
+					<b:dataTable
+						id="listofcoaches" 
+						var="coach" 
+						value="#{playoffmanagerlistBean.getCoachdatamodel()}"
+						editable="true" 
+						select="true"
+						selection="#{playoffmanagerlistBean.selectedcoach}"
+						selectionMode="single" 
+						paginator="true"
+						searching="true" 
+						border="true"
+						excel="true"
+			            csv="true"
+			            pdf="true"
+						
+						>
+			   			<b:dataTableColumn style="font-size: 85%;">
+				            <f:facet name="header">
+						        First
+						    </f:facet>
+							<h:outputText value="#{coach.getFirstname()}" />    
+				        </b:dataTableColumn>
+				    	<b:dataTableColumn style="font-size: 85%;">
+				            <f:facet name="header">
+						        Last
+						    </f:facet>
+							<h:outputText value="#{coach.getLastname()}" />    
+				        </b:dataTableColumn>
+				    	<b:dataTableColumn style="font-size: 85%;">
+				            <f:facet name="header">
+						        <h:outputText value="Team" />
+						    </f:facet>
+							<h:outputText value="#{coach.getTeamname()}" />    
+				        </b:dataTableColumn>
+						<b:dataTableColumn style="font-size: 85%;">
+							<f:facet name="header">
+								<h:outputText value="Role" />
+							</f:facet>
+							<h:outputText value="#{coach.getTeamrole()}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn style="font-size: 85%;">
+							<f:facet name="header">
+								<h:outputText value="Phone" />
+							</f:facet>
+							<h:outputText value="#{coach.getPhone()}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn style="font-size: 85%;">
+							<f:facet name="header">
+								<h:outputText value="Email" />
+							</f:facet>
+							<h:outputText value="#{coach.getEmail1()}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn style="font-size: 85%;">
+							<f:facet name="header">
+								<h:outputText value="Alt Email" />
+							</f:facet>
+							<h:outputText value="#{coach.getEmail2()}" />
+						</b:dataTableColumn>
+
+				    </b:dataTable>
+		            <p:spacer width="10" height="5" />
+				</b:panel>
+			</b:form>
+		</b:column>
+	</b:row>
+</b:container>				
+</ui:define>
+</ui:composition>
+</html>
