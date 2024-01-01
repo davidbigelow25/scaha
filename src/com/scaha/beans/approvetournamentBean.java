@@ -117,7 +117,7 @@ public class approvetournamentBean implements Serializable, MailableObject {
 		//myTokens.add("CONTACT: " + this.contact);
 		//myTokens.add("PHONE: " + this.phone);
 		myTokens.add("SANCTION: " + this.getSelectedtournament().getSanction());
-		myTokens.add("LOCATION: " + this.getSelectedtournament().getLocation());
+		//myTokens.add("LOCATION: " + this.getSelectedtournament().getLocation());
 		//myTokens.add("WEBSITE: " + this.website);
 		myTokens.add("STATUS: " + this.getSelectedtournament().getStatus());
 		
@@ -208,26 +208,21 @@ public class approvetournamentBean implements Serializable, MailableObject {
 					String idteam = rs.getString("idteamtournament");
     				String tournamentname = rs.getString("tournamentname");
     				String requestingteam = rs.getString("requestingteam");
-    				String teammanageremail = rs.getString("teammanageremail");
     				String dates = rs.getString("dates");
     				String sanction = rs.getString("sanction");
-    				String contact = rs.getString("contact");
-    				String location = rs.getString("location");
+    				String levelplayed = rs.getString("levelplayed");
     				String status = rs.getString("status");
-    				//Boolean rendered = rs.getBoolean("rendered");
-    				
+
     				Tournament tournament = new Tournament();
     				tournament.setIdtournament(Integer.parseInt(idteam));
     				tournament.setTournamentname(tournamentname);
     				tournament.setDates(dates);
-    				tournament.setContact(contact);
-    				tournament.setLocation(location);
+    				tournament.setContact(levelplayed);
     				tournament.setStatus(status);
     				tournament.setSanction(sanction);
     				//tournament.setRendered(rendered);
     				tournament.setRequestingteam(requestingteam);
-    				tournament.setEmail(teammanageremail);
-    				
+
     				templist.add(tournament);
 				}
 				LOGGER.info("We have results for all tourney list ");

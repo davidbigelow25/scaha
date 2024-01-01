@@ -28,7 +28,7 @@
 					<h:form id="tournamentform">
 					<p:dataTable id="tournaments" paginator="true" var="tournament" value="#{approvetournamentBean.getTournamentdatamodel()}" selection="#{approvetournamentBean.selectedtournament}" rows="10" autoupdate="false">
 			            <f:facet name="header">  
-				        	2019-2020 TOURNAMENTS SUBMITTED
+				        	Season TOURNAMENTS SUBMITTED
 				        </f:facet> 
 				        <p:column headerText="Tournament Name">  
 				            <h:outputText value="#{tournament.getTournamentname()}" />  
@@ -42,13 +42,10 @@
 				        <p:column headerText="Dates" filterBy="dates" filterMatchMode="contains" filterStyle="width:50px">  
 				            <h:outputText value="#{tournament.getDates()}" />  
 				        </p:column>
-				        <p:column headerText="Contact">  
+				        <p:column headerText="Level Played">
 				        	<h:outputText value="#{tournament.getContact()}" />  
 				        </p:column>
-				        <p:column headerText="Location">  
-				        	<h:outputText value="#{tournament.getLocation()}" />  
-				        </p:column>
-				        <p:column headerText="Status" filterBy="status" filterMatchMode="contains" filterStyle="width:50px">  
+				        <p:column headerText="Status" filterBy="status" filterMatchMode="contains" filterStyle="width:50px">
 				        	<h:outputText value="#{tournament.getStatus()}" />  
 				        </p:column>
 				        <p:column headerText="">

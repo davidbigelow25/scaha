@@ -260,6 +260,7 @@ public class bcloiBean implements Serializable, MailableObject {
 						String expirationdate = rs.getString("expirationdate");
 						Integer usaroster = rs.getInt("usaroster");
 						Integer pdr = rs.getInt("pdrapply");
+						String abi = rs.getString("abi");
 
         				Coach oplayer = new Coach();
 						oplayer.setIdcoach(idplayer);
@@ -321,7 +322,8 @@ public class bcloiBean implements Serializable, MailableObject {
 						oplayer.setSafesportfor18(safesportfor18);
 						oplayer.setUsaroster(usaroster);
 						oplayer.setPdrapply(pdr);
-        				tempresult.add(oplayer);
+        				oplayer.setIsbullying(abi);
+						tempresult.add(oplayer);
 
         				oplayer = null;
     				}
@@ -707,7 +709,7 @@ public class bcloiBean implements Serializable, MailableObject {
 
 				//Need to provide info to the stored procedure to save or update
 				//LOGGER.info("verify loi code provided");
-				CallableStatement cs = db.prepareCall("CALL scaha.saveTransfer(?,?,?,?,?,?,?,?,?,?)");
+				CallableStatement cs = db.prepareCall("CALL scaha.saveTransfer(?,?,?,?,?,?,?,?,?,?,?)");
 				cs.setInt("transferid", coach.getTransferid());
 				cs.setInt("playerid", Integer.parseInt(coach.getIdcoach()));
 				cs.setInt("transfer", coach.getTransfer());
@@ -726,6 +728,7 @@ public class bcloiBean implements Serializable, MailableObject {
 				cs.setInt("suspended_in",Integer.parseInt(coach.getSuspended()));
 				cs.setString("innotes",coach.getNotes());
 				cs.setInt("inusaroster",coach.getUsaroster());
+				cs.setInt("abi",Integer.parseInt(coach.getIsbullying()));
 				cs.executeQuery();
 
 				db.commit();

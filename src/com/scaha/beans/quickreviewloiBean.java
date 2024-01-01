@@ -196,7 +196,7 @@ public class quickreviewloiBean implements Serializable {
 						String expirationdate = rs.getString("expirationdate");
 						Integer usaroster = rs.getInt("usaroster");
 						Integer applypdr = rs.getInt("pdrapply");
-
+						String abi = rs.getString("iscahabullying");
 
 						Coach oplayer = new Coach();
         				oplayer.setIdcoach(idplayer);
@@ -258,6 +258,7 @@ public class quickreviewloiBean implements Serializable {
 						oplayer.setSafesportfor18(safesportfor18);
 						oplayer.setUsaroster(usaroster);
 						oplayer.setPdrapply(applypdr);
+						oplayer.setIsbullying(abi);
 
 						tempresult.add(oplayer);
 
@@ -643,7 +644,7 @@ public class quickreviewloiBean implements Serializable {
 
 				//Need to provide info to the stored procedure to save or update
 				//LOGGER.info("verify loi code provided");
-				CallableStatement cs = db.prepareCall("CALL scaha.saveTransferforManageRoster(?,?,?,?,?,?,?,?,?,?)");
+				CallableStatement cs = db.prepareCall("CALL scaha.saveTransferforManageRoster(?,?,?,?,?,?,?,?,?,?,?)");
 				cs.setInt("transferid", coach.getTransferid());
 				cs.setInt("playerid", Integer.parseInt(coach.getIdcoach()));
 				cs.setInt("transfer", coach.getTransfer());
@@ -662,6 +663,7 @@ public class quickreviewloiBean implements Serializable {
 				cs.setInt("suspended_in",Integer.parseInt(coach.getSuspended()));
 				cs.setString("innotes",coach.getNotes());
 				cs.setInt("inusaroster",coach.getUsaroster());
+				cs.setInt("inabi",Integer.parseInt(coach.getIsbullying()));
 				cs.executeQuery();
 
 				db.commit();

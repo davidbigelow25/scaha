@@ -888,7 +888,7 @@ public class editrosterBean implements Serializable, MailableObject {
 
 				//Need to provide info to the stored procedure to save or update
 				LOGGER.info("update coach details");
-				CallableStatement cs = db.prepareCall("CALL scaha.updateCoachbyCoachIdforlistManageRoster(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+				CallableStatement cs = db.prepareCall("CALL scaha.updateCoachbyCoachIdforlistManageRoster(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 				cs.setInt("coachid", Integer.parseInt(coach.getIdcoach()));
 				cs.setString("screenexpires", coach.getScreeningexpires());
 				cs.setString("cepnum", coach.getCepnumber());
@@ -957,7 +957,7 @@ public class editrosterBean implements Serializable, MailableObject {
 				}
 				cs.setString("in_rostertype", teamrole);
 				cs.setString("in_notes", coach.getNotes());
-
+				cs.setInt("abi",Integer.parseInt(coach.getIsbullying()));
 				rs = cs.executeQuery();
 
 				db.commit();

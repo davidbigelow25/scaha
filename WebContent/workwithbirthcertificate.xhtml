@@ -212,10 +212,25 @@
 						</f:facet>
 						<h:outputText value="#{player.confirmed}" style="font-size:10px"/>
 					</b:dataTableColumn>
+					<b:dataTableColumn >
+						<f:facet name="header">
+							<h:outputText value="ABI" style="font-size:10px" />
+						</f:facet>
+						<b:selectOneMenu value="#{player.isbullying}"
+										 large-screen="full-width"
+										 medium-screen="full-width"
+										 small-screen="full-width"
+										 tiny-screen="full-width"
+										 style="width:65px;font-size:10px"
+						>
+							<f:selectItem itemLabel="No" itemValue="0"/>
+							<f:selectItem itemLabel="Yes" itemValue="1"/>
+						</b:selectOneMenu>
+					</b:dataTableColumn>
 
 					<b:dataTableColumn >
 				            <f:facet name="header">
-						        Option
+								<h:outputText value="Option" style="font-size:10px" />
 						    </f:facet>
 							<b:commandButton value="Confirm LOI" 
 						                       action="#{bcloiBean.confirmLoi(player)}" update="@form" look="success" rendered="#{player.getConfirmed()=='No'}"

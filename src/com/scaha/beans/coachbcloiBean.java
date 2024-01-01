@@ -240,7 +240,7 @@ public class coachbcloiBean implements Serializable, MailableObject {
 						String suspended =rs2.getString("suspended");
 						Integer usaroster = rs2.getInt("usaroster");
 						String coachrole = rs2.getString("typeroster");
-
+						String abi = rs2.getString("abi");
 
         				Coach ocoach = new Coach();
         				ocoach.setIdcoach(idcoach);
@@ -265,6 +265,7 @@ public class coachbcloiBean implements Serializable, MailableObject {
         				ocoach.setSuspended(suspended);
 						ocoach.setSuspend(suspended);
 
+
 						String templist = "";
 						if (ocoach.getU8().equals("Yes")){
 							templist = templist.concat("8U");
@@ -287,6 +288,7 @@ public class coachbcloiBean implements Serializable, MailableObject {
 						ocoach.setCepmodulesselected(templist);
 						ocoach.setUsaroster(usaroster);
 						ocoach.setTeamrole(coachrole);
+						ocoach.setIsbullying(abi);
 
 						tempresult.add(ocoach);
 
@@ -647,7 +649,7 @@ public class coachbcloiBean implements Serializable, MailableObject {
 
 				//Need to provide info to the stored procedure to save or update
 				LOGGER.info("update coach details");
-				CallableStatement cs = db.prepareCall("CALL scaha.updateCoachbyCoachIdforlist(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+				CallableStatement cs = db.prepareCall("CALL scaha.updateCoachbyCoachIdforlist(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 				cs.setInt("coachid", Integer.parseInt(coach.getIdcoach()));
 				cs.setString("screenexpires", coach.getScreeningexpires());
 				cs.setString("cepnum", coach.getCepnumber());
@@ -697,7 +699,7 @@ public class coachbcloiBean implements Serializable, MailableObject {
 				cs.setInt("issuspend_in", Integer.parseInt(coach.getSuspend()));
 				cs.setInt("inusaroster",coach.getUsaroster());
 				cs.setString("inteamrole",coach.getTeamrole());
-
+				cs.setInt("abi",Integer.parseInt(coach.getIsbullying()));
 				rs = cs.executeQuery();
 
 				db.commit();
