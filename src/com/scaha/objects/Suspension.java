@@ -20,12 +20,21 @@ public class Suspension extends ScahaObject implements Serializable {
 	private String eligibility = null;
 	private String suspensiondate = null;
 	private String served = null;
+	private Boolean isparentejection = null;
 	
 	
 	public Suspension (){ 
 		
 	}
-	
+
+	public Boolean getIsparentejection() {
+		return isparentejection;
+	}
+
+	public void setIsparentejection(Boolean isparentejection) {
+		this.isparentejection = isparentejection;
+	}
+
 	public Integer getIdsuspension(){
 		return idsuspension;
 	}

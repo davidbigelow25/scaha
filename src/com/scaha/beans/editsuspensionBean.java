@@ -55,6 +55,7 @@ public class editsuspensionBean implements Serializable {
 	private Integer teamid = null;
 	private Integer livegameid = null;
 	private LiveGame selectedlivegame = null;
+	private String isparentejection = null;
 
 	@PostConstruct
     public void init() {
@@ -64,6 +65,10 @@ public class editsuspensionBean implements Serializable {
         {
     		this.suspensionid = Integer.parseInt(hsr.getParameter("suspensionid").toString());
         }
+		if(hsr.getParameter("pj") != null)
+		{
+			this.isparentejection = hsr.getParameter("pj").toString();
+		}
     	
     	loadSuspension();
 	}
@@ -215,8 +220,9 @@ public class editsuspensionBean implements Serializable {
 		
     	try{
     		//first get team name
-    		CallableStatement cs = db.prepareCall("CALL scaha.getSuspension(?)");
+    		CallableStatement cs = db.prepareCall("CALL scaha.getSuspension(?,?)");
     		cs.setInt("suspensionid", this.suspensionid);
+			cs.setString("parentejection",this.isparentejection);
 			rs = cs.executeQuery();
 			
 			if (rs != null){
@@ -275,19 +281,34 @@ public class editsuspensionBean implements Serializable {
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 		
     	try{
-    		//first get team name
-    		CallableStatement cs = db.prepareCall("CALL scaha.updateSuspension(?,?,?,?,?,?,?)");
-			cs.setInt("inpersonid", this.suspensionid);
-			cs.setString("numgames", this.numberofgames);
-			cs.setString("ininfraction", this.infraction);
-			cs.setInt("ismatch", this.match);
-			cs.setInt("served", this.served);
-			cs.setString("susdate", this.suspdate);
-			cs.setString("elgibility", this.eligibility);
-    		cs.executeQuery();
-			
+			//first lets see if we are working with suspension or parent ejection
+			if (this.isparentejection.equals("true")){
+				//first get team name
+				CallableStatement cs = db.prepareCall("CALL scaha.updateParentEjection(?,?,?,?,?,?)");
+				cs.setInt("suspensionid", this.suspensionid);
+				cs.setString("infractionin", this.infraction);
+				cs.setInt("servedin", this.served);
+				cs.setString("datein", this.suspdate);
+				cs.setString("eligibilityin", this.eligibility);
+				cs.setString("team", this.team);
+				cs.executeQuery();
+
+				LOGGER.info("set suspension for:" + this.suspensionid);
+
+			}else{
+
+				CallableStatement cs = db.prepareCall("CALL scaha.updateSuspension(?,?,?,?,?,?,?)");
+				cs.setInt("inpersonid", this.suspensionid);
+				cs.setString("numgames", this.numberofgames);
+				cs.setString("ininfraction", this.infraction);
+				cs.setInt("ismatch", this.match);
+				cs.setInt("served", this.served);
+				cs.setString("susdate", this.suspdate);
+				cs.setString("elgibility", this.eligibility);
+				cs.executeQuery();
+
 			LOGGER.info("set suspension for:" + this.suspensionid);
-						
+			}
 			db.commit();
 			db.cleanup();
     		
@@ -425,45 +446,53 @@ public class editsuspensionBean implements Serializable {
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 
 		try{
+			if (this.isparentejection.equals("true")) {
+				//then lets update the suspension as served
+				CallableStatement cs = db.prepareCall("CALL scaha.removeParentejection(?)");
+				cs.setInt("suspensionid", this.suspensionid);
+				cs.executeQuery();
 
-			//then lets get the email all setup
-			//now lets create a penalty object and push email from the object.
-			String temppenaltyrows =  "<tr><td>&nbsp;" + this.playername +"&nbsp;</td><td>&nbsp;";
-			temppenaltyrows = temppenaltyrows + this.numberofgames +" games&nbsp;</td><td>&nbsp;";
-			if (this.match.equals(1)){
-				temppenaltyrows = temppenaltyrows + "Yes&nbsp;</td><td>&nbsp;Infraction(s): ";
 			}else {
-				temppenaltyrows = temppenaltyrows + "NO&nbsp;</td><td>&nbsp;Infraction(s): ";
-			}
-			temppenaltyrows = temppenaltyrows + this.infraction + "&nbsp;</td></tr>";
 
-			ScahaTeam team = sb.getScahaTeamList().getRowData(this.teamid.toString());
 
-			for (LiveGame item : sb.getScahaLiveGameList()) {
-				if (item.getIdgame()==livegameid){
-					this.selectedlivegame=item;
-					break;
+				//then lets get the email all setup
+				//now lets create a penalty object and push email from the object.
+				String temppenaltyrows = "<tr><td>&nbsp;" + this.playername + "&nbsp;</td><td>&nbsp;";
+				temppenaltyrows = temppenaltyrows + this.numberofgames + " games&nbsp;</td><td>&nbsp;";
+				if (this.match.equals(1)) {
+					temppenaltyrows = temppenaltyrows + "Yes&nbsp;</td><td>&nbsp;Infraction(s): ";
+				} else {
+					temppenaltyrows = temppenaltyrows + "NO&nbsp;</td><td>&nbsp;Infraction(s): ";
 				}
+				temppenaltyrows = temppenaltyrows + this.infraction + "&nbsp;</td></tr>";
+
+				ScahaTeam team = sb.getScahaTeamList().getRowData(this.teamid.toString());
+
+				for (LiveGame item : sb.getScahaLiveGameList()) {
+					if (item.getIdgame() == livegameid) {
+						this.selectedlivegame = item;
+						break;
+					}
+				}
+
+				Penalty pen = new Penalty(this.suspensionid, pb.getProfile(), this.selectedlivegame, team);
+				PenaltyPusher pp = new PenaltyPusher();
+				pp.setPenalty(pen);
+				pp.setPenaltyrows(temppenaltyrows);
+				pp.setServedrows(this.eligibility);
+				pp.setIsServed(false);
+				pp.setServedrows(" ");
+				pp.setLivegame(this.selectedlivegame);
+				pp.setIsRemoved(true);
+
+				//then lets update the suspension as served
+				CallableStatement cs = db.prepareCall("CALL scaha.removeSuspension(?)");
+				cs.setInt("suspensionid", this.suspensionid);
+				cs.executeQuery();
+
+				//then lets send the email
+				pp.pushPenalty();
 			}
-
-			Penalty pen = new Penalty(this.suspensionid,pb.getProfile(), this.selectedlivegame, team);
-			PenaltyPusher pp = new PenaltyPusher();
-			pp.setPenalty(pen);
-			pp.setPenaltyrows(temppenaltyrows);
-			pp.setServedrows(this.eligibility);
-			pp.setIsServed(false);
-			pp.setServedrows(" ");
-			pp.setLivegame(this.selectedlivegame);
-			pp.setIsRemoved(true);
-
-			//then lets update the suspension as served
-			CallableStatement cs = db.prepareCall("CALL scaha.removeSuspension(?)");
-			cs.setInt("suspensionid", this.suspensionid);
-			cs.executeQuery();
-
-			//then lets send the email
-			pp.pushPenalty();
-
 			db.commit();
 			db.cleanup();
 

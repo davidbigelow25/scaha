@@ -431,6 +431,7 @@ public class suspensionBean implements Serializable {
 					}
 					String suspensiondate = rs.getString("suspensiondate");
 					String served = rs.getString("served");
+					Boolean isparentejection = rs.getBoolean("isparentejection");
 					
 					Suspension susp = new Suspension();
 					susp.setIdsuspension(idsuspension);
@@ -442,6 +443,7 @@ public class suspensionBean implements Serializable {
 					susp.setMatch(match);
 					susp.setSuspensiondate(suspensiondate);
 					susp.setServed(served);
+					susp.setIsparentejection(isparentejection);
 					
 					tempresult.add(susp);
     					}
@@ -470,92 +472,103 @@ public class suspensionBean implements Serializable {
 	
 	public void markServed(Suspension suspension){
 		Integer suspensionid = suspension.getIdsuspension();
+		Boolean isparentejection = suspension.getIsparentejection();
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 		
     	try{
-    		//first lets get all of the suspension info
-			CallableStatement cs = db.prepareCall("CALL scaha.getSuspension(?)");
-			cs.setInt("suspensionid", suspension.getIdsuspension());
-			rs = cs.executeQuery();
+    		//first lets check if it's a suspension or parent ejection
+			if (!isparentejection) {
+				//first lets get all of the suspension info
+				CallableStatement cs = db.prepareCall("CALL scaha.getSuspension(?)");
+				cs.setInt("suspensionid", suspension.getIdsuspension());
+				rs = cs.executeQuery();
 
-			if (rs != null){
+				if (rs != null) {
 
-				while (rs.next()) {
-					Integer idsuspension = rs.getInt("idsuspensions");
-					String splayername = rs.getString("playername");
-					String steam = rs.getString("team");
-					String sinfraction = rs.getString("infraction");
-					String snogames = rs.getString("numberofgames");
-					String eligibility = "";
-					Integer imatch = rs.getInt("matchpenalty");
-					Integer iserved = 1;
-					String ssuspensiondate = rs.getString("suspensiondate");
-					Integer livegameid = rs.getInt("idlivegame");
-					Integer idteam = rs.getInt("idteam");
+					while (rs.next()) {
+						Integer idsuspension = rs.getInt("idsuspensions");
+						String splayername = rs.getString("playername");
+						String steam = rs.getString("team");
+						String sinfraction = rs.getString("infraction");
+						String snogames = rs.getString("numberofgames");
+						String eligibility = "";
+						Integer imatch = rs.getInt("matchpenalty");
+						Integer iserved = 1;
+						String ssuspensiondate = rs.getString("suspensiondate");
+						Integer livegameid = rs.getInt("idlivegame");
+						Integer idteam = rs.getInt("idteam");
 
-					this.playername=splayername;
-					this.team=steam;
-					this.infraction=sinfraction;
-					this.numberofgames=snogames;
-					this.match=imatch;
-					this.served=iserved;
-					this.suspdate=ssuspensiondate;
-					this.eligibility=eligibility;
-					this.teamid=idteam.toString();
+						this.playername = splayername;
+						this.team = steam;
+						this.infraction = sinfraction;
+						this.numberofgames = snogames;
+						this.match = imatch;
+						this.served = iserved;
+						this.suspdate = ssuspensiondate;
+						this.eligibility = eligibility;
+						this.teamid = idteam.toString();
 
-					//this.selectedlivegame = sb.getScahaLiveGameList().getRowData(livegameid.toString());
+						//this.selectedlivegame = sb.getScahaLiveGameList().getRowData(livegameid.toString());
 
-					for (LiveGame item : sb.getScahaLiveGameList()) {
-						if (item.getIdgame()==livegameid){
-							this.selectedlivegame=item;
-							break;
+						for (LiveGame item : sb.getScahaLiveGameList()) {
+							if (item.getIdgame() == livegameid) {
+								this.selectedlivegame = item;
+								break;
+							}
 						}
+
+
 					}
-
-
-
+					//LOGGER.info("We have results for suspension id:" + this.suspensionid.toString());
 				}
-				//LOGGER.info("We have results for suspension id:" + this.suspensionid.toString());
+
+
+				rs.close();
+
+
+				//then lets get the email all setup
+				//now lets create a penalty object and push email from the object.
+				String temppenaltyrows = "<tr><td>&nbsp;" + this.playername + "&nbsp;</td><td>&nbsp;";
+				temppenaltyrows = temppenaltyrows + this.numberofgames + " games&nbsp;</td><td>&nbsp;";
+				if (this.match.equals(1)) {
+					temppenaltyrows = temppenaltyrows + "Yes&nbsp;</td><td>&nbsp;Infraction(s): ";
+				} else {
+					temppenaltyrows = temppenaltyrows + "NO&nbsp;</td><td>&nbsp;Infraction(s): ";
+				}
+				temppenaltyrows = temppenaltyrows + this.infraction + "&nbsp;</td></tr>";
+
+				ScahaTeam team = sb.getScahaTeamList().getRowData(this.teamid);
+
+				Penalty pen = new Penalty(suspension.getIdsuspension(), pb.getProfile(), this.selectedlivegame, team);
+				PenaltyPusher pp = new PenaltyPusher();
+				pp.setPenalty(pen);
+				pp.setPenaltyrows(temppenaltyrows);
+				pp.setServedrows(this.eligibility);
+				pp.setIsServed(true);
+				pp.setServedrows(" ");
+				pp.setLivegame(this.selectedlivegame);
+
+
+				//then lets update the suspension as served
+				cs = db.prepareCall("CALL scaha.setSuspensionServed(?)");
+				cs.setInt("suspensionid", suspensionid);
+				cs.executeQuery();
+
+				//then lets send the email
+				pp.pushPenalty();
+				cs.close();
+
+			} else{
+				//then lets update the parent ejection as served
+				CallableStatement cs = db.prepareCall("CALL scaha.setParentEjectionServed(?)");
+				cs.setInt("suspensionid", suspensionid);
+				cs.executeQuery();
+
+				cs.close();
+
 			}
-
-
-			rs.close();
-
-
-			//then lets get the email all setup
-			//now lets create a penalty object and push email from the object.
-			String temppenaltyrows =  "<tr><td>&nbsp;" + this.playername +"&nbsp;</td><td>&nbsp;";
-			temppenaltyrows = temppenaltyrows + this.numberofgames +" games&nbsp;</td><td>&nbsp;";
-			if (this.match.equals(1)){
-				temppenaltyrows = temppenaltyrows + "Yes&nbsp;</td><td>&nbsp;Infraction(s): ";
-			}else {
-				temppenaltyrows = temppenaltyrows + "NO&nbsp;</td><td>&nbsp;Infraction(s): ";
-			}
-			temppenaltyrows = temppenaltyrows + this.infraction + "&nbsp;</td></tr>";
-
-			ScahaTeam team = sb.getScahaTeamList().getRowData(this.teamid);
-
-			Penalty pen = new Penalty(suspension.getIdsuspension(),pb.getProfile(), this.selectedlivegame, team);
-			PenaltyPusher pp = new PenaltyPusher();
-			pp.setPenalty(pen);
-			pp.setPenaltyrows(temppenaltyrows);
-			pp.setServedrows(this.eligibility);
-			pp.setIsServed(true);
-			pp.setServedrows(" ");
-			pp.setLivegame(this.selectedlivegame);
-
-
-    		//then lets update the suspension as served
-    		cs = db.prepareCall("CALL scaha.setSuspensionServed(?)");
-			cs.setInt("suspensionid", suspensionid);
-    		cs.executeQuery();
-
-    		//then lets send the email
-			pp.pushPenalty();
-			
 			//LOGGER.info("set suspension as served for:" + suspensionid.toString());
 
-			cs.close();
 			db.commit();
 			db.cleanup();
     		
@@ -676,9 +689,10 @@ public class suspensionBean implements Serializable {
 	
 	public void manageSuspension(Suspension suspension){
 		String suspensionid = suspension.getIdsuspension().toString();
+		String isparentejection = suspension.getIsparentejection().toString();
 		FacesContext context = FacesContext.getCurrentInstance();
 		try{
-			context.getExternalContext().redirect("editsuspensions.xhtml?suspensionid=" + suspensionid);
+			context.getExternalContext().redirect("editsuspensions.xhtml?suspensionid=" + suspensionid + "&pj="+ isparentejection);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -712,14 +726,15 @@ public class suspensionBean implements Serializable {
 
 		try{
 			//first get team name
-			CallableStatement cs = db.prepareCall("CALL scaha.addSpectatorEjection(?,?,?,?,?,?,?,?,?)");
+			CallableStatement cs = db.prepareCall("CALL scaha.addSpectatorEjection(?,?,?,?,?,?,?)");
 			cs.setString("ininfraction", this.infraction);
-			cs.setInt("ismatch", this.match);
 			cs.setInt("served", this.served);
 			cs.setString("susdate", this.suspdate);
-			cs.setString("elgibility", this.eligibility);
-			cs.setInt("inrosterid", this.rosterid);
-			cs.setInt("inlivegameid", this.selectedlivegame.getGameId());
+			cs.setString("eligibility", this.eligibility);
+			cs.setString("firstname", this.firstname);
+			cs.setString("lastname", this.lastname);
+			cs.setString("teamname", this.team);
+
 			cs.executeQuery();
 
 			//LOGGER.info("set suspension for:" + this.selectedplayer.getIdplayer().toString());
@@ -727,32 +742,6 @@ public class suspensionBean implements Serializable {
 			db.commit();
 			db.cleanup();
 
-			//now lets create a penalty object and push email from the object.
-			String temppenaltyrows =  "<tr><td>&nbsp;" + this.playername +"&nbsp;</td><td>&nbsp;";
-			temppenaltyrows = temppenaltyrows + this.numberofgames +" games&nbsp;</td><td>&nbsp;";
-			if (this.match.equals(1)){
-				temppenaltyrows = temppenaltyrows + "Yes&nbsp;</td><td>&nbsp;Infraction(s): ";
-			}else {
-				temppenaltyrows = temppenaltyrows + "NO&nbsp;</td><td>&nbsp;Infraction(s): ";
-			}
-			temppenaltyrows = temppenaltyrows + this.infraction + "&nbsp;</td></tr>";
-
-			ScahaTeam team = sb.getScahaTeamList().getRowData(this.teamid);
-
-			Penalty pen = new Penalty(this.penaltyid,pb.getProfile(), this.selectedlivegame, team);
-
-			if (!this.isscahagamesource){
-				pen.setTeamname(team.getTeamname());
-			}
-			PenaltyPusher pp = new PenaltyPusher();
-			pp.setPenalty(pen);
-			pp.setPenaltyrows(temppenaltyrows);
-			pp.setServedrows(this.eligibility);
-			pp.setLivegame(this.selectedlivegame);
-			pp.setIsServed(false);
-			pp.setIsRemoved(false);
-			pp.setEmailsubject(this.playername + " Suspension Details");
-			pp.pushPenalty();
 
 
 		} catch (SQLException e) {
@@ -775,16 +764,10 @@ public class suspensionBean implements Serializable {
 		this.setSuspdate("");
 		this.setNumberofgames("");
 		this.setEligibility("");
-		this.rosterid=0;
-		FacesContext context = FacesContext.getCurrentInstance();
-		Application app = context.getApplication();
+		this.setFirstname("");
+		this.setLastname("");
+		this.setTeam("");
 
-		ValueExpression expression = app.getExpressionFactory().createValueExpression( context.getELContext(),
-				"#{playerhistoryBean}", Object.class );
-
-		playerhistoryBean pb = (playerhistoryBean) expression.getValue( context.getELContext() );
-		pb.setSearchcriteria("");
-		closePage();
 	}
 	
 	public void LoadPerson(Result result){

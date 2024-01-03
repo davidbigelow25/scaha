@@ -663,7 +663,7 @@ public class quickreviewloiBean implements Serializable {
 				cs.setInt("suspended_in",Integer.parseInt(coach.getSuspended()));
 				cs.setString("innotes",coach.getNotes());
 				cs.setInt("inusaroster",coach.getUsaroster());
-				cs.setInt("inabi",Integer.parseInt(coach.getIsbullying()));
+				cs.setInt("inabix",Integer.parseInt(coach.getIsbullying()));
 				cs.executeQuery();
 
 				db.commit();
