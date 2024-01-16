@@ -166,6 +166,40 @@ public class reviewreleaseBean implements Serializable {
 			e.printStackTrace();
 		} 
 	}
-	
+
+	public void deleterelease(Release selectedRelease) {
+
+		String sidrelease = selectedRelease.getIdrelease();
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try {
+
+			if (db.setAutoCommit(false)) {
+
+				CallableStatement cs = db.prepareCall("CALL scaha.deleteRelease(?)");
+				cs.setInt("releaseid", Integer.parseInt(sidrelease));
+				cs.executeQuery();
+
+				cs.close();
+				db.cleanup();
+			} else {
+
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN Searching FOR releases");
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+		releasesDisplay();
+	}
 }
 

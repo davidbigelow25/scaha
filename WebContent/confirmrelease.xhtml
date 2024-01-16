@@ -127,6 +127,15 @@
 	    					 >
 						       <f:ajax execute="@this" render="@form" />
 						    </b:commandButton>
+							<b:commandButton value="Delete"
+											 action="#{reviewreleaseBean.deleterelease(release)}" look="danger"
+											 large-screen="full-width"
+											 medium-screen="full-width"
+											 small-screen="full-width"
+											 tiny-screen="full-width"
+							>
+								<f:ajax execute="@this" render="@form" />
+							</b:commandButton>
 						</b:dataTableColumn> 
 					</b:dataTable>
 					<p:spacer width="10" height="5" />

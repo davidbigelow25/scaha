@@ -479,8 +479,9 @@ public class suspensionBean implements Serializable {
     		//first lets check if it's a suspension or parent ejection
 			if (!isparentejection) {
 				//first lets get all of the suspension info
-				CallableStatement cs = db.prepareCall("CALL scaha.getSuspension(?)");
+				CallableStatement cs = db.prepareCall("CALL scaha.getSuspension(?,?)");
 				cs.setInt("suspensionid", suspension.getIdsuspension());
+				cs.setString("parentejection", "false");
 				rs = cs.executeQuery();
 
 				if (rs != null) {
