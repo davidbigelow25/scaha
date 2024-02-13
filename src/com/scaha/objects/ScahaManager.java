@@ -14,6 +14,9 @@ import java.util.logging.Logger;
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
 
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ManagedBean;
+
 /**
  * @author David
  *
@@ -35,7 +38,7 @@ public class ScahaManager extends Person {
 	protected int ID = -1;
 	protected Boolean ismanager = null;
 	private Boolean displayemail = null;
-	
+
 	/**
 	 * A basic constructor that glues a person to a player given the relationship.
 	 * This assumes new record status.. 
@@ -44,7 +47,7 @@ public class ScahaManager extends Person {
 	 * @param _relationship
 	 */
 	public ScahaManager (Profile _pro) {
-		
+
 		//
 		// Here we are starting with basically an empty shell of an object..
 		// all id's are zero

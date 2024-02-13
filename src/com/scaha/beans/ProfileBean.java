@@ -30,6 +30,9 @@ import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 
 import org.primefaces.model.StreamedContent;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+
 
 
 /**
@@ -98,7 +101,10 @@ public class ProfileBean implements Serializable,  MailableObject  {
 	private String newcity = null;
 	private String newstate = null;
 	private String newzip = null;
-	
+	@ManagedProperty(value="#{scahaBean}")
+	private ScahaBean scaha;
+
+
 	public String getNewzip() {
 		return newzip;
 	}

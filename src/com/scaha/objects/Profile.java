@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
-
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import org.primefaces.expression.impl.ThisExpressionResolver;
-
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
 
@@ -40,7 +40,9 @@ public class Profile extends ScahaObject {
 	private boolean SuperUser = false;
 	private Integer managerteamid = null;
 	private List<Team> managerteams = null;
-	
+
+
+
 	public Profile (int _id, ScahaDatabase _db, String _sNN, String _sUser, String _sPass, boolean _getActionRoles) {
 		
 		this.ID = _id;
@@ -60,11 +62,22 @@ public class Profile extends ScahaObject {
 				// What roles do they have ?  Non hierarchical
 				m_rc = new RoleCollection(_db, this);
 			}
-			
+
+
 			//need to instantiate the scahamanager class to be used by when the manager is working on the managerportal
+			//need to check if they are a register, if so set them up as manager as well.
 			this.setScahamanager(new ScahaManager(this));
 			this.setManagerteamid(this.getScahamanager().getManagerteamid(this.ID));
-			this.setManagerteams((this.getScahamanager().getManagerteams(this.ID)));
+			if (this.hasRoleList("C-REG",this)){
+				this.getScahamanager().ismanager = true;
+			}
+			if (this.hasRoleList("C-REG",this)) {
+				this.setManagerteams(getClubteams(getClubID()));
+			}else {
+					this.setManagerteams((this.getScahamanager().getManagerteams(this.ID)));
+			}
+			//this.setScahamanager(new ScahaManager(this));
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -313,6 +326,88 @@ public class Profile extends ScahaObject {
 	
 	public void setManagerteamid(Integer _teamid){
 		this.managerteamid=_teamid;
+	}
+
+	public boolean hasRoleList(String _strRoles, Profile pro) {
+		if (pro == null) return false;
+		String[] roles = _strRoles.split(";");
+		for (String role : roles) {
+			if (!role.equals("T-MAN")){
+				for (Role myrole : pro.getRoles()) {
+					if (myrole.getName() != null && myrole.getName().equals(role)) return true;
+				}
+			} else {
+				if (this.getProfile().getScahamanager().getIsmanager()){
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+		}
+		return false;
+	}
+
+	public List<Team> getClubteams(Integer clubid){
+		//first lets get club id for the logged in profile
+		List<Team> data = new ArrayList<Team>();
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		try{
+			Vector<Integer> v = new Vector<Integer>();
+			v.add(clubid);
+			db.getData("CALL scaha.getTeamsbyClubId(?)", v);
+			ResultSet rs = db.getResultSet();
+			while (rs.next()) {
+				Team tm = new Team(rs.getString("teamname"),rs.getString("idteams"));
+				data.add(tm);
+			}
+
+			rs.close();
+			LOGGER.info("We have results for club for a profile");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN loading club by profile");
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+		return data;
+	}
+
+	public Integer getClubID(){
+
+		//first lets get club id for the logged in profile
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		Integer clubid = 0;
+		try{
+			Vector<Integer> v = new Vector<Integer>();
+			v.add(this.ID);
+			db.getData("CALL scaha.getclubformanager(?)", v);
+			ResultSet rs = db.getResultSet();
+			while (rs.next()) {
+				clubid = rs.getInt("idclub");
+			}
+			rs.close();
+			LOGGER.info("We have results for club for a profile");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN loading club by profile");
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+		return clubid;
 	}
 }
 
