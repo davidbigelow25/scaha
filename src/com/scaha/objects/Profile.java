@@ -81,7 +81,11 @@ public class Profile extends ScahaObject {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			_db.cleanup();
 		}
+
+		_db.cleanup();
+		_db.free();
 	}
 
 	/**
@@ -156,6 +160,7 @@ public class Profile extends ScahaObject {
 		
 		} catch (SQLException ex) {
 				ex.printStackTrace();
+				db.cleanup();
 		} finally {
 			db.cleanup();
 		}

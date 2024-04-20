@@ -282,7 +282,8 @@ public class registrarloiBean implements Serializable {
     				LOGGER.info("We have results for lois for the team: " + selectedteam);
     				
     			}
-    				
+
+				rs.close();
     			db.cleanup();
     		} else {
 

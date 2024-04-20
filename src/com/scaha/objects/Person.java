@@ -88,6 +88,7 @@ public class Person extends ScahaObject implements Serializable {
 			}
 		} catch (SQLException ex) {
 				ex.printStackTrace();
+				_db.cleanup();
 		} finally {
 			_db.cleanup();
 		}

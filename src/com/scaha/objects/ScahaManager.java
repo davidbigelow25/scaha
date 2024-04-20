@@ -185,6 +185,7 @@ public class ScahaManager extends Person {
 			cs.close();
 		} catch (SQLException ex) {
 				ex.printStackTrace();
+				db.free();
 		} finally {
 			db.free();
 		}

@@ -37,8 +37,8 @@ public class MinuteFileUploadController extends ScahaObject implements Serializa
         reportcard.setFiledisplayname(prefix + "." + suffix);
         
         try {
-        	String destPath = "/var/scaha/minutes/" + reportcard.getIdperson() + prefix + "." + suffix;
-        	//String destPath = "c:/eclipse/minutes/" + reportcard.getIdperson() + prefix + "." + suffix;
+        	//String destPath = "/var/scaha/minutes/" + reportcard.getIdperson() + prefix + "." + suffix;
+        	String destPath = "/dev/minutes/" + reportcard.getIdperson() + prefix + "." + suffix;
             File destFile = new File(destPath);
         	stream = event.getFile().getInputstream();
         	output = new FileOutputStream(destFile);
