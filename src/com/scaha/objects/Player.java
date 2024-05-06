@@ -61,13 +61,24 @@ public class Player extends ScahaObject implements Serializable {
 	private String safesport = null;
 	private String suspended = null;
 	private Boolean bitalics = false;
+
+
 	private Boolean bcovid = false;
 	private String suspendedmessage = null;
 	private String usaroster = null;
 	private String isbullying = null;
+	private String position = null;
 
 	public Player (){ 
 		
+	}
+
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
 	}
 
 	public String getUsaroster() {

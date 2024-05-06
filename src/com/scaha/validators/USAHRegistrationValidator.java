@@ -59,7 +59,8 @@ public class USAHRegistrationValidator implements Validator {
     		db.getData("CALL scaha.validateUSAHockeyYear(?)", v);
     		//
     		// iF we get any result back.. then we are in the proper year
-    		// 
+    		//
+			//commented out for testing
     		if (!db.getResultSet().next()){
 
     			FacesMessage message = new FacesMessage();

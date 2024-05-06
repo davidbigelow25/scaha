@@ -221,6 +221,7 @@ public class registrarloiBean implements Serializable {
 						String suspended = rs.getString("issuspended");
 						String usaroster = rs.getString("usaroster");
 						String isbullying = rs.getString("isbullying");
+						String position = rs.getString("position");
 
         				Player oplayer = new Player();
         				oplayer.setIdplayer(idplayer);
@@ -275,6 +276,7 @@ public class registrarloiBean implements Serializable {
         				oplayer.setEmail2(semail2);
 						oplayer.setUsaroster(usaroster);
 						oplayer.setIsbullying(isbullying);
+						oplayer.setPosition(position);
         				tempresult.add(oplayer);
         				oplayer=null;
     				}

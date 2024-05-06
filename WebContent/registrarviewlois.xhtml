@@ -87,7 +87,7 @@
 				        </b:dataTableColumn>
 						<b:dataTableColumn >
 							<f:facet name="header">
-								2021 Team
+								<h:outputText value="#{registrarloiBean.getPrioryear()} Team" />
 							</f:facet>
 							<h:outputText value="#{player.getPreviousteam()}" />
 						</b:dataTableColumn>
@@ -97,7 +97,13 @@
 						    </f:facet>
 							<h:outputText value="#{player.getDob()}" />    
 				        </b:dataTableColumn>
-				        <b:dataTableColumn >
+						<b:dataTableColumn >
+							<f:facet name="header">
+								<h:outputText value="Pos" />
+							</f:facet>
+							<h:outputText value="#{player.getPosition()}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn >
 				            <f:facet name="header">
 						        <h:outputText value="Plyr Up" />
 						    </f:facet>

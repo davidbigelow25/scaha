@@ -23,6 +23,7 @@ public class ScahaPlayer extends Person {
 	private static final Logger LOGGER = Logger.getLogger(ContextManager.getLoggerContext());
 	
 	private boolean goalie = false;
+	private String position = null;
 
 	//
 	// Lets hold the playerID here.. and allow the super to hold the person...
@@ -66,7 +67,7 @@ public class ScahaPlayer extends Person {
 		// is it an object that is not in the database yet..
 		//
 		
-		CallableStatement cs = _db.prepareCall("call scaha.updatePlayer(?,?,?,?,?)");
+		CallableStatement cs = _db.prepareCall("call scaha.updatePlayer(?,?,?,?,?,?)");
 		
 		//LOGGER.info("HERE IS THE Person ID:" + super.ID);
 
@@ -74,9 +75,11 @@ public class ScahaPlayer extends Person {
 		cs.registerOutParameter(1, java.sql.Types.INTEGER);
 		cs.setInt(i++, this.ID);
 		cs.setInt(i++, super.ID);
-		cs.setInt(i++, (this.isGoalie() ? 1 : 0));
+		//cs.setInt(i++, (this.isGoalie() ? 1 : 0));
+		cs.setInt(i++, (0));
 		cs.setInt(i++,1);
 		cs.setString(i++,null);
+		cs.setString(i++,this.position);
 		cs.execute();
 				
 		//
@@ -102,6 +105,11 @@ public class ScahaPlayer extends Person {
 		this.goalie = goalie;
 	}
 
+	public String getPosition() {
+		return position;
+	}
 
-
+	public void setPosition(String position) {
+		this.position = position;
+	}
 }

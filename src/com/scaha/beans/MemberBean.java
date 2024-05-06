@@ -2,6 +2,8 @@ package com.scaha.beans;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.text.Position;
 
+import javafx.geometry.Pos;
 import org.primefaces.event.FlowEvent;
 import com.gbli.common.SendMailSSL;
 import com.gbli.common.USAHRegClient;
@@ -34,7 +38,7 @@ import com.scaha.objects.ScahaManager;
 import com.scaha.objects.ScahaMember;
 import com.scaha.objects.ScahaPlayer;
 import com.scaha.objects.UsaHockeyRegistration;
-
+import com.scaha.objects.SCAHAPosition;
 /**
  * USAHockeyBean is now a Wizard that does the following:
  * 
@@ -58,7 +62,9 @@ public class MemberBean implements Serializable, MailableObject {
 	private String wizardstate = null;
 	private List<String> membertype;  
 	private List<FamilyMember> fmemberlist = null;
+	private List<SCAHAPosition> positionList = null;
 	private String relationship = null;
+	private String selectedposition = null;
 	private boolean concussion = false;
 	private boolean datagood = false;
 	private boolean displayrole = false;
@@ -85,7 +91,15 @@ public class MemberBean implements Serializable, MailableObject {
 	private ProfileBean pb;
 	@ManagedProperty(value="#{scahaBean}")
 	private ScahaBean scaha;
-	
+
+	public String getSelectedposition() {
+		return selectedposition;
+	}
+
+	public void setSelectedposition(String selectedposition) {
+		this.selectedposition = selectedposition;
+	}
+
 	public void setManager(Boolean regtype) {
 		this.manager = regtype;
 	}
@@ -229,11 +243,19 @@ public class MemberBean implements Serializable, MailableObject {
 		 displayselectmember = false;
 		 displayselectrole = false;
 		 displayseasonpass = false;
-			
+
+		 LoadPositionsList();
 	 }
-	 
-	 	 
-	 /**
+
+	public List<SCAHAPosition> getPositionList() {
+		return positionList;
+	}
+
+	public void setPositionList(List<SCAHAPosition> positionList) {
+		this.positionList = positionList;
+	}
+
+	/**
 	 * @return the usar
 	 */
 	public UsaHockeyRegistration getUsar() {
@@ -354,7 +376,7 @@ public class MemberBean implements Serializable, MailableObject {
 		myTokens.add("USAHNUM:" + usar2.getUSAHnum());
 		myTokens.add("SCAHANUM:" + mem.getSCAHANumber());
 		//myTokens.add("SEASON:" + scaha.getScahaSeasonList().getCurrentSeason().getDescription());
-		myTokens.add("SEASON:SCAHA 2023-2024 Season");
+		myTokens.add("SEASON:SCAHA 2024-2025 Season");
 		try {
 			if (_db.isPersonPlayer(per.ID)) {
 				if (_db.checkForBC(per.ID)) {
@@ -608,11 +630,14 @@ public class MemberBean implements Serializable, MailableObject {
 				sc.update(db);
 
 			}
-			if (this.playergoalie || this.playerskater) {
+			if (!this.selectedposition.equals("0")) {
 				sp = new ScahaPlayer(pro, per);
 				sp.gleanUSAHinfo(this.usar);
-				if (this.playergoalie) {
+				/*if (this.playergoalie) {
 					sp.setGoalie(true);
+				}*/
+				if (this.selectedposition!=null) {
+					sp.setPosition(this.selectedposition);
 				}
 				sp.update(db);
 			}
@@ -890,9 +915,10 @@ public class MemberBean implements Serializable, MailableObject {
 			displayselectmember = false;
 			displayselectrole = true;
 			displayseasonpass = false;
-        	
-			if (selectedPerson.getGenatt().get("ISPLAYER").equals("Y") && selectedPerson.getGenatt().get("ISGOALIE").equals("Y")) this.playergoalie=true;
-			if (selectedPerson.getGenatt().get("ISPLAYER").equals("Y") && !selectedPerson.getGenatt().get("ISGOALIE").equals("Y")) this.playerskater=true; 
+
+			this.genPersonsList();
+			//if (selectedPerson.getGenatt().get("ISPLAYER").equals("Y") && selectedPerson.getGenatt().get("ISGOALIE").equals("Y")) this.playergoalie=true;
+			//if (selectedPerson.getGenatt().get("ISPLAYER").equals("Y") && !selectedPerson.getGenatt().get("ISGOALIE").equals("Y")) this.playerskater=true;
 			if (selectedPerson.getGenatt().get("ISMANAGER").equals("Y")) this.manager=true;
 			if (selectedPerson.getGenatt().get("ISCOACH").equals("Y")) this.coach=true;
 			this.relationship = selectedPerson.getXRelType();
@@ -1041,5 +1067,45 @@ public class MemberBean implements Serializable, MailableObject {
 		return null;
 	}
 
+	public void LoadPositionsList(){
+		List<SCAHAPosition> templist = new ArrayList<SCAHAPosition>();
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+
+		try{
+			//first get team name
+			CallableStatement cs = db.prepareCall("CALL scaha.getPositionList()");
+			ResultSet rs = cs.executeQuery();
+
+			if (rs != null){
+
+				while (rs.next()) {;
+					SCAHAPosition oposition = new SCAHAPosition();
+					oposition.setPositionname(rs.getString("description"));
+					oposition.setPositioncode(rs.getString("PositionCode"));
+					oposition.setIdposition(rs.getInt("IdPositionList"));
+
+					templist.add(oposition);
+				}
+				LOGGER.info("We have results for team name");
+			}
+			rs.close();
+			db.cleanup();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN loading positions");
+			e.printStackTrace();
+			db.rollback();
+			db.free();
+
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+		this.setPositionList(templist);
+		templist = null;
+	}
 	
 }

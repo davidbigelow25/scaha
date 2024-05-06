@@ -197,12 +197,16 @@
 					<h:outputText value="Select All Roles That Apply for this season:" />
 					<h:outputText value=" " />
 				</b:panelGrid>
-				<b:panelGrid colSpans="2,2,2,2,2,2" id="selectroles">
-					<b:selectBooleanCheckbox value="#{memberBean.playerskater}" caption="Player-Skater" />
-	 	   			<b:selectBooleanCheckbox value="#{memberBean.playergoalie}" caption="Player-Goalie" />
-	 	   			<b:selectBooleanCheckbox value="#{memberBean.coach}" caption="Coach" />
+				<br></br>
+				<b:panelGrid colSpans="3,2,2,5" id="selectroles">
+					<!--<b:selectBooleanCheckbox value="#{memberBean.playerskater}" caption="Player-Skater" />
+	 	   			<b:selectBooleanCheckbox value="#{memberBean.playergoalie}" caption="Player-Goalie" />-->
+					<b:selectOneMenu value="#{memberBean.selectedposition}" >
+						<f:selectItems value="#{memberBean.getPositionList()}" var="team" itemLabel="#{team.getPositionname()}" itemValue="#{team.getPositioncode()}"/>
+					</b:selectOneMenu>
+					<b:selectBooleanCheckbox value="#{memberBean.coach}" caption="Coach" />
 	 	   			<b:selectBooleanCheckbox value="#{memberBean.manager}" caption="Manager" />
-	 	   			<!-- <b:selectManyCheckbox  id="member" value="#{memberBean.membertype}" required="true" requiredMessage="need to select a role." >    
+	 	   			<!-- <b:selectManyCheckbox  id="member" value="#{memberBean.membertype}" required="true" requiredMessage="need to select a role." >
 	          			<f:selectItem itemLabel="" itemValue="Player-Skater" />  
 	          			<f:selectItem itemLabel="" itemValue="Player-Goalie" />  
 	          			<f:selectItem itemLabel="" itemValue="Coach"/>  

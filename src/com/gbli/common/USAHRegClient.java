@@ -45,9 +45,6 @@ public class USAHRegClient {
 			USAHockeyResponse usaResponse = objectMapper.readValue(response.getEntity().getContent(), USAHockeyResponse.class);
 			//
 			if ("Success".equals(usaResponse.status)) {
-				//
-				// we are good  lets map everything
-
 				myUSAHockey.setUSAHnum(usaResponse.data.confirmation_number);
 				myUSAHockey.setFirstName(usaResponse.data.first_name);
 				myUSAHockey.setMiddleInit(usaResponse.data.middle_initial);
@@ -70,24 +67,24 @@ public class USAHRegClient {
 			}
 		}
 /*
-		myUSAHockey.setUSAHnum("093401741XXHOP");
-		myUSAHockey.setFirstName("BRIDGET");
-		myUSAHockey.setMiddleInit("M");
-		myUSAHockey.setLastName("HOPKINSON");
-		myUSAHockey.setAddress("9636 BORSON ST");
-		myUSAHockey.setCity("DOWNEY");
-		myUSAHockey.setZipcode("902424927");
-		myUSAHockey.setState("CA");
+		myUSAHockey.setUSAHnum("119450831FOSTE");
+		myUSAHockey.setFirstName("ROBERT");
+		myUSAHockey.setMiddleInit("E");
+		myUSAHockey.setLastName("FOSTER");
+		myUSAHockey.setAddress("119 LAKE HARBOR DR");
+		myUSAHockey.setCity("HENDERSONVILLE");
+		myUSAHockey.setZipcode("370750000");
+		myUSAHockey.setState("TN");
 		myUSAHockey.setCountry("USA");
 		myUSAHockey.setCitizen("USA");
 		myUSAHockey.setForZip("");
-		myUSAHockey.setDOB("08/06/1965");
-		myUSAHockey.setGender("F");
-		myUSAHockey.setHPhone("7148226077");
-		myUSAHockey.setBPhone("5623020297");
-		myUSAHockey.setEmail("HOPKINSONBRIDGET@GMAIL.COM");
-		myUSAHockey.setPGSFName("JUSTIN");
-		myUSAHockey.setPGSLName("HOPKINSON");
+		myUSAHockey.setDOB("10/25/1971");
+		myUSAHockey.setGender("M");
+		myUSAHockey.setHPhone("6613734323");
+		myUSAHockey.setBPhone("6613734323");
+		myUSAHockey.setEmail("LAHOCKEYFAN2@YAHOO.COM");
+		myUSAHockey.setPGSFName("ROBERT");
+		myUSAHockey.setPGSLName("FOSTER");
 		myUSAHockey.setPGSMName("");
 */
 		// lets return our answer
