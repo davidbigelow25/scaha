@@ -195,6 +195,8 @@
 				<b:navBar brand="Associate Registrar" inverse="false" position="top" sticky="false" fluid="true" >
 					<b:navbarLinks>
 						<b:navLink value="Manage Rosters" href="managerosters.xhtml" rendered="#{profileBean.hasRoleList('A-REG')}"></b:navLink>
+						<b:navLink value="Delinquency List" href="viewdelinquencylist.xhtml" rendered="#{profileBean.hasRoleList('A-REG')}"></b:navLink>
+						<b:navLink value="Releases" href="confirmrelease.xhtml" rendered="#{profileBean.hasRoleList('S-REG;A-REG;')}"></b:navLink>
 					</b:navbarLinks>
 				</b:navBar>
 			</b:column>

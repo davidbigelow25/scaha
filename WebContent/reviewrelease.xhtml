@@ -184,7 +184,7 @@
 	    					medium-screen="full-width"
 	    					small-screen="full-width"
 	    					tiny-screen="full-width"
-	    					rendered="#{viewreleaseBean.displaypermanent}"/>
+	    					rendered="#{viewreleaseBean.displaypermanent and profileBean.hasRoleList('S-REG')}"/>
 	    				<b:commandButton value="Close" id="close" look="info" ajax="false" action="confirmrelease.xhtml"
 							large-screen="full-width"
 	    					medium-screen="full-width"

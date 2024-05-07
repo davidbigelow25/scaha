@@ -10,7 +10,7 @@
       xmlns:b="http://bootsfaces.net/ui">
 
 <f:metadata>
-	<f:event type="preRenderView" listener="#{profileBean.verifyHasRoles('S-REG;A-DLIST')}" />
+	<f:event type="preRenderView" listener="#{profileBean.verifyHasRoles('S-REG;A-REG;A-DLIST;')}" />
 </f:metadata>
 
 <ui:composition template="/WEB-INF/templates/layoutadmin.xhtml">
@@ -96,6 +96,7 @@
 	    					medium-screen="full-width"
 	    					small-screen="full-width"
 	    					tiny-screen="full-width"
+
 						/>
 						<h:outputText value=" "/>
 						<h:outputText value=" "/>
