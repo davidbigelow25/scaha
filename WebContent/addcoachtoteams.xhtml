@@ -38,7 +38,7 @@
 	    					tiny-screen="full-width"
 						/>
 						<h:outputText style="font-weight: bold;" value=" "/>
-						<h:outputText style="font-weight: bold;" value=" "/>
+						<h:outputText style="font-weight: bold;color: red;" value="#{coachtoteamBean.getErrormessage()}"/>
 						<h:outputText style="font-weight: bold;" value="#{coachtoteamBean.getCurrentyear()} Boys Team(s):"/>
 						<b:dataTable 
 							id="boysteamsgrid" 
@@ -72,7 +72,7 @@
 							    	<f:selectItem itemLabel="Manager" itemValue="Manager"/>
 									<f:selectItem itemLabel="Manager/Locker Room Attendant" itemValue="Manager/Locker Room Attendant"/>
 									<f:selectItem itemLabel="Assistant Coach/Locker Room Attendant" itemValue="Assistant Coach/Locker Room Attendant"/>
-
+									<f:ajax process="@this" listener="#{coachtoteamBean.checkCoachFromDifferentClub(team)}" event="change" render="@form"  />
 								</b:selectOneMenu>
 							</b:dataTableColumn>  
 					    </b:dataTable>
@@ -104,7 +104,8 @@
 							    	<f:selectItem itemLabel="Assistant Coach" itemValue="Coach"/>
 							    	<f:selectItem itemLabel="Assistant Coach/Manager" itemValue="Assistant Coach/Manager"/>
 							    	<f:selectItem itemLabel="Manager" itemValue="Manager"/>
-							    </b:selectOneMenu>  
+									<f:ajax process="@this" listener="#{coachtoteamBean.checkCoachFromDifferentClub(team)}" event="change" render="@form"  />
+								</b:selectOneMenu>
 				            </b:dataTableColumn>
 				        </b:dataTable>
 				    </b:panelGrid>

@@ -101,7 +101,8 @@ public class coachtoteamBean implements Serializable, MailableObject {
 	private String origin = null;
 	private String currentyear = null;
 	private Team selectedteam = null;
-	
+	private String errormessage = "";
+
 	//these are used for creating the team select role tables.
 	private TeamDataModel boysteamdatamodel = null;
 	private TeamDataModel girlsteamdatamodel = null;
@@ -159,9 +160,17 @@ public class coachtoteamBean implements Serializable, MailableObject {
         
     	
     	//doing anything else right here
-    }  
-    
-    public TeamDataModel getBoysteamdatamodel(){
+    }
+
+	public String getErrormessage() {
+		return errormessage;
+	}
+
+	public void setErrormessage(String errormessage) {
+		this.errormessage = errormessage;
+	}
+
+	public TeamDataModel getBoysteamdatamodel(){
     	return boysteamdatamodel;
     }
     
@@ -1234,9 +1243,92 @@ public class coachtoteamBean implements Serializable, MailableObject {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
-	
+
+
+	public void checkCoachFromDifferentClub(Team team){
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		Integer currentteamid = Integer.parseInt(team.getIdteam());
+		Boolean donotaddplayer = false;
+		String ViolatedTeam = "";
+		try{
+
+			if (db.setAutoCommit(false)) {
+
+				//Need to store note first
+				LOGGER.info("checking if coach can be added to team :" + this.selectedcoach);
+				CallableStatement cs = db.prepareCall("CALL scaha.checkNumberofPlayersFromCoachesPriorClub(?,?)");
+				cs.setInt("incoachid", this.selectedcoach);
+				cs.setInt("inteamid",currentteamid);
+				rs = cs.executeQuery();
+				if (rs != null){
+					while (rs.next()) {
+						Integer playercount = rs.getInt("playercount");
+						Integer currentteam = rs.getInt("currentteamid");
+						if (playercount >= 3 && currentteam.equals(currentteamid)){
+							donotaddplayer = true;
+							ViolatedTeam = rs.getString("lastyearteam");
+							break;
+						}
+					}
+				}
+				cs.executeQuery();
+				cs.close();
+
+			} else {
+				//nothing to do here
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN checking coach 3 player rule " + this.selectedcoach);
+			e.printStackTrace();
+			db.rollback();
+			this.setSendingnote(false);
+			db.free();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+		if (donotaddplayer){
+			this.errormessage = "Unable to add coach, more than 3 players from " + ViolatedTeam + " have been added.";
+			team.setCoachrole("No Role");
+			try{
+
+				if (db.setAutoCommit(false)) {
+
+					//Need to store note first
+					//LOGGER.info("checking if coach can be added to team :" + this.selectedteam);
+					CallableStatement cs = db.prepareCall("CALL scaha.failedloiattempt(?,?,?,?)");
+					cs.setInt("inidperson", this.selectedcoach);
+					cs.setString("inloitype","Coach");
+					cs.setInt("inattemptingclubteamid",currentteamid);
+					cs.setString("infailedreason","CoachSwitchClub3Players");
+					cs.executeQuery();
+					cs.close();
+
+				} else {
+					//nothing to do here
+				}
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				LOGGER.info("ERROR IN insterting into failed coach table checking coach 3 player rule " + this.selectedcoach);
+				e.printStackTrace();
+				db.rollback();
+				this.setSendingnote(false);
+				db.free();
+			} finally {
+				//
+				// always clean up after yourself..
+				//
+				db.free();
+			}
+		} else {
+			this.errormessage = " ";
+		}
+	}
 	
 	
 }

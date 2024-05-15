@@ -108,6 +108,7 @@ public class loiBean implements Serializable, MailableObject {
 	private Boolean displaycounts = null;
 	private Boolean pdrrequired = null;
 	private String playerhistoryforemail = null;
+	private String errormessage = "";
 
 	//added to support covid player history for aa/aaa teams
 	private List<PlayerStat> playerhistory = null;
@@ -184,6 +185,14 @@ public class loiBean implements Serializable, MailableObject {
 	public loiBean() {  
         
     }
+
+	public String getErrormessage() {
+		return errormessage;
+	}
+
+	public void setErrormessage(String errormessage) {
+		this.errormessage = errormessage;
+	}
 
 	public List<PlayerStat> getPlayerhistory(){
 		return playerhistory;
@@ -1547,14 +1556,15 @@ public class loiBean implements Serializable, MailableObject {
 				this.selectedteam=null;
 			}
 
-
-
+			//add the check to see if 3 other players have been added if a coach has switched teams in different clubs.
+			checkCoachFromDifferentClub();
 
 		} catch (SQLException e) {
     		// TODO Auto-generated catch block
     		//LOGGER.info("ERROR IN loading club by profile");
     		e.printStackTrace();
     		db.rollback();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -2022,6 +2032,94 @@ public void getClubID(){
 
 	}
 
+	public void checkCoachFromDifferentClub(){
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		Integer currentteamid = Integer.parseInt(this.selectedteam);
+		Boolean donotaddplayer = false;
+		String ViolatedTeam = "";
+		try{
+
+			if (db.setAutoCommit(false)) {
+
+				//Need to store note first
+				LOGGER.info("checking if coach can be added to team :" + this.selectedteam);
+				CallableStatement cs = db.prepareCall("CALL scaha.checkNumberofPlayersFromCoachesPriorClubForPlayer(?,?)");
+				cs.setInt("inplayerid", this.selectedplayer);
+				cs.setInt("inteamid",currentteamid);
+				rs = cs.executeQuery();
+				if (rs != null){
+					while (rs.next()) {
+						Integer playercount = rs.getInt("playercount");
+						Integer currentteam = rs.getInt("currentteamid");
+						if (playercount >= 3 && currentteam.equals(currentteamid)){
+							donotaddplayer = true;
+							ViolatedTeam = rs.getString("lastyearteam");
+							break;
+						}
+					}
+				}
+				cs.executeQuery();
+				cs.close();
+
+			} else {
+				//nothing to do here
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN checking coach 3 player rule " + this.selectedplayer);
+			e.printStackTrace();
+			db.rollback();
+			this.setSendingnote(false);
+			db.free();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+		if (donotaddplayer){
+			this.errormessage = "Unable to add player, at least 3 players from " + ViolatedTeam + " have been added on a team where a coach switched clubs";
+			this.selectedteam="0";
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"", this.errormessage));
+			this.setDisplaycounts(false);
+
+			//add the failed attempt to the db.
+			try{
+
+				if (db.setAutoCommit(false)) {
+
+					//Need to store note first
+					//LOGGER.info("checking if coach can be added to team :" + this.selectedteam);
+					CallableStatement cs = db.prepareCall("CALL scaha.failedloiattempt(?,?,?,?)");
+					cs.setInt("inidperson", this.selectedplayer);
+					cs.setString("inloitype","Player");
+					cs.setInt("inattemptingclubteamid",currentteamid);
+					cs.setString("infailedreason","CoachSwitchClub3Players");
+					cs.executeQuery();
+					cs.close();
+
+				} else {
+					//nothing to do here
+				}
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				LOGGER.info("ERROR IN insterting into failed coach table checking coach 3 player rule " + this.selectedplayer);
+				e.printStackTrace();
+				db.rollback();
+				this.setSendingnote(false);
+				db.free();
+			} finally {
+				//
+				// always clean up after yourself..
+				//
+				db.free();
+			}
+		} else {
+			this.errormessage = " ";
+		}
+	}
 
 }
 

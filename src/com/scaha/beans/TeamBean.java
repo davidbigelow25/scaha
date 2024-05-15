@@ -222,13 +222,15 @@ public class TeamBean implements Serializable, MailableObject {
     	} catch (SQLException e) {
     		LOGGER.info("ERROR IN loading teams");
     		e.printStackTrace();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
     		//
     		db.free();
     	}
-		
+
+		db.free();
     	setDivisions(templist);
     	templist=null;
     	this.setSdivisions(sdivs.toArray(new String[sdivs.size()]));
@@ -285,13 +287,15 @@ public class TeamBean implements Serializable, MailableObject {
     		// TODO Auto-generated catch block
     		LOGGER.info("ERROR IN loading teams");
     		e.printStackTrace();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
     		//
     		db.free();
     	}
-		
+
+		db.free();
     	setSkilllevels(templist);
     	templist=null;
     	this.setSskilllevels(sdivs.toArray(new String[sdivs.size()]));
@@ -355,15 +359,16 @@ public class TeamBean implements Serializable, MailableObject {
     		// TODO Auto-generated catch block
     		LOGGER.info("ERROR IN getting new team name");
     		e.printStackTrace();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
     		//
     		db.free();
     	}
-    	
-    	
-    	
+
+
+		db.free();
     }
     
 public void resetSkillLevel(){
@@ -395,6 +400,7 @@ public void resetSkillLevel(){
     	} catch (SQLException e) {
     		LOGGER.info("ERROR IN loading teams");
     		e.printStackTrace();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -413,7 +419,7 @@ public void resetSkillLevel(){
     	this.setSelectedskilllevel(null);
     	this.setTeamname(null);
     	this.setNewteamname(null);
-    	
+		db.free();
     }
     
     private String getteamgender(){
@@ -452,13 +458,14 @@ public void resetSkillLevel(){
     		// TODO Auto-generated catch block
     		LOGGER.info("ERROR IN Searching FOR Teams for club:" + idclub);
     		e.printStackTrace();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
     		//
     		db.free();
     	}
-    	
+		db.free();
     }
     
     public void closePage(){
@@ -490,6 +497,7 @@ public void resetSkillLevel(){
     		// TODO Auto-generated catch block
     		LOGGER.info("ERROR IN loading club by profile");
     		e.printStackTrace();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -497,6 +505,7 @@ public void resetSkillLevel(){
     		db.free();
     	}
 
+		db.free();
     }
 	
     public void isClubHighSchool(){
@@ -523,12 +532,14 @@ public void resetSkillLevel(){
 	    		// TODO Auto-generated catch block
 	    		LOGGER.info("ERROR IN loading club by profile");
 	    		e.printStackTrace();
+				db.free();
 	    	} finally {
 	    		//
 	    		// always clean up after yourself..
 	    		//
 	    		db.free();
 	    	}
+		db.free();
 	}
 
     
@@ -760,6 +771,7 @@ public void resetSkillLevel(){
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+			db.free();
 		}
 		
 		for (ScahaTeam t : MyTeamList) {
@@ -773,6 +785,7 @@ public void resetSkillLevel(){
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				db.free();
 				break;
 			}
 		}
@@ -846,6 +859,7 @@ public void resetSkillLevel(){
     			}
     				
     			db.cleanup();
+				db.free();
     		} else {
 
     		}
@@ -855,14 +869,15 @@ public void resetSkillLevel(){
     		LOGGER.info("ERROR IN Searching FOR scoresheets for a team");
     		e.printStackTrace();
     		db.rollback();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
     		//
     		db.free();
     	}
-    	
-    	
+
+		db.free();
     	setGames(tempresult);
     	
 	}
@@ -928,6 +943,7 @@ public void resetSkillLevel(){
 			LOGGER.info("ERROR IN loading pdr");
 			e.printStackTrace();
 			db.rollback();
+			db.free();
 		} finally {
 			//
 			// always clean up after yourself..
@@ -937,6 +953,7 @@ public void resetSkillLevel(){
 
 		this.setTeams(tempresult);
 		tempresult=null;
+		db.free();
 }
 
 public List<BlockRecruitment> Blockrecruitmentforteam(Team te) {
@@ -983,6 +1000,7 @@ public List<BlockRecruitment> Blockrecruitmentforteam(Team te) {
 		LOGGER.info("ERROR IN loading pdr");
 		e.printStackTrace();
 		db.rollback();
+		db.free();
 	} finally {
 		//
 		// always clean up after yourself..
@@ -990,6 +1008,7 @@ public List<BlockRecruitment> Blockrecruitmentforteam(Team te) {
 		db.free();
 	}
 
+	db.free();
 	return tempresult;
 
 	}

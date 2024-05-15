@@ -81,6 +81,11 @@
 						<h:outputText value="SCAHA LETTER OF INTENT AND MEMBERSHIP REGISTRATION #{loiBean.getCurrentyear()}" />
 					</f:facet>
 					<b:panelGrid colSpans="3,3,3,3" id="loimain" style="padding: 5;">
+						<!--<h:outputText style="font-weight: bold;color: red;" value="#{loiBean.getErrormessage()}"/>-->
+						<h:outputText style="font-weight: bold;color: red;" value=" "/>
+						<h:outputText style="font-weight: bold;color: red;" value=" "/>
+						<h:outputText style="font-weight: bold;color: red;" value=" "/>
+						<h:outputText style="font-weight: bold;color: red;" value=" "/>
 						<h:outputText style="font-weight: bold;" value="#{loiBean.getCurrentyear()} Club:"/>
 						<b:inputText disabled="true" value="#{loiBean.getClubName()}" 
 							large-screen="full-width"

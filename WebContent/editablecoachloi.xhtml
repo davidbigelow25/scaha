@@ -48,7 +48,7 @@ $(document).ready(function() {
 	    					tiny-screen="full-width"
 						/>
 						<h:outputText style="font-weight: bold;" value=" "/>
-						<h:outputText style="font-weight: bold;" value=" "/>
+						<h:outputText style="font-weight: bold;color: red;" value="#{coachloiBean.getErrormessage()}"/>
 						<h:outputText style="font-weight: bold;" value="#{coachloiBean.getCurrentyear()} Boys Team(s):"/>
 						<b:dataTable 
 							id="boysteamsgrid" 
@@ -71,7 +71,7 @@ $(document).ready(function() {
 					            <f:facet name="header">
 							        Role
 							    </f:facet>
-								<b:selectOneMenu  style="width: 100%;" value="#{team.coachrole}">
+								<b:selectOneMenu  style="width: 100%;" value="#{team.coachrole}" >
 							    	<f:selectItem itemLabel="No Role" itemValue="No Role"/>
 							    	<f:selectItem itemLabel="Head Coach" itemValue="Head Coach"/>
 							    	<f:selectItem itemLabel="Assistant Coach" itemValue="Coach"/>
@@ -80,9 +80,9 @@ $(document).ready(function() {
 							    	<f:selectItem itemLabel="Manager" itemValue="Manager"/>
 									<f:selectItem itemLabel="Manager/Locker Room Attendant" itemValue="Manager/Locker Room Attendant"/>
 									<f:selectItem itemLabel="Assistant Coach/Locker Room Attendant" itemValue="Assistant Coach/Locker Room Attendant"/>
-
+									<f:ajax process="@this" listener="#{coachloiBean.checkCoachFromDifferentClub(team)}" event="change" render="@form"  />
 								</b:selectOneMenu>
-							</b:dataTableColumn>  
+							</b:dataTableColumn>
 					    </b:dataTable>
 						<h:outputText style="font-weight: bold;" value="#{coachloiBean.getCurrentyear()} Girls Team(s):" />
 					    <b:dataTable 
@@ -110,6 +110,7 @@ $(document).ready(function() {
 							    	<f:selectItem itemLabel="Assistant Coach" itemValue="Coach"/>
 							    	<f:selectItem itemLabel="Assistant Coach/Manager" itemValue="Assistant Coach/Manager"/>
 							    	<f:selectItem itemLabel="Manager" itemValue="Manager"/>
+									<f:ajax process="@this" listener="#{coachloiBean.checkCoachFromDifferentClub(team)}" event="change" render="@form"  />
 							    </b:selectOneMenu>  
 				            </b:dataTableColumn>
 				        </b:dataTable>

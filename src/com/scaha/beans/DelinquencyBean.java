@@ -199,6 +199,7 @@ public class DelinquencyBean implements Serializable {
     		// TODO Auto-generated catch block
     		LOGGER.info("ERROR IN Searching FOR delinquency list");
     		e.printStackTrace();
+			db.free();
     	} finally {
     		
     		db.free();
@@ -206,7 +207,8 @@ public class DelinquencyBean implements Serializable {
     	
     	setPlayerlist(new PlayerDataModel(tempresult));
     	tempresult = null;
-    	LOGGER.info("scaha view delinquency list");
+		db.free();
+    	//LOGGER.info("scaha view delinquency list");
     }
 
     public void clubplayersDisplay(){
@@ -255,13 +257,15 @@ public class DelinquencyBean implements Serializable {
     		// TODO Auto-generated catch block
     		LOGGER.info("ERROR IN Searching FOR delinquency list");
     		e.printStackTrace();
+			db.free();
     	} finally {
     		db.free();
     	}
     	
     	setClubplayerlist(new PlayerDataModel(tempresult));
     	tempresult=null;
-    	LOGGER.info("club view delinquency list");
+		db.free();
+    	//LOGGER.info("club view delinquency list");
     }
     public void closePage(){
     	FacesContext context = FacesContext.getCurrentInstance();
@@ -291,17 +295,18 @@ public class DelinquencyBean implements Serializable {
 		
 		try{
 
-			LOGGER.info("update player in delinquency list");
+			//LOGGER.info("update player in delinquency list");
 			CallableStatement cs = db.prepareCall("CALL scaha.removeDelinquency(?)");
 		    cs.setInt("iplayerid", Integer.parseInt(sidplayer));
 		    cs.executeUpdate();
-			LOGGER.info("We are remove the delinquency for player id:" + sidplayer);
+			//LOGGER.info("We are remove the delinquency for player id:" + sidplayer);
 		    cs.close();
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			LOGGER.info("ERROR IN removing the delinquency for " + this.selectedplayer);
 			e.printStackTrace();
+			db.free();
 		} finally {
 			//
 			// always clean up after yourself..
@@ -314,8 +319,9 @@ public class DelinquencyBean implements Serializable {
 		pl.remove(selectedplayer);
 		FacesContext context = FacesContext.getCurrentInstance();  
         context.addMessage(null, new FacesMessage("Successful", "You have removed the delinquency for: " + playname));
+		db.free();
 		//playersDisplay();
-        LOGGER.info("remove delinquency");
+        //LOGGER.info("remove delinquency");
 	}
     
     public void displayLongList(){
