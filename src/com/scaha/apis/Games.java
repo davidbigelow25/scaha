@@ -111,6 +111,7 @@ public class Games extends HttpServlet {
             /*LOGGER.info("ERROR IN getting suspension list");*/
             e.printStackTrace();
             db.rollback();
+            db.free();
         } finally {
             //
             // always clean up after yourself..

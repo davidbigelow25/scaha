@@ -84,6 +84,7 @@ public class cahabullyingbean implements Serializable{
     		LOGGER.info("ERROR IN process bullying records");
     		e.printStackTrace();
     		db.rollback();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -136,6 +137,7 @@ public class cahabullyingbean implements Serializable{
 			LOGGER.info("ERROR IN loading processed bullying");
 			e.printStackTrace();
 			db.rollback();
+			db.free();
 		} finally {
 			//
 			// always clean up after yourself..
@@ -205,6 +207,7 @@ public class cahabullyingbean implements Serializable{
 			LOGGER.info("ERROR IN loading bullying errors with issues");
 			e.printStackTrace();
 			db.rollback();
+			db.free();
 		} finally {
 			//
 			// always clean up after yourself..
@@ -237,6 +240,7 @@ public class cahabullyingbean implements Serializable{
 			LOGGER.info("ERROR IN process bullying records");
 			e.printStackTrace();
 			db.rollback();
+			db.free();
 		} finally {
 			//
 			// always clean up after yourself..

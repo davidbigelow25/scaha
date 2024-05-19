@@ -156,14 +156,14 @@ public class ClubBean implements Serializable,  MailableObject {
 		boolean bstream = true;
 		FacesContext context = FacesContext.getCurrentInstance();
 		
-		LOGGER.info("getClub Logo Club is" + _cl);
+		//LOGGER.info("getClub Logo Club is" + _cl);
 		if (_cl == null) {
 			bstream = false;
 		} else 	if (_cl.getLogo() == null) {
-			LOGGER.info("getClub for " + _cl + " get Logo returned null...");
+			//LOGGER.info("getClub for " + _cl + " get Logo returned null...");
 			bstream = false;
 		} else if (_cl.getLogo().getMmObject() == null) {
-			LOGGER.info("getClub for " + _cl + " not mm object.. its null...");
+			//LOGGER.info("getClub for " + _cl + " not mm object.. its null...");
 			bstream = false;
 		} else { 
 			
@@ -172,19 +172,19 @@ public class ClubBean implements Serializable,  MailableObject {
 		}
 		if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
 		    // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
-			LOGGER.info("we are just rendering an empty response.. ");
+			//LOGGER.info("we are just rendering an empty response.. ");
 			return  new DefaultStreamedContent();
 			
 		} else {
 
 			if (bstream) {
-				LOGGER.info("We are going for " + _cl + "'s logo vis getSteamedContent()");
+				//LOGGER.info("We are going for " + _cl + "'s logo vis getSteamedContent()");
 				return _cl.getLogo().getStreamedContent();
 			}
             
 			try {
 
-			LOGGER.info("we cannot stream.. so lets stream a default image.... ");
+			//LOGGER.info("we cannot stream.. so lets stream a default image.... ");
 
 			//
 			// ok.. through some text up as a defaul ..

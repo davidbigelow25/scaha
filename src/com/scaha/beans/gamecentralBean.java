@@ -765,7 +765,7 @@ public class gamecentralBean implements Serializable{
 			rs.close();
 			cs.close();
 			db.cleanup();
-    		
+    		db.free();
 			
 		
     		
@@ -773,6 +773,7 @@ public class gamecentralBean implements Serializable{
     		// TODO Auto-generated catch block
     		LOGGER.info("ERROR IN retrieving selected date for schedule" + selectedschedule);
     		e.printStackTrace();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -954,7 +955,7 @@ public class gamecentralBean implements Serializable{
 			rs.close();
 			cs.close();
 			db.cleanup();
-    		
+    		db.free();
 			
 		
     		
@@ -962,6 +963,7 @@ public class gamecentralBean implements Serializable{
     		// TODO Auto-generated catch block
     		LOGGER.info("ERROR IN retrieving selected date for schedule" + selectedschedule);
     		e.printStackTrace();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -997,6 +999,7 @@ public class gamecentralBean implements Serializable{
 			rs.close();
 			cs.close();
 			db.cleanup();
+			db.free();
     		
 			if (gamedate==null){
 				this.setSelecteddate(date);
@@ -1009,6 +1012,7 @@ public class gamecentralBean implements Serializable{
     		// TODO Auto-generated catch block
     		LOGGER.info("ERROR IN retrieving selected date for schedule" + selectedschedule);
     		e.printStackTrace();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -1294,7 +1298,7 @@ public class gamecentralBean implements Serializable{
 			rs.close();
 			cs.close();
 			db.cleanup();
-    		
+    		db.free();
 			
 		
     		
@@ -1302,6 +1306,7 @@ public class gamecentralBean implements Serializable{
     		// TODO Auto-generated catch block
     		LOGGER.info("ERROR IN retrieving selected date for schedule" + selectedschedule);
     		e.printStackTrace();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..

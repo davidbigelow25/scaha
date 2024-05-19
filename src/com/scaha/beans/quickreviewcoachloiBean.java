@@ -301,6 +301,7 @@ public class quickreviewcoachloiBean implements Serializable {
     			}
     			rs.close();
     			db.cleanup();
+				db.free();
     		} else {
     		
     		}
@@ -309,6 +310,7 @@ public class quickreviewcoachloiBean implements Serializable {
     		LOGGER.info("ERROR IN loading teams");
     		e.printStackTrace();
     		db.rollback();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..

@@ -178,11 +178,12 @@ public class managerosterBean implements Serializable {
 				csinner.close();
 			}
 			db.cleanup();
-    		
+    		db.free();
     	} catch (SQLException e) {
     		// TODO Auto-generated catch block
     		LOGGER.info("ERROR IN loading teams");
     		e.printStackTrace();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..

@@ -278,6 +278,7 @@ public class reviewscahagamesBean implements Serializable, MailableObject{
     		LOGGER.info("ERROR IN getting scaha games schedule for review by statistician for schedule:" + this.selectedschedule);
     		e.printStackTrace();
     		db.rollback();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -459,6 +460,7 @@ public class reviewscahagamesBean implements Serializable, MailableObject{
 			LOGGER.info("ERROR IN getting scaha games no reporting for review by statistician");
 			e.printStackTrace();
 			db.rollback();
+			db.free();
 		} finally {
 			//
 			// always clean up after yourself..
@@ -579,6 +581,7 @@ public class reviewscahagamesBean implements Serializable, MailableObject{
 			LOGGER.info("ERROR IN getting scaha games no reporting for review by statistician");
 			e.printStackTrace();
 			db.rollback();
+			db.free();
 		} finally {
 			//
 			// always clean up after yourself..

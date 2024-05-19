@@ -139,12 +139,14 @@ public class coachlinksBean implements Serializable {
 			}
 			
 			db.cleanup();
+			db.free();
     		
     	} catch (SQLException e) {
     		// TODO Auto-generated catch block
     		LOGGER.info("ERROR IN getting coacing link list");
     		e.printStackTrace();
     		db.rollback();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..

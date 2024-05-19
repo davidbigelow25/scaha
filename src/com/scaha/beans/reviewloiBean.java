@@ -422,6 +422,7 @@ public class reviewloiBean implements Serializable, MailableObject {
     			}
     			rs.close();
     			db.cleanup();
+				db.free();
     		} else {
     		
     		}
@@ -430,6 +431,7 @@ public class reviewloiBean implements Serializable, MailableObject {
     		LOGGER.info("ERROR IN loading teams");
     		e.printStackTrace();
     		db.rollback();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..

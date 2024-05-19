@@ -65,6 +65,7 @@ public class CalendarBean implements Serializable{
     				templist.add(ci);
 				}
 				LOGGER.info("We have results for calendar list");
+				db.free();
 			}
    			rs.close();
    			db.cleanup();
@@ -72,6 +73,7 @@ public class CalendarBean implements Serializable{
     		// TODO Auto-generated catch block
     		LOGGER.info("ERROR IN loading calendar");
     		e.printStackTrace();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..

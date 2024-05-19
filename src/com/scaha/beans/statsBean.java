@@ -410,6 +410,7 @@ public class statsBean implements Serializable{
     		LOGGER.info("ERROR IN loading clubs");
     		e.printStackTrace();
     		db.rollback();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..

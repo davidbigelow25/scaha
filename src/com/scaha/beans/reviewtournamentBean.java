@@ -317,6 +317,7 @@ public class reviewtournamentBean implements Serializable, MailableObject{
 			LOGGER.info("ERROR IN getting tournaments without scoresheets");
 			e.printStackTrace();
 			db.rollback();
+			db.free();
 		} finally {
 			//
 			// always clean up after yourself..

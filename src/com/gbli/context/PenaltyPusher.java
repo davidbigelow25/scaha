@@ -146,10 +146,12 @@ public class PenaltyPusher  implements Serializable,  MailableObject {
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			
+			db.free();
+
 		}finally {db.free();}
-		//db.free();
-		
+
+		db.free();
+
 		return data.toArray(new InternetAddress[data.size()]);
 	}
 

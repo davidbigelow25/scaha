@@ -342,6 +342,7 @@ public class bcloiBean implements Serializable, MailableObject {
     		LOGGER.info("ERROR IN Searching FOR bc Lois for search criteria:" + this.searchcriteria);
     		e.printStackTrace();
     		db.rollback();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -481,6 +482,7 @@ public class bcloiBean implements Serializable, MailableObject {
 			LOGGER.info("ERROR IN LOI Generation Process" + this.selectedplayer);
 			e.printStackTrace();
 			db.rollback();
+			db.free();
 		} finally {
 			//
 			// always clean up after yourself..
@@ -534,6 +536,7 @@ public class bcloiBean implements Serializable, MailableObject {
 			LOGGER.info("ERROR IN Confirming player id " + sidplayer);
 			e.printStackTrace();
 			db.rollback();
+			db.free();
 		} finally {
 			//
 			// always clean up after yourself..
@@ -584,6 +587,7 @@ public class bcloiBean implements Serializable, MailableObject {
 				LOGGER.info("ERROR IN Confirming player id " + sidplayer.toString());
 				e.printStackTrace();
 				db.rollback();
+				db.free();
 			} finally {
 				//
 				// always clean up after yourself..
@@ -646,6 +650,7 @@ public class bcloiBean implements Serializable, MailableObject {
     		// TODO nnfo("ERROR IN loading club by profile");
     		e.printStackTrace();
     		db.rollback();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -688,6 +693,7 @@ public class bcloiBean implements Serializable, MailableObject {
 			LOGGER.info("ERROR IN Confirming player id " + sidplayer);
 			e.printStackTrace();
 			db.rollback();
+			db.free();
 		} finally {
 			//
 			// always clean up after yourself..
@@ -748,6 +754,7 @@ public class bcloiBean implements Serializable, MailableObject {
 			LOGGER.info("ERROR IN LOI Generation Process" + this.selectedplayer);
 			e.printStackTrace();
 			db.rollback();
+			db.free();
 		} finally {
 			//
 			// always clean up after yourself..
@@ -804,6 +811,7 @@ public class bcloiBean implements Serializable, MailableObject {
 			LOGGER.info("ERROR IN LOI Generation Process" + this.selectedplayer);
 			e.printStackTrace();
 			db.rollback();
+			db.free();
 		} finally {
 			//
 			// always clean up after yourself..
