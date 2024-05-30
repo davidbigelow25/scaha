@@ -72,7 +72,7 @@ public class Profile extends ScahaObject {
 				this.getScahamanager().ismanager = true;
 			}
 			if (this.hasRoleList("C-REG",this)) {
-				this.setManagerteams(getClubteams(getClubID()));
+				this.setManagerteams(getClubteams(getClubIDForRegistrar()));
 			}else {
 					this.setManagerteams((this.getScahamanager().getManagerteams(this.ID)));
 			}
@@ -394,6 +394,36 @@ public class Profile extends ScahaObject {
 			Vector<Integer> v = new Vector<Integer>();
 			v.add(this.ID);
 			db.getData("CALL scaha.getclubformanager(?)", v);
+			ResultSet rs = db.getResultSet();
+			while (rs.next()) {
+				clubid = rs.getInt("idclub");
+			}
+			rs.close();
+			LOGGER.info("We have results for club for a profile");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN loading club by profile");
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+		return clubid;
+	}
+
+	public Integer getClubIDForRegistrar(){
+
+		//first lets get club id for the logged in profile
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		Integer clubid = 0;
+		try{
+			Vector<Integer> v = new Vector<Integer>();
+			v.add(this.ID);
+			db.getData("CALL scaha.getclubforregistrar(?)", v);
 			ResultSet rs = db.getResultSet();
 			while (rs.next()) {
 				clubid = rs.getInt("idclub");
