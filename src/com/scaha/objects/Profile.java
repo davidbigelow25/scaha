@@ -40,7 +40,7 @@ public class Profile extends ScahaObject {
 	private boolean SuperUser = false;
 	private Integer managerteamid = null;
 	private List<Team> managerteams = null;
-
+	private Integer clubid = 0;
 
 
 	public Profile (int _id, ScahaDatabase _db, String _sNN, String _sUser, String _sPass, boolean _getActionRoles) {
@@ -72,7 +72,9 @@ public class Profile extends ScahaObject {
 				this.getScahamanager().ismanager = true;
 			}
 			if (this.hasRoleList("C-REG",this)) {
-				this.setManagerteams(getClubteams(getClubIDForRegistrar()));
+				this.setClubid(getClubIDForRegistrar());
+				this.setManagerteams(getClubteams(this.getClubid()));
+
 			}else {
 					this.setManagerteams((this.getScahamanager().getManagerteams(this.ID)));
 			}
@@ -161,8 +163,10 @@ public class Profile extends ScahaObject {
 		} catch (SQLException ex) {
 				ex.printStackTrace();
 				db.cleanup();
+				db.free();
 		} finally {
 			db.cleanup();
+			db.free();
 		}
 		
 		// Lets generate the profile
@@ -281,7 +285,7 @@ public class Profile extends ScahaObject {
 		this.ID = cs.getInt(7);
 		cs.close();
 		
-		
+		db.free();
 
 	}
 	
@@ -375,6 +379,7 @@ public class Profile extends ScahaObject {
 			LOGGER.info("ERROR IN loading club by profile");
 			e.printStackTrace();
 			db.rollback();
+			db.free();
 		} finally {
 			//
 			// always clean up after yourself..
@@ -405,6 +410,7 @@ public class Profile extends ScahaObject {
 			LOGGER.info("ERROR IN loading club by profile");
 			e.printStackTrace();
 			db.rollback();
+			db.free();
 		} finally {
 			//
 			// always clean up after yourself..
@@ -435,6 +441,7 @@ public class Profile extends ScahaObject {
 			LOGGER.info("ERROR IN loading club by profile");
 			e.printStackTrace();
 			db.rollback();
+			db.free();
 		} finally {
 			//
 			// always clean up after yourself..
@@ -443,6 +450,14 @@ public class Profile extends ScahaObject {
 		}
 
 		return clubid;
+	}
+
+	public Integer getClubid() {
+		return clubid;
+	}
+
+	public void setClubid(Integer clubid) {
+		this.clubid = clubid;
 	}
 }
 

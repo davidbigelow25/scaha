@@ -2041,7 +2041,8 @@ public void getClubID(){
 
 			if (db.setAutoCommit(false)) {
 
-				//Need to store note first
+				//Need to check if number of players exceeds 3 if one of the coaches came from another club.
+				//if nothing is returned then all good to add the player
 				LOGGER.info("checking if coach can be added to team :" + this.selectedteam);
 				CallableStatement cs = db.prepareCall("CALL scaha.checkNumberofPlayersFromCoachesPriorClubForPlayer(?,?)");
 				cs.setInt("inplayerid", this.selectedplayer);

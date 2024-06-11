@@ -110,6 +110,9 @@ public class processusahockeyuploadBean implements Serializable,  MailableObject
 				try{
 					//check to see if it's the header row, if so don't insert headers//
 					if (y!=0){
+						//now submit all of the data to the stored procedure.  The sp will log to the log table,
+						// then create a record in the matching loi record table or a record in no matching loi table
+						//
 						CallableStatement cs = db.prepareCall("CALL scaha.logto_usahockeyrosterimportlog(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
 						for (String value : linearr) {

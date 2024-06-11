@@ -146,7 +146,11 @@ public class managerBean implements Serializable, MailableObject {
         
         this.setProfid(pb.getProfile().ID);
         this.setPb(pb);
-        getClubID();
+		if (this.getPb().getProfile().hasRoleList("C-REG",this.getPb().getProfile())){
+			this.idclub=getPb().getProfile().getClubid();
+		}else{
+			getClubID();
+		}
         //isClubHighSchool();
     	setTodaysDate();
     	setAddingflags();

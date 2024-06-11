@@ -462,7 +462,7 @@ public class ProfileBean implements Serializable,  MailableObject  {
 	    			ex.printStackTrace();
 	    			db.free();
 	    		}
-	    		
+				db.free();
 	    		if (pro.getScahamanager().getIsmanager()){
 	    			FacesContext context = FacesContext.getCurrentInstance();
 	    			//this.origin = ((HttpServletRequest)context.getExternalContext().getRequest()).getRequestURL().toString();
@@ -480,7 +480,7 @@ public class ProfileBean implements Serializable,  MailableObject  {
 
     			// blank out the password
     			live_password = null;
-    			
+
 	    					
     		}
 		} catch (IOException e) {
