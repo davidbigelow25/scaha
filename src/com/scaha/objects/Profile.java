@@ -44,7 +44,7 @@ public class Profile extends ScahaObject {
 
 
 	public Profile (int _id, ScahaDatabase _db, String _sNN, String _sUser, String _sPass, boolean _getActionRoles) {
-		
+		LOGGER.info("setting profile" + _sUser);
 		this.ID = _id;
 		m_sNickName = _sNN;
 		m_sUser = _sUser;
@@ -52,40 +52,55 @@ public class Profile extends ScahaObject {
 
 		
 		try {
-
+			LOGGER.info("getting new person" + _sUser);
 			// Lets get the Person...
 			m_per = new Person(_db, this);
-			
+			LOGGER.info("finished new person" + _sUser);
+			LOGGER.info("checking action roles" + _sUser);
 			if (_getActionRoles) {
 				// Lets get the action List...
+				LOGGER.info("starting new action list" + _sUser);
 				m_al = new ActionList(this);   // needs to use passed db connection...      
 				// What roles do they have ?  Non hierarchical
+				LOGGER.info("finished new action list" + _sUser);
+				LOGGER.info("starting role collection" + _sUser);
 				m_rc = new RoleCollection(_db, this);
+				LOGGER.info("finishing role collection" + _sUser);
 			}
 
 
 			//need to instantiate the scahamanager class to be used by when the manager is working on the managerportal
 			//need to check if they are a register, if so set them up as manager as well.
+			LOGGER.info("setting scaha manager" + _sUser);
 			this.setScahamanager(new ScahaManager(this));
+			LOGGER.info("finished setting scaha manager, setting manager team id" + _sUser);
 			this.setManagerteamid(this.getScahamanager().getManagerteamid(this.ID));
+			LOGGER.info("finished setting manager team id, checking role list for c-reg" + _sUser);
 			if (this.hasRoleList("C-REG",this)){
+				LOGGER.info("is c-reg setting is manager" + _sUser);
 				this.getScahamanager().ismanager = true;
+				LOGGER.info("finished setting c-reg to manager" + _sUser);
 			}
+			LOGGER.info("checking if role list again for c-reg" + _sUser);
 			if (this.hasRoleList("C-REG",this)) {
+				LOGGER.info("getting club id for registrar" + _sUser);
 				this.setClubid(getClubIDForRegistrar());
+				LOGGER.info("getting club teams for registrar to set to manager" + _sUser);
 				this.setManagerteams(getClubteams(this.getClubid()));
 
 			}else {
+				LOGGER.info("setting manager teams" + _sUser);
 					this.setManagerteams((this.getScahamanager().getManagerteams(this.ID)));
 			}
 			//this.setScahamanager(new ScahaManager(this));
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			LOGGER.info("error in setting profile" + _sUser + e.toString());
 			e.printStackTrace();
 			_db.cleanup();
 		}
-
+		LOGGER.info("settting db object to cleanup and free" + _sUser);
 		_db.cleanup();
 		_db.free();
 	}
@@ -139,8 +154,11 @@ public class Profile extends ScahaObject {
 		//
 		// get an iSiteDatabase Connection..
 		//
+		LOGGER.info("starting profile verify routine instantiating db" + _sUser);
+
 		ScahaDatabase db = (ScahaDatabase)ContextManager.getDatabase("ScahaDatabase");
-		
+
+
 		ResultSet rs = null;
 		Profile prof = null;
 		boolean bgood = false;
@@ -151,9 +169,11 @@ public class Profile extends ScahaObject {
 		int id  = -1;
 		String sNickName = null;
 		try {
+			LOGGER.info("calling db.verify sp" + _sUser);
 			if (db.verify(_sUser, _sPass)) {
 				rs = db.getResultSet();
 				if (rs.next()) {
+					LOGGER.info("iterating thru result set of db.verify" +_sUser);
 					id = rs.getInt(1);
 					sNickName = rs.getString(2);
 					bgood = true;
@@ -161,23 +181,29 @@ public class Profile extends ScahaObject {
 			}
 		
 		} catch (SQLException ex) {
+			LOGGER.info("errored in db.verify call" + _sUser + ex.toString());
 				ex.printStackTrace();
 				db.cleanup();
 				db.free();
 		} finally {
 			db.cleanup();
 			db.free();
+			LOGGER.info("finishing db verify" + _sUser);
 		}
 		
 		// Lets generate the profile
 		//
-		
+		LOGGER.info("checking if we have profile" + _sUser);
 		if (bgood) {
+			LOGGER.info("instantiating profile object" + _sUser);
 			prof =  new Profile (id, db, sNickName, _sUser, _sPass, true);
+			LOGGER.info("finished instantiating profile" + _sUser);
+			LOGGER.info("starting db.setprofile" + _sUser);
 			db.setProfile(prof);
-			//LOGGER.info("Login was successful for " + prof);
-		} 
-		
+			LOGGER.info("finished db.setprofile" + _sUser);
+
+		}
+		LOGGER.info("setting db.free" + _sUser);
 		db.free();
 		return prof;
 				
@@ -360,23 +386,27 @@ public class Profile extends ScahaObject {
 	public List<Team> getClubteams(Integer clubid){
 		//first lets get club id for the logged in profile
 		List<Team> data = new ArrayList<Team>();
-
+		LOGGER.info("starting getclubteams");
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 		try{
+			LOGGER.info("starting getteamsbyclubid");
 			Vector<Integer> v = new Vector<Integer>();
 			v.add(clubid);
 			db.getData("CALL scaha.getTeamsbyClubId(?)", v);
 			ResultSet rs = db.getResultSet();
+			LOGGER.info("iterating thru the teams");
 			while (rs.next()) {
 				Team tm = new Team(rs.getString("teamname"),rs.getString("idteams"));
 				data.add(tm);
+				tm = null;
 			}
 
 			rs.close();
-			LOGGER.info("We have results for club for a profile");
+			rs = null;
+			LOGGER.info("We have results for teams for a club");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			LOGGER.info("ERROR IN loading club by profile");
+			LOGGER.info("ERROR IN loading teams for a club" + e.toString());
 			e.printStackTrace();
 			db.rollback();
 			db.free();
@@ -385,6 +415,7 @@ public class Profile extends ScahaObject {
 			// always clean up after yourself..
 			//
 			db.free();
+			LOGGER.info("finishing loading teams for a club");
 		}
 
 		return data;
@@ -422,23 +453,26 @@ public class Profile extends ScahaObject {
 	}
 
 	public Integer getClubIDForRegistrar(){
-
+		LOGGER.info("starting gettting club id for registrar");
 		//first lets get club id for the logged in profile
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 		Integer clubid = 0;
 		try{
+			LOGGER.info("calling getclubforregistrar");
 			Vector<Integer> v = new Vector<Integer>();
 			v.add(this.ID);
 			db.getData("CALL scaha.getclubforregistrar(?)", v);
 			ResultSet rs = db.getResultSet();
+			LOGGER.info("iterating thru roleset");
 			while (rs.next()) {
 				clubid = rs.getInt("idclub");
 			}
 			rs.close();
-			LOGGER.info("We have results for club for a profile");
+			rs = null;
+			LOGGER.info("finishing get club for registrar");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			LOGGER.info("ERROR IN loading club by profile");
+			LOGGER.info("ERROR IN loading club for registrar" + e.toString());
 			e.printStackTrace();
 			db.rollback();
 			db.free();
@@ -448,6 +482,7 @@ public class Profile extends ScahaObject {
 			//
 			db.free();
 		}
+		LOGGER.info("finished get club for registrar");
 
 		return clubid;
 	}

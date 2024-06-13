@@ -33,7 +33,19 @@
 					<b:panelGrid colSpans="12">
 							You have completed <b><h:outputText value="#{quickreviewloiBean.getCompletedLoiCount()}" /></b> Player Loi's out of <b><h:outputText value="#{quickreviewloiBean.getTotalLoiCount()}" /></b> Total Loi's
 					</b:panelGrid>
-					<b:dataTable 
+
+					<!--<b:selectOneMenu value="#{quickreviewloiBean.profileid}" onchange="ajax:quickreviewloiBean.playersDisplay()" update="@form"
+									 large-screen="one-fourth"
+									 medium-screen="one-fourth"
+									 small-screen="one-fourth"
+									 tiny-screen="one-fourth"
+					>
+						<f:selectItem itemLabel="All" itemValue="0"/>
+						<f:selectItem itemLabel="Justin" itemValue="16415"/>
+						<f:selectItem itemLabel="Wendy" itemValue="5146"/>
+					</b:selectOneMenu>-->
+
+				<b:dataTable
 						id="listofplayers" 
 						var="player"
 						value="#{quickreviewloiBean.getPlayerdatamodel()}"

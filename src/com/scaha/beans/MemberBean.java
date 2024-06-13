@@ -862,7 +862,7 @@ public class MemberBean implements Serializable, MailableObject {
 	
 
 	public void registrationwizard(String nextstep){
-		
+		LOGGER.info("registration wizard" + nextstep);
 		if (nextstep.equals("usahockeynumber")) {
         	//set panel display variables
 			displayusanumber = true;
@@ -877,12 +877,14 @@ public class MemberBean implements Serializable, MailableObject {
 			displayseasonpass = false;
         	
 			//lets go out, get the info from usahockey and do our thing.  then we will display the results
+			LOGGER.info("calling fetchusahockey" + nextstep);
 			if (this.fetchUSAHockey()) {
         		
         		//
         		// ok.. lets also load the players here.. if only ONE hit comes back.. we fast forward to the end.. no need to worrry..
         		//
-    			// 
+    			//
+				LOGGER.info("registration wizard getting persons list" + nextstep);
     			this.Persons = this.genPersonsList();
     			this.membertype = new ArrayList<String>();
     			this.relationship = "";
@@ -916,6 +918,7 @@ public class MemberBean implements Serializable, MailableObject {
 			displayselectrole = true;
 			displayseasonpass = false;
 
+			LOGGER.info("registration wizard generating persons list" + nextstep);
 			this.genPersonsList();
 			//if (selectedPerson.getGenatt().get("ISPLAYER").equals("Y") && selectedPerson.getGenatt().get("ISGOALIE").equals("Y")) this.playergoalie=true;
 			//if (selectedPerson.getGenatt().get("ISPLAYER").equals("Y") && !selectedPerson.getGenatt().get("ISGOALIE").equals("Y")) this.playerskater=true;
@@ -930,7 +933,7 @@ public class MemberBean implements Serializable, MailableObject {
 			displayselectmember = false;
 			displayselectrole = false;
 			displayseasonpass = true;
-			
+			LOGGER.info("creating member" + nextstep);
 			createMember();
 			
         } else if (nextstep.equals("leavewizard")){
@@ -938,7 +941,7 @@ public class MemberBean implements Serializable, MailableObject {
 			displayselectmember = false;
 			displayselectrole = false;
 			displayseasonpass = false;
-		
+			LOGGER.info("registration wizard finishing up the wizard" + nextstep);
 			FacesContext context = FacesContext.getCurrentInstance();
 			try{
 				context.getExternalContext().redirect("Welcome.xhtml");

@@ -12,6 +12,9 @@ import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,7 +29,6 @@ import com.scaha.objects.CoachDataModel;
 
 
 //import com.gbli.common.SendMailSSL;
-
 
 public class quickreviewloiBean implements Serializable {
 
@@ -46,14 +48,17 @@ public class quickreviewloiBean implements Serializable {
 	private Integer rosteridforconfirm = null;
 	private String completedloicount = null;
 	private String totalloicount = null;
-	
- 	@PostConstruct
+	private Integer profileid = null;
+
+
+	@PostConstruct
     public void init() {
 		players = new ArrayList<Coach>();
         PlayerDataModel = new CoachDataModel(players);
         this.setSelectedtabledisplay("1");
-        
-        //this loads the number of completed and total number of lois to be done.
+		this.setProfileid(0);
+
+		//this loads the number of completed and total number of lois to be done.
         loadLoiCounts();
         
         //this loads the 10 oldest loi's needing confirmation.
@@ -62,9 +67,17 @@ public class quickreviewloiBean implements Serializable {
 	
     public quickreviewloiBean() {  
          
-    }  
-    
-    public String getCompletedLoiCount(){
+    }
+
+	public Integer getProfileid() {
+		return profileid;
+	}
+
+	public void setProfileid(Integer profileid) {
+		this.profileid = profileid;
+	}
+
+	public String getCompletedLoiCount(){
     	return completedloicount;
     }
     
@@ -147,8 +160,9 @@ public class quickreviewloiBean implements Serializable {
     	try{
 
     		if (db.setAutoCommit(false)) {
-    			
-				CallableStatement cs = db.prepareCall("CALL scaha.getLatestQuickLois()");
+    			//String sp = "CALL scaha.getLatestQuickLois()";
+				CallableStatement cs = db.prepareCall("CALL scaha.getLatestQuickLoisbyProfile(?)");
+				cs.setInt("inprofileid",this.profileid);
 				rs = cs.executeQuery();
     			
 				if (rs != null){
