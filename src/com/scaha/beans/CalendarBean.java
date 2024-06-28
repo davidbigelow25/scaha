@@ -26,6 +26,8 @@ public class CalendarBean implements Serializable{
 	@PostConstruct
     public void init() {
 		//lets load the calendar on instantiation
+		LOGGER.info("calendar bean loading calendar list");
+
 		loadCalendarList();
 	}
 	
@@ -43,7 +45,7 @@ public class CalendarBean implements Serializable{
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
     	
     	try{
-
+			LOGGER.info("call getcalendar");
 			CallableStatement cs = db.prepareCall("CALL scaha.getCalendar()");
 		    rs = cs.executeQuery();
 			
@@ -82,5 +84,6 @@ public class CalendarBean implements Serializable{
     	}
 		
     	setCalendarItems(templist);
+		templist = null;
 	 }
 }

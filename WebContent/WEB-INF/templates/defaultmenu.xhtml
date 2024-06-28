@@ -39,9 +39,8 @@
 				                <div class="form-group">
 				                    <b:inputSecret placeholder="Password" fieldSize="sm" value="#{profileBean.live_password}" tabindex="2" rendered="#{empty profileBean.getProfile()}" />
 				                </div> 
-				                <!-- #{' '} -->
 				                <b:commandButton id="login" value="login"
-						 			ajax="false" tabindex="3" action="#{profileBean.login}" look="success" iconAlign="right" rendered="#{empty profileBean.getProfile()}" />
+						 			ajax="false" tabindex="3" action="#{profileBean.login}" look="success" iconAlign="right" rendered="#{empty profileBean.getProfile() }" />
 						 		<h:outputText value="Welcome #{profileBean.getNickName()}      " style="color: white;font-style: italic;" rendered="#{not empty profileBean.getProfile()}"></h:outputText>
 					            <b:commandButton id="logout" value="Logout"
 							 		ajax="false" tabindex="4" action="#{profileBean.logout}" look="success" rendered="#{not empty profileBean.getProfile()}"/>
@@ -49,7 +48,6 @@
 						 		<div class="form-group navbar-right" >
 						 			<b:navbarLinks pull="right" class="navbar-right">
 							 			<b:navLink icon="glyphicon-user" value="Create Account" href="register.xhtml" rendered="#{empty profileBean.getProfile()}">
-							 				<!-- <b:iconAwesome value="user-circle" /> -->
 							 			</b:navLink>
 						                <b:navLink icon="glyphicon-eye-close" value="Forgot Password" href="forgotpassword.xhtml" rendered="#{empty profileBean.getProfile()}">
 						                	<!-- <b:iconAwesome value="unlock-alt" /> -->
@@ -83,7 +81,7 @@
 		            </b:navBar>
 				</b:column>
 			</b:row>
-			<b:row style="margin-top: 0px !important; margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;" rendered="#{profileBean.hasRoleList('C-REG') and not(profileBean.hasRoleList('S-REG'))}" > 
+			<b:row style="margin-top: 0px !important; margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;" rendered="#{profileBean.hasRoleList('C-REG') and not(profileBean.hasRoleList('S-REG'))}" >
 				<b:column >
  					
  					<b:navBar brand="Club Registrar" inverse="false" position="top" sticky="false" fluid="true">

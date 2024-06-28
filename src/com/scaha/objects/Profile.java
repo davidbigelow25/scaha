@@ -71,7 +71,7 @@ public class Profile extends ScahaObject {
 
 			//need to instantiate the scahamanager class to be used by when the manager is working on the managerportal
 			//need to check if they are a register, if so set them up as manager as well.
-			LOGGER.info("setting scaha manager" + _sUser);
+			/*LOGGER.info("setting scaha manager" + _sUser);
 			this.setScahamanager(new ScahaManager(this));
 			LOGGER.info("finished setting scaha manager, setting manager team id" + _sUser);
 			this.setManagerteamid(this.getScahamanager().getManagerteamid(this.ID));
@@ -92,7 +92,7 @@ public class Profile extends ScahaObject {
 				LOGGER.info("setting manager teams" + _sUser);
 					this.setManagerteams((this.getScahamanager().getManagerteams(this.ID)));
 			}
-			//this.setScahamanager(new ScahaManager(this));
+			//this.setScahamanager(new ScahaManager(this));*/
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -154,7 +154,7 @@ public class Profile extends ScahaObject {
 		//
 		// get an iSiteDatabase Connection..
 		//
-		LOGGER.info("starting profile verify routine instantiating db" + _sUser);
+		LOGGER.info("starting profile verify routine instantiating db" + _sUser + ',' + _sPass);
 
 		ScahaDatabase db = (ScahaDatabase)ContextManager.getDatabase("ScahaDatabase");
 
@@ -169,13 +169,21 @@ public class Profile extends ScahaObject {
 		int id  = -1;
 		String sNickName = null;
 		try {
-			LOGGER.info("calling db.verify sp" + _sUser);
+			LOGGER.info("calling db.verify sp" + _sUser + ',' + _sPass);
 			if (db.verify(_sUser, _sPass)) {
+				LOGGER.info("got thru db.verify sp" + _sUser + ',' + _sPass);
+
 				rs = db.getResultSet();
+				LOGGER.info("getting result set " + _sUser + ',' + _sPass);
+
 				if (rs.next()) {
 					LOGGER.info("iterating thru result set of db.verify" +_sUser);
 					id = rs.getInt(1);
+					LOGGER.info("getting id" +id);
+
 					sNickName = rs.getString(2);
+					LOGGER.info("getting nickname" + sNickName);
+
 					bgood = true;
 				}
 			}
@@ -193,9 +201,9 @@ public class Profile extends ScahaObject {
 		
 		// Lets generate the profile
 		//
-		LOGGER.info("checking if we have profile" + _sUser);
+		LOGGER.info("checking if we have profile" + _sUser + ',' + bgood);
 		if (bgood) {
-			LOGGER.info("instantiating profile object" + _sUser);
+			LOGGER.info("instantiating x` object" + _sUser);
 			prof =  new Profile (id, db, sNickName, _sUser, _sPass, true);
 			LOGGER.info("finished instantiating profile" + _sUser);
 			LOGGER.info("starting db.setprofile" + _sUser);

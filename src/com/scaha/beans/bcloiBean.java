@@ -74,8 +74,9 @@ public class bcloiBean implements Serializable, MailableObject {
         
       //will need to load player profile information for displaying loi
       	HttpServletRequest hsr = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-          	
-        if(hsr.getParameter("page") != null)
+		LOGGER.info("We are getting page request:");
+
+		if(hsr.getParameter("page") != null)
         {
     		page = hsr.getParameter("page").toString();
         }else{
@@ -89,8 +90,12 @@ public class bcloiBean implements Serializable, MailableObject {
         }
         
         if (!searchcriteria.equals("")){
-        	playersDisplay();
-        }
+			LOGGER.info("bcloi calling players display");
+
+			playersDisplay();
+			LOGGER.info("bcloi finished calling players display");
+
+		}
     }
 	
     public bcloiBean() {  
@@ -207,21 +212,25 @@ public class bcloiBean implements Serializable, MailableObject {
 	    
     //retrieves list of players
     public void playersDisplay(){
-    	ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		LOGGER.info("bcloi  players display starting loading db");
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
     	List<Coach> tempresult = new ArrayList<Coach>();
     	
     	try{
 
     		if (db.setAutoCommit(false)) {
-    			
+				LOGGER.info("bcloi calling name search" + this.searchcriteria);
+
 				CallableStatement cs = db.prepareCall("CALL scaha.getLoiListByNameSearch(?)");
     			cs.setString("search", this.searchcriteria);
     			rs = cs.executeQuery();
-    			
+				LOGGER.info("bcloi executing query getloilistbynamesearch" + this.searchcriteria);
     		    if (rs != null){
     				
     				while (rs.next()) {
-    					String idplayer = rs.getString("idperson");
+						LOGGER.info("bcloi pulling data to variables");
+						String idplayer = rs.getString("idperson");
         				String sfirstname = rs.getString("firstname");
         				String slastname = rs.getString("lastname");
         				String scurrentteam = rs.getString("currentteam");
@@ -262,6 +271,7 @@ public class bcloiBean implements Serializable, MailableObject {
 						Integer pdr = rs.getInt("pdrapply");
 						String abi = rs.getString("abi");
 
+						LOGGER.info("bcloi loading variables in coach object");
         				Coach oplayer = new Coach();
 						oplayer.setIdcoach(idplayer);
 						oplayer.setFirstname(sfirstname);
@@ -331,6 +341,7 @@ public class bcloiBean implements Serializable, MailableObject {
     				LOGGER.info("We have results for bc lois for the search criteria:" + this.searchcriteria);
     				
     			}
+				LOGGER.info("bcloi cleaning up record set and db");
     			rs.close();	
     			db.cleanup();
     		} else {
@@ -353,6 +364,7 @@ public class bcloiBean implements Serializable, MailableObject {
     	//setResults(tempresult);
     	setPlayers(tempresult);
     	PlayerDataModel = new CoachDataModel(players);
+		tempresult = null;
     }
 
     public CoachDataModel getPlayerdatamodel(){
@@ -396,26 +408,34 @@ public class bcloiBean implements Serializable, MailableObject {
 	}
 	
 	public void voidLoi(Coach selectedPlayer){
-
+		LOGGER.info("bcloi starting voidingloi" + selectedPlayer);
 		String sidplayer = selectedPlayer.getIdcoach();
 		String playname = selectedPlayer.getFirstname() + ' ' + selectedPlayer.getLastname();
 		this.setSelectedplayer(selectedPlayer);
-		
+
+		LOGGER.info("bcloi calling getclubid " + sidplayer);
 		getClubID(sidplayer);
+		LOGGER.info("bcloi finished clubid for " + sidplayer);
+
 		//need to set to void
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 		
 		try{
 
 			if (db.setAutoCommit(false)) {
+				LOGGER.info("bcloi calling getclubidbyrosterid " + sidplayer);
+
 				//need to get club id first before setting the loi to void.
 				CallableStatement cs = db.prepareCall("CALL scaha.getClubIdbyRosterID(?)");
 				cs.setInt("rosterid", Integer.parseInt(sidplayer));
 				rs = cs.executeQuery();
+				LOGGER.info("bcloi executing query " + sidplayer);
 
 				if (rs != null) {
 
 					while (rs.next()) {
+						LOGGER.info("bcloi getclubid from recordset" + sidplayer);
+
 						this.clubid = rs.getInt("idclub");
 					}
 				}
@@ -448,8 +468,10 @@ public class bcloiBean implements Serializable, MailableObject {
     				}
     			}
 				rs.close();
-    		    
-    			cs = db.prepareCall("CALL scaha.getFamilyEmail(?)");
+
+				LOGGER.info("bcloi calling family email sp " + sidplayer);
+
+				cs = db.prepareCall("CALL scaha.getFamilyEmail(?)");
     		    cs.setInt("iplayerid", Integer.parseInt(sidplayer));
     		    rs = cs.executeQuery();
     		    if (rs != null){
@@ -462,7 +484,9 @@ public class bcloiBean implements Serializable, MailableObject {
     		    
     		    //hard my email address for testing purposes
     		    //to = "lahockeyfan2@yahoo.com";
-    		    this.setToMailAddress(to);
+				LOGGER.info("bcloi setting email objeccts");
+
+				this.setToMailAddress(to);
     		    this.setPreApprovedCC("");
     		    this.setSubject(this.selectedplayer.getFirstname() + " " + this.selectedplayer.getLastname() + " LOI Void with " + this.getClubname());
     		    
@@ -495,6 +519,7 @@ public class bcloiBean implements Serializable, MailableObject {
 	}
 	
 	public void viewLoi(Coach selectedPlayer){
+		LOGGER.info("bcloi calling viewing loi");
 
 		String sidplayer = selectedPlayer.getIdcoach();
 		String sidroster = selectedPlayer.getRosterid();
@@ -509,8 +534,9 @@ public class bcloiBean implements Serializable, MailableObject {
 	}
 	
 	public void confirmLoi(Coach selectedPlayer){
-	
-	String sidplayer = selectedPlayer.getRosterid();
+		LOGGER.info("bcloi starting confirm loi ");
+
+		String sidplayer = selectedPlayer.getRosterid();
 		
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 		
@@ -519,7 +545,7 @@ public class bcloiBean implements Serializable, MailableObject {
 			if (db.setAutoCommit(false)) {
 			
 				//Need to provide info to the stored procedure to save or update
- 				LOGGER.info("verify loi code provided");
+ 				LOGGER.info("bcloi calling confirmcoachloi");
  				CallableStatement cs = db.prepareCall("CALL scaha.confirmCoachLoi(?)");
     		    cs.setInt("icoachid", Integer.parseInt(sidplayer));
     		    cs.executeQuery();
@@ -543,8 +569,13 @@ public class bcloiBean implements Serializable, MailableObject {
 			//
 			db.free();
 		}
-		
+
+		LOGGER.info("bcloi calling player display after confirming loi" );
+
 		playersDisplay();
+
+		LOGGER.info("bcloi finished calling player display after confirming loi");
+
 	}
 	
 	public void CloseLoi(String spage){
@@ -675,7 +706,7 @@ public class bcloiBean implements Serializable, MailableObject {
 			if (db.setAutoCommit(false)) {
 
 				//Need to provide info to the stored procedure to save or update
-				LOGGER.info("verify loi code provided");
+				LOGGER.info("calling suspend loi");
 				CallableStatement cs = db.prepareCall("CALL scaha.setSuspendLoi(?,?)");
 				cs.setInt("rosterid", Integer.parseInt(sidplayer));
 				cs.setInt("in_suspend", suspend);
@@ -714,7 +745,7 @@ public class bcloiBean implements Serializable, MailableObject {
 			if (db.setAutoCommit(false)) {
 
 				//Need to provide info to the stored procedure to save or update
-				//LOGGER.info("verify loi code provided");
+				LOGGER.info("bcloi calling complete transfer ");
 				CallableStatement cs = db.prepareCall("CALL scaha.saveTransfer(?,?,?,?,?,?,?,?,?,?,?)");
 				cs.setInt("transferid", coach.getTransferid());
 				cs.setInt("playerid", Integer.parseInt(coach.getIdcoach()));
@@ -741,7 +772,7 @@ public class bcloiBean implements Serializable, MailableObject {
 				db.cleanup();
 
 				//logging
-				//LOGGER.info("We are updating transfer info for player id:" + this.selectedplayer);
+				LOGGER.info("We are updating transfer info for player id:" + this.selectedplayer);
 
 				FacesContext context = FacesContext.getCurrentInstance();
 				context.addMessage(null, new FacesMessage("Successful", "You ave updated the Transfer"));
@@ -775,7 +806,7 @@ public class bcloiBean implements Serializable, MailableObject {
 			if (db.setAutoCommit(false)) {
 
 				//Need to provide info to the stored procedure to save or update
-				//LOGGER.info("verify loi code provided");
+				LOGGER.info("calling save certificate and dob");
 				CallableStatement cs = db.prepareCall("CALL scaha.saveCertificateandDOB(?,?,?,?,?,?,?)");
 				cs.setInt("playerid", Integer.parseInt(coach.getIdcoach()));
 				cs.setInt("certificate", coach.getBirthcertificate());
@@ -798,7 +829,7 @@ public class bcloiBean implements Serializable, MailableObject {
 				db.cleanup();
 
 				//logging
-				//LOGGER.info("We are updating birth certificate for player id:" + this.selectedplayer);
+				LOGGER.info("We are updating birth certificate for player id:" + this.selectedplayer);
 
 				FacesContext context = FacesContext.getCurrentInstance();
 				context.addMessage(null, new FacesMessage("Successful", "You ave updated the Birth Certificate"));

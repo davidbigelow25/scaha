@@ -179,6 +179,8 @@ public class clubopeningsBean implements Serializable {
 	public void getClubID(){
 
 		//first lets get club id for the logged in profile
+		LOGGER.info("club openings - getting club id for person");
+
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 
 		try{
@@ -218,6 +220,7 @@ public class clubopeningsBean implements Serializable {
 			// TODO nnfo("ERROR IN loading club by profile");
 			e.printStackTrace();
 			db.rollback();
+			db.free();
 		} finally {
 			//
 			// always clean up after yourself..
@@ -227,6 +230,8 @@ public class clubopeningsBean implements Serializable {
 
 	}
 	public void loadOpeningList(){
+		LOGGER.info("starting load oepning list for a club");
+
 		List<Opening> data = new ArrayList<Opening>();
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 
@@ -253,14 +258,15 @@ public class clubopeningsBean implements Serializable {
 				data.add(o);
 				o=null;
 			}
-			LOGGER.info("We have results for tryouts for club");
+			LOGGER.info("We have results for clubo penings for club");
 			rs.close();
 			db.cleanup();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			LOGGER.info("ERROR IN loading team history");
+			LOGGER.info("ERROR IN loading club openings for a club");
 			e.printStackTrace();
+			db.free();
 		} finally {
 			db.free();
 		}
@@ -422,6 +428,8 @@ public class clubopeningsBean implements Serializable {
 	}
 
 	public void saveOpening(Opening opening){
+		LOGGER.info("starting svaing a club opening");
+
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 		if (opening.getOpeningid()==0){
 			this.bcopylist=false;
@@ -449,12 +457,15 @@ public class clubopeningsBean implements Serializable {
 					opening.setOpeningid(cs.getInt(1));
 				}
 			}
+			LOGGER.info("we have saved a club opening");
+
 			rs.close();
 			db.cleanup();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			LOGGER.info("ERROR IN loading teams");
+			LOGGER.info("ERROR IN saving club openings");
 			e.printStackTrace();
+			db.free();
 		} finally {
 			//
 			// always clean up after yourself..
@@ -477,6 +488,8 @@ public class clubopeningsBean implements Serializable {
 	}
 
 	public void deleteOpening(Opening opening){
+		LOGGER.info("starting delete club opening");
+
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 
 		try{
@@ -490,8 +503,9 @@ public class clubopeningsBean implements Serializable {
 			db.cleanup();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			LOGGER.info("ERROR IN loading teams");
+			LOGGER.info("ERROR IN deleting club opening");
 			e.printStackTrace();
+			db.free();
 		} finally {
 			//
 			// always clean up after yourself..

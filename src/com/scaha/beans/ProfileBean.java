@@ -104,7 +104,6 @@ public class ProfileBean implements Serializable,  MailableObject  {
 	@ManagedProperty(value="#{scahaBean}")
 	private ScahaBean scaha;
 
-
 	public String getNewzip() {
 		return newzip;
 	}
@@ -306,8 +305,7 @@ public class ProfileBean implements Serializable,  MailableObject  {
 	 * 
 	 */
 	public ProfileBean () {
-		
-		
+
 	}
     public String getName ()
     {
@@ -369,7 +367,7 @@ public class ProfileBean implements Serializable,  MailableObject  {
 
     public void login() {
 
-		LOGGER.info("about to call verify profile" + name);
+		LOGGER.info("about to call verify profile" + name + ',' + live_password);
 		//
     	pro = Profile.verify(name, live_password);
 
@@ -421,17 +419,16 @@ public class ProfileBean implements Serializable,  MailableObject  {
 
 				LOGGER.info("checking if profile is scaha manager" + name);
 
-				if (pro.getScahamanager().getIsmanager()){
+				/*if (pro.getScahamanager().getIsmanager()){
 	    			FacesContext context = FacesContext.getCurrentInstance();
 	    			//this.origin = ((HttpServletRequest)context.getExternalContext().getRequest()).getRequestURL().toString();
 					LOGGER.info("redirecting to manager portal " + name);
 
 					context.getExternalContext().redirect("managerportal.xhtml");
-	    		} else if(origin != null) {
+	    		} else if(origin != null) {*/
 					LOGGER.info("redirecting to home page" + name);
-
-					FacesContext.getCurrentInstance().getExternalContext().redirect(origin);
-    			}
+					FacesContext.getCurrentInstance().getExternalContext().redirect("Welcome.xhtml");
+				/*}*/
     			
     		} else {
 				LOGGER.info("alerting log in failed" + name);

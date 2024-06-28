@@ -422,6 +422,8 @@ public class ClubBean implements Serializable,  MailableObject {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			LOGGER.info("error generating team lists");
+
 		}
 		db.free();
 		//
@@ -472,8 +474,9 @@ public class ClubBean implements Serializable,  MailableObject {
 	        // so. we have to see if they have changed or not.. 
 	        // if they have changed.. we save
 	        // if they are the same.. do nothing
-	        
-	        Person curPres = getSelectedclub().getCal().getStaffer("C-PRES");
+		LOGGER.info("saving staff");
+
+		Person curPres = getSelectedclub().getCal().getStaffer("C-PRES");
 	        Person curReg = getSelectedclub().getCal().getStaffer("C-REG");
 	        Person curIce = getSelectedclub().getCal().getStaffer("C-ICE");
 	       
@@ -529,6 +532,8 @@ public class ClubBean implements Serializable,  MailableObject {
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				LOGGER.info("error with club staff information");
+
 			} finally {
 		        db.free();
 			}

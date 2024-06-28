@@ -88,58 +88,97 @@ public class processusahockeyuploadBean implements Serializable,  MailableObject
 			//now lets read the file and start parsing line by line
 			BufferedReader br = new BufferedReader(new FileReader(destFile));
 			Integer y=0;
-			for(String line; (line = br.readLine()) != null; ) {
-				// process the line.
-				LOGGER.info("processing file line:" + line);
 
-				//need to remove commas in coaching modules field//
-				startstring = line.indexOf('"');
-				endstring = line.lastIndexOf('"');
+			//this is used for incase there is an error.
+			String errormessage = "";
 
-				if (startstring>0) {
-					tempstring = line.substring(startstring,endstring);
-					finalpartialstring = tempstring.replace(",","");
+			try{
+				//setting stored procedures for the calls to be made when iterating thru
+				CallableStatement cs = db.prepareCall("CALL scaha.logto_usahockeyrosterimportlog(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+				CallableStatement cs2 = db.prepareCall("CALL scaha.logto_checkforloiusaroster(?,?)");
 
-					line = line.replace(tempstring,finalpartialstring);
-				}
+				//these are used to determine if player/coach has loi or not
+				String usahockeynumber = "";
+				String usahockeyteamnumber = "";
 
-				//now split the string into separate fields
-				String[] linearr = line.split(",");
-				Integer x = 1;
+				for(String line; (line = br.readLine()) != null; ) {
+					// process the line.
+					errormessage = line;
+					LOGGER.info("processing file line:" + line);
 
-				try{
-					//check to see if it's the header row, if so don't insert headers//
-					if (y!=0){
-						//now submit all of the data to the stored procedure.  The sp will log to the log table,
-						// then create a record in the matching loi record table or a record in no matching loi table
-						//
-						CallableStatement cs = db.prepareCall("CALL scaha.logto_usahockeyrosterimportlog(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+					//need to remove commas in coaching modules field//
+					startstring = line.indexOf('"');
+					endstring = line.lastIndexOf('"');
 
-						for (String value : linearr) {
-							//need to add fields to cs for records for standard regular season teams
-							cs.setString(x, value);
-							x++;
+					//need to set values from usahockeynumber and usa teamnumber fields
+
+						if (startstring>0) {
+							tempstring = line.substring(startstring,endstring);
+							finalpartialstring = tempstring.replace(",","");
+
+							line = line.replace(tempstring,finalpartialstring);
 						}
 
-						//insert entire row into db
-						cs.executeQuery();
+						//now split the string into separate fields
+						String[] linearr = line.split(",");
+						Integer x = 1;
 
-						cs.close();
-						db.cleanup();
-					}
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					LOGGER.info("ERROR IN inserting import line into db" + line);
-					e.printStackTrace();
-					db.free();
-				} finally {
-					//
-					// always clean up after yourself..
-					//
-					db.free();
+
+						//check to see if it's the header row, if so don't insert headers//
+						if (y!=0){
+							//now submit all of the data to the stored procedure.  The sp will log to the log table,
+							// then create a record in the matching loi record table or a record in no matching loi table
+							//
+
+							for (String value : linearr) {
+								//need to add fields to cs for records for standard regular season teams
+								cs.setString(x, value);
+
+								//load value into usahockeynumber
+								if (x==10){
+									usahockeynumber=value;
+								}
+
+								//load value into usahockeyteamnumber
+								if (x==27){
+									usahockeyteamnumber=value;
+								}
+								x++;
+							}
+
+							//insert entire row into import logging table
+							cs.executeQuery();
+
+							//lets determine if they have a matching loi if so update, if not log as on usahockey roster but missing loi
+							cs2.setString("usanumber", usahockeynumber);
+							cs2.setString("usateamnumber", usahockeyteamnumber);
+
+							cs2.executeQuery();
+
+
+						}
+
+
+					y++;
+					//clear values for use in the next record
+					usahockeynumber = "";
+					usahockeyteamnumber = "";
+
 				}
 
-				y++;
+				cs.close();
+				cs2.close();
+				db.cleanup();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				LOGGER.info("ERROR IN inserting import line into db" + errormessage);
+				e.printStackTrace();
+				db.free();
+			} finally {
+				//
+				// always clean up after yourself..
+				//
+				db.free();
 			}
 
 			br.close();

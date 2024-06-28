@@ -24,6 +24,7 @@ import javafx.geometry.Pos;
 import org.primefaces.event.FlowEvent;
 import com.gbli.common.SendMailSSL;
 import com.gbli.common.USAHRegClient;
+import com.gbli.common.USAHRegClientforAWS;
 import com.gbli.common.Utils;
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
@@ -319,9 +320,13 @@ public class MemberBean implements Serializable, MailableObject {
 		//
 		this.usar = null;
 		try {
-			
-			this.usar = USAHRegClient.pullRegistartionRecord(this.getRegnumber());
-			
+			//this line is for when calling usa hockey directly from server
+			//LOGGER.info("calling usahregclient from memberbean" + this.getRegnumber());
+			//this.usar = USAHRegClient.pullRegistartionRecord(this.getRegnumber());
+
+			//this line is for calling old scaha site api pass thru to get to usahockey server.
+			this.usar = USAHRegClientforAWS.pullRegistartionRecord(this.getRegnumber());
+
 			if (this.usar == null) {
 				LOGGER.info("usaHockeyBean:Did NOT Get any USAH Number info Back!! BAD SERVICE CALL");
 				FacesContext.getCurrentInstance().addMessage(
@@ -366,7 +371,7 @@ public class MemberBean implements Serializable, MailableObject {
 	}
 
 	private void buildMailBody(ScahaDatabase _db, Person tper, Person per, UsaHockeyRegistration usar2, ScahaMember mem) {
-	
+
 		// TODO Auto-generated method stub
 		List<String> myTokens = new ArrayList<String>();
 		myTokens.add("PFIRST:" + per.getsFirstName());

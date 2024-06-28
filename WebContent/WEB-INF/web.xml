@@ -207,4 +207,13 @@
     <servlet-name>SubmitGameDetails</servlet-name>
     <url-pattern>/apis/submitgamedetails/*</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>GetUsaHockey</servlet-name>
+    <servlet-class>com.scaha.apis.GetUsaHockey</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>GetUsaHockey</servlet-name>
+    <url-pattern>/apis/GetUsaHockey/*</url-pattern>
+  </servlet-mapping>
 </web-app>

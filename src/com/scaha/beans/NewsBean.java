@@ -19,6 +19,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.mail.internet.InternetAddress;
+import javax.servlet.http.HttpServletRequest;
 
 import com.gbli.common.Utils;
 import com.gbli.connectors.ScahaDatabase;
@@ -50,6 +51,8 @@ public class NewsBean implements Serializable,  MailableObject  {
 	
 	public void init(){
 		setNewsItemModal(75);
+
+
 	}
 	
 	//

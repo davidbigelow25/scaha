@@ -532,7 +532,9 @@ public class boxscoreBean implements Serializable{
     	
     	try{
     		//need to load game details - score, location, date/time
-    		CallableStatement cs = db.prepareCall("CALL scaha.getScoreboardGameDetail(?,?)");
+			LOGGER.info("call getscoreboardgamedetail");
+
+			CallableStatement cs = db.prepareCall("CALL scaha.getScoreboardGameDetail(?,?)");
     		
     		cs.setInt("in_livegameid", Integer.parseInt(gameid));
     		cs.setString("in_selectedseason", this.selectedseason);
@@ -563,6 +565,8 @@ public class boxscoreBean implements Serializable{
 			rs.close();
 			
 			//need to load shots by period
+			LOGGER.info("call getscoreboardshottotals");
+
 			cs = db.prepareCall("CALL scaha.getScoreboardShotTotals(?,?)");
     		cs.setInt("in_livegameid", Integer.parseInt(gameid));
     		cs.setString("in_selectedseason", this.selectedseason);
@@ -592,6 +596,8 @@ public class boxscoreBean implements Serializable{
 			rs.close();
 			
 			//need to load scoring summary for either team by period.
+			LOGGER.info("call getscoreboardgamescoringsummary");
+
 			cs = db.prepareCall("CALL scaha.getScoreboardGameScoringSummary(?,?)");
     		cs.setInt("in_livegameid", Integer.parseInt(gameid));
     		cs.setString("in_selectedseason", this.selectedseason);
@@ -623,6 +629,8 @@ public class boxscoreBean implements Serializable{
 			
     		
 			//need to load power plays by team
+			LOGGER.info("call getscoreboardgamepowerplays");
+
 			cs = db.prepareCall("CALL scaha.getScoreboardPowerplays(?,?)");
     		
     		cs.setInt("in_livegameid", Integer.parseInt(gameid));
@@ -641,7 +649,9 @@ public class boxscoreBean implements Serializable{
 			rs.close();
 			
 			//need to load penalty summary by period
-    		cs = db.prepareCall("CALL scaha.getScoreboardPenaltySummary(?,?)");
+			LOGGER.info("call getscoreboardpenaltysummary");
+
+			cs = db.prepareCall("CALL scaha.getScoreboardPenaltySummary(?,?)");
     		
     		cs.setInt("in_livegameid", Integer.parseInt(gameid));
     		cs.setString("in_selectedseason", this.selectedseason);
@@ -667,6 +677,8 @@ public class boxscoreBean implements Serializable{
 			rs.close();
 			
     		//need to load home team player stats
+			LOGGER.info("call getscoreboardhometeamstats");
+
 			cs = db.prepareCall("CALL scaha.getScoreboardHometeamstats(?,?)");
     		
     		cs.setInt("in_livegameid", Integer.parseInt(gameid));
@@ -692,6 +704,8 @@ public class boxscoreBean implements Serializable{
 			
 			
     		//need to load home team goalie stats
+			LOGGER.info("call getscoreboardhometeamgoaliestats");
+
 			cs = db.prepareCall("CALL scaha.getScoreboardHometeamGoaliestats(?,?)");
     		
     		cs.setInt("in_livegameid", Integer.parseInt(gameid));
@@ -713,6 +727,8 @@ public class boxscoreBean implements Serializable{
 			rs.close();
 			
     		//need to load away team player stats
+			LOGGER.info("call getscoreboardawayteamstats");
+
 			cs = db.prepareCall("CALL scaha.getScoreboardAwayteamstats(?,?)");
     		
     		cs.setInt("in_livegameid", Integer.parseInt(gameid));
@@ -737,6 +753,8 @@ public class boxscoreBean implements Serializable{
 			rs.close();
 			
     		//need to load away team goalie stats
+			LOGGER.info("call getscoreboardawayteamgoaliestats");
+
 			cs = db.prepareCall("CALL scaha.getScoreboardAwayteamGoaliestats(?,?)");
     		
     		cs.setInt("in_livegameid", Integer.parseInt(gameid));
@@ -780,6 +798,15 @@ public class boxscoreBean implements Serializable{
 		setGamehomegoaliestats(homegoaliestats);
 		setGameawaystats(awaystats);
 		setGameawaygoaliestats(awaygoaliestats);
+
+		//cleaning up objects
+		scores = null;
+		scoresummarys = null;
+		penalties = null;
+		homestats = null;
+		homegoaliestats = null;
+		awaystats = null;
+		awaygoaliestats = null;
 	}
 	
 	public void setSummaryPeriodFlags(Integer period){

@@ -49,7 +49,7 @@ public class GameDetails extends HttpServlet {
 
         ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 
-        //first lets get the username password and then pass those in to the db for
+        //first lets get GameDetailsthe username password and then pass those in to the db for
         // authenticate the request.  if successfull continue on otherwise return response not authorized.
         ApisAuthentication apisa = new ApisAuthentication();
         Boolean authenticated = apisa.AuthenticateRequest(request,db,rs);
