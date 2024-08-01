@@ -758,6 +758,7 @@ public class MemberBean implements Serializable, MailableObject {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			LOGGER.info("error generating person list ");
+			db.free();
 		}	
 		
 		db.free();

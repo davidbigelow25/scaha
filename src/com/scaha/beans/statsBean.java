@@ -105,13 +105,15 @@ public class statsBean implements Serializable{
         this.selectedseason = scaha.getScahaSeasonList().getCurrentSeason();
         this.selectedseasonid = selectedseason.ID;
 		this.refreshScheduleList();
-    	
-		
-		
-        //Load leaders
+		LOGGER.info("loaded schedules and seasons:");
+
+
+
+		//Load leaders
         loadLeaders();
-        
-        
+		LOGGER.info("loaded leaders");
+
+
 	}
 	
     public statsBean() {  
@@ -224,7 +226,7 @@ public class statsBean implements Serializable{
     				tempgoals.add(stat);
     				
 				}
-				//LOGGER.info("We have results for goal leaders:");
+				LOGGER.info("We have results for goal leaders:");
 				rs.close();
 			}
 	
@@ -256,7 +258,7 @@ public class statsBean implements Serializable{
     				tempresult.add(stat);
     				
 				}
-				//LOGGER.info("We have results for leaders:");
+				LOGGER.info("We have results for points leaders:");
 				rs.close();
 			}
 			
@@ -287,7 +289,7 @@ public class statsBean implements Serializable{
     				tempassists.add(stat);
     				
 				}
-				//LOGGER.info("We have results for leaders:");
+				LOGGER.info("We have results for assist leaders:");
 				rs.close();
 			}
 			
@@ -320,7 +322,7 @@ public class statsBean implements Serializable{
     				tempgaa.add(stat);
     				
 				}
-				//LOGGER.info("We have results for leaders:");
+				LOGGER.info("We have results for gaa leaders:");
 				
 				rs.close();
 			}
@@ -351,7 +353,7 @@ public class statsBean implements Serializable{
     				tempsave.add(stat);
     				
 				}
-				//LOGGER.info("We have results for leaders:");
+				LOGGER.info("We have results for save % leaders:");
 				rs.close();
 			}
 
@@ -365,6 +367,7 @@ public class statsBean implements Serializable{
     		// TODO Auto-generated catch block
     		LOGGER.info("ERROR IN getting leaders list");
     		e.printStackTrace();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -541,15 +544,16 @@ public class statsBean implements Serializable{
     				tempsave.add(stat);
     				
 				}
-				//LOGGER.info("We have results for goal leaders:");
+				LOGGER.info("We have results for complete player stats:");
 			} else {
 	    		
     		}
     	} catch (SQLException e) {
     		// TODO Auto-generated catch block
-    		LOGGER.info("ERROR IN loading clubs");
+    		LOGGER.info("ERROR IN loading loadCompletePlayerStats");
     		e.printStackTrace();
     		db.rollback();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -638,15 +642,16 @@ public class statsBean implements Serializable{
     				tempsave.add(stat);
     				
 				}
-				//LOGGER.info("We have results for goal leaders:");
+				LOGGER.info("We have results for loadCompleteGoalieStats:");
 			} else {
 	    		
     		}
     	} catch (SQLException e) {
     		// TODO Auto-generated catch block
-    		LOGGER.info("ERROR IN loading clubs");
+    		LOGGER.info("ERROR IN loading loadCompleteGoalieStats");
     		e.printStackTrace();
-    		db.rollback();
+    		//db.rollback();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -765,6 +770,7 @@ public class statsBean implements Serializable{
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					db.free();
 				} finally {
 					db.free();
 				}
@@ -773,10 +779,10 @@ public class statsBean implements Serializable{
 				this.schedules = this.selectedseason.getSchedList();
 			}
 			
-			//LOGGER.info("season schedule is: " + schedules);
+			LOGGER.info("season schedule is: " + schedules);
 
 			this.schedules = this.selectedseason.getSchedList();
-//			LOGGER.info("season schedule is: " + schedules);
+			LOGGER.info("season schedule is: " + schedules);
 
 			if (schedules != null) {
 			  if (this.schedules.getRowCount() > 0) {
@@ -801,7 +807,7 @@ public class statsBean implements Serializable{
 	public void onScheduleChange() {
 		
 		this.selectedschedule = this.schedules.getSchedule(this.selectedscheduleid);
-		//LOGGER.info("schedule change request detected new id is:" + this.selectedscheduleid + ":" + this.selectedschedule);
+		LOGGER.info("schedule change request detected new id is:" + this.selectedscheduleid + ":" + this.selectedschedule);
 
 		try {
 			if (this.isplayers){

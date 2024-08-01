@@ -3,8 +3,11 @@ package com.scaha.beans;
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
 import com.scaha.objects.*;
+import jdk.nashorn.internal.codegen.CompilerConstants;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import com.gbli.common.Utils;
+
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -18,11 +21,19 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import javax.mail.internet.InternetAddress;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import com.gbli.common.SendMailSSL;
+
 
 @ManagedBean
 @SessionScoped
@@ -30,6 +41,67 @@ public class processusahockeyuploadBean implements Serializable,  MailableObject
 
 	@ManagedProperty(value="#{profileBean}")
 	private ProfileBean pb;
+	private Integer totalcount;
+	private static String mail_reg_body_playerwithoutloi = Utils.getMailTemplateFromFile("/mail/isusahockeynoloi.html");
+	transient private ResultSet rs = null;
+	private String playername = "";
+	private String teamname = "";
+	private String to = null;
+	private Integer clubid = null;
+	private String cc = null;
+	private String subject = null;
+
+
+
+	public void setSubject(String ssubject){
+		subject = ssubject;
+	}
+
+
+
+	 public String getTeamname() {
+		return teamname;
+	}
+
+	public void setTeamname(String teamname) {
+		this.teamname = teamname;
+	}
+
+	public String getPreApprovedCC() {
+		// TODO Auto-generated method stub
+		return cc;
+	}
+
+	public void setPreApprovedCC(String scc){
+		cc = scc;
+	}
+
+
+
+	public String getToMailAddress() {
+		// TODO Auto-generated method stub
+		return to;
+	}
+
+	public void setToMailAddress(String sto){
+		to = sto;
+	}
+
+	public String getPlayername() {
+		return playername;
+	}
+
+	public void setPlayername(String playername) {
+		this.playername = playername;
+	}
+
+	public Integer getTotalcount() {
+		return totalcount;
+	}
+
+	public void setTotalcount(Integer totalcount) {
+		this.totalcount = totalcount;
+	}
 
 	/**
 	 * @return the pb
@@ -59,7 +131,7 @@ public class processusahockeyuploadBean implements Serializable,  MailableObject
 	 public void init() {
 		 
 		 LOGGER.info(" *************** POST INIT FOR PROCESS USA HOCKEY ROSTER UPLOAD BEAN *****************");
-
+		this.totalcount=0;
 	 }
 	 
 	public Boolean handleFileUpload(FileUploadEvent event) {
@@ -96,10 +168,12 @@ public class processusahockeyuploadBean implements Serializable,  MailableObject
 				//setting stored procedures for the calls to be made when iterating thru
 				CallableStatement cs = db.prepareCall("CALL scaha.logto_usahockeyrosterimportlog(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 				CallableStatement cs2 = db.prepareCall("CALL scaha.logto_checkforloiusaroster(?,?)");
+				CallableStatement cs3 = db.prepareCall("CALL scaha.getClubRegistrarandScahaRegistrarEmail(?)");
 
 				//these are used to determine if player/coach has loi or not
 				String usahockeynumber = "";
 				String usahockeyteamnumber = "";
+				Boolean isusahockeynoloi = false;
 
 				for(String line; (line = br.readLine()) != null; ) {
 					// process the line.
@@ -149,25 +223,66 @@ public class processusahockeyuploadBean implements Serializable,  MailableObject
 							//insert entire row into import logging table
 							cs.executeQuery();
 
-							//lets determine if they have a matching loi if so update, if not log as on usahockey roster but missing loi
+							//lets determine if they have a matching loi if so update
+							// , if not log as on usahockey roster but missing loi and return player name team name to send in email
 							cs2.setString("usanumber", usahockeynumber);
 							cs2.setString("usateamnumber", usahockeyteamnumber);
 
-							cs2.executeQuery();
 
+							rs = cs2.executeQuery();
+							if (rs != null){
+								while (rs.next()) {
+									isusahockeynoloi = rs.getBoolean("isuahockeynoloi");
+									this.playername = rs.getString("playername");
+									this.teamname = rs.getString("teamname");
+									}
+								}
+							}
+							rs.close();
 
 						}
 
+					if (isusahockeynoloi) {
+						to = "";
+						LOGGER.info("Sending email to club registrar for player without loi");
+
+						//need to combine next two sp's into one to reduce number of db calls.
+						cs3.setInt("iclubid", this.clubid);
+						rs = cs3.executeQuery();
+						if (rs != null) {
+							while (rs.next()) {
+								if (!to.equals("")) {
+									to = to + "," + rs.getString("usercode");
+								} else {
+									to = rs.getString("usercode");
+								}
+							}
+						}
+						rs.close();
+
+						to = "lahockeyfan2@yahoo.com";
+						this.setToMailAddress(to);
+						this.setPreApprovedCC("");
+						this.setSubject(playername + "-" + teamname + " Missing LOI");
+
+						SendMailSSL mail = new SendMailSSL(this);
+						LOGGER.info("Finished creating mail object for " + playername + "-" + teamname + " Missing LOI");
+						mail.sendMail();
+
+					}
 
 					y++;
+						this.totalcount = y;
 					//clear values for use in the next record
 					usahockeynumber = "";
 					usahockeyteamnumber = "";
-
-				}
+					isusahockeynoloi = false;
+				this.playername = "";
+				this.teamname = "";
 
 				cs.close();
 				cs2.close();
+				cs3.close();
 				db.cleanup();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -181,16 +296,29 @@ public class processusahockeyuploadBean implements Serializable,  MailableObject
 				db.free();
 			}
 
+
 			br.close();
 			br = null;
+
+			//now that we have completed the file, need to move to the archive folder with the time stamp in the file name.
+			IOUtils.closeQuietly(output);
+			IOUtils.closeQuietly(stream);
+
+			String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date());
+			String movedestPath ="C:/Program Files (x86)/Apache Software Foundation/Tomcat 8.5/webapps/uploadfiles/usahockeyimport/archive/" + prefix + "_" + timeStamp + "." + suffix;
+			/*File archivefile = new File(movedestPath);
+			destFile.renameTo(archivefile);*/
+			Path source = Paths.get(destPath);
+			Path result = Paths.get(movedestPath);
+			Files.move(source, result);
+
 
 			return true;
 		}catch (IOException e){
 			e.printStackTrace();
 			return false;
 		} finally {
-			IOUtils.closeQuietly(output);
-			IOUtils.closeQuietly(stream);
+
 		}
 
 
@@ -226,20 +354,14 @@ public class processusahockeyuploadBean implements Serializable,  MailableObject
 	@Override
 	public String getTextBody() {
 		// TODO Auto-generated method stub
-		return null;
+		List<String> myTokens = new ArrayList<String>();
+		myTokens.add("PLAYERNAME:" + this.playername);
+		myTokens.add("LASTNAME:" + this.teamname);
+		return Utils.mergeTokens(this.mail_reg_body_playerwithoutloi, myTokens);
 	}
 
-	@Override
-	public String getPreApprovedCC() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public String getToMailAddress() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	
 

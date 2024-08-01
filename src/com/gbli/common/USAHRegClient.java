@@ -47,7 +47,7 @@ public class USAHRegClient {
 		LOGGER.info("adding usa hockey number to urlparameters");
 
 		post.setEntity(new UrlEncodedFormEntity(urlParameters));
-		LOGGER.info("added urlparameters to setentity");
+		LOGGER.info("added urlparameters to set entity");
 
 		UsaHockeyRegistration myUSAHockey =  new UsaHockeyRegistration(0,_strUSAH);
 		LOGGER.info("instatiating myUSAHockey");

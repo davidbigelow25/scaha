@@ -54,8 +54,14 @@ public class GetUsaHockey extends HttpServlet {
 
         //String inusanumber = jsonNode.get("USANumber").textValue();
         String inusanumber = request.getParameter("USANumber");
+        String token = request.getParameter("Token");
         LOGGER.info("getting usa number:" + inusanumber);
 
+        //need to add check for token.  if fails don't call usa hockey and return code 500, invalid token
+        if (!token.equals("tGvsmisD50XADm")){
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid Token");
+            LOGGER.info("authentication returned invalid token");
+        }
 
         // authenticate the request.  if successfull continue on otherwise return response not authorized.
         ApisAuthenticationUSAHockey apisa = new ApisAuthenticationUSAHockey();

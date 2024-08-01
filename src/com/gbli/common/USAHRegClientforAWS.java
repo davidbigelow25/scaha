@@ -42,13 +42,14 @@ public class USAHRegClientforAWS {
 		//need to add code to handle aws environment calling a wrapper in old scaha site to connect to usa hockey
 		//need to put in a boolean variable to indicate which environment it is and which code to run so as to not break backward compatability.
 		HttpPost post = new HttpPost("http://192.241.229.21:8080/scaha/apis/GetUsaHockey");
-		/*post.addHeader("username", "lahockeyfan2@yahoo.com");
-		post.addHeader("password", "hockey22");*/
+		//post.addHeader("token", "tGvsmisD50XADm");
+		/*post.addHeader("password", "hockey22");*/
 
 
 		// add request parameter, form parameters
 		List<NameValuePair> urlParameters = new ArrayList<>();
 		urlParameters.add(new BasicNameValuePair("USANumber", _strUSAH));
+		urlParameters.add(new BasicNameValuePair("Token", "tGvsmisD50XADm"));
 		post.setEntity(new UrlEncodedFormEntity(urlParameters));
 		UsaHockeyRegistration myUSAHockey =  new UsaHockeyRegistration(0,_strUSAH);
 		try (CloseableHttpClient httpClient = HttpClients.createDefault();

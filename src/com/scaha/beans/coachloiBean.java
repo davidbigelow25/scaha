@@ -1730,7 +1730,7 @@ public class coachloiBean implements Serializable, MailableObject {
 				LOGGER.info("checking if coach can be added to team :" + this.selectedcoach);
 				CallableStatement cs = db.prepareCall("CALL scaha.checkNumberofPlayersFromCoachesPriorClub(?,?)");
 				cs.setInt("incoachid", this.selectedcoach);
-				cs.setInt("inteamid",currentteamid);
+				//cs.setInt("inteamid",currentteamid);
 				rs = cs.executeQuery();
 				if (rs != null){
 					while (rs.next()) {

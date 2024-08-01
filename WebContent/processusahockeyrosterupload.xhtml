@@ -17,14 +17,21 @@
 					<f:facet name="heading">
 						Process USA Hockey Roster Upload
 					</f:facet>
+					<h:outputText value="Use the Select File button to oepn a window to find your import file."  />
+					<br></br>
+					<h:outputText value="Select Upload to process the file when completed the Total Record count will reflect number of records processed."  />
+
 					<h:form id="fileupload">
 						<p:fileUpload fileUploadListener="#{processusahockeyuploadBean.handleFileUpload}" mode="advanced"
-            			 label="Select File" dragDropSupport="false" multiple="false" auto="false" sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpeg|jpg|png|pdf|csv)$/"/>
-            		<!-- update=":fileresults:scoresheets" -->
-            		
+									  update=":fileresults" label="Select File" dragDropSupport="false" multiple="false" auto="false" sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpeg|jpg|png|pdf|csv)$/"/>
+
             			<br></br>
             			<p:messages id="uploadmessage" showDetail="true" autoUpdate="true" closable="false" />
-            		</h:form>
+					</h:form>
+					<h:form id="fileresults">
+						<h:outputText value="#{processusahockeyuploadBean.getTotalcount()} records completed."  />
+					</h:form>
+
 					<!--need to add processing bar indicator to show progress of file being processed-->
 						<!--<b:dataTable
 						id="scoresheetsnew" 
@@ -92,7 +99,6 @@
 						    </b:commandButton>
 						</b:panelGrid>
 					</b:form>-->
-						<!--<b:progressBar value="50"/>-->
 						<!-- <div align="center"><p:commandButton value="Close" id="close" ajax="false" action="#{scoresheetBean.getRedirect()}"/></div> -->
 					
 					

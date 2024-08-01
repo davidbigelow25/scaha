@@ -728,7 +728,7 @@ public class loiBean implements Serializable, MailableObject {
         				Team team = new Team(teamname,idteam);
         				templist.add(team);
     				}
-    				//LOGGER.info("We have results for team list by club");
+    				LOGGER.info("We have results for team list by club");
     			}
     			rs.close();
     			db.cleanup();
@@ -737,9 +737,10 @@ public class loiBean implements Serializable, MailableObject {
     		}
     	} catch (SQLException e) {
     		// TODO Auto-generated catch block
-    		//LOGGER.info("ERROR IN loading teams");
+    		LOGGER.info("ERROR IN loading teams");
     		e.printStackTrace();
     		db.rollback();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -837,7 +838,7 @@ public class loiBean implements Serializable, MailableObject {
         		    	}
         				
         			}
-					//LOGGER.info("We have results for player details by player id");
+					LOGGER.info("We have results for player details by player id");
     			}
     			rs.close();
 
@@ -863,7 +864,7 @@ public class loiBean implements Serializable, MailableObject {
 
 						temphistory.add(tempps);
 					}
-					//LOGGER.info("We have results for player details by player id");
+					LOGGER.info("We have results for player details by player id");
 
 					this.setPlayerhistory(temphistory);
 				}
@@ -878,9 +879,10 @@ public class loiBean implements Serializable, MailableObject {
     		}
     	} catch (SQLException e) {
     		// TODO Auto-generated catch block
-    		//LOGGER.info("ERROR IN loading player details");
+    		LOGGER.info("ERROR IN loading player details");
     		e.printStackTrace();
     		db.rollback();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -920,7 +922,7 @@ public class loiBean implements Serializable, MailableObject {
     					
     					tempparent.add(row);
     					}
-    				//LOGGER.info("We have results for parents list by person id");
+    				LOGGER.info("We have results for parents list by person id");
     			}
     			rs.close();
     			db.cleanup();
@@ -929,9 +931,10 @@ public class loiBean implements Serializable, MailableObject {
     		}
     	} catch (SQLException e) {
     		// TODO Auto-generated catch block
-    		//LOGGER.info("ERROR IN loading teams");
+    		LOGGER.info("ERROR IN loading teams");
     		e.printStackTrace();
     		db.rollback();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -951,7 +954,7 @@ public class loiBean implements Serializable, MailableObject {
 			if (db.setAutoCommit(false)) {
 			
 				//Need to check loi code from family first
- 				//LOGGER.info("verify loi code provided");
+ 				LOGGER.info("verify loi code provided");
  				CallableStatement cs = db.prepareCall("CALL scaha.validateMemberNumber(?,?)");
  				cs.setString("memnumber", this.loicode);
  				cs.setInt("personid", this.selectedplayer);
@@ -964,7 +967,7 @@ public class loiBean implements Serializable, MailableObject {
     				while (rs.next()) {
     					resultcount = rs.getInt("idmember");
     				}
-    				//LOGGER.info("We have code validation results for player details by person id");
+    				LOGGER.info("We have code validation results for player details by person id");
     				if (resultcount.equals(0)){
     					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"", "The provided LOI signature code is invalid."));
     				}
@@ -983,7 +986,7 @@ public class loiBean implements Serializable, MailableObject {
 	    			//need to verify if player is playing up and if player up code is needed if not provided
 	    			if (this.playerupcode==null || this.playerupcode==""){
 						//Need to check player up code from family next
-		 				//LOGGER.info("verify if user needs to enter player up code");
+		 				LOGGER.info("verify if user needs to enter player up code");
 		 				cs = db.prepareCall("CALL scaha.IsPlayerUpNeeded(?,?)");
 		 				String year = this.dob.substring(0,4);
 		 				cs.setInt("birthyear",Integer.parseInt(year));
@@ -999,7 +1002,7 @@ public class loiBean implements Serializable, MailableObject {
 		    				while (rs.next()) {
 		    					plupresultcount = rs.getInt("divisioncount");
 		    				}
-		    				//LOGGER.info("We have validation whether player needs player up code or not");
+		    				LOGGER.info("We have validation whether player needs player up code or not");
 		    			}
 		    			rs.close();
 		    		    db.cleanup();
@@ -1018,7 +1021,7 @@ public class loiBean implements Serializable, MailableObject {
 	    			//need to verify player up code if user provided it.
 	    			if (plupresultcount.equals(0) && this.selectedgirlsteam==null){
 	    				//Need to check player up code from family next
-		 				//LOGGER.info("verify family code provided for player up");
+		 				LOGGER.info("verify family code provided for player up");
 		 				cs = db.prepareCall("CALL scaha.validateMemberNumber(?,?)");
 		 				cs.setString("memnumber", this.playerupcode);
 		 				cs.setInt("personid", this.selectedplayer);
@@ -1030,7 +1033,7 @@ public class loiBean implements Serializable, MailableObject {
 		    				while (rs.next()) {
 		    					resultcount = rs.getInt("idmember");
 		    				}
-		    				//LOGGER.info("We have code validation results for player details by player id");
+		    				LOGGER.info("We have code validation results for player details by player id");
 		    			}
 		    		    rs.close();
 		    			db.cleanup();
@@ -1058,7 +1061,7 @@ public class loiBean implements Serializable, MailableObject {
     		    if (resultcount > 0){
     		    	
 	    		    //if good save info to person table, then add record to roster then email
-	 				//LOGGER.info("updating person record");
+	 				LOGGER.info("updating person record");
 	 				cs = db.prepareCall("CALL scaha.updatePersonInfoAddress(?,?,?,?,?)");
 	    		    cs.setInt("ipersonid", this.parentid);
 	    		    cs.setString("iaddress", this.address);
@@ -1067,7 +1070,7 @@ public class loiBean implements Serializable, MailableObject {
 	    		    cs.setString("izipcode", this.zip);
 	    			cs.executeQuery();
 	    			
-					//LOGGER.info("updating roster record");
+					LOGGER.info("updating roster record");
 					cs = db.prepareCall("CALL scaha.addRosterwithsafesport(?,?,?,?)");
 	    		    cs.setInt("ipersonid", this.selectedplayer);
 	    		    
@@ -1127,7 +1130,7 @@ public class loiBean implements Serializable, MailableObject {
 			    				while (rs.next()) {
 			    					displayselectedgirlsteam = rs.getString("teamname");
 			    				}
-			    				//LOGGER.info("We have loaded the girls team name for printable loi");
+			    				LOGGER.info("We have loaded the girls team name for printable loi");
 			    			}
 			    			rs.close();
 			    			db.cleanup();
@@ -1206,7 +1209,7 @@ public class loiBean implements Serializable, MailableObject {
 	    		    this.setSubject(this.firstname + " " + this.lastname + " LOI with " + this.getClubName());
 	    		    
 					SendMailSSL mail = new SendMailSSL(this);
-					//LOGGER.info("Finished creating mail object for " + this.firstname + " " + this.lastname + " LOI with " + this.getClubName());
+					LOGGER.info("Finished creating mail object for " + this.firstname + " " + this.lastname + " LOI with " + this.getClubName());
 					mail.sendMail();
 					
 					db.commit();
@@ -1220,6 +1223,7 @@ public class loiBean implements Serializable, MailableObject {
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+						db.free();
 					} 
     		    } else {
     		    	
@@ -1231,9 +1235,10 @@ public class loiBean implements Serializable, MailableObject {
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			//LOGGER.info("ERROR IN LOI Generation Process" + this.selectedplayer);
+			LOGGER.info("ERROR IN LOI Generation Process" + this.selectedplayer);
 			e.printStackTrace();
 			db.rollback();
+			db.free();
 		} finally {
 			//
 			// always clean up after yourself..
@@ -1264,7 +1269,7 @@ public class loiBean implements Serializable, MailableObject {
 					this.clubid = rs.getInt("idclub");
 					
 					}
-				//LOGGER.info("We have results for club for a profile");
+				LOGGER.info("We have results for club for a profile");
 				rs.close();
 			}
 			
@@ -1283,16 +1288,17 @@ public class loiBean implements Serializable, MailableObject {
 					clubname = rs.getString("clubname");
 				}
 				rs.close();
-				//LOGGER.info("We have results for club name");
+				LOGGER.info("We have results for club name");
 			}
 			
 			db.cleanup();
 			
     	} catch (SQLException e) {
     		// TODO Auto-generated catch block
-    		//LOGGER.info("ERROR IN loading club by profile");
+    		LOGGER.info("ERROR IN loading club by profile");
     		e.printStackTrace();
     		db.rollback();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -1351,16 +1357,17 @@ public class loiBean implements Serializable, MailableObject {
 					}
 				}
 				rs.close();
-				//LOGGER.info("We have results for Team name for a person");
+				LOGGER.info("We have results for Team name for a person");
 			}
 			
 			db.cleanup();
     		
 		} catch (SQLException e) {
     		// TODO Auto-generated catch block
-    		//LOGGER.info("ERROR IN loading club by profile");
+    		LOGGER.info("ERROR IN loading club by profile");
     		e.printStackTrace();
     		db.rollback();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -1392,16 +1399,17 @@ public class loiBean implements Serializable, MailableObject {
 					teamname = rs.getString("teamname");
 				}
 				rs.close();
-				//LOGGER.info("We have results for Team name for a person");
+				LOGGER.info("We have results for Team name for a person");
 			}
 			
 			db.cleanup();
     		
 		} catch (SQLException e) {
     		// TODO Auto-generated catch block
-    		//LOGGER.info("ERROR IN loading club by profile");
+    		LOGGER.info("ERROR IN loading club by profile");
     		e.printStackTrace();
     		db.rollback();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -1436,7 +1444,7 @@ public class loiBean implements Serializable, MailableObject {
 					while (rs.next()) {
 						ageoldercount = rs.getInt("isolder");
 					}
-					//LOGGER.info("We have validation whether player needs player up code or not");
+					LOGGER.info("We have validation whether player is too old or not");
 				}
 				rs.close();
 				db.cleanup();
@@ -1470,7 +1478,7 @@ public class loiBean implements Serializable, MailableObject {
 						is2yearplayerup = rs.getBoolean("2yearplayerup");
 						isbeforeaaa = rs.getBoolean("beforeaaa");
 					}
-					//LOGGER.info("We have validation whether player needs player up code or not");
+					LOGGER.info("We have validation whether player needs player up code or not");
 				}
 			    rs.close();
 			    
@@ -1491,7 +1499,7 @@ public class loiBean implements Serializable, MailableObject {
 					while (rs.next()) {
 						pwtobtmcount = rs.getInt("divisioncount");
 					}
-					//LOGGER.info("We have validation whether player needs player up code or not");
+					LOGGER.info("We have validation whether player needs player up code or not for pw bantam");
 				}
 			    rs.close();
 				db.cleanup();
@@ -1561,7 +1569,7 @@ public class loiBean implements Serializable, MailableObject {
 
 		} catch (SQLException e) {
     		// TODO Auto-generated catch block
-    		//LOGGER.info("ERROR IN loading club by profile");
+    		LOGGER.info("ERROR IN loading club by profile");
     		e.printStackTrace();
     		db.rollback();
 			db.free();
@@ -1594,13 +1602,14 @@ public void getClubID(){
 					this.clubid = rs.getInt("idclub");
 					}
 				rs.close();
-				//LOGGER.info("We have results for club for a profile");
+				LOGGER.info("We have results for club for a profile");
 			}
 			db.cleanup();
     	} catch (SQLException e) {
     		// TODO nnfo("ERROR IN loading club by profile");
     		e.printStackTrace();
     		db.rollback();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -1628,7 +1637,7 @@ public void getClubID(){
 						isschool = rs.getInt("result");
 					}
 				rs.close();
-				//LOGGER.info("We have results for club is a high school");
+				LOGGER.info("We have results for club is a high school");
 			}
 			db.cleanup();
 			
@@ -1639,9 +1648,10 @@ public void getClubID(){
 			}
     	} catch (SQLException e) {
     		// TODO Auto-generated catch block
-    		//LOGGER.info("ERROR IN loading club by profile");
+    		LOGGER.info("ERROR IN loading club by profile");
     		e.printStackTrace();
     		db.rollback();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -1673,7 +1683,7 @@ public void getClubID(){
 			if (db.setAutoCommit(false)) {
 			
 				//Need to store note first
- 				//LOGGER.info("storing note for :" + this.selectedplayer);
+ 				LOGGER.info("storing note for :" + this.selectedplayer);
 				CallableStatement cs = db.prepareCall("CALL scaha.saveNoteSuspend(?,?,?)");
  				cs.setString("innote", this.notes);
  				cs.setInt("personid", this.selectedplayer);
@@ -1683,7 +1693,7 @@ public void getClubID(){
     			
     		        
     		    to = "";
-    			//LOGGER.info("Sending email to club registrar, and scaha registrar");
+    			LOGGER.info("Sending email to club registrar, and scaha registrar");
     			cs = db.prepareCall("CALL scaha.getClubRegistrarEmailByPersonID(?)");
     		    cs.setInt("personid", this.selectedplayer);
     		    rs = cs.executeQuery();
@@ -1729,7 +1739,7 @@ public void getClubID(){
     		    
     		    
 				SendMailSSL mail = new SendMailSSL(this);
-				//LOGGER.info("Finished creating mail note object for " + this.firstname + " " + this.lastname + " LOI with " + this.displayselectedteam);
+				LOGGER.info("Finished creating mail note object for " + this.firstname + " " + this.lastname + " LOI with " + this.displayselectedteam);
 				mail.sendMail();
 					
 				db.commit();
@@ -1741,9 +1751,10 @@ public void getClubID(){
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			//LOGGER.info("ERROR IN Sending Note " + this.selectedplayer);
+			LOGGER.info("ERROR IN Sending Note " + this.selectedplayer);
 			e.printStackTrace();
 			db.rollback();
+			db.free();
 			this.setSendingnote(false);
 		} finally {
 			//
@@ -1779,7 +1790,7 @@ public void getClubID(){
 			if (db.setAutoCommit(false)) {
 			
 				//Need to store note first
- 				//LOGGER.info("storing note for :" + this.selectedplayer);
+ 				LOGGER.info("storing note for :" + this.selectedplayer);
  				CallableStatement cs = db.prepareCall("CALL scaha.saveNoteSuspend(?,?,?)");
  				cs.setString("innote", this.notes);
  				cs.setInt("personid", this.selectedplayer);
@@ -1796,10 +1807,11 @@ public void getClubID(){
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			//LOGGER.info("ERROR IN Updating Note " + this.selectedplayer);
+			LOGGER.info("ERROR IN Updating Note " + this.selectedplayer);
 			e.printStackTrace();
 			db.rollback();
 			this.setSendingnote(false);
+			db.free();
 		} finally {
 			//
 			// always clean up after yourself..
@@ -1865,16 +1877,17 @@ public void getClubID(){
 					this.pdrrequired=rs.getBoolean("pdrapplies");
 
 				}
-				//LOGGER.info("We have results for team roster");
+				LOGGER.info("We have results for team roster");
 			}
 			rs.close();
 			db.cleanup();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			//LOGGER.info("ERROR IN loading pdr");
+			LOGGER.info("ERROR IN loading pdr");
 			e.printStackTrace();
 			db.rollback();
+			db.free();
 		} finally {
 			//
 			// always clean up after yourself..
@@ -1919,16 +1932,17 @@ public void getClubID(){
 
 					templist.add(player);
 				}
-				//LOGGER.info("We have results for team roster");
+				LOGGER.info("We have results for team roster");
 			}
 			rs.close();
 			db.cleanup();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			//LOGGER.info("ERROR IN loading blockrecruitments");
+			LOGGER.info("ERROR IN loading blockrecruitments");
 			e.printStackTrace();
 			db.rollback();
+			db.free();
 		} finally {
 			//
 			// always clean up after yourself..
@@ -1961,16 +1975,17 @@ public void getClubID(){
 					this.pdrrequired=rs.getBoolean("pdrapplies");
 
 				}
-				//LOGGER.info("We have results for team roster");
+				LOGGER.info("We have results for team roster");
 			}
 			rs.close();
 			db.cleanup();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			//LOGGER.info("ERROR IN loading pdr");
+			LOGGER.info("ERROR IN loading pdr");
 			e.printStackTrace();
 			db.rollback();
+			db.free();
 		} finally {
 			//
 			// always clean up after yourself..
@@ -2011,16 +2026,17 @@ public void getClubID(){
 
 					templist.add(player);
 				}
-				//LOGGER.info("We have results for team roster");
+				LOGGER.info("We have results for team roster");
 			}
 			rs.close();
 			db.cleanup();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			//LOGGER.info("ERROR IN loading blockrecruitments");
+			LOGGER.info("ERROR IN loading blockrecruitments");
 			e.printStackTrace();
 			db.rollback();
+			db.free();
 		} finally {
 			//
 			// always clean up after yourself..
@@ -2091,7 +2107,7 @@ public void getClubID(){
 				if (db.setAutoCommit(false)) {
 
 					//Need to store note first
-					//LOGGER.info("checking if coach can be added to team :" + this.selectedteam);
+					LOGGER.info("unable to add player logging :" + this.selectedteam);
 					CallableStatement cs = db.prepareCall("CALL scaha.failedloiattempt(?,?,?,?)");
 					cs.setInt("inidperson", this.selectedplayer);
 					cs.setString("inloitype","Player");

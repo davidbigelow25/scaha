@@ -357,6 +357,7 @@ public class DraftPlayersBean implements Serializable {
     	} catch (SQLException e) {
     		LOGGER.info("ERROR IN Searching FOR " + this.searchcriteria);
     		e.printStackTrace();
+			db.free();
     	} finally {
     		db.free();
     	}
@@ -392,6 +393,7 @@ public class DraftPlayersBean implements Serializable {
     	} catch (SQLException e) {
     		LOGGER.info("ERROR IN Searching FOR " + this.searchcriteria);
     		e.printStackTrace();
+			db.free();
     	} finally {
     		db.free();
     	}
