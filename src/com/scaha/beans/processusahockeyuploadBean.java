@@ -50,11 +50,12 @@ public class processusahockeyuploadBean implements Serializable,  MailableObject
 	private Integer clubid = null;
 	private String cc = null;
 	private String subject = null;
+	private Integer recordid = null;
 
 
 
 	public void setSubject(String ssubject){
-		subject = ssubject;
+		this.subject = ssubject;
 	}
 
 
@@ -81,6 +82,14 @@ public class processusahockeyuploadBean implements Serializable,  MailableObject
 	public String getToMailAddress() {
 		// TODO Auto-generated method stub
 		return to;
+	}
+
+	public Integer getRecordid() {
+		return recordid;
+	}
+
+	public void setRecordid(Integer recordid) {
+		this.recordid = recordid;
 	}
 
 	public void setToMailAddress(String sto){
@@ -220,8 +229,16 @@ public class processusahockeyuploadBean implements Serializable,  MailableObject
 								x++;
 							}
 
-							//insert entire row into import logging table
-							cs.executeQuery();
+							//insert entire row into import logging table and return the player name
+							rs = cs.executeQuery();
+							if (rs != null){
+								while (rs.next()) {
+									this.recordid = rs.getInt("logid");
+									this.playername = rs.getString("playername");
+								}
+							}
+
+							rs.close();
 
 							//lets determine if they have a matching loi if so update
 							// , if not log as on usahockey roster but missing loi and return player name team name to send in email
@@ -232,53 +249,55 @@ public class processusahockeyuploadBean implements Serializable,  MailableObject
 							rs = cs2.executeQuery();
 							if (rs != null){
 								while (rs.next()) {
-									isusahockeynoloi = rs.getBoolean("isuahockeynoloi");
-									this.playername = rs.getString("playername");
+									isusahockeynoloi = rs.getBoolean("isusahockeynoloi");
+									//this.playername = rs.getString("playername");
 									this.teamname = rs.getString("teamname");
+									this.clubid	= rs.getInt("clubid");
+								}
+							}
+
+							rs.close();
+
+						}
+
+						if (isusahockeynoloi) {
+							to = "";
+							LOGGER.info("Sending email to club registrar for player without loi");
+
+							//need to combine next two sp's into one to reduce number of db calls.
+							cs3.setInt("iclubid", this.clubid);
+							rs = cs3.executeQuery();
+							if (rs != null) {
+								while (rs.next()) {
+									if (!to.equals("")) {
+										to = to + "," + rs.getString("usercode");
+									} else {
+										to = rs.getString("usercode");
 									}
 								}
 							}
 							rs.close();
 
+							//to = "lahockeyfan2@yahoo.com";
+							this.setToMailAddress(to);
+							this.setPreApprovedCC("");
+							this.setSubject(playername + "-" + teamname + " Missing LOI");
+
+							SendMailSSL mail = new SendMailSSL(this);
+							LOGGER.info("Finished creating mail object for " + playername + "-" + teamname + " Missing LOI");
+							mail.sendMail();
+
 						}
-
-					if (isusahockeynoloi) {
-						to = "";
-						LOGGER.info("Sending email to club registrar for player without loi");
-
-						//need to combine next two sp's into one to reduce number of db calls.
-						cs3.setInt("iclubid", this.clubid);
-						rs = cs3.executeQuery();
-						if (rs != null) {
-							while (rs.next()) {
-								if (!to.equals("")) {
-									to = to + "," + rs.getString("usercode");
-								} else {
-									to = rs.getString("usercode");
-								}
-							}
-						}
-						rs.close();
-
-						to = "lahockeyfan2@yahoo.com";
-						this.setToMailAddress(to);
-						this.setPreApprovedCC("");
-						this.setSubject(playername + "-" + teamname + " Missing LOI");
-
-						SendMailSSL mail = new SendMailSSL(this);
-						LOGGER.info("Finished creating mail object for " + playername + "-" + teamname + " Missing LOI");
-						mail.sendMail();
-
-					}
 
 					y++;
-						this.totalcount = y;
+					this.totalcount = y;
 					//clear values for use in the next record
 					usahockeynumber = "";
 					usahockeyteamnumber = "";
 					isusahockeynoloi = false;
-				this.playername = "";
-				this.teamname = "";
+					this.playername = "";
+					this.teamname = "";
+				}
 
 				cs.close();
 				cs2.close();
@@ -348,7 +367,7 @@ public class processusahockeyuploadBean implements Serializable,  MailableObject
 	
 	@Override
 	public String getSubject() {
-		return null;
+		return this.subject;
 	}
 
 	@Override
@@ -356,7 +375,7 @@ public class processusahockeyuploadBean implements Serializable,  MailableObject
 		// TODO Auto-generated method stub
 		List<String> myTokens = new ArrayList<String>();
 		myTokens.add("PLAYERNAME:" + this.playername);
-		myTokens.add("LASTNAME:" + this.teamname);
+		myTokens.add("TEAMNAME:" + this.teamname);
 		return Utils.mergeTokens(this.mail_reg_body_playerwithoutloi, myTokens);
 	}
 

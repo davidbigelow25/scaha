@@ -331,7 +331,7 @@ public class UsaHockeyRegistration extends ScahaObject implements Serializable {
 				cs.setString(i++, this.getBPhone());					//	IN in_workphone varchar(16),
 				cs.setString(i++, this.getPGSFName());					//	IN in_pgfirstname varchar(45),
 				cs.setString(i++, this.getPGSLName());					//	IN in_pglastname varchar(45),
-				cs.setString(i++, this.getPGSMName().substring(0,1));	//	IN in_pgmiddleinit char(1),
+				cs.setString(i++,null);
 				cs.setString(i++, this.getEmail());						//	IN in_pgemail varchar(45),
 				cs.setInt(i++, 1);										//	IN in_isactive tinyint,
 				cs.setString(i++, null);								//	IN in_updated timestamp

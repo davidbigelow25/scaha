@@ -150,7 +150,7 @@ public class DatabasePool implements Runnable {
 	 * @return
 	 */
 	public Database getDatabase(Profile _pro) {
-		
+		this.m_vConnections.size();
 		int icount = 0;
 		Database db = null;
 		while (db == null && icount < 10) {
