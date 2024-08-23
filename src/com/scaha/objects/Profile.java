@@ -71,18 +71,20 @@ public class Profile extends ScahaObject {
 
 			//need to instantiate the scahamanager class to be used by when the manager is working on the managerportal
 			//need to check if they are a register, if so set them up as manager as well.
-			/*LOGGER.info("setting scaha manager" + _sUser);
+			LOGGER.info("setting scaha manager" + _sUser);
 			this.setScahamanager(new ScahaManager(this));
 			LOGGER.info("finished setting scaha manager, setting manager team id" + _sUser);
 			this.setManagerteamid(this.getScahamanager().getManagerteamid(this.ID));
 			LOGGER.info("finished setting manager team id, checking role list for c-reg" + _sUser);
-			if (this.hasRoleList("C-REG",this)){
+			/*if (this.hasRoleList("C-REG",this)){
+
+			}*/
+			LOGGER.info("checking if role list again for c-reg" + _sUser);
+			if (this.hasRoleList("C-REG",this)) {
 				LOGGER.info("is c-reg setting is manager" + _sUser);
 				this.getScahamanager().ismanager = true;
 				LOGGER.info("finished setting c-reg to manager" + _sUser);
-			}
-			LOGGER.info("checking if role list again for c-reg" + _sUser);
-			if (this.hasRoleList("C-REG",this)) {
+
 				LOGGER.info("getting club id for registrar" + _sUser);
 				this.setClubid(getClubIDForRegistrar());
 				LOGGER.info("getting club teams for registrar to set to manager" + _sUser);

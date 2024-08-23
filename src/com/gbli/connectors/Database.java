@@ -455,7 +455,9 @@ public class Database {
 					+ ".  Starting to instanciate...");
 			Class.forName(m_sDriver).newInstance();
 			LOGGER.info(this + ":DRIVER:" + m_sDriver + ".  Driver okay...");
-			m_con = DriverManager.getConnection(m_sURL, m_sUser, m_sPwd);
+			//m_con = DriverManager.getConnection(m_sURL, m_sUser, m_sPwd);
+			//trying a fix for adding autoreconnect to prevent db connections from being closed by db
+			m_con = DriverManager.getConnection(m_sURL + "?autoReconnect=true", m_sUser, m_sPwd);
 			LOGGER.info(this + "Connection okay..");
 
 		} catch (Exception e) {

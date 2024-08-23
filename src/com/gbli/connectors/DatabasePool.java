@@ -4,6 +4,9 @@ import java.util.logging.Logger;
 import com.gbli.context.ContextManager;
 import com.scaha.objects.Profile;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+
 /**
  * @author dbigelow
  *
@@ -21,7 +24,11 @@ public class DatabasePool implements Runnable {
 	private boolean m_bshutdown = false;
 	private String m_sName = null;
 	private Vector<Database> m_vConnections = new Vector<Database>();
-	
+	private String dburl = "jdbc:mysql://scaha-prod.cb8ss84o0mjb.us-west-1.rds.amazonaws.com";//scaha-prod
+	// "jdbc:mysql://scaha-dev.cb8ss84o0mjb.us-west-1.rds.amazonaws.com",//scaha-dev
+	private String dbusername ="scaha";
+	private String dbpassword = "shiloh24";
+
 	private Thread m_thMyThread = null;
 	
 	public DatabasePool (String _str, int _ipoolcount) {
@@ -42,14 +49,13 @@ public class DatabasePool implements Runnable {
 				for (int i=0; i < m_iCount;i++) {
 					m_vConnections.add(new ScahaDatabase(i,
 							"com.mysql.cj.jdbc.Driver",
-							//"jdbc:mysql://scaha-dev.cb8ss84o0mjb.us-west-1.rds.amazonaws.com",//scaha-dev
-							 "jdbc:mysql://scaha-prod.cb8ss84o0mjb.us-west-1.rds.amazonaws.com",//scaha-prod
+							 dburl,//scaha-prod
 
 																//"jdbc:mysql://192.241.229.21:3306/scaha", //scaha old
 
 							//"jdbc:mysql://192.241.229.21:3306",
 //							"jdbc:mysql://192.241.211.230:3306/scaha",  // original site
-							"scaha", "shiloh24"));
+							dbusername, dbpassword));
 				}
 				
 			}
@@ -149,7 +155,30 @@ public class DatabasePool implements Runnable {
 	 * 
 	 * @return
 	 */
-	public Database getDatabase(Profile _pro) {
+	public Database getDatabase(Profile _pro, boolean isloaded) {
+
+		//add a check to see if app is done loading.  if it is and the db connections are below 10
+		//prime some more connections
+		// this code should not happen on app load
+		Integer currentdbconnectioncount = this.m_vConnections.size();
+		if (isloaded){
+			if (this.m_vConnections.size() < 60){
+				for (int i=currentdbconnectioncount; i < 60;i++) {
+					m_vConnections.add(new ScahaDatabase(i,
+							"com.mysql.cj.jdbc.Driver",
+							dburl,//scaha-prod
+
+							//"jdbc:mysql://192.241.229.21:3306/scaha", //scaha old
+
+							//"jdbc:mysql://192.241.229.21:3306",
+//							"jdbc:mysql://192.241.211.230:3306/scaha",  // original site
+							dbusername, dbpassword));
+				}
+			}
+
+		}
+
+
 		this.m_vConnections.size();
 		int icount = 0;
 		Database db = null;
@@ -183,10 +212,9 @@ public class DatabasePool implements Runnable {
 		Profile tmp = new Profile();
 		tmp.setUserName("private");
 		tmp.setNickName("transient");
-		return this.getDatabase(tmp);
-		
-		
+		return this.getDatabase(tmp,true);
 	}
+
 	public void incTxCount() {
 		this.m_itxSum++;
 	}

@@ -188,7 +188,7 @@ public class ContextManager implements ServletContextListener {
 	// This hands out a good database connection
 	//
 	public static Database getDatabase(String _sClassName, Profile _pro) {
-		return c_hDBPools.get(_sClassName).getDatabase(_pro);
+		return c_hDBPools.get(_sClassName).getDatabase(_pro, c_bLoaded);
 	}
 	//
 	// This hands out a good database connection

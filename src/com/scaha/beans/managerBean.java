@@ -214,7 +214,7 @@ public class managerBean implements Serializable, MailableObject {
 		}
 
 		//now lets check if the manager has added any tournament info if not let's redirect them to the tournament page.
-		checkTournaments();
+		//checkTournaments();
 		checkForAAorAAA();
 	}
 	
