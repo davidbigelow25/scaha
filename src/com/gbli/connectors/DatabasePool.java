@@ -179,7 +179,7 @@ public class DatabasePool implements Runnable {
 			try {
 				//thread to sleep for the specified number of milliseconds
 				LOGGER.info(" All connections busy.. sleeping for a bit...");
-				closeHungConnections();
+				//closeHungConnections();
 			 	Thread.sleep(5000);
   		    } catch ( java.lang.InterruptedException ie) {
 				LOGGER.info(" All connections busy.. woke up afer wait...");
