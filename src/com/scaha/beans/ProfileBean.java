@@ -101,8 +101,8 @@ public class ProfileBean implements Serializable,  MailableObject  {
 	private String newcity = null;
 	private String newstate = null;
 	private String newzip = null;
-	@ManagedProperty(value="#{scahaBean}")
-	private ScahaBean scaha;
+	/*@ManagedProperty(value="#{scahaBean}")
+	private ScahaBean scaha;*/
 
 	public String getNewzip() {
 		return newzip;

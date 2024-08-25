@@ -160,25 +160,6 @@ public class DatabasePool implements Runnable {
 		//add a check to see if app is done loading.  if it is and the db connections are below 10
 		//prime some more connections
 		// this code should not happen on app load
-		Integer currentdbconnectioncount = this.m_vConnections.size();
-		if (isloaded){
-			if (this.m_vConnections.size() < 60){
-				for (int i=currentdbconnectioncount; i < 60;i++) {
-					m_vConnections.add(new ScahaDatabase(i,
-							"com.mysql.cj.jdbc.Driver",
-							dburl,//scaha-prod
-
-							//"jdbc:mysql://192.241.229.21:3306/scaha", //scaha old
-
-							//"jdbc:mysql://192.241.229.21:3306",
-//							"jdbc:mysql://192.241.211.230:3306/scaha",  // original site
-							dbusername, dbpassword));
-				}
-			}
-
-		}
-
-
 		this.m_vConnections.size();
 		int icount = 0;
 		Database db = null;
