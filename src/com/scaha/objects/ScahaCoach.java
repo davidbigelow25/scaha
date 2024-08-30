@@ -9,7 +9,6 @@ import java.util.logging.Logger;
 
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 /**
  * @author dbigelow
@@ -48,13 +47,6 @@ public class ScahaCoach extends Person {
 	}
 
 	
-	/**
-	 * A basic constructor that glues a person to a player given the relationship.
-	 * This assumes new record status.. 
-	 * @param _id
-	 * @param _per
-	 * @param _relationship
-	 */
 	public ScahaCoach (Profile _pro) {
 		
 		//
@@ -123,10 +115,7 @@ public class ScahaCoach extends Person {
 		return displayemail;
 	}
 
-	/**
-	 * @param screeningexpires the screeningexpires to set
-	 */
-		public void setDisplayemail(Boolean displayemail) {
+	public void setDisplayemail(Boolean displayemail) {
 		this.displayemail = displayemail;
 	}
 	/**

@@ -1,20 +1,12 @@
 package com.scaha.beans;
 
-import com.gbli.common.SendMailSSL;
-import com.gbli.common.Utils;
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.io.Serializable;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
@@ -26,24 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
-
-import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.mail.internet.InternetAddress;
-import javax.servlet.http.HttpServletRequest;
-
-import com.gbli.common.SendMailSSL;
-import com.gbli.common.Utils;
-import com.gbli.connectors.ScahaDatabase;
-import com.gbli.context.ContextManager;
 import com.scaha.objects.*;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 
 public class managerconfirmtournamentBean implements Serializable {
 

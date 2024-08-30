@@ -93,7 +93,6 @@ public class ClubBean implements Serializable,  MailableObject {
 
 	/**
 	 * This saves the Club object and along with it.. any changes
-	 * @return
 	 */
 	public String save() {  
 	        FacesMessage message =  
@@ -358,7 +357,7 @@ public class ClubBean implements Serializable,  MailableObject {
 	 * @return
 	 */
 	public String setClub(int _id) {
-		LOGGER.info("ClubBean received a Club id of:" + + _id);
+		LOGGER.info("ClubBean received a Club id of:" + _id);
 		this.selectedclub = scaha.findClubByID(_id);
 		LOGGER.info((this.selectedclub == null ? "setClub found nothing in masterlist!" : "setting to club " + this.selectedclub.getClubname()));
 		return "";
@@ -616,13 +615,7 @@ public class ClubBean implements Serializable,  MailableObject {
 		return Integer.toString(icount);
 		
 	}
-	
-	/**
-	 * Simply return the team counts for a given Division and Skill Set;
-	 * @param _strDivision
-	 * @param _strSkill
-	 * @return
-	 */
+
 	public String getTotalTeamCount(boolean _exh) {
 		
 		int icount = 0;
@@ -654,13 +647,7 @@ public class ClubBean implements Serializable,  MailableObject {
 		return Integer.toString(icount);
 
 	}
-	
-	/**
-	 * Simply return the team counts for a given Division and Skill Set;
-	 * @param _strDivision
-	 * @param _strSkill
-	 * @return
-	 */
+
 	public String getTotalXTeamCount() {
 		
 		int icount = 0;

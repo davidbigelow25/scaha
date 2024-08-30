@@ -17,10 +17,6 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.mail.internet.InternetAddress;
-import javax.servlet.http.HttpServletRequest;
-import javax.swing.text.Position;
-
-import javafx.geometry.Pos;
 import org.primefaces.event.FlowEvent;
 import com.gbli.common.SendMailSSL;
 import com.gbli.common.USAHRegClient;
@@ -270,17 +266,10 @@ public class MemberBean implements Serializable, MailableObject {
 		this.usar = usar;
 	}
 
-	
-	/**
-	 * @return the regnumber
-	 */
 	public String getWizardstate() {
 		return wizardstate;
 	}
 
-	/**
-	 * @param regnumber the regnumber to set
-	 */
 	public void setWizardstate(String wstate) {
 		this.wizardstate = wstate;
 	}
@@ -289,9 +278,6 @@ public class MemberBean implements Serializable, MailableObject {
 		return regnumber;
 	}
 
-	/**
-	 * @param regnumber the regnumber to set
-	 */
 	public void setRegnumber(String regnumber) {
 		this.regnumber = regnumber;
 	}
@@ -300,9 +286,6 @@ public class MemberBean implements Serializable, MailableObject {
 		return scahanumber;
 	}
 
-	/**
-	 * @param regnumber the regnumber to set
-	 */
 	public void setScahanumber(String regnumber) {
 		this.scahanumber = regnumber;
 	}
@@ -445,9 +428,6 @@ public class MemberBean implements Serializable, MailableObject {
 		return membertype;
 	}
 
-	/**
-	 * @param membertype the  to set
-	 */
 	public void setMembertype(List<String> selectedOptions2) {
 		this.membertype = selectedOptions2;
 	}
@@ -456,9 +436,6 @@ public class MemberBean implements Serializable, MailableObject {
 		return fmemberlist;
 	}
 
-	/**
-	 * @param membertype the  to set
-	 */
 	public void setFmemberlist(List<FamilyMember> selectedOptions2) {
 		this.fmemberlist = selectedOptions2;
 	}
@@ -1001,9 +978,6 @@ public class MemberBean implements Serializable, MailableObject {
 		return selectedPerson;
 	}
 
-	/**
-	 * @param selectedPerson the selectedPerson to set
-	 */
 	public void setSelectedPerson(Person selectedperson) {
 		 LOGGER.info("Setting selected person to..." + selectedperson.toString());
 		this.selectedPerson = selectedperson;
@@ -1056,9 +1030,6 @@ public class MemberBean implements Serializable, MailableObject {
 		return displayrole;
 	}
 
-	/**
-	 * @param stealme the stealme to set
-	 */
 	public void setDisplayrole(Boolean brole) {
 		this.displayrole = brole;
 	}

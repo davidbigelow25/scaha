@@ -5,8 +5,6 @@ import com.gbli.common.Utils;
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
 import com.scaha.objects.*;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 import javax.annotation.PostConstruct;
 import javax.el.ValueExpression;
 import javax.faces.application.Application;

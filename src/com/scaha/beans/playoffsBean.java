@@ -26,7 +26,6 @@ import com.scaha.objects.ScahaTeam;
 import com.scaha.objects.Schedule;
 import com.scaha.objects.TempGame;
 import com.scaha.objects.TempGameDataModel;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 //import com.gbli.common.SendMailSSL;
 

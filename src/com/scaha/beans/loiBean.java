@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
@@ -28,25 +27,18 @@ import com.gbli.common.Utils;
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
 import com.scaha.objects.*;
-import com.sun.media.jfxmedia.events.PlayerStateEvent;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
-import static org.apache.commons.lang3.BooleanUtils.and;
-
-//import com.gbli.common.SendMailSSL;
-
 
 public class loiBean implements Serializable, MailableObject {
 
 	// Class Level Variables
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = Logger.getLogger(ContextManager.getLoggerContext());
-	private static String mail_reg_body = Utils.getMailTemplateFromFile("/mail/loireceipt.html");
-	private static String mailboys18_reg_body = Utils.getMailTemplateFromFile("/mail/loi18receipt.html");
-	private static String girlsmail_reg_body = Utils.getMailTemplateFromFile("/mail/girlsloireceipt.html");
-	private static String girlsmail18_reg_body = Utils.getMailTemplateFromFile("/mail/girlsloireceipt.html");
-	private static String playerupmail_reg_body = Utils.getMailTemplateFromFile("/mail/playeruploireceipt.html");
-	private static String sendingnote_reg_body = Utils.getMailTemplateFromFile("/mail/sendingnote.html");
+	private static final String mail_reg_body = Utils.getMailTemplateFromFile("/mail/loireceipt.html");
+	private static final String mailboys18_reg_body = Utils.getMailTemplateFromFile("/mail/loi18receipt.html");
+	private static final String girlsmail_reg_body = Utils.getMailTemplateFromFile("/mail/girlsloireceipt.html");
+	private static final String girlsmail18_reg_body = Utils.getMailTemplateFromFile("/mail/girlsloireceipt.html");
+	private static final String playerupmail_reg_body = Utils.getMailTemplateFromFile("/mail/playeruploireceipt.html");
+	private static final String sendingnote_reg_body = Utils.getMailTemplateFromFile("/mail/sendingnote.html");
 	
 	@ManagedProperty(value="#{scahaBean}")
     private ScahaBean scaha;
@@ -729,22 +721,19 @@ public class loiBean implements Serializable, MailableObject {
         				templist.add(team);
     				}
     				LOGGER.info("We have results for team list by club");
+					rs.close();
     			}
-    			rs.close();
-    			db.cleanup();
-    		} else {
-    		
     		}
     	} catch (SQLException e) {
     		// TODO Auto-generated catch block
     		LOGGER.info("ERROR IN loading teams");
     		e.printStackTrace();
     		db.rollback();
-			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
     		//
+			db.cleanup();
     		db.free();
     	}
 		

@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.el.ELContext;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
@@ -35,8 +34,10 @@ import com.gbli.context.ContextManager;
 @ManagedBean
 @ApplicationScoped
 public class ScahaBean implements Serializable,  MailableObject {
-		
-	
+
+	private static volatile ScahaBean instance; // volatile ensures visibility across threads
+
+
 	//
 	// Class Level Variables
 	private static final long serialVersionUID = 1L;
@@ -63,17 +64,23 @@ public class ScahaBean implements Serializable,  MailableObject {
 	
 	 @PostConstruct
 	 public void init() {
-		 
-		 LOGGER.info("******************* START: SCAHA BEAN INIT... ***********************");
-		 LOGGER.info("\t old level at:" + LOGGER.getLevel());
-		 LOGGER.setLevel(Level.ALL);
-		 LOGGER.info("\t new level at:" + LOGGER.getLevel());
-		 this.setDefaultProfile(new Profile());
-		 this.setExecutiveboard();
-		 this.setMeetingminutes();
-		 this.loadNoimage();
-		 this.refreshBean();
-		 LOGGER.info("******************* FINISH: SCAHA BEAN INIT... ***********************");
+		 if (instance == null) {
+			 synchronized (ScahaBean.class) {
+				 if (instance == null) {
+					 instance = this;
+					 LOGGER.info("******************* START: SCAHA BEAN INIT... ***********************");
+					 LOGGER.info("\t old level at:" + LOGGER.getLevel());
+					 LOGGER.setLevel(Level.ALL);
+					 LOGGER.info("\t new level at:" + LOGGER.getLevel());
+					 this.setDefaultProfile(new Profile());
+					 this.setExecutiveboard();
+					 this.setMeetingminutes();
+					 this.loadNoimage();
+					 this.refreshBean();
+					 LOGGER.info("******************* FINISH: SCAHA BEAN INIT... ***********************");
+				 }
+			 }
+		 }
 	 }
 	 
 	 @PreDestroy
@@ -342,9 +349,6 @@ public class ScahaBean implements Serializable,  MailableObject {
 		return ScahaTeamList;
 	}
 
-	/**
-	 * @param scahaTeamList the scahaTeamList to set
-	 */
 	public void setSelectedscahacoach(ScahaCoach member) {
 		this.selectedscahacoach = member;
 	}
@@ -438,10 +442,6 @@ public class ScahaBean implements Serializable,  MailableObject {
 	}
 
 
-	
-	/**
-	 * @param scahaSeasonList the scahaSeasonList to set
-	 */
 	public void setScahaprogramdirectorlist(MemberList List) {
 		scahaprogramdirectorlist = List;
 	}
@@ -454,10 +454,6 @@ public class ScahaBean implements Serializable,  MailableObject {
 	}
 
 
-	
-	/**
-	 * @param scahaSeasonList the scahaSeasonList to set
-	 */
 	public void setScahaboardmemberlist(MemberList List) {
 		scahaboardmemberlist = List;
 	}
@@ -469,10 +465,7 @@ public class ScahaBean implements Serializable,  MailableObject {
 	}
 
 
-	
-	/**
-	 * @param scahaSeasonList the scahaSeasonList to set
-	 */
+
 	public void setScahayearlist(YearList List) {
 		scahayearlist = List;
 	}
@@ -486,10 +479,6 @@ public class ScahaBean implements Serializable,  MailableObject {
 	}
 
 
-	
-	/**
-	 * @param scahaSeasonList the scahaSeasonList to set
-	 */
 	public void setScahastatslist(StatsList List) {
 		scahastatslist = List;
 	}

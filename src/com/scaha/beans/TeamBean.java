@@ -20,14 +20,11 @@ import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 
 import com.scaha.objects.*;
-import jdk.nashorn.internal.ir.Block;
 import org.primefaces.event.RowEditEvent;
 
 import com.gbli.common.SendMailSSL;
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
-
-//import com.gbli.common.SendMailSSL;
 
 @ManagedBean
 @ViewScoped

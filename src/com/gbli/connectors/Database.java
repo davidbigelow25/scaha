@@ -218,10 +218,6 @@ public class Database {
 	 * 
 	 * THis will populate the result set and its meta data counterpart for the
 	 * caller to retrieve and do what they want
-	 * 
-	 * 
-	 * @param _str
-	 * @return
 	 */
 	public boolean getDataFromSQLFile(String _sPath, Vector _vParms) {
 
@@ -256,9 +252,6 @@ public class Database {
 	/**
 	 * This retrieves all data into the ResultSet and the ResultSetMetaData for
 	 * the given SQL Statement
-	 * 
-	 * @param _strSQL
-	 * @return
 	 */
 	public boolean getData(String _sSQL, Vector _vParms) {
 
@@ -306,10 +299,6 @@ public class Database {
 	/**
 	 * This retrieves all data into the ResultSet and the ResultSetMetaData for
 	 * the given SQL Statement
-	 * 
-	 * @param _strSQL
-	 * @return
-	 * @throws SQLException 
 	 */
 	
 	public CallableStatement prepareCall(String _sql) throws SQLException {

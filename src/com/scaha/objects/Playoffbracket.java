@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 public class Playoffbracket extends ScahaObject implements Serializable {
 	
