@@ -199,7 +199,15 @@ public class statsBean implements Serializable{
     	List<Stat> tempassists = new ArrayList<Stat>();
     	List<Stat> tempgaa = new ArrayList<Stat>();
     	List<Stat> tempsave = new ArrayList<Stat>();
-    	
+
+		this.setPlayerpoints(tempresult);
+		this.setPlayergoals(tempgoals);
+		this.setPlayerassists(tempassists);
+		this.setPlayergaa((tempgaa));
+		this.setPlayersavepercentage(tempsave);
+		// tmp disable
+		if (1 == 1) return;
+
     	ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
     	
     	try{
@@ -367,7 +375,6 @@ public class statsBean implements Serializable{
     		// TODO Auto-generated catch block
     		LOGGER.info("ERROR IN getting leaders list");
     		e.printStackTrace();
-			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -493,9 +500,15 @@ public class statsBean implements Serializable{
 	}
 	
 	public void loadCompletePlayerStats() throws Exception{
-		List<Stat> tempsave = new ArrayList<Stat>();
+		List<Stat> tempSave = new ArrayList<Stat>();
+		// tmp disable fetching data
+		this.setCompleteplayers(tempSave);
+		if (1 == 1) return;
+
+
 		//setDisplaycompletetitle(sortby);
-		
+		// tmp disable at the moment
+
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Date   date       = format.parse (this.selectedschedule.getStartdate());
 		Calendar cal = Calendar.getInstance();
@@ -541,7 +554,7 @@ public class statsBean implements Serializable{
     				stat.setPoints(points);
     				stat.setPims(pims);
     				stat.setGp(gp);
-    				tempsave.add(stat);
+					tempSave.add(stat);
     				
 				}
 				LOGGER.info("We have results for complete player stats:");
@@ -553,7 +566,6 @@ public class statsBean implements Serializable{
     		LOGGER.info("ERROR IN loading loadCompletePlayerStats");
     		e.printStackTrace();
     		db.rollback();
-			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -561,16 +573,19 @@ public class statsBean implements Serializable{
     		db.free();
     	}
 			
-    	this.setCompleteplayers(tempsave);
+    	this.setCompleteplayers(tempSave);
 		
     	
     }
 	
 	
 	public void loadCompleteGoalieStats() throws ParseException{
-		List<Stat> tempsave = new ArrayList<Stat>();
-    	
-		
+
+		// tmp disable fetching data
+		List<Stat> tmpSave = new ArrayList<Stat>();
+		this.setCompletegoalies(tmpSave);
+		if (1 ==1 ) return;
+
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Date   date       = format.parse (this.selectedschedule.getStartdate());
 		Calendar cal = Calendar.getInstance();
@@ -639,7 +654,7 @@ public class statsBean implements Serializable{
     				stat.setSavepercentage(percentage);
     				stat.setGp(gp);
     				stat.setGaa(gaa);
-    				tempsave.add(stat);
+					tmpSave.add(stat);
     				
 				}
 				LOGGER.info("We have results for loadCompleteGoalieStats:");
@@ -650,8 +665,7 @@ public class statsBean implements Serializable{
     		// TODO Auto-generated catch block
     		LOGGER.info("ERROR IN loading loadCompleteGoalieStats");
     		e.printStackTrace();
-    		//db.rollback();
-			db.free();
+    		db.rollback();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -660,7 +674,7 @@ public class statsBean implements Serializable{
     	}
 		
     	//LazyStatDataModel temp = new LazyStatDataModel(tempsave); 
-    	this.setCompletegoalies(tempsave);
+    	this.setCompletegoalies(tmpSave);
 		
     }
 	

@@ -32,13 +32,7 @@ public class TeamList extends ListDataModel<ScahaTeam> implements Serializable, 
     public TeamList(List<ScahaTeam> data) {  
         super(data);  
     }  
-    
-    /**
-  	 * This will get an empty TeamList
-  	 * @param _db
-  	 * @return
-  	 * @throws SQLException 
-  	 */
+
   	public static TeamList ListFactory() throws SQLException {
   		
   		List<ScahaTeam> data = new ArrayList<ScahaTeam>();

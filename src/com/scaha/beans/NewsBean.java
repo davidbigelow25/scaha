@@ -4,10 +4,7 @@ import java.io.Serializable;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
@@ -19,16 +16,13 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.mail.internet.InternetAddress;
-import javax.servlet.http.HttpServletRequest;
 
 import com.gbli.common.Utils;
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
-import com.scaha.objects.FamilyMemberDataModel;
 import com.scaha.objects.MailableObject;
 import com.scaha.objects.NewsItem;
 import com.scaha.objects.NewsItemList;
-import com.scaha.objects.Profile;
 
 @ManagedBean
 @ViewScoped
@@ -51,20 +45,8 @@ public class NewsBean implements Serializable,  MailableObject  {
 	
 	public void init(){
 		setNewsItemModal(75);
-
-
 	}
-	
-	//
-	/**
-	 * @param args
-	 */
-	/*public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
-	}*/
-	
-	
 	@Override
 	public String getSubject() {
 		// TODO Auto-generated method stub
@@ -100,9 +82,7 @@ public class NewsBean implements Serializable,  MailableObject  {
 		return Utils.mailMerge("/mail/test.mail",myTokens);
 		
 	}
-	/**
-	 * @param currentnewsitem the currentnewsitem to set
-	 */
+
 	public void setCurrentNewsItem(NewsItem currentnewsitem) {
 		this.currentnewsitem = currentnewsitem;
 	}

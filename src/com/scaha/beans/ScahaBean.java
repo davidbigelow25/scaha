@@ -287,8 +287,11 @@ public class ScahaBean implements Serializable,  MailableObject {
 		
 		GeneralSeason scahags = this.getScahaSeasonList().getCurrentSeason();
 		this.setScahaTeamList(TeamList.ListFactory());
-		
+		int i = 0;
+		int clubCount = ScahaClubList.getRowCount();
 		for (Club c : ScahaClubList) {
+			++i;
+			LOGGER.info("loading Team Lists for Club: ("+ i +" of "+clubCount+") " + c.getClubid() + ":" + c.getClubname());
 			TeamList tl = c.getScahaTeams();
 			if (tl != null) {
 				@SuppressWarnings("unchecked")

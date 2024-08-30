@@ -30,10 +30,6 @@ import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 
 import org.primefaces.model.StreamedContent;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-
-
 
 /**
  * LoginBean.java
@@ -47,8 +43,8 @@ public class ProfileBean implements Serializable,  MailableObject  {
 	private static final long serialVersionUID = 2L;
 	private static final Logger LOGGER = Logger.getLogger(ContextManager.getLoggerContext());
 
-	private static String mail_body_chng_profile = Utils.getMailTemplateFromFile("mail/changeprofile.html");
-	private static String mail_body_chng_pwd = Utils.getMailTemplateFromFile("mail/changepassword.html");
+	private static final String mail_body_chng_profile = Utils.getMailTemplateFromFile("mail/changeprofile.html");
+	private static final String mail_body_chng_pwd = Utils.getMailTemplateFromFile("mail/changepassword.html");
 	private String MergedBody = null;
 	private String name = null;
     private String live_password = null;  // This is the live password they used to login..
@@ -107,9 +103,6 @@ public class ProfileBean implements Serializable,  MailableObject  {
 	public String getNewzip() {
 		return newzip;
 	}
-	/**
-	 * @param username the username to set
-	 */
 	public void setNewzip(String username) {
 		this.newzip = username;
 	}
@@ -118,109 +111,61 @@ public class ProfileBean implements Serializable,  MailableObject  {
 	public String getNewstate() {
 		return newstate;
 	}
-	/**
-	 * @param username the username to set
-	 */
 	public void setNewstate(String username) {
 		this.newstate = username;
 	}
-	
-	
 	public String getNewcity() {
 		return newcity;
 	}
-	/**
-	 * @param username the username to set
-	 */
 	public void setNewcity(String username) {
 		this.newcity = username;
 	}
-	
-	
 	public String getNewaddress() {
 		return newaddress;
 	}
-	/**
-	 * @param username the username to set
-	 */
 	public void setNewaddress(String username) {
 		this.newaddress = username;
 	}
-	
-	
 	public String getNewphone() {
 		return newphone;
 	}
-	/**
-	 * @param username the username to set
-	 */
 	public void setNewphone(String username) {
 		this.newphone = username;
 	}
-	
-	
 	public String getNewgender() {
 		return newgender;
 	}
-	/**
-	 * @param username the username to set
-	 */
 	public void setNewgender(String username) {
 		this.newgender = username;
 	}
-	
-	
 	public String getNewdob() {
 		return newdob;
 	}
-	/**
-	 * @param username the username to set
-	 */
 	public void setNewdob(String username) {
 		this.newdob = username;
 	}
-	
-	
-	/**
-	 * @return the username
-	 */
 	public String getUsername() {
 		return username;
 	}
-	/**
-	 * @param username the username to set
-	 */
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
-	/**
-	 * @return the reppassword
-	 */
 	public String getReppassword() {
 		return reppassword;
 	}
-	/**
-	 * @param reppassword the reppassword to set
-	 */
+
 	public void setReppassword(String reppassword) {
 		this.reppassword = reppassword;
 	}
-	/**
-	 * @return the firstname
-	 */
+
 	public String getFirstname() {
 		return firstname;
 	}
-	/**
-	 * @param firstname the firstname to set
-	 */
+
 	public void setFirstname(String firstname) {
 		this.firstname = firstname;
 	}
-	/**
-	 * @return the lastname
-	 */
+
 	public String getLastname() {
 		return lastname;
 	}
@@ -785,9 +730,6 @@ public boolean isEditPassword() {
 }
 
 
-/**
- * @param editPerson the editPerson to set
- */
 public void setEditPerson() {
 	LOGGER.info("About to edit person information..");
 	//
@@ -810,9 +752,6 @@ public void setEditPerson() {
 	EditPassword = false;
 }
 
-/**
- * @param editPerson the editPerson to set
- */
 public void setNotEditPerson() {
 	EditPerson = false;
 
@@ -832,9 +771,6 @@ public void setNotEditPerson() {
 	this.chgUserName = this.getUserName();	
 }
 
-/**
- * @param editPerson the editPerson to set
- */
 public void setEditPassword() {
 	LOGGER.info("About to edit password information..");
 	
@@ -842,16 +778,10 @@ public void setEditPassword() {
 	EditPerson = false;
 }
 
-/**
- * @param editPerson the editPerson to set
- */
 public void setNotEditPassword() {
 	EditPassword =false;
 }
 
-/**
- * @param editPerson the editPerson to set
- */
 public void setEditMembers() {
 	LOGGER.info("About to edit Member information..");
 	
@@ -859,16 +789,10 @@ public void setEditMembers() {
 	AddMember = false;
 }
 
-/**
- * @param editPerson the editPerson to set
- */
 public void setNotEditMembers() {
 	EditMember =false;
 }
 
-/**
- * @param editPerson the editPerson to set
- */
 public void setAddMembers() {
 	LOGGER.info("About to Add Member information..");
 	
@@ -876,9 +800,6 @@ public void setAddMembers() {
 	EditMember = false;
 }
 
-/**
- * @param editPerson the editPerson to set
- */
 public void setNotAddMembers() {
 	AddMember =false;
 	EditMember = false;
@@ -1295,10 +1216,6 @@ public String getCon_password() {
 	return con_password;
 }
 
-
-/**
- * @param con_passwrod the con_passwrod to set
- */
 public void setCon_password(String con_password) {
 	this.con_password = con_password;
 }
