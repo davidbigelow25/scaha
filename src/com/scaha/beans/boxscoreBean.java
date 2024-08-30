@@ -4,11 +4,7 @@ import java.io.Serializable;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -19,11 +15,8 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
-import org.primefaces.event.SelectEvent;
-
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
-import com.scaha.objects.Game;
 import com.scaha.objects.Penalty;
 import com.scaha.objects.Score;
 import com.scaha.objects.ScoreSummary;
@@ -442,9 +435,6 @@ public class boxscoreBean implements Serializable{
 		return scaha;
 	}
 
-	/**
-	 * @param scaha the scaha to set
-	 */
 	public void setClubbean(ClubBean club) {
 		this.clubbean = club;
 	}
@@ -453,9 +443,6 @@ public class boxscoreBean implements Serializable{
 		return this.clubbean;
 	}
 
-	/**
-	 * @param scaha the scaha to set
-	 */
 	public void setScoreboard(ScoreboardBean club) {
 		this.scoreboard = club;
 	}
@@ -464,9 +451,6 @@ public class boxscoreBean implements Serializable{
 		return this.scoreboard;
 	}
 	
-	/**
-	 * @param scaha the scaha to set
-	 */
 	public void setScaha(ScahaBean scaha) {
 		this.scaha = scaha;
 	}

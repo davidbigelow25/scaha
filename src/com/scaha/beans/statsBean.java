@@ -28,8 +28,6 @@ import com.scaha.objects.Schedule;
 import com.scaha.objects.ScheduleList;
 import com.scaha.objects.Stat;
 
-//import com.gbli.common.SendMailSSL;
-
 @ManagedBean
 @ViewScoped
 public class statsBean implements Serializable{
@@ -99,7 +97,9 @@ public class statsBean implements Serializable{
         }
     
         
-    	
+    	if (1 == 1) {
+			LOGGER.info("loaded schedules and seasons:");
+		}
     	//load divisions to select from
         this.setSeasons(scaha.getScahaSeasonList());
         this.selectedseason = scaha.getScahaSeasonList().getCurrentSeason();
@@ -771,7 +771,7 @@ public class statsBean implements Serializable{
 		//
 		// ok.. lets do the schedules now..
 		//
-		//LOGGER.info("Refreshing Schedule List for season:" + this.selectedseason);
+		LOGGER.info("Refreshing Schedule List for season:" + this.selectedseason + " for user at:" + pb.getIpaddress());
 		
 		this.schedulelist = null;	
 		this.schedules = null;
