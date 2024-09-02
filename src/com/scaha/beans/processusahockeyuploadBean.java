@@ -278,7 +278,9 @@ public class processusahockeyuploadBean implements Serializable,  MailableObject
 
 							SendMailSSL mail = new SendMailSSL(this);
 							LOGGER.info("Finished creating mail object for " + playername + "-" + teamname + " Missing LOI");
+
 							mail.sendMail();
+
 
 						}
 
