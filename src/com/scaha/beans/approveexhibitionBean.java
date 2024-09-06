@@ -315,7 +315,6 @@ public class approveexhibitionBean implements Serializable, MailableObject {
     		LOGGER.info("ERROR IN getting all exhiibtion list ");
     		e.printStackTrace();
     		db.rollback();
-			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -381,8 +380,6 @@ public class approveexhibitionBean implements Serializable, MailableObject {
     			LOGGER.info("Finished creating mail object for " + tournament.getTournamentname() + " Approved for " + tournament.getRequestingteam());
     			mail.sendMail();
     			db.cleanup();
-			} else {
-		
 			}
 			
 		} catch (SQLException e) {
@@ -390,7 +387,6 @@ public class approveexhibitionBean implements Serializable, MailableObject {
 			LOGGER.info("ERROR IN Deleting the Tournament");
 			e.printStackTrace();
 			db.rollback();
-			db.free();
 		} finally {
 			//
 			// always clean up after yourself..
@@ -455,9 +451,6 @@ public class approveexhibitionBean implements Serializable, MailableObject {
     			LOGGER.info("Finished creating mail object for " + tournament.getTournamentname() + " Declined for " + tournament.getRequestingteam());
     			mail.sendMail();
     			db.cleanup();
-				db.free();
-			} else {
-		
 			}
 			
 		} catch (SQLException e) {
@@ -465,7 +458,6 @@ public class approveexhibitionBean implements Serializable, MailableObject {
 			LOGGER.info("ERROR IN Deleting the Tournament");
 			e.printStackTrace();
 			db.rollback();
-			db.free();
 		} finally {
 			//
 			// always clean up after yourself..

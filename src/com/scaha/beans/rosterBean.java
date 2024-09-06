@@ -263,15 +263,11 @@ public class rosterBean implements Serializable{
 			}
 			rs.close();
 			
-			db.cleanup();
-			db.free();
-    		
     	} catch (SQLException e) {
     		// TODO Auto-generated catch block
     		LOGGER.info("ERROR IN loading divisions");
     		e.printStackTrace();
     		db.rollback();
-			db.free();
     	} finally {
     		//
     		// always clean up after yourself..

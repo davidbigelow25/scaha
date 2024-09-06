@@ -583,8 +583,7 @@ public class viewreleaseBean implements Serializable, MailableObject {
 				}
 				rs.close();
     			db.commit();
-    			db.cleanup();
-    			
+
     			//need to send email to club registrars, family, and scaha registrar
     			//first releasing and accepting club registrar
     			//LOGGER.info("Sending email to club registrar, family, and scaha registrar");
@@ -648,8 +647,6 @@ public class viewreleaseBean implements Serializable, MailableObject {
 					e.printStackTrace();
 				}
     		    
-    		} else {
-    		
     		}
     	} catch (SQLException e) {
     		// TODO Auto-generated catch block

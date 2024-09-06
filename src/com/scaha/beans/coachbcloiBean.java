@@ -301,8 +301,6 @@ public class coachbcloiBean implements Serializable, MailableObject {
     			}
 				rs2.close();
     			db.cleanup();
-    		} else {
-
     		}
     		
     	} catch (SQLException e) {

@@ -72,7 +72,6 @@ public class Clubs extends HttpServlet {
 
                     templist.add(object);
 
-                    object = null;
 
                 }
 
@@ -80,14 +79,12 @@ public class Clubs extends HttpServlet {
 
 
             rs.close();
-            db.cleanup();
 
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             /*LOGGER.info("ERROR IN getting suspension list");*/
             e.printStackTrace();
             db.rollback();
-            db.free();
         } finally {
             //
             // always clean up after yourself..

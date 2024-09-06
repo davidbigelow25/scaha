@@ -64,6 +64,7 @@ public class FindMeBean implements Serializable, MailableObject  {
 	    	} catch (SQLException e) {
 	    		LOGGER.info("ERROR IN Searching FOR " + this.searchcriteria);
 	    		e.printStackTrace();
+	    		db.rollback();
 	    	} finally {
 	    		db.free();
 	    	}

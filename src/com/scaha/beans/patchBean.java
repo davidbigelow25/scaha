@@ -137,7 +137,6 @@ public class patchBean implements Serializable{
     		LOGGER.info("ERROR IN getting players for selection:" + this.selectedpatch.toString());
     		e.printStackTrace();
     		db.rollback();
-			db.free();
     	} finally {
     		//
     		// always clean up after yourself..

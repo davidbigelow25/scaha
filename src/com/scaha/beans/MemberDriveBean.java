@@ -33,15 +33,16 @@ public class MemberDriveBean implements Serializable  {
 		 LOGGER.info(" *************** POST INIT FOR MemberDriveBean *****************");
 		 
 		 ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
-   		 db.getData("call scaha.getMemberSignupsByClub()");
    		 try {
+   		 	db.getData("call scaha.getMemberSignupsByClub()");
 			setMydata(ReturnDataResultSet.NewReturnDataResultSetFactory(db.getResultSet()));
-		} catch (SQLException e) {
+   		 } catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-   		db.free();
-   		
+			db.rollback();
+   		 } finally {
+   		 	db.free();
+		 }
 	 }
 
 

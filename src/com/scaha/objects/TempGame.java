@@ -395,8 +395,6 @@ public class TempGame extends ScahaObject implements Serializable {
     			cs.setString("homeaway", "away");
     		    cs.executeQuery();
     			db.commit();
-    		    db.cleanup();
-        		
         		//LOGGER.info("We have updated the away score:" + this.idgame + "away score: " + lname);
     			
         		

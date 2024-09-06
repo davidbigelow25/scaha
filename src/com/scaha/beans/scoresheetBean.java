@@ -510,39 +510,40 @@ public class scoresheetBean implements Serializable {
 	public void getGameScoresheets() {  
 		List<Scoresheet> templist = new ArrayList<Scoresheet>();
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
-    	
-		if (this.idgame!=null){
-			try{
-	    		//first get team name
-	    		CallableStatement cs = db.prepareCall("CALL scaha.getScoresheetsForGame(?)");
+
+		try{
+
+			if (this.idgame!=null) {
+				//first get team name
+				CallableStatement cs = db.prepareCall("CALL scaha.getScoresheetsForGame(?)");
 				cs.setInt("gameid", this.idgame);
 				rs = cs.executeQuery();
-				
-				if (rs != null){
-					
+
+				if (rs != null) {
+
 					while (rs.next()) {
 						Integer idscoresheets = rs.getInt("idscoresheets");
-	    				String filename = rs.getString("filename");
-	    				String gametype = rs.getString("gametype");
-	    				String displayname = rs.getString("displayname");
-	    				String uploaddate = rs.getString("uploaddate");
+						String filename = rs.getString("filename");
+						String gametype = rs.getString("gametype");
+						String displayname = rs.getString("displayname");
+						String uploaddate = rs.getString("uploaddate");
 
 
-	    				Scoresheet scoresheet = new Scoresheet();
-	    				scoresheet.setFilename(filename);
-	    				scoresheet.setGametype(gametype);
-	    				scoresheet.setIdscoresheet(idscoresheets);
-	    				scoresheet.setUploaddate(uploaddate);
-	    				scoresheet.setFiledisplayname(displayname);
-	    				templist.add(scoresheet);
+						Scoresheet scoresheet = new Scoresheet();
+						scoresheet.setFilename(filename);
+						scoresheet.setGametype(gametype);
+						scoresheet.setIdscoresheet(idscoresheets);
+						scoresheet.setUploaddate(uploaddate);
+						scoresheet.setFiledisplayname(displayname);
+						templist.add(scoresheet);
 					}
 					//LOGGER.info("We have results for scoresheets for game:" + this.idgame);
 				}
-				
-				
+
+
 				rs.close();
 				db.cleanup();
-	    		
+			}
 			} catch (SQLException e) {
 	    		// TODO Auto-generated catch block
 	    		LOGGER.info("ERROR IN getting scoresheet list for game:" + this.idgame);
@@ -554,9 +555,6 @@ public class scoresheetBean implements Serializable {
 	    		//
 	    		db.free();
 	    	}
-		}
-    	
-		
     	setScoresheets(templist);
     	ScoresheetDataModel = new ScoresheetDataModel(scoresheets);
 	}

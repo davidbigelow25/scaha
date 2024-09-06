@@ -356,6 +356,7 @@ public class playerdetailBean implements Serializable{
     		// TODO Auto-generated catch block
     		LOGGER.info("ERROR IN retrieving selected game details for personid" + gameid);
     		e.printStackTrace();
+    		db.rollback();
     	} finally {
     		//
     		// always clean up after yourself..

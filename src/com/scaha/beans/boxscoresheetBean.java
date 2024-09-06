@@ -685,7 +685,7 @@ public class boxscoresheetBean implements Serializable{
     		// TODO Auto-generated catch block
     		LOGGER.info("ERROR IN retrieving selected game details for gameid" + gameid);
     		e.printStackTrace();
-			db.free();
+    		db.rollback();
     	} finally {
     		//
     		// always clean up after yourself..

@@ -162,10 +162,7 @@ public class clubviewreleaseBean implements Serializable {
     			}
     				
     			db.cleanup();
-    		} else {
-
     		}
-    		
     	} catch (SQLException e) {
     		// TODO Auto-generated catch block
     		LOGGER.info("ERROR IN Searching FOR releases");
