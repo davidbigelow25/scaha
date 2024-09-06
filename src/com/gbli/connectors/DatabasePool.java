@@ -1,4 +1,5 @@
 package com.gbli.connectors;
+import java.sql.SQLException;
 import java.util.Vector;
 import java.util.logging.Logger;
 import com.gbli.context.ContextManager;
@@ -82,7 +83,24 @@ public class DatabasePool implements Runnable {
 			LOGGER.info("DB Pool ("  + getName() + ") dbcount is (" + m_iCount + ") Connections.  txCnt:" + this.m_itxSum);
 			LOGGER.info("======================================================================================");
 			for (int i=0; i < m_iCount;i++) {
-				LOGGER.info(this.m_vConnections.get(i).toString());
+				Database db = this.m_vConnections.get(i);
+				synchronized (dbGetLock) {
+					if (!db.isInUse()) {
+						db.setInUse(null);
+						try {
+							db.keepAlive();
+						} catch (SQLException e) {
+							e.printStackTrace();
+						} finally {
+							db.free();
+						}
+					} else if (db.isStale()) {
+						LOGGER.info(">>> cleaning stale connection:" + db.toString());
+						db.free();
+					}
+				}
+			LOGGER.info(this.m_vConnections.get(i).toString());
+
 			}
 			LOGGER.info("======================================================================================");
 			try {
@@ -108,9 +126,9 @@ public class DatabasePool implements Runnable {
 		//  gracefull shutdown.
 		//
 		m_vConnections.clear();
-		
+
 	}
-	
+
 	/**
 	 * Provide a reference to my own thread..
 	 */

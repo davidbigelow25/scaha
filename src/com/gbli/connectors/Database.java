@@ -12,6 +12,8 @@ import javax.sql.rowset.serial.SerialBlob;
 import javax.sql.rowset.serial.SerialException;
 import com.gbli.context.ContextManager;
 import com.scaha.objects.Profile;
+import java.time.Duration;
+import java.time.Instant;
 
 import java.sql.CallableStatement;
 import java.sql.DriverManager;
@@ -35,13 +37,13 @@ public class Database {
 
 	//  Let Establish the Logging object for loggin information and data
 	private final static Logger LOGGER = Logger.getLogger(ContextManager.getLoggerContext());
-
+	private static final String KEEP_ALIVE_QUERY = "SELECT 1";
 	// In Use Boolean
 	private boolean m_binuse = false;
 	private String m_sName = "Database";
 	private int m_iId = 0; // This is an identifier that help identifies it when
 	private int m_iTxCount = 0;
-
+	private Instant m_startTime;
 	private String m_sDriver = null; // The Driver for the connection
 	private String m_sURL = null; // The Connection URL..
 									// "jdbc:sqlserver://airsk-sql-01:1433;databaseName=MEdat2011;"
@@ -143,23 +145,35 @@ public class Database {
 			m_con.setAutoCommit(true); // Always set it back.. caller may have been lazy
 		} catch (SQLException ex) {
 			ex.printStackTrace();
-			//LOGGER.info(this + "DB Free SNAFU");
+			LOGGER.info(this + "DB Free SNAFU");
 			this.cleanup();
 		} finally {
 			//LOGGER.info(this + " Freeing Up Connection.");
 			m_binuse = false;
+			m_startTime = null;
 			setProfile(null);
 		}
+	}
+
+	public boolean isStale() {
+		if (m_binuse) {
+			if (m_startTime == null) {
+				LOGGER.info("connection in use but no m_startTime:" + this.toString());
+				return false;
+			}
+			Duration duration = Duration.between(m_startTime, Instant.now());
+			// if is busy for more than 2 minutes.. lets call it stale
+			if (duration.toMinutes() > 2) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void cleanup() {
 
 		try {
 			m_rsmd = null;
-			/*if (m_con != null){
-				m_con.close();
-				m_con=null;
-			}*/
 			if (m_rs != null) {
 				m_rs.close();
 				m_rs = null;
@@ -175,7 +189,7 @@ public class Database {
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
-			//LOGGER.info(this + "Clean up SNAFU");
+			LOGGER.info(this + "Clean up SNAFU");
 		}
 
 	}
@@ -462,6 +476,7 @@ public class Database {
 		setProfile(_prof);
 		//LOGGER.info(this + " is being placed in use");
 		m_binuse = true;
+		m_startTime = Instant.now();
 		this.incTx();
 	}
 	
@@ -526,7 +541,13 @@ public class Database {
 		_cs.setBlob(1, new SerialBlob(baos.toByteArray()));
 		
 	}
-	
+
+	public void keepAlive() throws SQLException {
+		try (PreparedStatement stmt = m_con.prepareStatement(KEEP_ALIVE_QUERY)) {
+			stmt.executeQuery();
+		}
+	}
+
 	public void setProfile(Profile _pro) {
 		this.m_prof = _pro;
 	}
