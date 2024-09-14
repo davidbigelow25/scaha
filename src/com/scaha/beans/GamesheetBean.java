@@ -11,12 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 import java.util.logging.Logger;
-
-
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -28,10 +24,6 @@ import com.gbli.common.SendMailSSL;
 import com.gbli.common.Utils;
 import com.gbli.connectors.ScahaDatabase;
 import com.gbli.context.ContextManager;
-import com.gbli.context.PenaltyPusher;
-import com.scaha.objects.Club;
-import com.scaha.objects.ClubAdmin;
-import com.scaha.objects.ClubAdminList;
 import com.scaha.objects.LiveGame;
 import com.scaha.objects.LiveGameList;
 import com.scaha.objects.LiveGameRosterSpot;
@@ -52,8 +44,8 @@ import com.scaha.objects.ScahaCoach;
 @ViewScoped
 public class GamesheetBean implements Serializable,  MailableObject {
 	
-	private static String mail_reg_body = Utils.getMailTemplateFromFile("/mail/gamechange.html");
-	private static String mail_teampims_body = Utils.getMailTemplateFromFile("/mail/teampims.html");
+	private static final String mail_reg_body = Utils.getMailTemplateFromFile("/mail/gamechange.html");
+	private static final String mail_teampims_body = Utils.getMailTemplateFromFile("/mail/teampims.html");
 
 	@ManagedProperty(value="#{scahaBean}")
     private ScahaBean scaha;
@@ -155,12 +147,12 @@ public class GamesheetBean implements Serializable,  MailableObject {
 	
 	private static final long serialVersionUID = 2L;
 	private static final Logger LOGGER = Logger.getLogger(ContextManager.getLoggerContext());
-	private List<String> penalties = new ArrayList<String>();
-	private Map<String, String> venues = new HashMap<String, String>();
-	private Map<String, String> htpick = new HashMap<String, String>();
-	private Map<String, String> atpick = new HashMap<String, String>();
-	private Map<String, String> typepick = new HashMap<String, String>();
-	private Map<String, String> statepick = new HashMap<String, String>();
+	private List<String> penalties = new ArrayList<>();
+	private Map<String, String> venues = new HashMap<>();
+	private Map<String, String> htpick = new HashMap<>();
+	private Map<String, String> atpick = new HashMap<>();
+	private Map<String, String> typepick = new HashMap<>();
+	private Map<String, String> statepick = new HashMap<>();
 	
 	private String lgsheet = null;
 	private String lgvenue = null;
@@ -746,9 +738,6 @@ public class GamesheetBean implements Serializable,  MailableObject {
 		return selectedhomecoachrosterspot;
 	}
 
-	/**
-	 * @param selectedhomerosterspot the selectedhomerosterspot to set
-	 */
 	public void setSelectedhomecoachrosterspot(LiveGameRosterSpot selectedhomecoachrosterspot) {
 		this.selectedhomecoachrosterspot = selectedhomecoachrosterspot;
 	}
@@ -864,9 +853,6 @@ public class GamesheetBean implements Serializable,  MailableObject {
 		return rb;
 	}
 
-	/**
-	 * @param pb the pb to set
-	 */
 	public void setRb(rosterBean rb) {
 		this.rb = rb;
 	}
@@ -1640,35 +1626,30 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 	}
 	
 	public void deletePenalty(Penalty pen) {
-		
-		 LOGGER.info("we need to delete: " + pen);
-		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
-		
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase","GsB.deletePenalty");
 		try {
 			pen.delete(db);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			db.free();
 		}
-		db.free();
 		//this.setAwaypenalties(this.refreshAwayPenalty());
 		this.setHomepenalties(this.refreshHomePenalty(false));
-		
 	}
-	
+
 	public void deleteSog(Sog sog) {
-		
-		
 		LOGGER.info("we need to delete: " + sog);
-		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
-		
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase", "GsB.deleteSog");
 		try {
 			sog.delete(db);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			db.free();
 		}
-		db.free();
 		this.setHomesogs(this.refreshHomeSog(false));
 		this.setAwaysogs(this.refreshAwaySog());
 		
@@ -1677,7 +1658,7 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 	public void saveSog(Sog sog) {
 		
 		//LOGGER.info("HERE IS WHERE WE save a SOG for " + this.sogteam.getTeamname());
-		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase", "GsB.saveSog");
 		
 		/*sog.setShots1(this.getSogshots1());
 		sog.setShots2(this.getSogshots2());
@@ -1696,6 +1677,8 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			db.free();
 		}
 		this.setHomesogs(this.refreshHomeSog(false));
 	}
@@ -2262,9 +2245,6 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 		return currentsog;
 	}
 
-	/**
-	 * @param currentsog the currentsog to set
-	 */
 	public void setCurrentsog(Sog curentsog) {
 		this.currentsog = curentsog;
 	}
@@ -3903,26 +3883,23 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 	}
 
 	public void saveNote() {
-
-		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
-
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase","GsB.saveNote");
 		try {
 			CallableStatement cs = db.prepareCall("CALL scaha.saveManagerNote(?,?,?)");
 			cs.setInt("livegameid",this.getLivegame().getGameId());
 			cs.setInt("teamid",this.teamid);
 			cs.setString("note",this.getNote());
-			cs.executeQuery();
-			db.commit();
-
+			cs.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			db.free();
 		}
-
 	}
 
 	public String loadNote(){
-		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase","GsB.saveNote");
 		String finalnote = "";
 		try {
 			CallableStatement cs = db.prepareCall("CALL scaha.getManagerNote(?,?)");
@@ -3931,22 +3908,20 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 			ResultSet rs = cs.executeQuery();
 			while (rs.next()) {
 				finalnote = rs.getString("gamenotes");
-				}
-
+			}
 			rs.close();
 			cs.close();
-
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			db.free();
 		}
-
 		return finalnote;
 	}
+
 	public void refreshLists(){
-
 		this.refreshBean();
-
 	}
 
 	public void reFinalGames() {

@@ -46,7 +46,6 @@ public class Database {
 	private Instant m_startTime;
 	private String m_sDriver = null; // The Driver for the connection
 	private String m_sURL = null; // The Connection URL..
-									// "jdbc:sqlserver://airsk-sql-01:1433;databaseName=MEdat2011;"
 	private String m_sUser = null; // The User Name to use in the connect
 	private String m_sPwd = null; // The Password for the connection
 	private Profile m_prof = null; // hold the profile of the caller.. gets set when we are in use.. gets cleared on the free
@@ -58,7 +57,7 @@ public class Database {
 	private CallableStatement m_cstmt = null;
 	private ResultSet m_rs = null;
 	private ResultSetMetaData m_rsmd = null;
-	
+
 	/**
 	 * Cannot simply create this object w/o the required parms
 	 */
@@ -70,19 +69,17 @@ public class Database {
 	 * This is the main constructor. It sets up the entire object and makes it
 	 * ready to be used. This is called typically from a Database Pool.. (why
 	 * the ID number is passed)
-	 * 
+	 *
 	 * @param _iId
 	 * @param _sDriver
 	 * @param _sURL
 	 * @param _sUser
 	 * @param _sPwd
-	 * 
 	 * @ToDo - We have to tighten up exception processing.. What happens when
-	 *       the connection fails.
-	 * 
+	 * the connection fails.
 	 */
 	public Database(int _iId, String _sDriver, String _sURL, String _sUser,
-			String _sPwd) {
+					String _sPwd) {
 
 		m_sName = this.getClass().getSimpleName();
 		m_iId = _iId;
@@ -101,7 +98,7 @@ public class Database {
 	 * This is the main constructor. It sets up the entire object and makes it
 	 * ready to be used. This is called typically NOT from a Database Pool..
 	 * (why the ID number is missing)
-	 * 
+	 *
 	 * @param _sDriver
 	 * @param _sURL
 	 * @param _sUser
@@ -119,7 +116,7 @@ public class Database {
 
 	/**
 	 * Returns the Connection from this Database Object
-	 * 
+	 *
 	 * @return
 	 */
 	public final Connection getConnection() {
@@ -136,7 +133,6 @@ public class Database {
 	/**
 	 * This frees up the connection and releases all the dbresources. This keeps
 	 * the connection live.
-	 * 
 	 */
 	public void free() {
 
@@ -148,7 +144,7 @@ public class Database {
 			LOGGER.info(this + "DB Free SNAFU");
 			this.cleanup();
 		} finally {
-			//LOGGER.info(this + " Freeing Up Connection.");
+			LOGGER.info(this + " Freeing Up Connection.");
 			m_binuse = false;
 			m_startTime = null;
 			setProfile(null);
@@ -158,12 +154,12 @@ public class Database {
 	public boolean isStale() {
 		if (m_binuse) {
 			if (m_startTime == null) {
-				LOGGER.info("connection in use but no m_startTime:" + this.toString());
+				LOGGER.info("connection in use but no m_startTime:" + this);
 				return false;
 			}
 			Duration duration = Duration.between(m_startTime, Instant.now());
 			// if is busy for more than 2 minutes.. lets call it stale
-			if (duration.toMinutes() > 2) {
+			if (duration.toMinutes() > 1) {
 				return true;
 			}
 		}
@@ -196,12 +192,11 @@ public class Database {
 
 	/**
 	 * This clears everything up and closes everything down for the database..
-	 * 
 	 */
 	public void close() {
 
 		//LOGGER.info(this + "Close Out Connection:" + this.m_iId);
-		
+
 		try {
 			this.m_binuse = true;
 			this.cleanup();
@@ -216,7 +211,7 @@ public class Database {
 	/**
 	 * This is a method that assumes no variables or Parms that need to be set
 	 * from the SQL.
-	 * 
+	 *
 	 * @param _sPath
 	 * @return
 	 */
@@ -226,10 +221,10 @@ public class Database {
 
 	/**
 	 * getDataFromSQLFile
-	 * 
+	 * <p>
 	 * This method assumes you provide the file name as an absolute file path..
 	 * since this method needs to be context independent.
-	 * 
+	 * <p>
 	 * THis will populate the result set and its meta data counterpart for the
 	 * caller to retrieve and do what they want
 	 */
@@ -255,7 +250,6 @@ public class Database {
 	}
 
 	/**
-	 * 
 	 * @param _sSQL
 	 * @return
 	 */
@@ -308,29 +302,29 @@ public class Database {
 		return false;
 
 	}
-	
-	
+
+
 	/**
 	 * This retrieves all data into the ResultSet and the ResultSetMetaData for
 	 * the given SQL Statement
 	 */
-	
+
 	public CallableStatement prepareCall(String _sql) throws SQLException {
-		
-		
+
+
 		return m_cstmt = m_con.prepareCall(_sql);
-		
+
 	}
 
 
 	public PreparedStatement prepareStatement(String _sql) throws SQLException {
-		
-		
+
+
 		return this.m_pstmt = m_con.prepareStatement(_sql);
-		
+
 	}
 
-	
+
 	public void updateCallable(String _sSQL, Vector _vParms, Vector<String> _vDirection) throws SQLException {
 
 		//
@@ -349,14 +343,14 @@ public class Database {
 					m_cstmt.setObject(i + 1, _vParms.elementAt(i));
 				} else if (_vDirection.elementAt(i).equals("INOUT")) {
 					m_cstmt.setObject(i + 1, _vParms.elementAt(i));
-					m_cstmt.registerOutParameter(i+1,this.getSQLType(_vParms.elementAt(i)));
+					m_cstmt.registerOutParameter(i + 1, this.getSQLType(_vParms.elementAt(i)));
 
 				} else if (_vDirection.elementAt(i).equals("OUT")) {
-					m_cstmt.registerOutParameter(i+1,this.getSQLType(_vParms.elementAt(i)));
+					m_cstmt.registerOutParameter(i + 1, this.getSQLType(_vParms.elementAt(i)));
 				} else {
 					m_cstmt.setObject(i + 1, _vParms.elementAt(i));
 				}
-				
+
 			}
 
 			m_pstmt.executeUpdate();
@@ -368,7 +362,7 @@ public class Database {
 
 		}
 
-		
+
 	}
 
 	public ResultSet getResultSet() {
@@ -411,7 +405,6 @@ public class Database {
 
 	/**
 	 * This will clean out the connection and reset it..
-	 * 
 	 */
 	public void reset() {
 
@@ -420,10 +413,10 @@ public class Database {
 		this.primeConnection();
 
 	}
-	
+
 	public boolean setAutoCommit(boolean _val) {
 		LOGGER.info(this + "Setting autocommit to (" + _val + ")");
-			try {
+		try {
 			m_con.setAutoCommit(_val);
 			LOGGER.info(this + "Setting autocommit completed successfully to (" + m_con.getAutoCommit() + ")");
 			return true;
@@ -433,9 +426,9 @@ public class Database {
 		}
 		LOGGER.info(this + "Setting autocommit failed..");
 		return false;
-		
+
 	}
-	
+
 	public boolean rollback() {
 		try {
 			LOGGER.info(this + "ROLLBACK INITIATED!!!");
@@ -479,17 +472,17 @@ public class Database {
 		m_startTime = Instant.now();
 		this.incTx();
 	}
-	
+
 	public void incTx() {
 		this.m_iTxCount++;
 	}
-	
+
 	public int getTxCount() {
 		return this.m_iTxCount;
 	}
 
 	/**
-	 *  This checks to see if the connection was closes.. and reprimes it if it is closed.
+	 * This checks to see if the connection was closes.. and reprimes it if it is closed.
 	 */
 	public void checkHeath() {
 		try {
@@ -501,11 +494,11 @@ public class Database {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	/**
 	 * Very simple mapping routine for SQL Type and Java Class
-	 * 
+	 *
 	 * @param _obj
 	 * @return
 	 */
@@ -515,14 +508,32 @@ public class Database {
 			return java.sql.Types.INTEGER;
 		} else {
 			return java.sql.Types.VARCHAR;
-			
+
 		}
-		
+
+	}
+
+	public String getInUseDuration() {
+		if (m_binuse) {
+			if (m_startTime == null) {
+				return "ODD - in use but no start time..";
+			}
+			Duration duration = Duration.between(m_startTime, Instant.now());
+
+			long seconds = duration.getSeconds();
+			long hours = seconds / 3600;
+			long minutes = (seconds % 3600) / 60;
+			seconds = seconds % 60;
+
+			return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+		} else {
+			return "Not in use";
+		}
 	}
 
 	@Override
 	public String toString() {
-		return "DB[" + m_iId + "]:" + (m_binuse ? "busy" : "free") + "(" + (getProfile() == null ? "NPF" : getProfile()) + ")" + ":txcnt:" + this.getTxCount();
+		return "DB[" + m_iId + "]:" + (m_binuse ? "busy {" + getInUseDuration() + "}" : "free") + "(" + (getProfile() == null ? "NPF" : getProfile()) + ")" + ":txcnt:" + this.getTxCount();
 	}
 
 	/**

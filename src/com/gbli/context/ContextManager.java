@@ -196,7 +196,11 @@ public class ContextManager implements ServletContextListener {
 	public static Database getDatabase(String _sClassName) {
 		return c_hDBPools.get(_sClassName).getDatabase();
 	}
-	
+
+	public static Database getDatabase(String _sClassName, String caller) {
+		return c_hDBPools.get(_sClassName).getDatabase(caller);
+	}
+
 	/**
 	 * This sets up the LOGGER for the given context
 	 * 

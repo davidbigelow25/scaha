@@ -5,8 +5,6 @@ import java.util.logging.Logger;
 import com.gbli.context.ContextManager;
 import com.scaha.objects.Profile;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
 
 /**
  * @author dbigelow
@@ -16,7 +14,7 @@ public class DatabasePool implements Runnable {
 	
 	private final static Logger LOGGER = Logger.getLogger(ContextManager.getLoggerContext());
 
-	private int m_iCount = 2;	// The dnumber of database connections in the pool
+	private int m_iCount;	// The dnumber of database connections in the pool
 	private int m_itxSum = 0;
 
 	private Object c_olock = new Object();
@@ -99,7 +97,7 @@ public class DatabasePool implements Runnable {
 						db.free();
 					}
 				}
-			LOGGER.info(this.m_vConnections.get(i).toString());
+				LOGGER.info(this.m_vConnections.get(i).toString());
 
 			}
 			LOGGER.info("======================================================================================");
@@ -214,7 +212,14 @@ public class DatabasePool implements Runnable {
 		return this.getDatabase(tmp,true);
 	}
 
-	public void incTxCount() {
+	public Database getDatabase(String caller) {
+		Profile tmp = new Profile();
+		tmp.setUserName(caller);
+		tmp.setNickName(caller);
+		return this.getDatabase(tmp, true);
+	}
+
+		public void incTxCount() {
 		this.m_itxSum++;
 	}
 	
