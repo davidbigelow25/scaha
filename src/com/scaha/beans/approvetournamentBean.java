@@ -239,6 +239,7 @@ public class approvetournamentBean implements Serializable, MailableObject {
     		LOGGER.info("ERROR IN getting tournament list for statistician");
     		e.printStackTrace();
     		db.rollback();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -307,6 +308,8 @@ public class approvetournamentBean implements Serializable, MailableObject {
     			this.selectedtournament.setStatus("Approved");
     			mail.sendMail();
     			
+			} else {
+		
 			}
 			
 		} catch (SQLException e) {
@@ -314,7 +317,7 @@ public class approvetournamentBean implements Serializable, MailableObject {
 			LOGGER.info("ERROR IN Deleting the Tournament");
 			e.printStackTrace();
 			db.rollback();
-
+			db.free();
 		} finally {
 			//
 			// always clean up after yourself..
@@ -366,6 +369,8 @@ public class approvetournamentBean implements Serializable, MailableObject {
     			this.selectedtournament.setStatus("Declined");
     			mail.sendMail();
     			
+			} else {
+		
 			}
 			
 		} catch (SQLException e) {
@@ -373,6 +378,7 @@ public class approvetournamentBean implements Serializable, MailableObject {
 			LOGGER.info("ERROR IN Deleting the Tournament");
 			e.printStackTrace();
 			db.rollback();
+			db.free();
 		} finally {
 			//
 			// always clean up after yourself..

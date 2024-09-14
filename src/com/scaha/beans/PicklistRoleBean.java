@@ -49,7 +49,6 @@ public class PicklistRoleBean implements Serializable {
 			roles = new DualListModel<Role>(source, target);  
 		} catch (SQLException ex) {
 			ex.printStackTrace();
-			db.rollback();
 		} finally {
 			db.free();
 		}

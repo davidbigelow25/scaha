@@ -1339,7 +1339,6 @@ public int getClubID(){
 			// TODO Auto-generated catch block
 			LOGGER.info("ERROR IN loading club by profile");
 			e.printStackTrace();
-			db.rollback();
 		} finally {
 			db.free();
 		}
@@ -1436,35 +1435,38 @@ public String createRegistration() {
 	try{
 
 		if (db.setAutoCommit(false)) {
+		
+			
 			Vector<String> v = new Vector<String>();
 			v.add(this.username);
-			db.getData("CALL scaha.checkforuser(?)", v);
-
-			if (db.getResultSet() != null && db.getResultSet().next()){
-				FacesContext.getCurrentInstance().addMessage(
-						"myform:username",
-						new FacesMessage(FacesMessage.SEVERITY_ERROR,
-						"USA Hockey Reg",
-						"You cannot use this username.  A username already exists in the system!"));
-
+				db.getData("CALL scaha.checkforuser(?)", v);
+		        
+				if (db.getResultSet() != null && db.getResultSet().next()){
+					FacesContext.getCurrentInstance().addMessage(
+							"myform:username",
+		                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+		                    "USA Hockey Reg",
+		                    "You cannot use this username.  A username already exists in the system!"));
+					db.free();
 				return "fail";
 			}
 				
-			db.cleanup();
+				db.cleanup();
 
-			//
-			// We do not want to add a person twice (same first and last name!)
-			//
-			if (db.checkForPersonByFLDOB(this.getFirstname().toLowerCase(), this.getLastname().toLowerCase(), this.getNewdob())) {
-
-				FacesContext.getCurrentInstance().addMessage(
-						null,
-						new FacesMessage(FacesMessage.SEVERITY_ERROR,
-						"USA Hockey Reg",
-						"You cannot create a member.  There is already a member with the same first name, last name and date of birth!"));
+				//
+				// We do not want to add a person twice (same first and last name!)
+				//
+				if (db.checkForPersonByFLDOB(this.getFirstname().toLowerCase(), this.getLastname().toLowerCase(), this.getNewdob())) {
+					
+					FacesContext.getCurrentInstance().addMessage(
+							null,
+		                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+		                    "USA Hockey Reg",
+		                    "You cannot create a member.  There is already a member with the same first name, last name and date of birth!"));
+					db.free();
 				return "fail";
 
-			}
+				} 			
 				
 			//
 			// we are good to go here..
@@ -1506,7 +1508,10 @@ public String createRegistration() {
 			// Lets not forget the family record
 			// and possibly the default FamilyMember.. (who ever is creating this record)
 			//
+			
+			
 			db.commit();
+			db.free();
 
 			// We want to create a family called the <lastname> family...
 			LOGGER.info("HERE IS WHERE WE SAVE EVERYTHING COLLECTED FROM REGISTRATION..");
@@ -1539,7 +1544,6 @@ public String createRegistration() {
 		LOGGER.info("ERROR IN REGISTRATION PROCESS FOR " + this.getUsername());
 		e.printStackTrace();
 		db.rollback();
-	} finally {
 		db.free();
 	}
 	

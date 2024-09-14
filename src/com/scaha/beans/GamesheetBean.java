@@ -746,6 +746,9 @@ public class GamesheetBean implements Serializable,  MailableObject {
 		return selectedhomecoachrosterspot;
 	}
 
+	/**
+	 * @param selectedhomerosterspot the selectedhomerosterspot to set
+	 */
 	public void setSelectedhomecoachrosterspot(LiveGameRosterSpot selectedhomecoachrosterspot) {
 		this.selectedhomecoachrosterspot = selectedhomecoachrosterspot;
 	}
@@ -861,6 +864,9 @@ public class GamesheetBean implements Serializable,  MailableObject {
 		return rb;
 	}
 
+	/**
+	 * @param pb the pb to set
+	 */
 	public void setRb(rosterBean rb) {
 		this.rb = rb;
 	}
@@ -888,8 +894,8 @@ public class GamesheetBean implements Serializable,  MailableObject {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			db.rollback();
 		} finally {
+			
 			db.free();
 		}
 		
@@ -905,8 +911,8 @@ public class GamesheetBean implements Serializable,  MailableObject {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			db.rollback();
 		} finally {
+
 			db.free();
 		}
 
@@ -941,8 +947,8 @@ public class GamesheetBean implements Serializable,  MailableObject {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			db.rollback();
 		} finally {
+
 			db.free();
 		}
 		Integer x = list.getRowCount();
@@ -976,8 +982,8 @@ public class GamesheetBean implements Serializable,  MailableObject {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			db.rollback();
 		} finally {
+			
 			db.free();
 		}
 		
@@ -993,8 +999,8 @@ public class GamesheetBean implements Serializable,  MailableObject {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			db.rollback();
 		} finally {
+			
 			db.free();
 		}
 		
@@ -1011,8 +1017,8 @@ public class GamesheetBean implements Serializable,  MailableObject {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			db.rollback();
 		} finally {
+			
 			db.free();
 		}
 		
@@ -1152,8 +1158,8 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			db.rollback();
 		} finally {
+		
 			db.free();
 		}
 		
@@ -1538,9 +1544,9 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} finally {
-				db.free();
 			}
+			db.free();
+
 			return data.toArray(new InternetAddress[data.size()]);
 		}
 	}
@@ -2256,6 +2262,9 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 		return currentsog;
 	}
 
+	/**
+	 * @param currentsog the currentsog to set
+	 */
 	public void setCurrentsog(Sog curentsog) {
 		this.currentsog = curentsog;
 	}

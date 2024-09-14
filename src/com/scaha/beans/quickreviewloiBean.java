@@ -284,6 +284,8 @@ public class quickreviewloiBean implements Serializable {
     			}
     			rs.close();	
     			db.cleanup();
+    		} else {
+
     		}
     		
     	} catch (SQLException e) {
@@ -360,12 +362,16 @@ public class quickreviewloiBean implements Serializable {
     			}
     			rs.close();
     			db.cleanup();
+				db.free();
+    		} else {
+    		
     		}
     	} catch (SQLException e) {
     		// TODO Auto-generated catch block
     		LOGGER.info("ERROR IN loading teams");
     		e.printStackTrace();
     		db.rollback();
+			db.free();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -425,6 +431,8 @@ public class quickreviewloiBean implements Serializable {
 
     			FacesContext context = FacesContext.getCurrentInstance();  
                 context.addMessage(null, new FacesMessage("Successful", "You have voided the loi for:" + playname));
+			} else {
+		
 			}
 			
 		} catch (SQLException e) {
@@ -479,7 +487,9 @@ public class quickreviewloiBean implements Serializable {
     			
     			db.commit();
     			db.cleanup();
- 			}
+ 			} else {
+		
+			}
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -525,7 +535,9 @@ public class quickreviewloiBean implements Serializable {
 	    			
 	    			db.commit();
 	    			db.cleanup();
-	 			}
+	 			} else {
+			
+				}
 				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -574,7 +586,9 @@ public class quickreviewloiBean implements Serializable {
     			db.cleanup();
     		
     		    
- 			}
+ 			} else {
+		
+			}
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -615,6 +629,8 @@ public class quickreviewloiBean implements Serializable {
 
 				db.commit();
 				db.cleanup();
+			} else {
+
 			}
 
 		} catch (SQLException e) {
@@ -674,6 +690,8 @@ public class quickreviewloiBean implements Serializable {
 
 				FacesContext context = FacesContext.getCurrentInstance();
 				context.addMessage(null, new FacesMessage("Successful", "You ave updated the Transfer"));
+			} else {
+
 			}
 
 		} catch (SQLException e) {
@@ -720,6 +738,8 @@ public class quickreviewloiBean implements Serializable {
 
 				FacesContext context = FacesContext.getCurrentInstance();
 				context.addMessage(null, new FacesMessage("Successful", "You ave updated the Birth Certificate"));
+			} else {
+
 			}
 
 		} catch (SQLException e) {

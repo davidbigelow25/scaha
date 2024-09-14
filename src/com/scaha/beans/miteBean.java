@@ -64,7 +64,9 @@ public class miteBean implements Serializable  {
 	
 	public void LoadBody(){
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
-		try {
+  		 List<Player> templist = new ArrayList<Player>();
+		 
+  		 try {
   			CallableStatement cs = db.prepareCall("CALL scaha.getMiteBody()");
 			ResultSet rs = cs.executeQuery();
    			
@@ -76,14 +78,16 @@ public class miteBean implements Serializable  {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			db.rollback();
-		} finally {
-			db.free();
 		}
+  		db.free();
+  		db.cleanup();
+  		
   	}
 	
 	public void updateMiteprogram(){
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+  		 List<Player> templist = new ArrayList<Player>();
+		 
   		 try {
   			CallableStatement cs = db.prepareCall("CALL scaha.updateMiteBody(?)");
   			cs.setString("inbody", this.body);
@@ -95,9 +99,9 @@ public class miteBean implements Serializable  {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			db.rollback();
-		} finally {
-			 db.free();
-		 }
+		}
+  		db.free();
+  		db.cleanup();
+  		
   	}
 }

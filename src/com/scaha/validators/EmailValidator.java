@@ -59,17 +59,17 @@ public class EmailValidator implements Validator {
 		// 
 
         ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+        
+        Vector<String> v = new Vector<String>();
+		v.add(username);
+
+		db.getData("call scaha.checkforuser(?)", v);
 
 		//
 		// iF a row comes back.. We ALREADY Have THAT USERNAME 
 		// and in this case, thats great.. because we are going to send 
 		// 
 		try {
-
-			Vector<String> v = new Vector<String>();
-			v.add(username);
-
-			db.getData("call scaha.checkforuser(?)", v);
 			if (db.getResultSet() != null && db.getResultSet().next()){
 			} else {
 				throw new ValidatorException(new FacesMessage(

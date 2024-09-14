@@ -61,15 +61,16 @@ public class UserNameValidator implements Validator {
 
         ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
         
+        Vector<String> v = new Vector<String>();
+		v.add(username);
+
+		db.getData("CALL scaha.checkforuser(?)", v);
+        
 		//
 		// iF THE COUNT COMES BACK > 0 THEN SOMEONE ALREADY HAS THAT USERNAME
-		//
+		// 
 		try {
-			Vector<String> v = new Vector<String>();
-			v.add(username);
-
-			db.getData("CALL scaha.checkforuser(?)", v);
-    		if (db.getResultSet() != null && db.getResultSet().next()){
+			if (db.getResultSet() != null && db.getResultSet().next()){
 				throw new ValidatorException(new FacesMessage(
 						FacesMessage.SEVERITY_ERROR, "This UserName is already in use.", null));
 			}

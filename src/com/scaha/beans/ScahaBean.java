@@ -114,11 +114,9 @@ public class ScahaBean implements Serializable,  MailableObject {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			db.rollback();
-		} finally {
-			db.free();
 		}
-
+		db.free();
+		 
 	 }
 
 	public void refreshClubList() {
@@ -132,10 +130,8 @@ public class ScahaBean implements Serializable,  MailableObject {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			db.rollback();
-		} finally {
-			db.free();
 		}
+		db.free();
 	}
 	
 	public void refreshLiveGameList() {
@@ -148,10 +144,8 @@ public class ScahaBean implements Serializable,  MailableObject {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			db.rollback();
-		} finally {
-			db.free();
 		}
+		db.free();
 	}
 	
 	public void refreshScheduleList() {
@@ -162,10 +156,8 @@ public class ScahaBean implements Serializable,  MailableObject {
 			setScahaschedule(ScheduleList.ListFactory(this.DefaultProfile, db, this.getScahaSeasonList().getCurrentSeason(), this.getScahaTeamList()));
 		} catch (SQLException e) {
 			e.printStackTrace();
-			db.rollback();
-		} finally {
-			db.free();
 		}
+		db.free();
 		
 	}
 	
@@ -179,17 +171,15 @@ public class ScahaBean implements Serializable,  MailableObject {
 	public void testDB(int _isec) {
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 		try {
-			PreparedStatement ps = db.prepareStatement("call scaha.getLiveGamesBySeason(?)");
-			ps.setString(1,"SCAHA-1415");
-			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				LOGGER.info("found row");
-			}
+		PreparedStatement ps = db.prepareStatement("call scaha.getLiveGamesBySeason(?)");
+		ps.setString(1,"SCAHA-1415");
+		ResultSet rs = ps.executeQuery();
+		while (rs.next()) {
+			LOGGER.info("found row");
+		}
+		db.free();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
-			db.rollback();
-		} finally {
-			db.free();
 		}
 		
 	}
@@ -236,10 +226,9 @@ public class ScahaBean implements Serializable,  MailableObject {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			db.rollback();
-		} finally {
-			db.free();
 		}
+		db.free();
+			
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -256,11 +245,9 @@ public class ScahaBean implements Serializable,  MailableObject {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			db.rollback();
-		} finally {
-			db.free();
 		}
-
+		db.free();
+		
 		this.refreshClubList();
 		this.refreshScheduleList();
 		

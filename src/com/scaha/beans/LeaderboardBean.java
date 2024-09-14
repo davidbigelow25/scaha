@@ -196,7 +196,6 @@ public class LeaderboardBean implements Serializable,  MailableObject {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			db.rollback();
 		} finally {
 			db.free();
 		}

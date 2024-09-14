@@ -465,29 +465,31 @@ public class releaseBean_old implements Serializable, MailableObject {
     	try{
 
     		if (db.setAutoCommit(false)) {
-
-				//Vector<Integer> v = new Vector<Integer>();
-				//v.add(1);
-				//db.getData("CALL scaha.getTeamsByClub(?)", v);
-				CallableStatement cs = db.prepareCall("CALL scaha.getClubs()");
-				rs = cs.executeQuery();
-
-				if (rs != null) {
-
-					while (rs.next()) {
-						String idclub = rs.getString("idclubs");
-						String clubname = rs.getString("clubname");
-
-						Club club = new Club();
-						club.setClubid(idclub);
-						club.setClubname(clubname);
-
-						templist.add(club);
-					}
-					//LOGGER.info("We have results for club list");
-				}
-				rs.close();
-			}
+    		
+    			//Vector<Integer> v = new Vector<Integer>();
+    			//v.add(1);
+    			//db.getData("CALL scaha.getTeamsByClub(?)", v);
+    		    CallableStatement cs = db.prepareCall("CALL scaha.getClubs()");
+    		    rs = cs.executeQuery();
+    			
+    			if (rs != null){
+    				
+    				while (rs.next()) {
+    					String idclub = rs.getString("idclubs");
+        				String clubname = rs.getString("clubname");
+        				
+        				Club club = new Club();
+        				club.setClubid(idclub);
+        				club.setClubname(clubname);
+        				
+        				templist.add(club);
+    				}
+    				//LOGGER.info("We have results for club list");
+    			}
+    			db.cleanup();
+    		} else {
+    		
+    		}
     	} catch (SQLException e) {
     		// TODO Auto-generated catch block
     		LOGGER.info("ERROR IN loading clubs");

@@ -225,6 +225,7 @@ public class registrarcoachloiBean implements Serializable {
 					ocoach.setUsarosterdisplay(usarosterdisplay);
 					ocoach.setIsbullying(isbullying);
     				tempresult.add(ocoach);
+    				ocoach=null;
 				}
    				rs.close();
    				//LOGGER.info("We have results for lois for the lookup date" + date.toString());
@@ -235,7 +236,6 @@ public class registrarcoachloiBean implements Serializable {
     		// TODO Auto-generated catch block
     		LOGGER.info("ERROR IN Searching FOR Lois for lookup date:" + date.toString());
     		e.printStackTrace();
-    		db.rollback();
     	} finally {
     		//
     		// always clean up after yourself..
@@ -294,7 +294,9 @@ public class registrarcoachloiBean implements Serializable {
     		    rs.close();
     			db.commit();
     			db.cleanup();
- 			}
+ 			} else {
+		
+			}
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -336,6 +338,7 @@ public class registrarcoachloiBean implements Serializable {
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 		
 		try{
+
     			
 			Vector<Integer> v = new Vector<Integer>();
 			v.add(this.getProfid());
