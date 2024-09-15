@@ -1429,7 +1429,7 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 
 	@Override
 	public String getSubject() {
-		String subject = "";
+		String subject;
 		if (hometeamexceeds || awayteamexceeds) {
 			subject = this.pimsteamname + " Exceeded Penalty Minute Threshold";
 		}else {
@@ -2522,164 +2522,98 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 		return lgtime;
 	}
 
-	/**
-	 * @param lgtime the lgtime to set
-	 */
 	public void setLgtime(String lgtime) {
 		this.lgtime = lgtime;
 	}
 
-	/**
-	 * @return the lgstate
-	 */
 	public String getLgstate() {
 		return lgstate;
 	}
 
-	/**
-	 * @param lgstate the lgstate to set
-	 */
 	public void setLgstate(String lgstate) {
 		this.lgstate = lgstate;
 	}
 
-	/**
-	 * @return the lgvenueval
-	 */
 	public String getLgvenueval() {
 		return lgvenueval;
 	}
 
-	/**
-	 * @param lgvenueval the lgvenueval to set
-	 */
 	public void setLgvenueval(String lgvenueval) {
 		this.lgvenueval = lgvenueval;
 	}
 
-	/**
-	 * @return the lgtypeval
-	 */
 	public String getLgtypeval() {
 		return lgtypeval;
 	}
 
-	/**
-	 * @param lgtypeval the lgtypeval to set
-	 */
 	public void setLgtypeval(String lgtypeval) {
 		this.lgtypeval = lgtypeval;
 	}
 
-	/**
-	 * @return the lghteam
-	 */
 	public String getLghteam() {
 		return lghteam;
 	}
 
-	/**
-	 * @param lghteam the lghteam to set
-	 */
 	public void setLghteam(String lghteam) {
 		this.lghteam = lghteam;
 	}
 
-	/**
-	 * @return the lgateam
-	 */
 	public String getLgateam() {
 		return lgateam;
 	}
 
-	/**
-	 * @param lgateam the lgateam to set
-	 */
 	public void setLgateam(String lgateam) {
 		this.lgateam = lgateam;
 	}
 
-	
-	/**
-	 * @return the lgstateval
-	 */
 	public String getLgstateval() {
 		return lgstateval;
 	}
 
-	/**
-	 * @param lgstateval the lgstateval to set
-	 */
 	public void setLgstateval(String lgstateval) {
 		this.lgstateval = lgstateval;
 	}
 
 	public void setGameStarted() {
-
-		//
-		// we do not save score here..
-		//
 		this.livegame.setAwayscore(getDerivedAwayScore());
 		this.livegame.setHomescore(getDerivedHomeScore());
 		this.livegame.setStatetag("InProgress");
-		
-		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase", "GsB.setGameStarted");
 		try {
-			
 			this.livegame.update(db, false);
-			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			db.free();
 		}
-		db.free();
-		
 	}
 
 	public void setGameComplete() {
-
-		//
-		// we do not save score here..
-		//
 		this.livegame.setAwayscore(getDerivedAwayScore());
 		this.livegame.setHomescore(getDerivedHomeScore());
 		this.livegame.setStatetag("Complete");
-		
-		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase","GsB.setGameComplete");
 		try {
-			
 			this.livegame.update(db, false);
-			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			db.free();
 		}
-		db.free();
-		
 	}
 	
 	public void setStatsComplete(Integer teamid) {
-
-		
-		//
-		// we do not save score here..
-		//
 		if (this.teamid.equals(this.livegame.getHometeam().ID)){
 			this.livegame.setStatetag("HomeStatsReview");
-			//this.livegame.setHomescore(getDerivedHomeScore());
 		}else {
 			this.livegame.setStatetag("AwayStatsReview");
-			//this.livegame.setAwayscore(getDerivedAwayScore());
 		}
-		
-		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase","GsB.setStatsComplete");
 		try {
-			
 			if (this.livegame.getStatetag().equals("HomeStatsReview")){
 				this.livegame.updatTeamstatsstatus(db, "H");
 				this.livegame.setHomestatsstatus("Complete");
 				this.livegame.setHomescore(this.getUpdatedScore("home"));
-				
 				if (!(this.livegame.getAwaystatsstatus()==null)){
 					if (this.livegame.getAwaystatsstatus().equals("Complete")){
 						this.livegame.setStatetag("Complete");
@@ -2697,15 +2631,12 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 					}
 				}
 			}
-			
-			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			db.free();
 		}
-		db.free();
-		
-		
+
 		FacesContext context = FacesContext.getCurrentInstance();
 		try{
 			context.getExternalContext().redirect("managerportal.xhtml");
@@ -2716,25 +2647,16 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 	}
 	
 	public void setGameFinal() {
-
-		//
-		// we do not save score here..
-		//
-		//this.livegame.setAwayscore(getDerivedAwayScore());
-		//this.livegame.setHomescore(getDerivedHomeScore());
 		this.livegame.setStatetag("Final");
 		pb.setLivegameeditreturn("reviewscahagames.xhtml");
 		this.hometeamexceeds = false;
 		this.awayteamexceeds = false;
 		String hometeamtotalpims = "0";
 		String awayteamtotalpims = "0";
-
-
-		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase", "GsB.setGameFinal");
 		try {
 			LOGGER.info("updating game results:");
 			this.livegame.updatGameFinalStatus(db);
-			
 			//need to update stats table a	s game is being finalized.
 			//pass in team id and livegame id
 			PreparedStatement ps = db.prepareCall("call scaha.updatestatsforLiveGame(?,?)");
@@ -2742,32 +2664,22 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 			ps.setInt(2,this.livegame.getAwayteam().ID);
 			LOGGER.info("updating stats for away team:");
 			ps.executeQuery();
-			
 			ps.setInt(1,this.livegame.ID);
 			ps.setInt(2,this.livegame.getHometeam().ID);
 			LOGGER.info("updating stats for home team:");
 			ps.executeQuery();
-
 			//need to add a check for a teams total penalty minutes to send an email to deputy commissioner.
 			ps = db.prepareCall("call scaha.doteamshaveextensivepenaltymins(?)");
 			ps.setInt(1,this.livegame.ID);
 			ResultSet rs = ps.executeQuery();
-
-			if (rs != null){
-
-				while (rs.next()) {
-					this.hometeamexceeds = rs.getBoolean("hometeamexceeds");
-					this.awayteamexceeds = rs.getBoolean("awayteamexceeds");
-					hometeamtotalpims = rs.getString("hometeampims");
-					awayteamtotalpims = rs.getString("awayteampims");
-					this.todaysdate = rs.getString("todaysdate");
-				}
-				//LOGGER.info("We have results for scoresheets for game:" + this.idgame);
+			while (rs.next()) {
+				this.hometeamexceeds = rs.getBoolean("hometeamexceeds");
+				this.awayteamexceeds = rs.getBoolean("awayteamexceeds");
+				hometeamtotalpims = rs.getString("hometeampims");
+				awayteamtotalpims = rs.getString("awayteampims");
+				this.todaysdate = rs.getString("todaysdate");
 			}
-
-
 			rs.close();
-			LOGGER.info("closing prepared statement:");
 			ps.close();
 
 			//first check home team to see if they exceeded pims
@@ -2780,39 +2692,27 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 					managerrows = managerrows + "<td>" + i.getGenatt().get("ROSTERTYPE") + "</td>";
 					managerrows = managerrows + "<td>" + i.getsEmail() + "</td>";
 					managerrows = managerrows + "</tr>";
-
-
 				}
 
 				//now grab the top 3 penalty minute leaders
 				ps = db.prepareCall("call scaha.getteamspenaltyminuteleaders(?)");
 				ps.setInt(1,this.livegame.getHometeam().ID);
 				rs = ps.executeQuery();
-
-				if (rs != null){
-
-					while (rs.next()) {
-						String playername = rs.getString("fname") + " " + rs.getString("lname");
-						Integer pims = rs.getInt("pims");
-
-						playerrows = playerrows + "<tr>";
-						playerrows = playerrows + "<td>" + playername + "</td>";
-						playerrows = playerrows + "<td>" + pims + "</td>";
-						playerrows = playerrows + "</tr>";
-
-					}
-					//LOGGER.info("We have results for scoresheets for game:" + this.idgame);
+				while (rs.next()) {
+					String playername = rs.getString("fname") + " " + rs.getString("lname");
+					Integer pims = rs.getInt("pims");
+					playerrows = playerrows + "<tr>";
+					playerrows = playerrows + "<td>" + playername + "</td>";
+					playerrows = playerrows + "<td>" + pims + "</td>";
+					playerrows = playerrows + "</tr>";
 				}
-
-
+				rs.close();
+				ps.close();
 				//this.setSubject(this.pimsteamname + "Exceeded Penalty Minute Threshold");
 				SendMailSSL mail = new SendMailSSL(this);
 				LOGGER.info("Finished creating mail object for team penalty minutes");
-
 				mail.sendMail();
-
 			}
-
 			//next check away team if penalty mins have been exceeded
 			if (this.awayteamexceeds){
 				this.totalpims = hometeamtotalpims;
@@ -2823,44 +2723,35 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 					managerrows = managerrows + "<td>" + i.getGenatt().get("ROSTERTYPE") + "</td>";
 					managerrows = managerrows + "<td>" + i.getsEmail() + "</td>";
 					managerrows = managerrows + "</tr>";
-
 				}
-
 				//now grab the top 3 penalty minute leaders
 				ps = db.prepareCall("call scaha.getteamspenaltyminuteleaders(?)");
 				ps.setInt(1,this.livegame.getAwayteam().ID);
 				rs = ps.executeQuery();
-
-				if (rs != null){
-
-					while (rs.next()) {
-						String playername = rs.getString("fname") + " " + rs.getString("lname");
-						Integer pims = rs.getInt("pims");
-
-						playerrows = playerrows + "<tr>";
-						playerrows = playerrows + "<td>" + playername + "</td>";
-						playerrows = playerrows + "<td>" + pims + "</td>";
-						playerrows = playerrows + "</tr>";
-
-					}
-					//LOGGER.info("We have results for scoresheets for game:" + this.idgame);
+				while (rs.next()) {
+					String playername = rs.getString("fname") + " " + rs.getString("lname");
+					Integer pims = rs.getInt("pims");
+					playerrows = playerrows + "<tr>";
+					playerrows = playerrows + "<td>" + playername + "</td>";
+					playerrows = playerrows + "<td>" + pims + "</td>";
+					playerrows = playerrows + "</tr>";
 				}
+				rs.close();
+				ps.close();
 				//this.setSubject(this.pimsteamname + "Exceeded Penalty Minute Threshold");
 				SendMailSSL mail = new SendMailSSL(this);
 				LOGGER.info("Finished creating mail object for team penalty minutes");
-
 				mail.sendMail();
-
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			LOGGER.info("errored:");
+		} finally {
+			db.free();
 		}
-		LOGGER.info("setting connection free:");
 
-
-
+		scaha.refreshLiveGameList();
+		gamesheetClose();
 
 		//This code isn't needed anymore.  Suspensions are emailed from a different page. leaving code just in case we need to return this functionality back
 		// ok.. now we want to check all penalties from both sides..and report any game misconducts
@@ -2915,9 +2806,7 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 		pp.pushPenalty();*/
 		
 		//need to reset
-		db.free();
-		scaha.refreshLiveGameList();
-		gamesheetClose();
+
 	}
 	public void saveScheduleInfo() {
 		
@@ -3854,9 +3743,7 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 	}
 
 	public void saveCoach(LiveGameRosterSpot spot) {
-
-		//LOGGER.info("toggling MIA for " + spot);
-		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase", "GsB.saveCoach");
 		try {
 			CallableStatement pc = db.prepareCall("call scaha.saveLivegameCoachRosterSpot(?,?,?,?)");
 			pc.setInt(1, spot.ID);
@@ -3867,17 +3754,9 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			db.free();
 		}
-
-		db.free();
-
-		//spot.setMia(!spot.isMia());
-//		if (_ha.equals("H")) {
-//			refreshHomeRoster();
-//		} else {
-//			refreshAwayRoster();
-//		}
-
 		refreshHomeCoachRoster();
 		refreshAwayCoachRoster();
 	}
@@ -3925,101 +3804,82 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 	}
 
 	public void reFinalGames() {
-
-		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
-
-		LiveGameList templist = this.scaha.getScahaLiveGameList();
-
-		for (LiveGame lg : templist) {
-			if (lg.getStatetag().equals("Final") && lg.getScheduleidstub()>695) {
-				try {
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase", "GsB.reFinalGames");
+		try {
+			LiveGameList templist = this.scaha.getScahaLiveGameList();
+			for (LiveGame lg : templist) {
+				if (lg.getStatetag().equals("Final") && lg.getScheduleidstub() > 695) {
 					//need to update stats table a	s game is being finalized.
 					//pass in team id and livegame id
 					PreparedStatement ps = db.prepareCall("call scaha.updatestatsforLiveGame(?,?)");
-
 					ps.setInt(1, lg.ID);
 					ps.setInt(2, lg.getAwayteam().ID);
 					LOGGER.info("updating stats for away team:");
 					ps.executeQuery();
-
 					ps.setInt(1, lg.ID);
 					ps.setInt(2, lg.getHometeam().ID);
 					LOGGER.info("updating stats for home team:");
 					ps.executeQuery();
-					LOGGER.info("closing prepared statement:");
 					ps.close();
-
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					LOGGER.info("errored:");
 				}
-				LOGGER.info("setting connection free:");
 			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.free();
 		}
-		db.free();
 	}
 
-	public void refreshMites(){
-			ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+	public void refreshMites() {
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase", "GsB.refreshMites");
+		try {
+			PreparedStatement ps = db.prepareCall("call scaha.getMiteEventTeams(?)");
+			ps.setInt(1, this.livegame.ID);
+			ResultSet rs = ps.executeQuery();
+			Integer count = 0;
 
-			try {
-
-				//need to get the 4 distinct teamid's, including their club id's.
-
-				PreparedStatement ps = db.prepareCall("call scaha.getMiteEventTeams(?)");
-
-				ps.setInt(1, this.livegame.ID);
-				ResultSet rs = ps.executeQuery();
-				Integer count = 0;
-
-				while (rs.next()) {
-					if (count.equals(0)) {
-						this.miteteamid1 = rs.getInt("idteam");
-						this.teamclubid1 = rs.getInt("idclub");
-					}else if (count.equals(1)) {
-						this.miteteamid2 = rs.getInt("idteam");
-						this.teamclubid2 = rs.getInt("idclub");
-					}else if (count.equals(2)) {
-						this.miteteamid3 = rs.getInt("idteam");
-						this.teamclubid3 = rs.getInt("idclub");
-					}else if (count.equals(3)) {
-						this.miteteamid4 = rs.getInt("idteam");
-						this.teamclubid4 = rs.getInt("idclub");
-					}
-					count++;
+			while (rs.next()) {
+				if (count.equals(0)) {
+					this.miteteamid1 = rs.getInt("idteam");
+					this.teamclubid1 = rs.getInt("idclub");
+				} else if (count.equals(1)) {
+					this.miteteamid2 = rs.getInt("idteam");
+					this.teamclubid2 = rs.getInt("idclub");
+				} else if (count.equals(2)) {
+					this.miteteamid3 = rs.getInt("idteam");
+					this.teamclubid3 = rs.getInt("idclub");
+				} else if (count.equals(3)) {
+					this.miteteamid4 = rs.getInt("idteam");
+					this.teamclubid4 = rs.getInt("idclub");
 				}
-				rs.close();
-				ps.close();
-
-				this.team1 = LiveGameRosterSpotList.NewListFactoryByTeamid(pb.getProfile(),db,miteteamid1);
-				this.team2 = LiveGameRosterSpotList.NewListFactoryByTeamid(pb.getProfile(),db,miteteamid2);
-				this.team3 = LiveGameRosterSpotList.NewListFactoryByTeamid(pb.getProfile(),db,miteteamid3);
-				this.team4 = LiveGameRosterSpotList.NewListFactoryByTeamid(pb.getProfile(),db,miteteamid4);
-
-				//next load the roster lists for the 4 teams.
-				this.team1 = LiveGameRosterSpotList.NewListFactoryByTeamid(pb.getProfile(),db,miteteamid1);
-				this.team2 = LiveGameRosterSpotList.NewListFactoryByTeamid(pb.getProfile(),db,miteteamid2);
-				this.team3 = LiveGameRosterSpotList.NewListFactoryByTeamid(pb.getProfile(),db,miteteamid3);
-				this.team4 = LiveGameRosterSpotList.NewListFactoryByTeamid(pb.getProfile(),db,miteteamid4);
-
-				/*this.team1coach = LiveGameRosterSpotList.NewListFactoryCoachForTeam(pb.getProfile(),db,miteteamid1);
-				this.team2coach = LiveGameRosterSpotList.NewListFactoryCoachForTeam(pb.getProfile(),db,miteteamid2);
-				this.team3coach = LiveGameRosterSpotList.NewListFactoryCoachForTeam(pb.getProfile(),db,miteteamid3);
-				this.team4coach = LiveGameRosterSpotList.NewListFactoryCoachForTeam(pb.getProfile(),db,miteteamid4);
-				*/
-				ps.close();
-
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				LOGGER.info("errored:");
+				count++;
 			}
-			LOGGER.info("setting connection free:");
+			rs.close();
+			ps.close();
 
+			this.team1 = LiveGameRosterSpotList.NewListFactoryByTeamid(pb.getProfile(), db, miteteamid1);
+			this.team2 = LiveGameRosterSpotList.NewListFactoryByTeamid(pb.getProfile(), db, miteteamid2);
+			this.team3 = LiveGameRosterSpotList.NewListFactoryByTeamid(pb.getProfile(), db, miteteamid3);
+			this.team4 = LiveGameRosterSpotList.NewListFactoryByTeamid(pb.getProfile(), db, miteteamid4);
 
+			//next load the roster lists for the 4 teams.
+			this.team1 = LiveGameRosterSpotList.NewListFactoryByTeamid(pb.getProfile(), db, miteteamid1);
+			this.team2 = LiveGameRosterSpotList.NewListFactoryByTeamid(pb.getProfile(), db, miteteamid2);
+			this.team3 = LiveGameRosterSpotList.NewListFactoryByTeamid(pb.getProfile(), db, miteteamid3);
+			this.team4 = LiveGameRosterSpotList.NewListFactoryByTeamid(pb.getProfile(), db, miteteamid4);
+
+			/*this.team1coach = LiveGameRosterSpotList.NewListFactoryCoachForTeam(pb.getProfile(),db,miteteamid1);
+			this.team2coach = LiveGameRosterSpotList.NewListFactoryCoachForTeam(pb.getProfile(),db,miteteamid2);
+			this.team3coach = LiveGameRosterSpotList.NewListFactoryCoachForTeam(pb.getProfile(),db,miteteamid3);
+			this.team4coach = LiveGameRosterSpotList.NewListFactoryCoachForTeam(pb.getProfile(),db,miteteamid4);
+			*/
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
 			db.free();
-
 		}
+	}
 }
 

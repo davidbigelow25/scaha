@@ -144,7 +144,23 @@ public class Database {
 			LOGGER.info(this + "DB Free SNAFU");
 			this.cleanup();
 		} finally {
-			LOGGER.info(this + " Freeing Up Connection.");
+			LOGGER.info("DB: Freeing: " + this);
+			m_binuse = false;
+			m_startTime = null;
+			setProfile(null);
+		}
+	}
+
+	public void freeSilent() {
+
+		try {
+			this.cleanup();
+			m_con.setAutoCommit(true); // Always set it back.. caller may have been lazy
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			LOGGER.info(this + "DB Free SNAFU");
+			this.cleanup();
+		} finally {
 			m_binuse = false;
 			m_startTime = null;
 			setProfile(null);

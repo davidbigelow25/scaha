@@ -90,11 +90,11 @@ public class DatabasePool implements Runnable {
 						} catch (SQLException e) {
 							e.printStackTrace();
 						} finally {
-							db.free();
+							db.freeSilent();
 						}
 					} else if (db.isStale()) {
 						LOGGER.info(">>> cleaning stale connection:" + db.toString());
-						db.free();
+						db.freeSilent();
 					}
 				}
 				LOGGER.info(this.m_vConnections.get(i).toString());
@@ -187,6 +187,7 @@ public class DatabasePool implements Runnable {
 						db.checkHeath();
 						db.setInUse(_pro);
 						this.incTxCount();
+						LOGGER.info("DBP:handing out" + db);
 						return db;
 					}
 				}
