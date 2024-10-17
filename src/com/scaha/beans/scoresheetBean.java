@@ -387,7 +387,7 @@ public class scoresheetBean implements Serializable {
 	    		    db.commit();
 	    			db.cleanup();
 	 				
-	    			//LOGGER.info("You have added the scoresheet :" + scoresheet.getFilename() + " gameid:" + this.idgame.toString());
+	    			LOGGER.info("You have added the scoresheet :" + scoresheet.getFilename() + " gameid:" + this.idgame.toString());
 	    		    //now to reload the scoresheet collection for datatable update
 	    			getGameScoresheets();
 				} else {

@@ -39,13 +39,15 @@ public class FileUploadController extends ScahaObject implements Serializable {
         try {
         	//String destPath = "/var/scaha/scoresheets/" + scoresheet.getGametype() + "_" + scoresheet.getIdgame() + prefix + "." + suffix;
 			String destPath = "/data/scoresheets/" + scoresheet.getGametype() + "_" + scoresheet.getIdgame() + prefix + "." + suffix;
+			LOGGER.info("uploading:" + ":" + destPath);
             File destFile = new File(destPath);
         	stream = event.getFile().getInputstream();
         	output = new FileOutputStream(destFile);
-        	
         	IOUtils.copy(stream, output);
-        	return true;
+			LOGGER.info("completed uploading:" + ":" + destPath);
+			return true;
         }catch (IOException e){
+        	LOGGER.info("ERROR failed uploading:" +  e.getMessage());
 			e.printStackTrace();
 			return false;
 		} finally {
