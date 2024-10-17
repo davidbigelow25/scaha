@@ -206,7 +206,7 @@ public class statsBean implements Serializable{
 		this.setPlayergaa((tempgaa));
 		this.setPlayersavepercentage(tempsave);
 		// tmp disable
-		if (1 == 1) return;
+		//if (1 == 1) return;
 
     	ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
     	
@@ -503,7 +503,7 @@ public class statsBean implements Serializable{
 		List<Stat> tempSave = new ArrayList<Stat>();
 		// tmp disable fetching data
 		this.setCompleteplayers(tempSave);
-		if (1 == 1) return;
+		//if (1 == 1) return;
 
 
 		//setDisplaycompletetitle(sortby);
@@ -584,7 +584,7 @@ public class statsBean implements Serializable{
 		// tmp disable fetching data
 		List<Stat> tmpSave = new ArrayList<Stat>();
 		this.setCompletegoalies(tmpSave);
-		if (1 ==1 ) return;
+		//if (1 ==1 ) return;
 
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Date   date       = format.parse (this.selectedschedule.getStartdate());
