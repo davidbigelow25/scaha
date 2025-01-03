@@ -526,6 +526,7 @@ public class reviewscahagamesBean implements Serializable, MailableObject{
 							this.bodytext = this.bodytext + tempgamerows ;
 							this.teamname = offendingteam;
 							this.clubid=clubid;
+
 						}
 						//retrieve emails for club registrar and team managers
 						cs3.setInt("iclubid", this.clubid);
@@ -566,9 +567,8 @@ public class reviewscahagamesBean implements Serializable, MailableObject{
 						this.setSubject(this.teamname + " - Missing SCAHA Game Detail Entry and Scoresheet Upload");
 
 						SendMailSSL mail = new SendMailSSL(this);
-						//LOGGER.info("Finished creating mail object for " + this.firstname + " " + this.lastname + " LOI with " + this.getClubName());
+						LOGGER.info("Finished creating mail object for " + this.teamname);
 						mail.sendMail();
-
 
 					}
 				}

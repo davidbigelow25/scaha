@@ -269,7 +269,6 @@ public class processusahockeyuploadBean implements Serializable,  MailableObject
 									}
 								}
 							}
-							rs.close();
 
 							//to = "lahockeyfan2@yahoo.com";
 							this.setToMailAddress(to);
@@ -281,6 +280,7 @@ public class processusahockeyuploadBean implements Serializable,  MailableObject
 
 							mail.sendMail();
 
+							rs.close();
 
 						}
 

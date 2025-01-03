@@ -252,6 +252,7 @@ public class GamesheetBean implements Serializable,  MailableObject {
 		 
 		 
 		 refreshBean();
+
 		 
 		 FacesMessages.info("Select upto 4 coaches to be printed on the scoresheet for this game.");
 	 }
@@ -3805,13 +3806,17 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 
 	public void reFinalGames() {
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase", "GsB.reFinalGames");
+
 		try {
 			LiveGameList templist = this.scaha.getScahaLiveGameList();
+			PreparedStatement ps = db.prepareCall("call scaha.updatestatsforLiveGame(?,?)");
+
 			for (LiveGame lg : templist) {
-				if (lg.getStatetag().equals("Final") && lg.getScheduleidstub() > 695) {
+				if (lg.getStatetag().equals("Final") && lg.getScheduleidstub() == 760)  {
 					//need to update stats table a	s game is being finalized.
 					//pass in team id and livegame id
-					PreparedStatement ps = db.prepareCall("call scaha.updatestatsforLiveGame(?,?)");
+					LOGGER.info("updating stats for livegame:" + lg.ID);
+
 					ps.setInt(1, lg.ID);
 					ps.setInt(2, lg.getAwayteam().ID);
 					LOGGER.info("updating stats for away team:");
@@ -3820,15 +3825,18 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
 					ps.setInt(2, lg.getHometeam().ID);
 					LOGGER.info("updating stats for home team:");
 					ps.executeQuery();
-					ps.close();
+
 				}
+
 			}
+			ps.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			db.free();
 		}
+
 	}
 
 	public void refreshMites() {
