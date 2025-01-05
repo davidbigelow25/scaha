@@ -114,27 +114,27 @@
 											<f:facet name="header">
 												<h:outputText value="Labor Day" style="font-size:10px"/>
 											</f:facet>
-											<b:navCommandLink value="Yes" actionListener="#{managerosterBean.loadTournamentDetails('labor',team)}" rendered="#{team.getLaborday()}" style="font-size:10px">
-											</b:navCommandLink>
-											<h:outputText value="#{team.getLabordayattend()}" style="font-size:10px" rendered="#{not team.getLaborday()}"/>
+											<!--<b:navCommandLink value="Yes" actionListener="#{managerosterBean.loadTournamentDetails('labor',team)}" rendered="#{team.getLaborday()}" style="font-size:10px">
+											</b:navCommandLink>-->
+											<h:outputText value="#{team.getLabordayattend()}" style="font-size:10px" />
 
 										</b:dataTableColumn>
 										<b:dataTableColumn >
 											<f:facet name="header">
 												<h:outputText value="T-Giving" style="font-size:10px"/>
 											</f:facet>
-											<b:navLink value="Yes" actionListener="#{managerosterBean.loadTournamentDetails('tgiving',team)}" rendered="#{team.tgiving}">
-											</b:navLink>
-											<h:outputText value="#{team.getTgivingattend()}" style="font-size:10px" rendered="#{not team.tgiving}"/>
+											<!--<b:navLink value="Yes" actionListener="#{managerosterBean.loadTournamentDetails('tgiving',team)}" rendered="#{team.tgiving}">
+											</b:navLink>-->
+											<h:outputText value="#{team.getTgivingattend()}" style="font-size:10px" />
 
 										</b:dataTableColumn>
 										<b:dataTableColumn >
 											<f:facet name="header">
 												<h:outputText value="XMAS" style="font-size:10px"/>
 											</f:facet>
-											<b:navLink value="Yes" actionListener="#{managerosterBean.loadTournamentDetails('xmas',team)}" rendered="#{team.xmas}">
-											</b:navLink>
-											<h:outputText value="#{team.getXmasattend()}" style="font-size:10px" rendered="#{not team.xmas}"/>
+											<!--<b:navLink value="Yes" actionListener="#{managerosterBean.loadTournamentDetails('xmas',team)}" rendered="#{team.xmas}">
+											</b:navLink>-->
+											<h:outputText value="#{team.getXmasattend()}" style="font-size:10px" />
 
 										</b:dataTableColumn>
 
@@ -142,28 +142,28 @@
 											<f:facet name="header">
 												<h:outputText value="MLK" style="font-size:10px"/>
 											</f:facet>
-											<b:navLink value="Yes" actionListener="#{managerosterBean.loadTournamentDetails('mlk',team)}" rendered="#{team.mlk}">
-											</b:navLink>
-											<h:outputText value="#{team.getMlkattend()}" style="font-size:10px" rendered="#{not team.mlk}"/>
+											<!--<b:navLink value="Yes" actionListener="#{managerosterBean.loadTournamentDetails('mlk',team)}" rendered="#{team.mlk}">
+											</b:navLink>-->
+											<h:outputText value="#{team.getMlkattend()}" style="font-size:10px" />
 
 										</b:dataTableColumn>
 										<b:dataTableColumn >
 											<f:facet name="header">
 												<h:outputText value="PDay" style="font-size:10px"/>
 											</f:facet>
-											<b:navLink value="Yes" actionListener="#{managerosterBean.loadTournamentDetails('pday',team)}" rendered="#{team.pday}">
-												</b:navLink>
-											<h:outputText value="#{team.getPdayattend()}" style="font-size:10px" rendered="#{not team.pday}"/>
+											<!--<b:navLink value="Yes" actionListener="#{managerosterBean.loadTournamentDetails('pday',team)}" rendered="#{team.pday}">
+												</b:navLink>-->
+											<h:outputText value="#{team.getPdayattend()}" style="font-size:10px" />
 
 										</b:dataTableColumn>
 										<b:dataTableColumn >
 											<f:facet name="header">
 												<h:outputText value="Bye Wkd" style="font-size:10px"/>
 											</f:facet>
-											<b:navLink value="Yes" actionListener="#{managerosterBean.loadTournamentDetails('byewkd',team)}" rendered="#{team.byewkd}">
+											<!--<b:navLink value="Yes" actionListener="#{managerosterBean.loadTournamentDetails('byewkd',team)}" rendered="#{team.byewkd}">
 												<h:outputText value="#{team.getByewkdattend()}" style="font-size:10px" rendered="#{not team.byewkd}"/>
-											</b:navLink>
-											<h:outputText value="#{team.getByewkdattend()}" style="font-size:10px" rendered="#{not team.byewkd}"/>
+											</b:navLink>-->
+											<h:outputText value="#{team.getByewkdattend()}" style="font-size:10px" />
 										</b:dataTableColumn>
 										<b:dataTableColumn >
 								            <f:facet name="header">

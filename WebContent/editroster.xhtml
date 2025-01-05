@@ -231,11 +231,10 @@
 						<h:outputText value="#{player.expirationdate}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG')}"/>
 
 					</b:dataTableColumn>
-					<b:dataTableColumn >
+					<!--<b:dataTableColumn >
 						<f:facet name="header">
 							<h:outputText value="LOI Sus?" style="font-size:10px" />
 						</f:facet>
-						<!--<h:outputText value="#{coach.getSuspended()}" />-->
 						<b:selectOneMenu value="#{player.suspended}"
 										 style="width:60px;font-size: 10px;"
 										 rendered="#{profileBean.hasRoleList('S-REG')}"
@@ -249,7 +248,6 @@
 						<f:facet name="header">
 							<h:outputText value="USA Rost?" style="font-size:10px" />
 						</f:facet>
-						<!--<h:outputText value="#{coach.getSuspended()}" />-->
 						<b:selectOneMenu value="#{player.usaroster}"
 										 style="width:60px;font-size: 10px;"
 										 rendered="#{profileBean.hasRoleList('S-REG')}"
@@ -258,7 +256,7 @@
 							<f:selectItem itemLabel="Yes" itemValue="1"/>
 						</b:selectOneMenu>
 						<h:outputText value="#{player.getYesno(player.usaroster)}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG;S-VICE')}"/>
-					</b:dataTableColumn>
+					</b:dataTableColumn>-->
 					<b:dataTableColumn orderable="false">
 						<f:facet name="header">
 							<h:outputText value="Bullying" style="font-size:10px" />
