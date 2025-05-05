@@ -95,7 +95,8 @@
 										    </f:facet>
 										    <h:outputText value="#{team.getTotalcoachescount()}" style="font-size:10px"/>
 										</b:dataTableColumn> 
-										<b:dataTableColumn >
+										<!-- team roster date will be handled in a different location going forward-->
+										<!--<b:dataTableColumn >
 								            <f:facet name="header">
 												<h:outputText value="Team Roster Date" style="font-size:10px"/>
 											</f:facet>
@@ -103,10 +104,23 @@
 												<f:ajax event="change" listener="#{managerosterBean.updateTeamRostereffectivedate(team,team.newdate)}"/>
 								            	<f:param name="blockui.disabled" value="true"/>
 								            </b:inputText>
-								        </b:dataTableColumn>
-										<b:dataTableColumn >
+								        </b:dataTableColumn>-->
+										<!-- bullying is being handle in notes in the usa hockey roster, no need to do it here-->
+										<!--<b:dataTableColumn >
 											<f:facet name="header">
 												<h:outputText value="Bullying" style="font-size:10px"/>
+											</f:facet>
+											<h:outputText value="#{team.getBullyingcount()}" style="font-size:10px"/>
+										</b:dataTableColumn>-->
+										<b:dataTableColumn >
+											<f:facet name="header">
+												<h:outputText value="Confirmed Date" style="font-size:10px"/>
+											</f:facet>
+											<h:outputText value="#{team.getConfirmdate()}" style="font-size:10px"/>
+										</b:dataTableColumn>
+										<b:dataTableColumn >
+											<f:facet name="header">
+												<h:outputText value="# Loi's Not Confirmed" style="font-size:10px"/>
 											</f:facet>
 											<h:outputText value="#{team.getBullyingcount()}" style="font-size:10px"/>
 										</b:dataTableColumn>

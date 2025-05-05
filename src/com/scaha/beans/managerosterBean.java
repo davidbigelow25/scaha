@@ -139,14 +139,16 @@ public class managerosterBean implements Serializable {
 							if (byewkdattend.equals("yes")){
 								byewkd=true;
 							}
+							//bullying count is now being used for loi's not confirmed count.
 							Integer bullyingcount = rssub.getInt("bullyingcount");
-
+							String confirmdate = rssub.getString("confirmdate");
 	        				Team team = new Team(teamname,idteam);
 	        				team.setIdteam(idteam);
 	        				team.setTeamname(teamname);
 	        				team.setActiveplayercount(activeplayercount);
 	        				team.setTotalplayercount(totalplayercount);
 	        				team.setTotalcoachescount(totalcoachcount);
+							team.setConfirmdate(confirmdate);
 
 							//these are for displaying tournaments attending
 							team.setLabordayattend(labordayattend);

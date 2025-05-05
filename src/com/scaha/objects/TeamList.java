@@ -83,6 +83,7 @@ public class TeamList extends ListDataModel<ScahaTeam> implements Serializable, 
 			div.setTag(rs.getString(i++));
 			tm.setXdivisiontag(rs.getString(i++));
 			tm.setXskillleveltag(rs.getString(i++));
+			//tm.setConfirmdate(rs.getString(i++));
 			tm.setSdivision(div.getDivisionname());
 			tm.setSskilllevel(sl.getSkilllevelname());
 			//
@@ -93,6 +94,7 @@ public class TeamList extends ListDataModel<ScahaTeam> implements Serializable, 
 			tm.setTeamdivision(div);
 			tm.setTeamskilllevel(sl);
 			tm.setTeamClub(_cl);
+
 			data.add(tm);
 		}
 		rs.close();

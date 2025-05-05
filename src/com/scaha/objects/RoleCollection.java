@@ -89,13 +89,13 @@ public class RoleCollection extends ScahaObject  {
 	 * @throws SQLException 
 	 */
 	public RoleCollection(ScahaDatabase _db, Profile _pro)  throws SQLException {
-		LOGGER.info("starting role collection");
+		//LOGGER.info("starting role collection");
 		// We want to load them all up first.. in pass i
 		// then link them all up in pass 2
 		Vector<Integer> vct = new Vector<Integer>();
 		vct.add(new Integer(_pro.ID));
 
-		LOGGER.info("calling sgetallimprolesbyprofile");
+		//LOGGER.info("calling sgetallimprolesbyprofile");
 		if (_db.getData(sGetAllImpRolesByProfile,vct)) {
 			LOGGER.info("iterating thru roles");
 			ResultSet rs = _db.getResultSet();
@@ -131,14 +131,14 @@ public class RoleCollection extends ScahaObject  {
 					prole.put(rl);
 				}
 
-				LOGGER.info("clearing role and parent role objects");
+				//LOGGER.info("clearing role and parent role objects");
 				prole = null;
 				rl = null;
 
 			}
 			rs.close();
 			rs = null;
-			LOGGER.info("closing recordset and setting to null");
+			//LOGGER.info("closing recordset and setting to null");
 		}
 	}
 

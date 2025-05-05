@@ -43,7 +43,7 @@
 				    	<f:selectItem style="font-size:10pt;" itemLabel="Select a Schedule..." itemValue="0" />
 		          		<f:selectItems  value="#{scoreboardBean.getSchedulelist()}" var="schedule" itemLabel="#{schedule.getDescription()}" itemValue="#{schedule.getKey()}" />
 		          	</b:selectOneMenu>
-			        
+
 			        <b:selectOneMenu value="#{scoreboardBean.selectedpartid}" onchange="ajax:scoreboardBean.onPartChange()" update="@form">
 				    	<f:selectItem style="font-size:10pt;" itemLabel="Schedule For All Teams..." itemValue="0" />
 		          		<f:selectItems  value="#{scoreboardBean.getPartpicklist()}" var="part" itemLabel="#{part.getTeam().getTeamname()}" itemValue="#{part.getKey()}" />

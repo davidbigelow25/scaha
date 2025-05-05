@@ -82,9 +82,27 @@ public class Coach extends ScahaObject implements Serializable {
 	private String gp = null;
 	private Integer pdrapply = null;
 	private String isbullying = null;
+	private String confirm = null;
+	private Boolean confirmbutton = null;
 
 	public Coach (){ 
 		
+	}
+
+	public Boolean getConfirmbutton() {
+		return confirmbutton;
+	}
+
+	public void setConfirmbutton(Boolean confirmbutton) {
+		this.confirmbutton = confirmbutton;
+	}
+
+	public String getConfirm() {
+		return confirm;
+	}
+
+	public void setConfirm(String confirm) {
+		this.confirm = confirm;
 	}
 
 	public Integer getPdrapply() {

@@ -34,7 +34,7 @@ public class ScahaTeam extends ScahaObject implements Serializable {
 	private String divisiontag = null;
 	private String xdivisiontag = null;
 	private String xskillleveltag = null;
-	
+	private String confirmdate = null;
 	private TeamGameInfo tgi = null;
 	
 	private int year = 0;
@@ -45,6 +45,14 @@ public class ScahaTeam extends ScahaObject implements Serializable {
 		setProfile(_pro);
 		this.ID = _id;
 		this.setRowkey(_id+ "");
+	}
+
+	public String getConfirmdate() {
+		return confirmdate;
+	}
+
+	public void setConfirmdate(String confirmdate) {
+		this.confirmdate = confirmdate;
 	}
 
 	//use this interface for historical schedule

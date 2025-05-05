@@ -55,31 +55,37 @@ public class editrosterBean implements Serializable, MailableObject {
 	private String cc = null;
 	private Integer clubid = null;
 	private String clubname = null;
-
-
+	private String confirmloilabel = null;
 
 
 	@PostConstruct
-    public void init() {
-        // In @PostConstruct (will be invoked immediately after construction and dependency/property injection).
+	public void init() {
+		// In @PostConstruct (will be invoked immediately after construction and dependency/property injection).
 		HttpServletRequest hsr = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-    	
-    	if(hsr.getParameter("teamid") != null)
-        {
-    		this.teamid = Integer.parseInt(hsr.getParameter("teamid").toString());
-        }
+
+		if (hsr.getParameter("teamid") != null) {
+			this.teamid = Integer.parseInt(hsr.getParameter("teamid").toString());
+		}
 
 		generatePDR();
-    	generateBlock();
-    	getRoster();
+		generateBlock();
+		getRoster();
 		//updatePDRAAATeams();
 
-    }
-	
-    public editrosterBean() {  
-    	    	
-		
-    }
+	}
+
+	public editrosterBean() {
+
+
+	}
+
+	public String getConfirmloilabel() {
+		return confirmloilabel;
+	}
+
+	public void setConfirmloilabel(String confirmloilabel) {
+		this.confirmloilabel = confirmloilabel;
+	}
 
 	public String getClubname() {
 		return clubname;
@@ -95,7 +101,7 @@ public class editrosterBean implements Serializable, MailableObject {
 		return cc;
 	}
 
-	public void setPreApprovedCC(String scc){
+	public void setPreApprovedCC(String scc) {
 		cc = scc;
 	}
 
@@ -110,13 +116,14 @@ public class editrosterBean implements Serializable, MailableObject {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 	@Override
 	public String getToMailAddress() {
 		// TODO Auto-generated method stub
 		return to;
 	}
 
-	public void setToMailAddress(String sto){
+	public void setToMailAddress(String sto) {
 		to = sto;
 	}
 
@@ -127,7 +134,7 @@ public class editrosterBean implements Serializable, MailableObject {
 		myTokens.add("LASTNAME:" + this.selectedplayer.getLastname());
 		myTokens.add("CLUBNAME:" + this.getClubname());
 
-		return Utils.mergeTokens(editrosterBean.mail_reg_body,myTokens);
+		return Utils.mergeTokens(editrosterBean.mail_reg_body, myTokens);
 
 	}
 
@@ -164,79 +171,81 @@ public class editrosterBean implements Serializable, MailableObject {
 		this.to = to;
 	}
 
-	public String getPdrcount(){
+	public String getPdrcount() {
 		return pdrcount;
 	}
 
-	public void setPdrcount(String name){
-		pdrcount=name;
+	public void setPdrcount(String name) {
+		pdrcount = name;
 	}
 
-	public String getTotalplayercount(){
+	public String getTotalplayercount() {
 		return totalplayercount;
 	}
 
-	public void setTotalplayercount(String name){
-		totalplayercount=name;
+	public void setTotalplayercount(String name) {
+		totalplayercount = name;
 	}
 
-	public String getNewrosterdate(){
-    	return newrosterdate;
-    }
-    
-    public void setNewrosterdate(String name){
-    	newrosterdate=name;
-    }
-    
-    
-    public String getEnteredrosterdate(){
-    	return enteredrosterdate;
-    }
-    
-    public void setEnteredrosterdate(String name){
-    	enteredrosterdate=name;
-    }
-    
-    
-    public String getTeamname(){
-    	return teamname;
-    }
-    
-    public void setTeamname(String name){
-    	teamname=name;
-    }
-    
-    public Integer getTeamid(){
-    	return teamid;
-    }
-    
-    public void setTeamid(Integer id){
-    	teamid=id;
-    }
-    
-    public Player getSelectedplayer(){
+	public String getNewrosterdate() {
+		return newrosterdate;
+	}
+
+	public void setNewrosterdate(String name) {
+		newrosterdate = name;
+	}
+
+
+	public String getEnteredrosterdate() {
+		return enteredrosterdate;
+	}
+
+	public void setEnteredrosterdate(String name) {
+		enteredrosterdate = name;
+	}
+
+
+	public String getTeamname() {
+		return teamname;
+	}
+
+	public void setTeamname(String name) {
+		teamname = name;
+	}
+
+	public Integer getTeamid() {
+		return teamid;
+	}
+
+	public void setTeamid(Integer id) {
+		teamid = id;
+	}
+
+	public Player getSelectedplayer() {
 		return selectedplayer;
 	}
-	
-	public void setSelectedplayer(Player splayer){
+
+	public void setSelectedplayer(Player splayer) {
 		selectedplayer = splayer;
 	}
-    
-    
-    public void getRoster(){
+
+
+	public void getRoster() {
 		List<Coach> templist = new ArrayList<Coach>();
 		List<Coach> tempcoachlist = new ArrayList<Coach>();
 
+		Boolean confirmloi = false;
+
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
-    	
-    	try{
-    		//first get team name
-    		CallableStatement cs = db.prepareCall("CALL scaha.getTeamByTeamId(?)");
+
+		try {
+			//first get team name
+			CallableStatement cs = db.prepareCall("CALL scaha.getTeamByTeamId(?)");
 			cs.setInt("teamid", this.teamid);
-		    rs = cs.executeQuery();
-			
-			if (rs != null){
-				
+			rs = cs.executeQuery();
+
+			if (rs != null) {
+
 				while (rs.next()) {
 					this.teamname = rs.getString("teamname");
 					this.totalplayercount = rs.getString("totalplayercount");
@@ -246,15 +255,15 @@ public class editrosterBean implements Serializable, MailableObject {
 			}
 			rs.close();
 			db.cleanup();
-    		
-    		//next get player roster
+
+			//next get player roster
 //TODO			cs = db.prepareCall("CALL scaha.getRosterByTeamId(?)");
 			cs = db.prepareCall("CALL scaha.getRosterPlayersByTeamId(?)");
 			cs.setInt("teamid", this.teamid);
-		    rs = cs.executeQuery();
-			
-			if (rs != null){
-				
+			rs = cs.executeQuery();
+
+			if (rs != null) {
+
 				while (rs.next()) {
 					String playerid = rs.getString("idroster");
 					String fname = rs.getString("fname");
@@ -271,13 +280,13 @@ public class editrosterBean implements Serializable, MailableObject {
 					String scitizenship = rs.getString("citizenship");
 					String scitizenshipexpiredate = rs.getString("citizenshipexpiredate");
 					String scitizenshiptransfer = rs.getString("citizenshiptransfer");
-					if (scitizenshiptransfer==null){
-						scitizenshiptransfer="0";
+					if (scitizenshiptransfer == null) {
+						scitizenshiptransfer = "0";
 					}
 					String sbirthcertificate = rs.getString("birthcertificate");
 					String sindefinite = rs.getString("indefinite");
 					String safesport = rs.getString("safesportindicator");
-					String suspended =rs.getString("suspended");
+					String suspended = rs.getString("suspended");
 					Integer transferid = rs.getInt("idcitizenshiptransfers");
 					Integer transfer = rs.getInt("citizenshiptransfers");
 					Integer transferindefinite = rs.getInt("indefinite");
@@ -285,10 +294,15 @@ public class editrosterBean implements Serializable, MailableObject {
 					String citizenship = rs.getString("citizenship");
 					Boolean is18safesport = rs.getBoolean("is18display");
 					String safesportfor18 = rs.getString("safesportfor18");
-					String expirationdate = rs.getString("expirationdate");
+					//this is being used for confirmation date goign forward
+					String expirationdate = rs.getString("confirmationdate");
 					Integer usaroster = rs.getInt("usaroster");
 					String notes = rs.getString("notes");
 					String isbullying = rs.getString("isbullying");
+					String isconfirm = rs.getString("confirm");
+					if (isconfirm.equals("no")) {
+						confirmloi = true;
+					}
 
 					Coach player = new Coach();
 					player.setIdcoach(playerid);
@@ -310,18 +324,18 @@ public class editrosterBean implements Serializable, MailableObject {
 					player.setNotes(notes);
 					player.setSafesport(safesport);
 					player.setSuspended(suspended);
-					if (scitizenship!=null){
-						if (!scitizenship.equals("USA")){
-							if (sindefinite!=null){
-								if (sindefinite.equals("1")){
+					if (scitizenship != null) {
+						if (!scitizenship.equals("USA")) {
+							if (sindefinite != null) {
+								if (sindefinite.equals("1")) {
 									player.setCitizenshiplabel("Transfer does not expire");
-								} else if (sindefinite.equals("1") && scitizenshiptransfer.equals("1")){
+								} else if (sindefinite.equals("1") && scitizenshiptransfer.equals("1")) {
 									player.setCitizenshiplabel("Transfer expires " + scitizenshipexpiredate);
-								} else if (sindefinite.equals("0") && scitizenshiptransfer.equals("1")){
+								} else if (sindefinite.equals("0") && scitizenshiptransfer.equals("1")) {
 									player.setCitizenshiplabel("Transfer expires " + scitizenshipexpiredate);
-								} else if (sindefinite.equals("0") && scitizenshiptransfer.equals("0")){
+								} else if (sindefinite.equals("0") && scitizenshiptransfer.equals("0")) {
 									player.setCitizenshiplabel("Transfer is needed.");
-								} else if (sindefinite.equals("1") && scitizenshiptransfer.equals("0")){
+								} else if (sindefinite.equals("1") && scitizenshiptransfer.equals("0")) {
 									player.setCitizenshiplabel("Transfer is needed.");
 								} else {
 									player.setCitizenshiplabel("Transfer is needed.");
@@ -334,7 +348,7 @@ public class editrosterBean implements Serializable, MailableObject {
 
 					player.setBirthcertificate(birthcertificate);
 					player.setBcverified(sbirthcertificate);
-					player.setTransferid (transferid);
+					player.setTransferid(transferid);
 					player.setTransfer(transfer);
 					player.setTransferindefinite(transferindefinite);
 					player.setExpirationdate(expirationdate);
@@ -344,6 +358,14 @@ public class editrosterBean implements Serializable, MailableObject {
 					player.setSafesportfor18(safesportfor18);
 					player.setUsaroster(usaroster);
 					player.setIsbullying(isbullying);
+					if (!expirationdate.equals("--")) {
+						player.setConfirm("no");
+						player.setConfirmbutton(false);
+					} else {
+						player.setConfirmbutton(true);
+						player.setConfirm("yes");
+					}
+					player.setConfirm(isconfirm);
 
 					templist.add(player);
 					player = null;
@@ -352,14 +374,14 @@ public class editrosterBean implements Serializable, MailableObject {
 			}
 			rs.close();
 			db.cleanup();
-    		
+
 			//next get coach roster
 			cs = db.prepareCall("CALL scaha.getRosterCoachesByTeamId(?)");
 			cs.setInt("teamid", this.teamid);
-		    rs = cs.executeQuery();
-			
-			if (rs != null){
-				
+			rs = cs.executeQuery();
+
+			if (rs != null) {
+
 				while (rs.next()) {
 					String coachid = rs.getString("idroster");
 					String cfname = rs.getString("fname");
@@ -384,7 +406,7 @@ public class editrosterBean implements Serializable, MailableObject {
 					Integer safesport = rs.getInt("safesport");
 					String notes = rs.getString("notes");
 					String sportexpires = rs.getString("sportexpires");
-					String suspended =rs.getString("suspended");
+					String suspended = rs.getString("suspended");
 					String isbullying = rs.getString("isbullying");
 
 
@@ -416,22 +438,22 @@ public class editrosterBean implements Serializable, MailableObject {
 					coach.setSuspend(suspended);
 
 					String coachlist = "";
-					if (coach.getU8().equals("Yes")){
+					if (coach.getU8().equals("Yes")) {
 						coachlist = coachlist.concat("8U");
 					}
-					if (coach.getU10().equals("Yes")){
+					if (coach.getU10().equals("Yes")) {
 						coachlist = coachlist.concat(",10U");
 					}
-					if (coach.getU12().equals("Yes")){
+					if (coach.getU12().equals("Yes")) {
 						coachlist = coachlist.concat(",12U");
 					}
-					if (coach.getU14().equals("Yes")){
+					if (coach.getU14().equals("Yes")) {
 						coachlist = coachlist.concat(",14U");
 					}
-					if (coach.getU18().equals("Yes")){
+					if (coach.getU18().equals("Yes")) {
 						coachlist = coachlist.concat(",18U");
 					}
-					if (coach.getGirls().equals("Yes")){
+					if (coach.getGirls().equals("Yes")) {
 						coachlist = coachlist.concat(",Girls");
 					}
 					coach.setCepmodulesselected(coachlist);
@@ -444,66 +466,97 @@ public class editrosterBean implements Serializable, MailableObject {
 			}
 			rs.close();
 			db.cleanup();
-			    		
-			
-    	} catch (SQLException e) {
-    		// TODO Auto-generated catch block
-    		LOGGER.info("ERROR IN loading teams");
-    		e.printStackTrace();
-    		db.rollback();
-    	} finally {
-    		//
-    		// always clean up after yourself..
-    		//
-    		db.free();
-    	}
-		
-    	setPlayers(templist);
-    	setCoaches(tempcoachlist);
-    	templist=null;
-    	tempcoachlist=null;
-		
+
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN loading teams");
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+		if (confirmloi) {
+			confirmloilabel = "Yes";
+		} else {
+			confirmloilabel = "No";
+		}
+		setPlayers(templist);
+		setCoaches(tempcoachlist);
+		templist = null;
+		tempcoachlist = null;
+
 	}
-    
-    public List<Coach> getCoaches(){
+
+	public void setallLOIs() {
+		List<Coach> templist = this.getPlayers();
+
+		for (Coach player : templist) {
+			if (player.getConfirm().equals("yes")) {
+				player.setConfirm("no");
+				confirmloilabel = "Yes";
+			} else {
+				player.setConfirm("yes");
+				confirmloilabel = "No";
+			}
+
+			if (!player.getExpirationdate().equals("--")) {
+				player.setConfirm("no");
+			}
+		}
+
+		setPlayers(templist);
+		templist = null;
+
+	}
+
+	public void setLOItoexclude(Coach player) {
+		player.setConfirm("no");
+	}
+
+	public List<Coach> getCoaches() {
 		return coaches;
 	}
-	
-	public void setCoaches(List<Coach> list){
+
+	public void setCoaches(List<Coach> list) {
 		coaches = list;
 	}
-	
-    
-    public List<Coach> getPlayers(){
+
+
+	public List<Coach> getPlayers() {
 		return players;
 	}
-	
-	public void setPlayers(List<Coach> list){
+
+	public void setPlayers(List<Coach> list) {
 		players = list;
 	}
 
-	public List<Player> getPdr(){
+	public List<Player> getPdr() {
 		return pdr;
 	}
 
-	public void setPdr(List<Player> list){
+	public void setPdr(List<Player> list) {
 		pdr = list;
 	}
 
-	public List<Player> getBlockrecruitment(){
+	public List<Player> getBlockrecruitment() {
 		return blockrecruitment;
 	}
 
-	public void setBlockrecruitment(List<Player> list){
+	public void setBlockrecruitment(List<Player> list) {
 		blockrecruitment = list;
 	}
 
 
-	public void editrosterdetail(Coach splayer){
+	public void editrosterdetail(Coach splayer) {
 		String idplayer = splayer.getIdcoach();
-		
+
 		FacesContext context = FacesContext.getCurrentInstance();
-		try{
+		try {
 			context.getExternalContext().redirect("editrosterdetail.xhtml?playerid=" + idplayer + "&teamid=" + this.teamid);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -512,46 +565,46 @@ public class editrosterBean implements Serializable, MailableObject {
 	}
 
 
-	public void editcoachrosterdetail(Coach scoach){
+	public void editcoachrosterdetail(Coach scoach) {
 		String idplayer = scoach.getIdcoach();
-		
+
 		FacesContext context = FacesContext.getCurrentInstance();
-		try{
+		try {
 			context.getExternalContext().redirect("editrosterdetail.xhtml?playerid=" + idplayer + "&teamid=" + this.teamid);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-	public void updateTeamRostereffectivedate(Team team){
-		
+
+	public void updateTeamRostereffectivedate(Team team) {
+
 		//lets first update the entire active roster with the new effective date aka roster date
 		//then lets reload the objects
 		this.teamid = team.ID;
 		this.enteredrosterdate = team.getNewdate();
-		
-		
+
+
 		List<Coach> templist = new ArrayList<Coach>();
 		List<Coach> tempcoachlist = new ArrayList<Coach>();
-		
+
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
-    	
-    	try{
-    		//first update team
-    		CallableStatement cs = db.prepareCall("CALL scaha.updateTeamrosterdate(?,?)");
+
+		try {
+			//first update team
+			CallableStatement cs = db.prepareCall("CALL scaha.updateTeamrosterdate(?,?)");
 			cs.setInt("teamid", this.teamid);
 			cs.setString("srosterdate", this.enteredrosterdate);
-		    cs.executeQuery();
-    		cs.close();
-		    
-    		//first get team name
-    		cs = db.prepareCall("CALL scaha.getTeamByTeamId(?)");
+			cs.executeQuery();
+			cs.close();
+
+			//first get team name
+			cs = db.prepareCall("CALL scaha.getTeamByTeamId(?)");
 			cs.setInt("teamid", this.teamid);
-		    rs = cs.executeQuery();
-			
-			if (rs != null){
-				
+			rs = cs.executeQuery();
+
+			if (rs != null) {
+
 				while (rs.next()) {
 					this.teamname = rs.getString("teamname");
 				}
@@ -559,15 +612,15 @@ public class editrosterBean implements Serializable, MailableObject {
 			}
 			rs.close();
 			db.cleanup();
-    		
-    		//next get player roster
+
+			//next get player roster
 //TODO			cs = db.prepareCall("CALL scaha.getRosterByTeamId(?)");
 			cs = db.prepareCall("CALL scaha.getRosterPlayersByTeamId(?)");
 			cs.setInt("teamid", this.teamid);
-		    rs = cs.executeQuery();
-			
-			if (rs != null){
-				
+			rs = cs.executeQuery();
+
+			if (rs != null) {
+
 				while (rs.next()) {
 					String playerid = rs.getString("idroster");
 					String fname = rs.getString("fname");
@@ -581,7 +634,7 @@ public class editrosterBean implements Serializable, MailableObject {
 					String jerseynumber = rs.getString("jerseynumber");
 					String dob = rs.getString("dob");
 					String gp = rs.getString("gp");
-					
+
 					Coach player = new Coach();
 					player.setIdcoach(playerid);
 					player.setFirstname(fname);
@@ -595,7 +648,7 @@ public class editrosterBean implements Serializable, MailableObject {
 					player.setJerseynumber(jerseynumber);
 					player.setDob(dob);
 					player.setGp(gp);
-					
+
 					templist.add(player);
 					player = null;
 				}
@@ -603,15 +656,15 @@ public class editrosterBean implements Serializable, MailableObject {
 			}
 			rs.close();
 			db.cleanup();
-    		
+
 			//next get coach roster
 			//TODO			cs = db.prepareCall("CALL scaha.getRosterByTeamId(?)");
 			cs = db.prepareCall("CALL scaha.getRosterCoachesByTeamId(?)");
 			cs.setInt("teamid", this.teamid);
-		    rs = cs.executeQuery();
-			
-			if (rs != null){
-				
+			rs = cs.executeQuery();
+
+			if (rs != null) {
+
 				while (rs.next()) {
 					String coachid = rs.getString("idroster");
 					String cfname = rs.getString("fname");
@@ -623,8 +676,8 @@ public class editrosterBean implements Serializable, MailableObject {
 					String cactive = rs.getString("active");
 					String cupdated = rs.getString("updated");
 					String teamrole = rs.getString("teamrole");
-					
-					
+
+
 					Coach coach = new Coach();
 					coach.setIdcoach(coachid);
 					coach.setFirstname(cfname);
@@ -636,7 +689,7 @@ public class editrosterBean implements Serializable, MailableObject {
 					coach.setActive(cactive);
 					coach.setUpdated(cupdated);
 					coach.setTeamrole(teamrole);
-					
+
 					tempcoachlist.add(coach);
 					coach = null;
 				}
@@ -644,30 +697,30 @@ public class editrosterBean implements Serializable, MailableObject {
 			}
 			rs.close();
 			db.cleanup();
-			    		
-			
-    	} catch (SQLException e) {
-    		// TODO Auto-generated catch block
-    		LOGGER.info("ERROR IN loading teams");
-    		e.printStackTrace();
-    		db.rollback();
-    	} finally {
-    		//
-    		// always clean up after yourself..
-    		//
-    		db.free();
-    	}
-		
-    	setPlayers(templist);
-    	setCoaches(tempcoachlist);
-    	templist=null;
-    	tempcoachlist=null;
-	
+
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN loading teams");
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
+
+		setPlayers(templist);
+		setCoaches(tempcoachlist);
+		templist = null;
+		tempcoachlist = null;
+
 	}
-	
-	public void viewScoresheets(){
+
+	public void viewScoresheets() {
 		FacesContext context = FacesContext.getCurrentInstance();
-		try{
+		try {
 			context.getExternalContext().redirect("reviewscoresheetsforateam.xhtml?teamid=" + this.teamid);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -675,18 +728,18 @@ public class editrosterBean implements Serializable, MailableObject {
 		}
 	}
 
-	public void generatePDR(){
+	public void generatePDR() {
 		List<Player> templist = new ArrayList<Player>();
 
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 
-		try{
+		try {
 			//first get team name
 			CallableStatement cs = db.prepareCall("CALL scaha.getTeamPDR(?)");
 			cs.setInt("teamid", this.teamid);
 			rs = cs.executeQuery();
 
-			if (rs != null){
+			if (rs != null) {
 
 				while (rs.next()) {
 					String playerid = rs.getString("playercount");
@@ -724,12 +777,12 @@ public class editrosterBean implements Serializable, MailableObject {
 		templist = null;
 	}
 
-	public void generateBlock(){
+	public void generateBlock() {
 		List<Player> templist = new ArrayList<Player>();
 
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 
-		try{
+		try {
 			//first get team name
 			CallableStatement cs = db.prepareCall("CALL scaha.getTeamBlockRecruitment(?)");
 
@@ -739,7 +792,7 @@ public class editrosterBean implements Serializable, MailableObject {
 			cs.setInt("teamid", this.teamid);
 			rs = cs.executeQuery();
 
-			if (rs != null){
+			if (rs != null) {
 
 				while (rs.next()) {
 					String playerid = rs.getString("playercount");
@@ -772,7 +825,7 @@ public class editrosterBean implements Serializable, MailableObject {
 		}
 
 		setBlockrecruitment(templist);
-		templist=null;
+		templist = null;
 
 	}
 
@@ -831,19 +884,19 @@ public class editrosterBean implements Serializable, MailableObject {
 
 	}
 
-	public void updatePDRAAATeams(){
+	public void updatePDRAAATeams() {
 		List<Player> templist = new ArrayList<Player>();
 
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 
-		try{
+		try {
 			//first get team name
 			CallableStatement cs = db.prepareCall("CALL scaha.getTeamsNeedingPDRCleanup()");
 			CallableStatement cs2 = db.prepareCall("CALL scaha.cleanupteamspdrcounts(?,?)");
 
 			rs = cs.executeQuery();
 
-			if (rs != null){
+			if (rs != null) {
 
 				while (rs.next()) {
 					Integer personid = rs.getInt("idperson");
@@ -878,11 +931,11 @@ public class editrosterBean implements Serializable, MailableObject {
 
 	}
 
-	public void updateCoach(Coach coach){
+	public void updateCoach(Coach coach) {
 
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 
-		try{
+		try {
 
 			if (db.setAutoCommit(false)) {
 
@@ -894,7 +947,7 @@ public class editrosterBean implements Serializable, MailableObject {
 				cs.setString("cepnum", coach.getCepnumber());
 				cs.setInt("levelcep", Integer.parseInt(coach.getCeplevel()));
 				cs.setString("cepexpire", coach.getCepexpires());
-				cs.setInt("insafesport",coach.getSafesportforcoachlist());
+				cs.setInt("insafesport", coach.getSafesportforcoachlist());
 				cs.setString("inrostertype", coach.getTeamrole());
 				cs.setInt("inrosterid", Integer.parseInt(coach.getIdcoach()));
 				//need to set values for modules
@@ -907,22 +960,22 @@ public class editrosterBean implements Serializable, MailableObject {
 
 				List<String> cepmodulesselectedstring = Arrays.asList(coach.getCepmodulesselected().split(","));
 				for (int i = 0; i < cepmodulesselectedstring.size(); i++) {
-					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("8U")){
+					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("8U")) {
 						u8 = 1;
 					}
-					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("10U")){
+					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("10U")) {
 						u10 = 1;
 					}
-					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("12U")){
+					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("12U")) {
 						u12 = 1;
 					}
-					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("14U")){
+					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("14U")) {
 						u14 = 1;
 					}
-					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("18U")){
+					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("18U")) {
 						u18 = 1;
 					}
-					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("Girls")){
+					if (cepmodulesselectedstring.get(i).equalsIgnoreCase("Girls")) {
 						ugirls = 1;
 					}
 				}
@@ -932,32 +985,32 @@ public class editrosterBean implements Serializable, MailableObject {
 				cs.setInt("u14", u14);
 				cs.setInt("u18", u18);
 				cs.setInt("ugirls", ugirls);
-				cs.setString("infirstname",coach.getFirstname());
-				cs.setString("inlastname",coach.getLastname());
+				cs.setString("infirstname", coach.getFirstname());
+				cs.setString("inlastname", coach.getLastname());
 				cs.setString("sportexpires", coach.getSportexpires());
 				cs.setInt("issuspend_in", Integer.parseInt(coach.getSuspend()));
 				String teamrole = "";
-				if (coach.getTeamrole().equals("PL")){
-					teamrole="Player";
+				if (coach.getTeamrole().equals("PL")) {
+					teamrole = "Player";
 				}
-				if (coach.getTeamrole().equals("AC")){
+				if (coach.getTeamrole().equals("AC")) {
 					teamrole = "Assistant Coach";
 				}
-				if (coach.getTeamrole().equals("SC")){
+				if (coach.getTeamrole().equals("SC")) {
 					teamrole = "Student Coach";
 				}
-				if (coach.getTeamrole().equals("HC")){
+				if (coach.getTeamrole().equals("HC")) {
 					teamrole = "Head Coach";
 				}
-				if (coach.getTeamrole().equals("AM")){
+				if (coach.getTeamrole().equals("AM")) {
 					teamrole = "Assistant Coach/Manager";
 				}
-				if (coach.getTeamrole().equals("MA")){
+				if (coach.getTeamrole().equals("MA")) {
 					teamrole = "Manager";
 				}
 				cs.setString("in_rostertype", teamrole);
 				cs.setString("in_notes", coach.getNotes());
-				cs.setInt("abi",Integer.parseInt(coach.getIsbullying()));
+				cs.setInt("abi", Integer.parseInt(coach.getIsbullying()));
 				rs = cs.executeQuery();
 
 				db.commit();
@@ -967,7 +1020,6 @@ public class editrosterBean implements Serializable, MailableObject {
 
 				//logging
 				LOGGER.info("We are updating transfer info for coach id:" + coach);
-
 
 
 				this.getRoster();
@@ -991,7 +1043,7 @@ public class editrosterBean implements Serializable, MailableObject {
 
 	}
 
-	public void voidLoi(Coach selectedPlayer){
+	public void voidLoi(Coach selectedPlayer) {
 
 		String sidcoach = selectedPlayer.getIdcoach();
 		String coachname = selectedPlayer.getFirstname() + " " + selectedPlayer.getLastname();
@@ -999,7 +1051,7 @@ public class editrosterBean implements Serializable, MailableObject {
 		//need to set to void
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 
-		try{
+		try {
 
 			if (db.setAutoCommit(false)) {
 
@@ -1035,7 +1087,7 @@ public class editrosterBean implements Serializable, MailableObject {
 		this.getRoster();
 	}
 
-	public void voidplayerLoi(Coach selectedPlayer){
+	public void voidplayerLoi(Coach selectedPlayer) {
 
 		String sidplayer = selectedPlayer.getIdcoach();
 		String playname = selectedPlayer.getFirstname() + ' ' + selectedPlayer.getLastname();
@@ -1044,7 +1096,7 @@ public class editrosterBean implements Serializable, MailableObject {
 		///need to set to void
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 
-		try{
+		try {
 
 			if (db.setAutoCommit(false)) {
 				//need to get club id first before setting the loi to void.
@@ -1130,6 +1182,37 @@ public class editrosterBean implements Serializable, MailableObject {
 		}
 
 		//now we need to reload the data object for the loi list
+		getRoster();
+	}
+
+	public void confirmteamLOIs() {
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		String playerid = "";
+
+		try {
+			CallableStatement cs = db.prepareCall("CALL scaha.updateLoiConfirmDate(?)");
+			for (Coach player : this.getPlayers()) {
+				if (player.getConfirm().equals("yes")) {
+					playerid=player.getIdcoach();
+					cs.setInt("rosterid", Integer.parseInt(player.getIdcoach()));
+					cs.executeQuery();
+
+
+				}
+
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("ERROR IN confirming loi" + playerid);
+			e.printStackTrace();
+			db.rollback();
+		} finally {
+			//
+			// always clean up after yourself..
+			//
+			db.free();
+		}
 		getRoster();
 	}
 }

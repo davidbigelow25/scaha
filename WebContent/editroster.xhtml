@@ -92,6 +92,16 @@
 					</b:panelGrid>
 				</b:panel>
 				<br></br>
+				<b:panelGrid colSpans="8,2,2" id="buttongrid" style="padding: 5;">
+					<h:outputText value=" " style="font-size:10px"/>
+					<b:commandButton value="Set All LOIs to #{editrosterBean.confirmloilabel}" id="selectallloi" ajax="true" action="#{editrosterBean.setallLOIs()}" look="info" rendered="#{profileBean.hasRoleList('S-REG;S-VICE')}">
+						<f:ajax execute="@form" render="@form" update="@form"/>
+					</b:commandButton>
+					<b:commandButton value="Confirm Team LOIs" id="confirmloi" ajax="true" action="#{editrosterBean.confirmteamLOIs()}" look="success" rendered="#{profileBean.hasRoleList('S-REG;S-VICE')}">
+						<f:ajax execute="@form" render="@form" update="@form"/>
+					</b:commandButton>
+				</b:panelGrid>
+				<br></br>
 				<b:dataTable
 					id="listofplayers"
 					var="player"
@@ -100,7 +110,7 @@
 					searching="false"
 					editable="true" 
 					select="true"
-					selectionMode="single" 
+					selectionMode="single"
 					paginated="false"
 					>
 					<b:dataTableColumn >
@@ -176,9 +186,25 @@
 			        </b:dataTableColumn>
 					<b:dataTableColumn >
 						<f:facet name="header">
+							<h:outputText value="Confirm Date" style="font-size:10px" />
+						</f:facet>
+						<h:outputText value="#{player.expirationdate}" style="font-size: 10px;"/>
+					</b:dataTableColumn>
+					<b:dataTableColumn >
+						<f:facet name="header">
+							<h:outputText value="Incl. Loi for Confirm" style="font-size:10px" />
+
+						</f:facet>
+						<b:commandButton value="Exclude" id="selectallloi" ajax="true" action="#{editrosterBean.setLOItoexclude(player)}" look="info" rendered="#{player.getConfirmbutton()}">
+							<f:ajax execute="@form" render="@form" update="@form"/>
+						</b:commandButton>
+						<h:outputText value="#{player.confirm}" style="font-size: 10px;"/>
+					</b:dataTableColumn>
+
+					<!--<b:dataTableColumn >
+						<f:facet name="header">
 							<h:outputText value="Safesport" style="font-size:10px" />
 						</f:facet>
-						<!--<h:outputText value="N/A" rendered="#{!player.safesportfor18}"/>-->
 						<b:selectOneMenu value="#{player.safesportfor18}"
 										 rendered="#{player.is18safesport and profileBean.hasRoleList('S-REG')}"
 										 style="width:65px;font-size: 10px;"
@@ -192,7 +218,6 @@
 						<f:facet name="header">
 							<h:outputText value="Cshp" style="font-size:10px" />
 						</f:facet>
-						<!--<h:outputText value="#{player.citizenshiplabel}" rendered="#{player.ctverified}" />-->
 						<b:selectOneMenu id="citizenship" value="#{player.citizenship}" style="width:65px;font-size: 10px;" rendered="#{profileBean.hasRoleList('S-REG')}">
 							<f:selectItem itemLabel="USA" itemValue="USA"/>
 							<f:selectItem itemLabel="Canada" itemValue="CAN"/>
@@ -204,7 +229,6 @@
 						<f:facet name="header">
 							<h:outputText value="BCert" style="font-size:10px" />
 						</f:facet>
-						<!--<h:outputText value="#{player.birthcertificate}" />-->
 						<b:selectOneMenu id="birthcertificateverified" value="#{player.birthcertificate}" style="width:65px;font-size: 10px;" rendered="#{profileBean.hasRoleList('S-REG')}">
 							<f:selectItem itemLabel="Yes" itemValue="1"/>
 							<f:selectItem itemLabel="No" itemValue="0"/>
@@ -230,8 +254,8 @@
 						<b:inputText id="expirationdate" value="#{player.expirationdate}" style="width:60px;font-size: 10px;" rendered="#{profileBean.hasRoleList('S-REG')}"/>
 						<h:outputText value="#{player.expirationdate}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG')}"/>
 
-					</b:dataTableColumn>
-					<!--<b:dataTableColumn >
+					</b:dataTableColumn>-->
+					<b:dataTableColumn >
 						<f:facet name="header">
 							<h:outputText value="LOI Sus?" style="font-size:10px" />
 						</f:facet>
@@ -244,7 +268,7 @@
 						</b:selectOneMenu>
 						<h:outputText value="#{player.getYesno(player.suspended)}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG;S-VICE')}"/>
 					</b:dataTableColumn>
-					<b:dataTableColumn >
+					<!--<b:dataTableColumn >
 						<f:facet name="header">
 							<h:outputText value="USA Rost?" style="font-size:10px" />
 						</f:facet>
@@ -256,7 +280,7 @@
 							<f:selectItem itemLabel="Yes" itemValue="1"/>
 						</b:selectOneMenu>
 						<h:outputText value="#{player.getYesno(player.usaroster)}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG;S-VICE')}"/>
-					</b:dataTableColumn>-->
+					</b:dataTableColumn>
 					<b:dataTableColumn orderable="false">
 						<f:facet name="header">
 							<h:outputText value="Bullying" style="font-size:10px" />
@@ -269,7 +293,7 @@
 							<f:selectItem itemLabel="Yes" itemValue="1"/>
 						</b:selectOneMenu>
 						<h:outputText value="#{player.getIsbullying()}" style="font-size:10px" rendered="#{profileBean.hasRoleList('A-REG;S-VICE')}"/>
-					</b:dataTableColumn>
+					</b:dataTableColumn>-->
 					<b:dataTableColumn >
 			            <f:facet name="header">
 							<h:outputText value="Updated" style="font-size:10px" />
@@ -278,6 +302,7 @@
 			        </b:dataTableColumn>
 					<b:dataTableColumn >
 			            <f:facet name="header">
+							<!--<div align="right"><b:commandButton value="Confirm Team LOIs" id="confirmloi" ajax="true" action="#{editrosterBean.confirmteamLOIs()}" look="success" rendered="#{profileBean.hasRoleList('S-REG;S-VICE')}"/></div>-->
 							<h:outputText value="Options" style="font-size:10px" />
 					    </f:facet>
 						<b:commandButton value="Void Player"

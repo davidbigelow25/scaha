@@ -19,12 +19,11 @@
 				                <b:navLink icon="home" href="Welcome.xhtml"></b:navLink>
 								<!--<b:navLink iconAwesome="trophy" value="Playoffs" href="playoffscentral.xhtml"></b:navLink>-->
 								<b:navLink icon="time" value="Tryouts" href="viewalltryouts.xhtml"></b:navLink>
-								<b:navLink icon="time" value="Team Openings" href="viewallopenings.xhtml"></b:navLink>
+								<!--<b:navLink icon="time" value="Team Openings" href="viewallopenings.xhtml"></b:navLink>-->
 				                <b:navLink icon="calendar" value="Sched./Standings" href="scoreboard.xhtml"></b:navLink>
 				                <b:navLink icon="stats" value="Stats" href="statscentral.xhtml"></b:navLink>
-				                <b:navLink icon="list-alt" value="Scoreboard" href="gamecentral.xhtml?season=SCAHA-2324&amp;initial=yes"></b:navLink>
-				                <!--<b:navLink icon="calendar" value="Club Tryouts" href="viewalltryouts.xhtml"></b:navLink>-->
-								<!--<b:navLink icon="eye-open" value="Suspensions" href="suspensions.xhtml"></b:navLink>-->
+				                <b:navLink icon="list-alt" value="Scoreboard" href="gamecentral.xhtml?season=SCAHA-2526&amp;initial=yes"></b:navLink>
+				                <b:navLink icon="eye-open" value="Suspensions" href="suspensions.xhtml"></b:navLink>
 								<b:navLink icon="glyphicon-modal-window" value="Register for SCAHA" href="manageUSAHockey.xhtml" rendered="#{not empty profileBean.getProfile()}"></b:navLink>
 								<!--<b:navLink icon="glyphicon-modal-window" value="Register for SCAHA" href="manageUSAHockey.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>-->
 								<br></br><b:navLink icon="list" value="Manager Portal" href="managerportal.xhtml" rendered="#{profileBean.getProfile().getScahamanager().getIsmanager()}"></b:navLink>
@@ -66,16 +65,17 @@
 				<b:column >
  					<b:navBar brand="SCAHA Registrar" inverse="false" position="top" sticky="false" fluid="true" >
 						<b:navbarLinks>
-		                <b:navLink value="Player LOI Hot List" href="quickplayerloiconfirmnew.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
-		                <b:navLink value="Coach LOI Hot List" href="quickcoachloiconfirm.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
-		                <b:navLink value="Fix Player LOI" href="workwithbirthcertificate.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
+						<!-- taking these links out and moving confirming loi to the manage roster page for the teams-->
+		                <!--<b:navLink value="Player LOI Hot List" href="quickplayerloiconfirmnew.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
+		                <b:navLink value="Coach LOI Hot List" href="quickcoachloiconfirm.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>-->
+						<b:navLink value="Manage Rosters" href="managerosters.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
+						<b:navLink value="Fix Player LOI" href="workwithbirthcertificate.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
 		                <b:navLink value="Fix Coach LOI" href="workwithcoaches.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
-		                <b:navLink value="Manage Rosters" href="managerosters.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
 		                <b:navLink value="Delinquency List" href="viewdelinquencylist.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
 		                <b:navLink value="Add Delinquency" href="addplayerdelinquent.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
 		                <b:navLink value="Releases" href="confirmrelease.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
 		                <b:navLink value="LOI Form" icon="ui-icon-arrowthickstop-1-s" href="downloads/SCAHA_LOI_AUTHORIZATION.docx" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
-						<b:navLink value="Process Bullying with Issues" href="processbullyingwithissues.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
+						<!--<b:navLink value="Process Bullying with Issues" href="processbullyingwithissues.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>-->
 
 						</b:navbarLinks>
 		            </b:navBar>
@@ -143,13 +143,13 @@
 		         				<b:navLink value="Review Exhibition Games" href="reviewexhibitiongamesresults.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>
 		         				<b:navLink value="Manage Suspensions" href="managesuspensionslist.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>
 		         				<b:navLink value="Quick Score" href="reviewscahagamesquickedit.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>
-								<b:navLink value="Email Managers" href="emailmanagers.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>
+								<!--<b:navLink value="Email Managers" href="emailmanagers.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>-->
 								<b:navLink value="View Non Completed Games" href="reviewscahagamesnotcompleted.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>
 								<b:navLink value="Run Finalled" href="processFinaledgames.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>
 								<!--<b:navLink value="Fix Accounts" href="fixaccounts.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>-->
 								<!--<b:navLink value="Process Bullying" href="processbullying.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>-->
 								<b:navLink value="Manager Contact Info" href="playoffsmanagerlist.xhtml" rendered="#{profileBean.hasRoleList('S-VICE')}"></b:navLink>
-								<b:navLink value="Usa Hockey Import" href="processusahockeyrosterupload.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>
+								<!--<b:navLink value="Usa Hockey Import" href="processusahockeyrosterupload.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>-->
 							</b:navbarLinks>
 		            </b:navBar>
 				</b:column>
@@ -163,7 +163,7 @@
 				        		<b:navLink value="Manage Rosters" href="managerosters.xhtml" rendered="#{profileBean.hasRoleList('S-VICE')}"></b:navLink>
 				        		<b:navLink value="Manage Suspensions" href="managesuspensionslist.xhtml" rendered="#{profileBean.hasRoleList('S-VICE')}"></b:navLink>
 								<b:navLink value="Manager Contact Info" href="playoffsmanagerlist.xhtml" rendered="#{profileBean.hasRoleList('S-VICE')}"></b:navLink>
-								<b:navLink value="View Failed LOI's" href="viewfailedloilist.xhtml" rendered="#{profileBean.hasRoleList('S-VICE')}"></b:navLink>
+								<!--<b:navLink value="View Failed LOI's" href="viewfailedloilist.xhtml" rendered="#{profileBean.hasRoleList('S-VICE')}"></b:navLink>-->
 		         			</b:navbarLinks>
 		            </b:navBar>
 				</b:column>

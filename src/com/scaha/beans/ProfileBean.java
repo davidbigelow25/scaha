@@ -312,11 +312,11 @@ public class ProfileBean implements Serializable,  MailableObject  {
 
     public void login() {
 
-		LOGGER.info("about to call verify profile" + name + ',' + live_password);
+		//LOGGER.info("about to call verify profile" + name + ',' + live_password);
 		//
     	pro = Profile.verify(name, live_password);
 
-		LOGGER.info("got thru verify" + name);
+		//LOGGER.info("got thru verify" + name);
     	// pull profile into the Login Bean..
     	try {
 	    	if (pro != null) {
@@ -325,53 +325,53 @@ public class ProfileBean implements Serializable,  MailableObject  {
 	    		// Here we want to default some session stuff right here.
 	    		// What is the current USAHockey Season..
 	    		//
-				LOGGER.info("instantiating db" + name);
+				//LOGGER.info("instantiating db" + name);
 
 				ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase",pro);
 	    		try{
 
-					LOGGER.info("calling getActiveMemberShipByType('USAH')" + name);
+					//LOGGER.info("calling getActiveMemberShipByType('USAH')" + name);
 
 					if (db.getData("call scaha.getActiveMemberShipByType('USAH')")) {
-						LOGGER.info("setting usa hockey season" + name);
+						//LOGGER.info("setting usa hockey season" + name);
 
 						while (db.getResultSet().next()) {
-							LOGGER.info("setting usa hockey season" + name);
+							//LOGGER.info("setting usa hockey season" + name);
 
 							this.setCurrentUSAHockeySeason(db.getResultSet().getString(2));
 	    				}
 	    			}
 
-					LOGGER.info("calling getActiveMemberShipByType('SCAHA')" + name);
+					//LOGGER.info("calling getActiveMemberShipByType('SCAHA')" + name);
 
 	    			if (db.getData("call scaha.getActiveMemberShipByType('SCAHA')")) {
-						LOGGER.info("setting scaha season" + name);
+						//LOGGER.info("setting scaha season" + name);
 
 						while (db.getResultSet().next()) {
 	    					this.setCurrentSCAHAHockeySeason(db.getResultSet().getString(2));
 	    				}
 	    			}
 
-					LOGGER.info("login releasing database" + name);
+					//LOGGER.info("login releasing database" + name);
 
 					db.free();
 	    		} catch (SQLException ex) {
 	    			ex.printStackTrace();
-					LOGGER.info("login received an error" + name + ex.toString());
+					//LOGGER.info("login received an error" + name + ex.toString());
 
 					db.free();
 	    		}
 
-				LOGGER.info("checking if profile is scaha manager" + name);
+				//LOGGER.info("checking if profile is scaha manager" + name);
 
 				if (pro.getScahamanager().getIsmanager()){
 	    			FacesContext context = FacesContext.getCurrentInstance();
 	    			//this.origin = ((HttpServletRequest)context.getExternalContext().getRequest()).getRequestURL().toString();
-					LOGGER.info("redirecting to manager portal " + name);
+					//LOGGER.info("redirecting to manager portal " + name);
 
 					context.getExternalContext().redirect("managerportal.xhtml");
 	    		} else if(origin != null) {
-					LOGGER.info("redirecting to home page" + name);
+					//LOGGER.info("redirecting to home page" + name);
 					FacesContext.getCurrentInstance().getExternalContext().redirect("Welcome.xhtml");
 				}
     			
@@ -390,7 +390,7 @@ public class ProfileBean implements Serializable,  MailableObject  {
 	    					
     		}
 		} catch (IOException e) {
-			LOGGER.info("error during login" + name + e.toString());
+			//LOGGER.info("error during login" + name + e.toString());
 
 			e.printStackTrace();
 		}

@@ -33,6 +33,7 @@ public class Team extends ScahaObject implements Serializable {
 	private String pims = null;
 	private String matchcount = null;
 	private String newdate = null;
+	private String confirmdate = null;
 
 	//these are used for counts for team pdr page
 	private Integer playercount = 0;
@@ -65,6 +66,14 @@ public class Team extends ScahaObject implements Serializable {
 	public Team (String sName, String teamid){ 
 		teamname = sName;
 		IDteam = teamid;
+	}
+
+	public String getConfirmdate() {
+		return confirmdate;
+	}
+
+	public void setConfirmdate(String confirmdate) {
+		this.confirmdate = confirmdate;
 	}
 
 	public Integer getPlayercount(){

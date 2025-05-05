@@ -144,7 +144,7 @@ public class Database {
 			LOGGER.info(this + "DB Free SNAFU");
 			this.cleanup();
 		} finally {
-			LOGGER.info("DB: Freeing: " + this);
+			//LOGGER.info("DB: Freeing: " + this);
 			m_binuse = false;
 			m_startTime = null;
 			setProfile(null);
@@ -247,7 +247,7 @@ public class Database {
 	public boolean getDataFromSQLFile(String _sPath, Vector _vParms) {
 
 		String sAbsolutePath = ContextManager.getRealPath() + _sPath;
-		LOGGER.info(this + ":" + sAbsolutePath);
+		//LOGGER.info(this + ":" + sAbsolutePath);
 
 		StringBuffer sb = new StringBuffer();
 
@@ -424,7 +424,7 @@ public class Database {
 	 */
 	public void reset() {
 
-		LOGGER.info(this + "Cleaning and Reseting Connection...");
+		//LOGGER.info(this + "Cleaning and Reseting Connection...");
 		this.close();
 		this.primeConnection();
 
@@ -434,22 +434,22 @@ public class Database {
 		LOGGER.info(this + "Setting autocommit to (" + _val + ")");
 		try {
 			m_con.setAutoCommit(_val);
-			LOGGER.info(this + "Setting autocommit completed successfully to (" + m_con.getAutoCommit() + ")");
+			//LOGGER.info(this + "Setting autocommit completed successfully to (" + m_con.getAutoCommit() + ")");
 			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		LOGGER.info(this + "Setting autocommit failed..");
+		//LOGGER.info(this + "Setting autocommit failed..");
 		return false;
 
 	}
 
 	public boolean rollback() {
 		try {
-			LOGGER.info(this + "ROLLBACK INITIATED!!!");
+			//LOGGER.info(this + "ROLLBACK INITIATED!!!");
 			m_con.rollback();
-			LOGGER.info(this + "ROLLBACK COMPLETE!!!");
+			//LOGGER.info(this + "ROLLBACK COMPLETE!!!");
 			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -463,14 +463,14 @@ public class Database {
 
 		try {
 
-			LOGGER.info(this + ":DRIVER:" + m_sDriver
-					+ ".  Starting to instanciate...");
+			//LOGGER.info(this + ":DRIVER:" + m_sDriver
+					//+ ".  Starting to instanciate...");
 			Class.forName(m_sDriver).newInstance();
-			LOGGER.info(this + ":DRIVER:" + m_sDriver + ".  Driver okay...");
+			//LOGGER.info(this + ":DRIVER:" + m_sDriver + ".  Driver okay...");
 			//m_con = DriverManager.getConnection(m_sURL, m_sUser, m_sPwd);
 			//trying a fix for adding autoreconnect to prevent db connections from being closed by db
 			m_con = DriverManager.getConnection(m_sURL + "?autoReconnect=true", m_sUser, m_sPwd);
-			LOGGER.info(this + "Connection okay..");
+			//LOGGER.info(this + "Connection okay..");
 
 		} catch (Exception e) {
 			e.printStackTrace();

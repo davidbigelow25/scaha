@@ -61,6 +61,7 @@ public class Player extends ScahaObject implements Serializable {
 	private String safesport = null;
 	private String suspended = null;
 	private Boolean bitalics = false;
+	private String confirm = null;
 
 
 	private Boolean bcovid = false;
@@ -71,6 +72,14 @@ public class Player extends ScahaObject implements Serializable {
 
 	public Player (){ 
 		
+	}
+
+	public String getConfirm() {
+		return confirm;
+	}
+
+	public void setConfirm(String confirm) {
+		this.confirm = confirm;
 	}
 
 	public String getPosition() {
