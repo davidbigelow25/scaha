@@ -408,6 +408,11 @@ public class editrosterBean implements Serializable, MailableObject {
 					String sportexpires = rs.getString("sportexpires");
 					String suspended = rs.getString("suspended");
 					String isbullying = rs.getString("isbullying");
+					String isconfirm = rs.getString("confirm");
+					String expirationdate = rs.getString("confirmationdate");
+					if (isconfirm.equals("no")) {
+						confirmloi = true;
+					}
 
 
 					Coach coach = new Coach();
@@ -458,6 +463,14 @@ public class editrosterBean implements Serializable, MailableObject {
 					}
 					coach.setCepmodulesselected(coachlist);
 					coach.setIsbullying(isbullying);
+					if (!expirationdate.equals("--")) {
+						coach.setConfirm("no");
+						coach.setConfirmbutton(false);
+					} else {
+						coach.setConfirmbutton(true);
+						coach.setConfirm("yes");
+					}
+					coach.setConfirm(isconfirm);
 
 					tempcoachlist.add(coach);
 					coach = null;
@@ -494,7 +507,9 @@ public class editrosterBean implements Serializable, MailableObject {
 
 	public void setallLOIs() {
 		List<Coach> templist = this.getPlayers();
+		List<Coach> templistcoach = this.getCoaches();
 
+		//this handles for players
 		for (Coach player : templist) {
 			if (player.getConfirm().equals("yes")) {
 				player.setConfirm("no");
@@ -509,7 +524,23 @@ public class editrosterBean implements Serializable, MailableObject {
 			}
 		}
 
+		//this handles for coaches
+		for (Coach player : templistcoach) {
+			if (player.getConfirm().equals("yes")) {
+				player.setConfirm("no");
+				confirmloilabel = "Yes";
+			} else {
+				player.setConfirm("yes");
+				confirmloilabel = "No";
+			}
+
+			if (!player.getExpirationdate().equals("--")) {
+				player.setConfirm("no");
+			}
+		}
+
 		setPlayers(templist);
+		setCoaches(templistcoach);
 		templist = null;
 
 	}
@@ -1192,7 +1223,20 @@ public class editrosterBean implements Serializable, MailableObject {
 
 		try {
 			CallableStatement cs = db.prepareCall("CALL scaha.updateLoiConfirmDate(?)");
+			//this loop handles players
 			for (Coach player : this.getPlayers()) {
+				if (player.getConfirm().equals("yes")) {
+					playerid=player.getIdcoach();
+					cs.setInt("rosterid", Integer.parseInt(player.getIdcoach()));
+					cs.executeQuery();
+
+
+				}
+
+			}
+
+			//this loop handles coaches
+			for (Coach player : this.getCoaches()) {
 				if (player.getConfirm().equals("yes")) {
 					playerid=player.getIdcoach();
 					cs.setInt("rosterid", Integer.parseInt(player.getIdcoach()));

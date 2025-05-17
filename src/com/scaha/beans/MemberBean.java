@@ -364,7 +364,7 @@ public class MemberBean implements Serializable, MailableObject {
 		myTokens.add("USAHNUM:" + usar2.getUSAHnum());
 		myTokens.add("SCAHANUM:" + mem.getSCAHANumber());
 		//myTokens.add("SEASON:" + scaha.getScahaSeasonList().getCurrentSeason().getDescription());
-		myTokens.add("SEASON:SCAHA 2024-2025 Season");
+		myTokens.add("SEASON:SCAHA 2025-2026 Season");
 		try {
 			if (_db.isPersonPlayer(per.ID)) {
 				if (_db.checkForBC(per.ID)) {
