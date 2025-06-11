@@ -506,7 +506,7 @@
 							<h:outputText value="Incl. Loi for Confirm" style="font-size:10px" />
 
 						</f:facet>
-						<b:commandButton value="Exclude" id="selectallloi" ajax="true" action="#{editrosterBean.setLOItoexclude(player)}" look="info" rendered="#{player.getConfirmbutton()}">
+						<b:commandButton value="Exclude" id="singlecoachloi" ajax="true" action="#{editrosterBean.setLOItoexclude(player)}" look="info" rendered="#{coach.getConfirmbutton()}">
 							<f:ajax execute="@form" render="@form" update="@form"/>
 						</b:commandButton>
 						<h:outputText value="#{coach.confirm}" style="font-size: 10px;"/>

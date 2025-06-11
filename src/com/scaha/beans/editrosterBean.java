@@ -441,6 +441,7 @@ public class editrosterBean implements Serializable, MailableObject {
 					coach.setSportexpires(sportexpires);
 					coach.setSuspended(suspended);
 					coach.setSuspend(suspended);
+					coach.setExpirationdate(expirationdate);
 
 					String coachlist = "";
 					if (coach.getU8().equals("Yes")) {
@@ -463,6 +464,7 @@ public class editrosterBean implements Serializable, MailableObject {
 					}
 					coach.setCepmodulesselected(coachlist);
 					coach.setIsbullying(isbullying);
+					coach.setConfirm(isconfirm);
 					if (!expirationdate.equals("--")) {
 						coach.setConfirm("no");
 						coach.setConfirmbutton(false);
@@ -470,7 +472,7 @@ public class editrosterBean implements Serializable, MailableObject {
 						coach.setConfirmbutton(true);
 						coach.setConfirm("yes");
 					}
-					coach.setConfirm(isconfirm);
+
 
 					tempcoachlist.add(coach);
 					coach = null;
@@ -815,11 +817,11 @@ public class editrosterBean implements Serializable, MailableObject {
 
 		try {
 			//first get team name
-			CallableStatement cs = db.prepareCall("CALL scaha.getTeamBlockRecruitment(?)");
+			CallableStatement cs = db.prepareCall("CALL scaha.getTeamBlockRecruitmentById(?)");
 
 			//next get pdr
 //TODO			cs = db.prepareCall("CALL scaha.getRosterByTeamId(?)");
-			cs = db.prepareCall("CALL scaha.getTeamBlockRecruitment(?)");
+			cs = db.prepareCall("CALL scaha.getTeamBlockRecruitmentById(?)");
 			cs.setInt("teamid", this.teamid);
 			rs = cs.executeQuery();
 
