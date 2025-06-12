@@ -47,6 +47,7 @@
 								select="true"
 								selectionMode="single"
 								paginated="false"
+
 						>
 							<b:dataTableColumn >
 								<f:facet name="header">
@@ -75,6 +76,7 @@
 								select="true"
 								selectionMode="single"
 								paginated="false"
+
 						>
 							<b:dataTableColumn >
 								<f:facet name="header">
@@ -107,12 +109,15 @@
 					var="player"
 					value="#{editrosterBean.getPlayers()}"
 					selection="#{editrosterBean.selectedplayer}"
-					searching="false"
+					searching="true"
 					editable="true" 
 					select="true"
 					selectionMode="single"
 					paginated="false"
-					>
+					excel="true"
+					csv="true"
+
+				>
 					<b:dataTableColumn >
 			            <f:facet name="header">
 							<h:outputText value="No." style="font-size:10px" />
@@ -348,6 +353,8 @@
 					select="true"
 					selectionMode="single" 
 					paginated="false"
+					excel="true"
+					csv="true"
 					>
 					<b:dataTableColumn orderable="false">
 			            <f:facet name="header">
