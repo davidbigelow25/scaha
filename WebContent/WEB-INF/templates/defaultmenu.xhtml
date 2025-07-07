@@ -75,16 +75,16 @@
 		                <b:navLink value="Add Delinquency" href="addplayerdelinquent.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
 		                <b:navLink value="Releases" href="confirmrelease.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
 		                <b:navLink value="LOI Form" icon="ui-icon-arrowthickstop-1-s" href="downloads/SCAHA_LOI_AUTHORIZATION.docx" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
-							<b:navLink value="Cert. Adult" icon="ui-icon-arrowthickstop-1-s" href="downloads/CAHA_certified_Adult_as_of_6-14.xlsx" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
-							<b:navLink value="Cert. 12 and Under" icon="ui-icon-arrowthickstop-1-s" href="downloads/CAHA_certified_Age_12_and_Under_as_of 6-14.xlsx" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
-							<b:navLink value="Cert. 13 to 18" icon="ui-icon-arrowthickstop-1-s" href="downloads/CAHA_certified_13_to_18_as_of 6-14.xlsx" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
+							<b:navLink value="Cert. Adult" icon="ui-icon-arrowthickstop-1-s" href="downloads/CAHA_certiied_adults_as_of 7-7-25.xlsx" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
+							<b:navLink value="Cert. 12 and Under" icon="ui-icon-arrowthickstop-1-s" href="downloads/CAHA_certified_12_and_under_as_of_7-7-25.xlsx" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
+							<b:navLink value="Cert. 13 to 18" icon="ui-icon-arrowthickstop-1-s" href="downloads/CAHA_certified_13_to_18_as_of_7-7-25.xlsx" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>
 							<!--<b:navLink value="Process Bullying with Issues" href="processbullyingwithissues.xhtml" rendered="#{profileBean.hasRoleList('S-REG')}"></b:navLink>-->
 
 						</b:navbarLinks>
 		            </b:navBar>
 				</b:column>
 			</b:row>
-			<b:row style="margin-top: 0px !important; margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;" rendered="#{profileBean.hasRoleList('C-REG') and not(profileBean.hasRoleList('S-REG'))}" >
+			<b:row style="margin-top: 0px !important; margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;" rendered="#{profileBean.hasRoleList('C-REG;A-FIL') and not(profileBean.hasRoleList('S-REG'))}" >
 				<b:column >
  					
  					<b:navBar brand="Club Registrar" inverse="false" position="top" sticky="false" fluid="true">
@@ -108,9 +108,9 @@
 								<b:navLink value="Print Scoresheet for Venue" href="printscoresheetsforvenue.xhtml" rendered="#{profileBean.hasRoleList('C-REG;C-ICE;C-PRES')}"></b:navLink>
 								<b:navLink value="Bye Requests AA" href="https://forms.gle/VN2DxMT89o6XM5UD6" target="_blank" rendered="#{profileBean.hasRoleList('C-REG;C-PRES')}"></b:navLink>
 								<b:navLink value="Bye Requests A/BB/B" href="https://forms.gle/agV4y5RRbBkigLRV7" target="_blank" rendered="#{profileBean.hasRoleList('C-REG;C-PRES')}"></b:navLink>
-								<b:navLink value="Cert. Adult" icon="ui-icon-arrowthickstop-1-s" href="downloads/CAHA_certified_Adult_as_of_6-14.xlsx" rendered="#{profileBean.hasRoleList('C-REG;C-PRES')}"></b:navLink>
-								<b:navLink value="Cert. 12 and Under" icon="ui-icon-arrowthickstop-1-s" href="downloads/CAHA_certified_Age_12_and_Under_as_of 6-14.xlsx" rendered="#{profileBean.hasRoleList('C-REG;C-PRES')}"></b:navLink>
-								<b:navLink value="Cert. 13 to 18" icon="ui-icon-arrowthickstop-1-s" href="downloads/CAHA_certified_13_to_18_as_of 6-14.xlsx" rendered="#{profileBean.hasRoleList('C-REG;C-PRES')}"></b:navLink>
+								<b:navLink value="Cert. Adult" icon="ui-icon-arrowthickstop-1-s" href="downloads/CAHA_certiied_adults_as_of 7-7-25.xlsx" rendered="#{profileBean.hasRoleList('C-REG;C-PRES;A-FIL')}"></b:navLink>
+								<b:navLink value="Cert. 12 and Under" icon="ui-icon-arrowthickstop-1-s" href="downloads/CAHA_certified_12_and_under_as_of_7-7-25.xlsx" rendered="#{profileBean.hasRoleList('C-REG;C-PRES;A-FIL')}"></b:navLink>
+								<b:navLink value="Cert. 13 to 18" icon="ui-icon-arrowthickstop-1-s" href="downloads/CAHA_certified_13_to_18_as_of_7-7-25.xlsx" rendered="#{profileBean.hasRoleList('C-REG;C-PRES;A-FIL')}"></b:navLink>
 
 							</b:navbarLinks>
 		            </b:navBar>
