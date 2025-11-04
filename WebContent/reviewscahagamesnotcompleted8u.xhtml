@@ -33,39 +33,23 @@
 		    	tiny-screen="one-third"
 			>
 				<f:facet name="heading">
-					<h:outputText value="Review  SCAHA GAMES Without Reporting Status"/>
+					<h:outputText value="Review Played SCAHA GAMES Score Reporting Status"/>
 		        </f:facet>
-				<b:panelGrid colSpans="1,3,2,2,2,2" id="panelgrid">
+				<b:panelGrid colSpans="8,4" id="panelgrid">
 					<h:outputText value=" " />
-					<b:selectOneMenu value="#{scoreboardBean.selectedseasonid}" onchange="ajax:scoreboardBean.onSeasonChange()" update="@form">
-						<f:selectItem style="font-size:10pt;" itemLabel="Select a Season..." itemValue="0" />
-						<f:selectItems value="#{scoreboardBean.getSeasonlist()}"  var="season"  itemLabel="#{season.getDescription()}" itemValue="#{season.getKey()}"/>
-					</b:selectOneMenu>
-
-					<b:selectOneMenu value="#{scoreboardBean.selectedscheduleid}" onchange="ajax:reviewscahagamesBean.onScheduleChangeMissingGames()" update="@form">
-						<f:selectItem style="font-size:10pt;" itemLabel="Select a Schedule..." itemValue="0" />
-						<f:selectItems  value="#{scoreboardBean.getSchedulelist()}" var="schedule" itemLabel="#{schedule.getDescription()}" itemValue="#{schedule.getKey()}" />
-					</b:selectOneMenu>
-					<h:outputText value=" " />
+					<!-- button here for sending email to teams-->
 					<b:commandButton  iconAwesome="envelope-square"
-									  action="#{reviewscahagamesBean.EmailManagers()}" look="success">
+									  action="#{reviewscahagames8uBean.EmailManagers()}" look="success">
 						<f:ajax execute="@this" render="@form" update="@form"/>
 					</b:commandButton>
+					<h:outputText value=" " />
+					<h:outputText value=" " />
 				</b:panelGrid>
-				<!--<b:panelGrid colSpans="8,4" id="panelgrid">
-					<h:outputText value=" " />
-					<b:commandButton  iconAwesome="envelope-square"
-									  action="#{reviewscahagamesBean.EmailManagers()}" look="success">
-						<f:ajax execute="@this" render="@form" update="@form"/>
-					</b:commandButton>
-					<h:outputText value=" " />
-					<h:outputText value=" " />
-				</b:panelGrid>-->
 				
 				<b:dataTable 
 					id="scahagames" 
 					var="TempGame"
-					value="#{reviewscahagamesBean.getTempGameDataModelNoReporting()}"
+					value="#{reviewscahagames8uBean.getTempGameDataModelNoReporting()}"
 					editable="true" 
 					paginated="true"
 					border="true"

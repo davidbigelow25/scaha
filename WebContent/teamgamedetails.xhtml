@@ -45,7 +45,7 @@
 		<b:column span="12">
 			<b:panelGrid colSpans="9,1,1,1" id="panelgrid">
 				<h:outputText value=" " />
-				<b:commandButton id="reviewcmd" value="Set Complete" actionListener="#{gamesheetBean.setStatsComplete(gamesheetBean.getTeamid())}" look="success" />
+				<b:commandButton id="reviewcmd" value="Set Complete" actionListener="#{gamesheetBean.setStatsComplete(gamesheetBean.getTeamid())}" look="success" onclick="return confirm('Are you sure you want to set this as complete?');"/>
 				<h:outputText value=" " />
 			</b:panelGrid>
 			<br></br>

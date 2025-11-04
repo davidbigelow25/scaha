@@ -1,0 +1,141 @@
+import React, { useState, useMemo } from "react";
+		import { Button } from "@/components/ui/button";
+		import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+		import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
+		import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+		import { Input } from "@/components/ui/input";
+		import { Pagination, PaginationContent, PaginationItem, PaginationPrevious, PaginationNext, PaginationLink } from "@/components/ui/pagination";
+
+		// Example mock data (replace with API call)
+		const initialExhibitionGames = [
+		{ id: 1, requestingTeam: "Lions", date: "2025-09-01", time: "7:00 PM", opponent: "Tigers", location: "Arena A", status: "Pending" },
+		{ id: 2, requestingTeam: "Bulls", date: "2025-09-05", time: "6:00 PM", opponent: "Eagles", location: "Arena B", status: "Pending" },
+		{ id: 3, requestingTeam: "Sharks", date: "2025-09-07", time: "8:00 PM", opponent: "Wolves", location: "Arena C", status: "Pending" },
+		// Add more rows...
+		];
+
+		export default function ExhibitionGames() {
+		const [games, setGames] = useState(initialExhibitionGames);
+		const [search, setSearch] = useState("");
+		const [page, setPage] = useState(1);
+		const rowsPerPage = 10;
+
+		const approveGame = (id) => {
+		setGames((prev) => prev.map((g) => (g.id === id ? { ...g, status: "Approved" } : g)));
+		};
+
+		const declineGame = (id) => {
+		setGames((prev) => prev.map((g) => (g.id === id ? { ...g, status: "Declined" } : g)));
+		};
+
+		// Filtering logic
+		const filteredGames = useMemo(() => {
+		return games.filter((g) =>
+		[g.requestingTeam, g.opponent, g.status]
+		.join(" ")
+		.toLowerCase()
+		.includes(search.toLowerCase())
+		);
+		}, [games, search]);
+
+		// Pagination logic
+		const totalPages = Math.ceil(filteredGames.length / rowsPerPage);
+		const paginatedGames = filteredGames.slice(
+		(page - 1) * rowsPerPage,
+		page * rowsPerPage
+		);
+
+		return (
+<Card className="shadow-lg rounded-2xl">
+	<CardHeader>
+		<CardTitle>2025-2026 Exhibition Games</CardTitle>
+	</CardHeader>
+	<CardContent>
+		{/* Search Bar */}
+		<div className="mb-4 flex justify-between items-center">
+			<Input
+					placeholder="Search team, opponent, or status..."
+					value={search}
+			onChange={(e) => {
+			setSearch(e.target.value);
+			setPage(1); // reset to page 1 when searching
+			}}
+			className="w-1/3"
+			/>
+		</div>
+
+		{/* Table */}
+		<Table>
+			<TableHeader>
+				<TableRow>
+					<TableHead>Requesting Team</TableHead>
+					<TableHead>Date</TableHead>
+					<TableHead>Time</TableHead>
+					<TableHead>Opponent</TableHead>
+					<TableHead>Location</TableHead>
+					<TableHead>Status</TableHead>
+					<TableHead>Actions</TableHead>
+				</TableRow>
+			</TableHeader>
+			<TableBody>
+				{paginatedGames.map((game) => (
+				<TableRow key={game.id}>
+				<TableCell>{game.requestingTeam}</TableCell>
+				<TableCell>{game.date}</TableCell>
+				<TableCell>{game.time}</TableCell>
+				<TableCell>{game.opponent}</TableCell>
+				<TableCell>{game.location}</TableCell>
+				<TableCell>{game.status}</TableCell>
+				<TableCell>
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<Button variant="outline">Options</Button>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent>
+							<DropdownMenuItem onClick={() => approveGame(game.id)}>
+							Approve
+						</DropdownMenuItem>
+						<DropdownMenuItem onClick={() => declineGame(game.id)}>
+						Decline
+					</DropdownMenuItem>
+				</DropdownMenuContent>
+			</DropdownMenu>
+		</TableCell>
+	</TableRow>
+	))}
+</TableBody>
+		</Table>
+
+		{/* Pagination */}
+<div className="mt-4 flex justify-center">
+<Pagination>
+	<PaginationContent>
+		<PaginationItem>
+			<PaginationPrevious
+					onClick={() => setPage((p) => Math.max(1, p - 1))}
+			aria-disabled={page === 1}
+			/>
+		</PaginationItem>
+		{Array.from({ length: totalPages }, (_, i) => (
+		<PaginationItem key={i}>
+		<PaginationLink
+				isActive={page === i + 1}
+		onClick={() => setPage(i + 1)}
+		>
+		{i + 1}
+	</PaginationLink>
+</PaginationItem>
+))}
+<PaginationItem>
+	<PaginationNext
+			onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+	aria-disabled={page === totalPages}
+	/>
+</PaginationItem>
+</PaginationContent>
+		</Pagination>
+		</div>
+		</CardContent>
+		</Card>
+		);
+		}

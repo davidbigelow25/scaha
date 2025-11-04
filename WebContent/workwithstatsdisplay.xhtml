@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<f:metadata>
+<f:event type="preRenderView" listener="#{profileBean.verifyUserLogin()}" />
+</f:metadata>
+
+<ui:composition template="/WEB-INF/templates/layoutadmin.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://bootsfaces.net/ui">
+	
+<ui:define name="content">
+<b:container>
+	<b:row>
+		<b:column>
+			<b:form>
+			<b:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+			<b:panel id ="panel" collapsible="false" look="primary">
+				<f:facet name="heading">
+					<h:outputText value="Fix A Teams Stats Information" />
+				</f:facet>
+				<b:panelGrid colSpans="3,8,1" id="loilookup" style="padding: 5;">
+					<h:outputText value="Division:" />
+					<!--<b:inputText id="searchforplayer" value="#{bcloiBean.searchcriteria}" required="false" requiredMessage="Enter a minimum of 5 characters to execute search.">
+						<f:facet name="append">
+							<b:commandButton id="updatedisplay" value="Load Loi's" look="success" actionListener="#{bcloiBean.playersDisplay()}"
+								large-screen="full-width"
+		    					medium-screen="full-width"
+		    					small-screen="full-width"
+		    					tiny-screen="full-width"
+							>
+								<f:ajax execute="@form" render="@form" />
+							</b:commandButton>
+
+						</f:facet>
+					</b:inputText>-->
+					<b:selectOneMenu value="#{playerStatsBean.selectedSchedule}" label="Select Schedule"
+                                 update="statsTable" onchange="ajax:playerStatsBean.onScheduleChange">
+						<f:selectItems value="#{playerStatsBean.schedules}" var="s"
+									   itemValue="#{s}" itemLabel="#{s}" />
+					</b:selectOneMenu>
+					<h:outputText value=" " />
+					<h:outputText value=" " />
+				</b:panelGrid>
+				<p:spacer width="10" height="5" />
+				<b:dataTable id="statsTable"
+							 value="#{playerStatsBean.players}"
+							 var="p"
+							 responsive="true"
+							 style="width:100%;">
+
+					<!-- Read-only fields -->
+					<b:dataTableColumn label="First Name">
+						<h:outputText value="#{p.firstName}" />
+					</b:dataTableColumn>
+
+					<b:dataTableColumn label="Last Name">
+						<h:outputText value="#{p.lastName}" />
+					</b:dataTableColumn>
+
+					<b:dataTableColumn label="Team">
+						<h:outputText value="#{p.teamName}" />
+					</b:dataTableColumn>
+
+					<!-- Editable numeric/stat fields -->
+					<b:dataTableColumn label="Goals">
+						<b:inputText value="#{p.goals}" style="width:60px" />
+					</b:dataTableColumn>
+
+					<b:dataTableColumn label="Assists">
+						<b:inputText value="#{p.assists}" style="width:60px" />
+					</b:dataTableColumn>
+
+					<b:dataTableColumn label="Points">
+						<b:inputText value="#{p.points}" style="width:60px" />
+					</b:dataTableColumn>
+
+					<b:dataTableColumn label="PIMs">
+						<b:inputText value="#{p.pims}" style="width:60px" />
+					</b:dataTableColumn>
+
+					<b:dataTableColumn label="Shots">
+						<b:inputText value="#{p.shots}" style="width:60px" />
+					</b:dataTableColumn>
+
+					<b:dataTableColumn label="Saves">
+						<b:inputText value="#{p.saves}" style="width:60px" />
+					</b:dataTableColumn>
+
+					<b:dataTableColumn label="GA">
+						<b:inputText value="#{p.ga}" style="width:60px" />
+					</b:dataTableColumn>
+
+					<b:dataTableColumn label="GAA">
+						<b:inputText value="#{p.gaa}" style="width:60px" />
+					</b:dataTableColumn>
+
+					<b:dataTableColumn label="Save %">
+						<b:inputText value="#{p.savePct}" style="width:60px" />
+					</b:dataTableColumn>
+
+					<b:dataTableColumn label="Games Played">
+						<b:inputText value="#{p.gamesPlayed}" style="width:60px" />
+					</b:dataTableColumn>
+
+					<b:dataTableColumn label="Minutes">
+						<b:inputText value="#{p.minutes}" style="width:60px" />
+					</b:dataTableColumn>
+
+				</b:dataTable>
+			        <p:spacer width="10" height="5" />
+			        <b:panelGrid colSpans="4,2,2,2,2">
+						<h:outputText value=" " />
+						<h:outputText value=" " />
+						<h:outputText value=" " />
+						<h:outputText value=" " />
+						<b:commandButton look="primary" value="Save Changes"
+										 icon="save"
+										 action="#{playerStatsBean.saveStats}"
+										 update="@form" />
+					</b:panelGrid>
+			</b:panel>
+			</b:form>
+		</b:column>
+	</b:row>
+</b:container>
+	
+</ui:define>
+</ui:composition>
+</html>

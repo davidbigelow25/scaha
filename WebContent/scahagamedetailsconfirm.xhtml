@@ -54,7 +54,7 @@
 				<f:ajax execute="@this" render="@form" update="@form"/>
 			</b:commandButton>
 			<p:spacer width="2" pull="right"/>
-			<b:commandButton id="reviewcmd" pull="right" value="Set Final" actionListener="#{gamesheetBean.setGameFinal()}" look="success" />
+			<b:commandButton id="reviewcmd" pull="right" value="Set Final" actionListener="#{gamesheetBean.setGameFinal()}" look="success" onclick="return confirm('Are you sure you want to set this Final?');"/>
 			<p:spacer width="2" pull="right"/>
 			<b:commandButton id="refreshlists" pull="right" value="Refresh Lists" actionListener="#{gamesheetBean.refreshLists()}" look="info" >
 				<f:ajax execute="@this" render="@form" update="@form"/>

@@ -410,6 +410,12 @@ public class reviewscahagamesBean implements Serializable, MailableObject{
 		this.loadScahaGames();
 	}
 
+	public void onScheduleChangeMissingGames() {
+
+		//need to reload the scaha games for the schedule selected.
+		this.loadScahaGamesNoStatReporting();
+	}
+
 	public void loadScahaGamesNoStatReporting(){
 		List<TempGame> tempresult = new ArrayList<TempGame>();
 
@@ -417,7 +423,8 @@ public class reviewscahagamesBean implements Serializable, MailableObject{
 
 		try{
 			//first get team name
-			CallableStatement cs = db.prepareCall("CALL scaha.getSCAHAGamesNoReporting()");
+			CallableStatement cs = db.prepareCall("CALL scaha.getSCAHAGamesNoReporting(?)");
+			cs.setInt("scheduleid", sb.getSelectedscheduleid());
 			rs = cs.executeQuery();
 
 			if (rs != null){
@@ -478,99 +485,114 @@ public class reviewscahagamesBean implements Serializable, MailableObject{
 
 		try{
 			//first get distinct list of teams
-			CallableStatement cs = db.prepareCall("CALL scaha.getDistinctTeamswithNonSCAHAReporting()");
+			CallableStatement cs = db.prepareCall("CALL scaha.getDistinctTeamswithNonSCAHAReporting(?)");
+			cs.setInt("scheduleid",sb.getSelectedscheduleid());
 			rs = cs.executeQuery();
 
-			CallableStatement cs2 = db.prepareCall("CALL scaha.getSCAHAGamesNoReportingByTeamId(?)");
+			//we are using this variable to determine if the next game record is for the same team or a different team.
+			// If it's different then we set the teamhaschanged variable true so the system knows to send the email
+			this.to = "";
+			String tempgamerows = "";
+			/*CallableStatement cs2 = db.prepareCall("CALL scaha.getSCAHAGamesNoReportingByTeamId(?)");
 
 			CallableStatement cs3 = db.prepareCall("CALL scaha.getClubRegistrarEmail(?)");
 
-			CallableStatement cs4 = db.prepareCall("CALL scaha.getTeamManagerEmails(?)");
+			CallableStatement cs4 = db.prepareCall("CALL scaha.getTeamManagerEmails(?)");*/
 			//iterate through teams and send email containing all games needing game details and scoresheet entry
 			if (rs != null) {
 
 				while (rs.next()) {
-					this.bodytext = "";
-					this.to = "";
-					Integer idteam = rs.getInt("teamname");
-					cs2.setInt("in_teamid", idteam);
-					rs2 = cs2.executeQuery();
 
-					if (rs2 != null) {
 
-						while (rs2.next()) {
-							//format email with all of the games the team has not entered.
-							String idgame = rs2.getString("idlivegame");
-							String division = rs2.getString("division");
-							String skilllevel = rs2.getString("skilllevel");
-							String offendingteam = rs2.getString("offendingteam");
-							Integer clubid = rs2.getInt("idclub");
-							String opponent = rs2.getString("opponent");
-							String dates = rs2.getString("date");
-							String time = rs2.getString("time");
-							String location = rs2.getString("location");
-							String statusnoreporting = rs2.getString("status");
-							String scoresheetstatus = rs2.getString("scoresheet");
-
-							String tempgamerows =  "<tr><td>&nbsp;" + idgame +"&nbsp;</td><td>&nbsp;";
-							tempgamerows = tempgamerows + dates +"&nbsp;</td><td>&nbsp;";
-							/*tempgamerows = tempgamerows + time.replace(":","") + "&nbsp;</td><td>&nbsp;";*/
-							tempgamerows = tempgamerows + division + " " + skilllevel +  "&nbsp;</td><td>&nbsp;";
-							/*tempgamerows = tempgamerows + skilllevel + "&nbsp;</td><td>&nbsp;";*/
-							tempgamerows = tempgamerows + opponent + "&nbsp;</td><td>&nbsp;";
-							tempgamerows = tempgamerows + location + "&nbsp;</td><td>&nbsp;";
-							tempgamerows = tempgamerows + statusnoreporting + "&nbsp;</td><td>&nbsp;";
-							tempgamerows = tempgamerows + scoresheetstatus + "&nbsp;</td>";
-							tempgamerows = tempgamerows+ "</tr>";
-
-							this.bodytext = this.bodytext + tempgamerows ;
-							this.teamname = offendingteam;
-							this.clubid=clubid;
-
+						//format email with all of the games the team has not entered.
+						// first need to check if game details (offending team, date, time, opponent) have changed between records
+						//if they are the same need to grab the next club_contact and team_contact to add to the email
+						String offendingteam = rs.getString("offendingteam");
+						String opponent = rs.getString("opponent");
+						String dates = rs.getString("date");
+						String time = rs.getString("time");
+						String idgame = rs.getString("idlivegame");
+						String division = rs.getString("division");
+						String skilllevel = rs.getString("skilllevel");
+						Integer clubid = rs.getInt("idclub");
+						String location = rs.getString("location");
+						String statusnoreporting = rs.getString("status");
+						String scoresheetstatus = rs.getString("scoresheet");
+						Integer teamsid = rs.getInt("idteams");
+						if (!to.equals("")){
+							this.to = this.to + "," + rs.getString("club_contact");
+						}else {
+							this.to = rs.getString("club_contact");
 						}
-						//retrieve emails for club registrar and team managers
-						cs3.setInt("iclubid", this.clubid);
-						rs3 = cs3.executeQuery();
-						if (rs3 != null){
-							while (rs3.next()) {
-								if (!to.equals("")){
-									to = to + "," + rs3.getString("usercode");
-								}else {
-									to = rs3.getString("usercode");
-								}
+						if (!to.equals("")){
+							this.to = this.to + "," + rs.getString("team_contact");
+						}else {
+							this.to = rs.getString("team_contact");
+						}
+
+					tempgamerows =  tempgamerows + "<tr><td>&nbsp;" + idgame +"&nbsp;</td><td>&nbsp;";
+					tempgamerows = tempgamerows + dates +"&nbsp;</td><td>&nbsp;";
+					/*tempgamerows = tempgamerows + time.replace(":","") + "&nbsp;</td><td>&nbsp;";*/
+					tempgamerows = tempgamerows + division + " " + skilllevel +  "&nbsp;</td><td>&nbsp;";
+					/*tempgamerows = tempgamerows + skilllevel + "&nbsp;</td><td>&nbsp;";*/
+					tempgamerows = tempgamerows + opponent + "&nbsp;</td><td>&nbsp;";
+					tempgamerows = tempgamerows + location + "&nbsp;</td><td>&nbsp;";
+					tempgamerows = tempgamerows + statusnoreporting + "&nbsp;</td><td>&nbsp;";
+					tempgamerows = tempgamerows + scoresheetstatus + "&nbsp;</td>";
+					tempgamerows = tempgamerows+ "</tr>";
+					this.bodytext = this.bodytext + tempgamerows ;
+
+
+
+
+					//retrieve emails for club registrar and team managers
+					/*cs3.setInt("iclubid", this.clubid);
+					rs3 = cs3.executeQuery();
+					if (rs3 != null){
+						while (rs3.next()) {
+							if (!to.equals("")){
+								to = to + "," + rs3.getString("usercode");
+							}else {
+								to = rs3.getString("usercode");
 							}
 						}
-						rs3.close();
-
-						cs4.setInt("in_teamid", idteam);
-						rs3 = cs4.executeQuery();
-						if (rs3 != null){
-							while (rs3.next()) {
-								if (!to.equals("")){
-									to = to + "," + rs3.getString("usercode");
-								}else {
-									to = rs3.getString("usercode");
-								}
-							}
-						}
-						rs3.close();
-
-
-						//this.setSubject(this.teamname + " - Missing SCAHA Game Detail Entry and Scoresheet Upload " + this.to);
-
-						//hard my email address for testing purposes
-						//this.to = "lahockeyfan2@yahoo.com";
-
-						this.to = to + ",lahockeyfan2@yahoo.com";
-						this.setToMailAddress(to);
-						this.setPreApprovedCC("lahockeyfan2@yahoo.com");
-						this.setSubject(this.teamname + " - Missing SCAHA Game Detail Entry and Scoresheet Upload");
-
-						SendMailSSL mail = new SendMailSSL(this);
-						LOGGER.info("Finished creating mail object for " + this.teamname);
-						mail.sendMail();
-
 					}
+					rs3.close();
+
+					cs4.setInt("in_teamid", teamsid);
+					rs3 = cs4.executeQuery();
+					if (rs3 != null){
+						while (rs3.next()) {
+							if (!to.equals("")){
+								to = to + "," + rs3.getString("usercode");
+							}else {
+								to = rs3.getString("usercode");
+							}
+						}
+					}
+					rs3.close();*/
+
+					//hard my email address for testing purposes
+					//this.to = "lahockeyfan2@yahoo.com";
+
+					this.teamname = offendingteam;
+					this.clubid=clubid;
+
+					this.to = this.to + ",lahockeyfan2@yahoo.com";
+					this.setToMailAddress(this.to);
+					this.setPreApprovedCC("lahockeyfan2@yahoo.com");
+					this.setSubject(this.teamname + " - Missing SCAHA Game Detail Entry and Scoresheet Upload");
+
+					SendMailSSL mail = new SendMailSSL(this);
+					LOGGER.info("Finished creating mail object for " + this.teamname);
+					mail.sendMail();
+					tempgamerows="";
+					this.bodytext="";
+
+
+
+
+
 				}
 			}
 				//save team to the log of teams not entering their game details.
