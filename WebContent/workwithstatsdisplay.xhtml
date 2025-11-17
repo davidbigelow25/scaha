@@ -30,25 +30,21 @@
 				<f:facet name="heading">
 					<h:outputText value="Fix A Teams Stats Information" />
 				</f:facet>
-				<b:panelGrid colSpans="3,8,1" id="loilookup" style="padding: 5;">
-					<h:outputText value="Division:" />
-					<!--<b:inputText id="searchforplayer" value="#{bcloiBean.searchcriteria}" required="false" requiredMessage="Enter a minimum of 5 characters to execute search.">
-						<f:facet name="append">
-							<b:commandButton id="updatedisplay" value="Load Loi's" look="success" actionListener="#{bcloiBean.playersDisplay()}"
-								large-screen="full-width"
-		    					medium-screen="full-width"
-		    					small-screen="full-width"
-		    					tiny-screen="full-width"
-							>
-								<f:ajax execute="@form" render="@form" />
-							</b:commandButton>
+				<b:panelGrid colSpans="1,3,2,2,2,2" id="panelgrid">
+					<h:outputText value=" " />
+					<b:selectOneMenu value="#{scoreboardBean.selectedseasonid}" onchange="ajax:scoreboardBean.onSeasonChange()" update="@form">
+						<f:selectItem style="font-size:10pt;" itemLabel="Select a Season..." itemValue="0" />
+						<f:selectItems value="#{scoreboardBean.getSeasonlist()}"  var="season"  itemLabel="#{season.getDescription()}" itemValue="#{season.getKey()}"/>
+					</b:selectOneMenu>
 
-						</f:facet>
-					</b:inputText>-->
-					<b:selectOneMenu value="#{playerStatsBean.selectedSchedule}" label="Select Schedule"
-                                 update="statsTable" onchange="ajax:playerStatsBean.onScheduleChange">
-						<f:selectItems value="#{playerStatsBean.schedules}" var="s"
-									   itemValue="#{s}" itemLabel="#{s}" />
+					<b:selectOneMenu value="#{scoreboardBean.selectedscheduleid}" onchange="ajax:scoreboardBean.onScheduleChange" update="@form">
+						<f:selectItem style="font-size:10pt;" itemLabel="Select a Schedule..." itemValue="0" />
+						<f:selectItems  value="#{scoreboardBean.getSchedulelist()}" var="schedule" itemLabel="#{schedule.getDescription()}" itemValue="#{schedule.getKey()}" />
+					</b:selectOneMenu>
+
+					<b:selectOneMenu value="#{playerStatsBean.selectedpartid}" onchange="ajax:playerStatsBean.onPartChange()" update="@form" >
+						<f:selectItem style="font-size:10pt;" itemLabel="Select a Team..." itemValue="0" />
+						<f:selectItems  value="#{scoreboardBean.getPartpicklist()}" var="part" itemLabel="#{part.getTeam().getTeamname()}" itemValue="#{part.getKey()}" />
 					</b:selectOneMenu>
 					<h:outputText value=" " />
 					<h:outputText value=" " />
@@ -60,7 +56,6 @@
 							 responsive="true"
 							 style="width:100%;">
 
-					<!-- Read-only fields -->
 					<b:dataTableColumn label="First Name">
 						<h:outputText value="#{p.firstName}" />
 					</b:dataTableColumn>
@@ -73,7 +68,6 @@
 						<h:outputText value="#{p.teamName}" />
 					</b:dataTableColumn>
 
-					<!-- Editable numeric/stat fields -->
 					<b:dataTableColumn label="Goals">
 						<b:inputText value="#{p.goals}" style="width:60px" />
 					</b:dataTableColumn>
@@ -116,6 +110,13 @@
 
 					<b:dataTableColumn label="Minutes">
 						<b:inputText value="#{p.minutes}" style="width:60px" />
+					</b:dataTableColumn>
+					<b:dataTableColumn label="options">
+						<b:commandButton look="primary" value="Save"
+										 icon="save"
+										 action="#{playerStatsBean.saveStats(p)}"
+										 update="@form" />
+
 					</b:dataTableColumn>
 
 				</b:dataTable>

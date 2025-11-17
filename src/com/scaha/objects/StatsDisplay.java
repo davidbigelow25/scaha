@@ -7,17 +7,34 @@ import java.util.logging.Logger;
 
 public class StatsDisplay extends ScahaObject implements Serializable {
 
-	/*private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = Logger.getLogger(ContextManager.getLoggerContext());
 
 	private String firstName;
 	private String lastName;
 	private String teamName;
 
-	private Integer goals, assists, points, pims, shots, saves, ga, gamesPlayed, minutes;
+	private Integer IdStatsDisplay;
+	private Integer IdClub;
+
+
+
+	private Integer isgoalie;
+	private Integer goals;
+	private Integer assists;
+	private Integer points;
+	private Integer pims;
+	private Integer shots;
+	private Integer saves;
+	private Integer ga;
+	private Integer gamesPlayed;
+	private Integer minutes;
+
+
+	private Integer teamid;
 	private Double gaa, savePct;
 
-	public Player(String firstName, String lastName, String teamName) {
+	public StatsDisplay(String firstName, String lastName, String teamName) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.teamName = teamName;
@@ -27,7 +44,17 @@ public class StatsDisplay extends ScahaObject implements Serializable {
 	public String getFirstName() { return firstName; }
 	public String getLastName() { return lastName; }
 	public String getTeamName() { return teamName; }
-
+	public void setFirstName(String firstName) {this.firstName = firstName;}
+	public void setLastName(String lastName) {this.lastName = lastName;	}
+	public void setTeamName(String teamName) {this.teamName = teamName;}
+	public Integer getIdStatsDisplay() {return IdStatsDisplay;}
+	public void setIdStatsDisplay(Integer idStatsDisplay) {IdStatsDisplay = idStatsDisplay;}
+	public Integer getIdClub() {return IdClub;}
+	public void setIdClub(Integer idClub) {IdClub = idClub;	}
+	public Integer getIsgoalie() {return isgoalie;}
+	public void setIsgoalie(Integer isgoalie) {this.isgoalie = isgoalie;}
+	public Integer getTeamid() {return teamid; }
+	public void setTeamid(Integer teamid) {this.teamid = teamid; }
 	public Integer getGoals() { return goals; }
 	public void setGoals(Integer goals) { this.goals = goals; }
 	public Integer getAssists() { return assists; }
@@ -49,5 +76,5 @@ public class StatsDisplay extends ScahaObject implements Serializable {
 	public Integer getGamesPlayed() { return gamesPlayed; }
 	public void setGamesPlayed(Integer gamesPlayed) { this.gamesPlayed = gamesPlayed; }
 	public Integer getMinutes() { return minutes; }
-	public void setMinutes(Integer minutes) { this.minutes = minutes; }*/
+	public void setMinutes(Integer minutes) { this.minutes = minutes; }
 }
