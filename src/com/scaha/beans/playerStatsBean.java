@@ -190,7 +190,7 @@ public class playerStatsBean implements Serializable {
 				rs = cs.executeQuery();
 				if (rs != null){
 					while (rs.next()) {
-						StatsDisplay oplayer = new StatsDisplay(rs.getString("fname"),rs.getString("fname"),rs.getString("teamname"));
+						StatsDisplay oplayer = new StatsDisplay(rs.getString("fname"),rs.getString("lname"),rs.getString("teamname"));
 						oplayer.setIdStatsDisplay(rs.getInt("idstatsdisplay"));
 						oplayer.setTeamid(rs.getInt("idteam"));
 						oplayer.setIdClub(rs.getInt("idclub"));

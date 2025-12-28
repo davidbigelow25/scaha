@@ -588,7 +588,9 @@ public class reviewscahagamesBean implements Serializable, MailableObject{
 					mail.sendMail();
 					tempgamerows="";
 					this.bodytext="";
-
+					this.to = "";
+					this.setSubject("");
+					this.setToMailAddress("");
 
 
 
