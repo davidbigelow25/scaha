@@ -39,6 +39,9 @@ import com.scaha.objects.Sog;
 import com.scaha.objects.SogList;
 import net.bootsfaces.utils.FacesMessages;
 import com.scaha.objects.ScahaCoach;
+import com.scaha.objects.TempGame;
+import com.scaha.objects.TempGameDataModel;
+
 
 @ManagedBean
 @ViewScoped
@@ -3191,7 +3194,123 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
     	
 		return rfplist;
     }
-    
+
+	public List<RosterForPrint> getRosterforPrintWorkAround(String homeaway,TempGame tempGame) {
+
+		//Integer teamid = null;
+		if (homeaway.equals("H")){
+			teamid = tempGame.getIdhome();
+		} else {
+			teamid = tempGame.getIdaway();
+		}
+		String gamedate = tempGame.getDate().toString();
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		List<RosterForPrint> templist = new ArrayList<RosterForPrint>();
+		Integer rsetcount = 0;
+
+
+		try {
+
+			PreparedStatement ps = db.prepareStatement("call scaha.getRosterforPrintbyID(?,?)");
+
+			ps.setInt(1,teamid);
+			ps.setString(2, gamedate);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				int i = 1;
+				rsetcount++;
+				RosterForPrint rfp = new RosterForPrint();
+				rfp.setJerseynumber(rs.getString("jerseynumber"));
+				rfp.setLastname(rs.getString(i++));
+				rfp.setFirstname(rs.getString(i++));
+				rfp.setIsgoalie(rs.getBoolean("isgoalie"));
+				rfp.setPlayernameislong(rs.getBoolean("playernameislong"));
+				templist.add(rfp);
+			}
+
+			//this creates the blank rows up to 20 for roster label
+			for (Integer x=rsetcount; x < 20; x++) {
+				RosterForPrint rfp = new RosterForPrint();
+				rfp.setJerseynumber(" ");
+				rfp.setLastname(" ");
+				rfp.setFirstname(" ");
+				templist.add(rfp);
+			}
+
+
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			db.free();
+		}
+		db.free();
+		rfplist=templist;
+
+		return rfplist;
+	}
+
+	public List<RosterForPrint> getRosterforPrintPlayoffs(String homeaway,Integer livegame, String gamedate) {
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		List<RosterForPrint> templist = new ArrayList<RosterForPrint>();
+		Integer rsetcount = 0;
+
+
+		try {
+
+			PreparedStatement ps = db.prepareStatement("call scaha.getRosterforPrintbyIDForPlayoffs(?,?,?)");
+
+			ps.setInt(1,livegame);
+			ps.setString(2, gamedate);
+			if (homeaway.equals("H")){
+				ps.setString(3, "home");
+			} else {
+				ps.setString(3, "away");
+			}
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				int i = 1;
+				rsetcount++;
+				RosterForPrint rfp = new RosterForPrint();
+				rfp.setJerseynumber(rs.getString("jerseynumber"));
+				rfp.setLastname(rs.getString(i++));
+				rfp.setFirstname(rs.getString(i++));
+				rfp.setIsgoalie(rs.getBoolean("isgoalie"));
+				rfp.setPlayernameislong(rs.getBoolean("playernameislong"));
+				templist.add(rfp);
+			}
+
+			//this creates the blank rows up to 20 for roster label
+			for (Integer x=rsetcount; x < 20; x++) {
+				RosterForPrint rfp = new RosterForPrint();
+				rfp.setJerseynumber(" ");
+				rfp.setLastname(" ");
+				rfp.setFirstname(" ");
+				templist.add(rfp);
+			}
+
+
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			db.free();
+		}
+		db.free();
+		rfplist=templist;
+
+		return rfplist;
+	}
+
     public List<RosterForPrint> getRosterofCoachesforPrint(String homeaway) {
     	 
     	Integer teamid = null;
@@ -3250,7 +3369,121 @@ public SogList refreshHomeSog(Boolean bAddsogrows) {
     	
     	return rfplist;
     }
-    
+
+	public List<RosterForPrint> getRosterofCoachesforPrintWorkaround(String homeaway, TempGame tempGame) {
+
+		Integer teamid = null;
+		if (homeaway.equals("H")){
+			teamid = tempGame.getIdhome();
+		} else {
+			teamid = tempGame.getIdaway();
+		}
+		String gamedate = tempGame.getDate().toString();
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		List<RosterForPrint> templist = new ArrayList<RosterForPrint>();
+		List<RosterForPrint> carryover = new ArrayList<RosterForPrint>();
+		Integer rowcount = 0;
+
+		try {
+
+			PreparedStatement ps = db.prepareStatement("call scaha.getRosterofCoachesforPrintbyID(?,?,?)");
+
+
+
+			ps.setInt(1,teamid);
+			ps.setString(2, gamedate);
+			ps.setInt(3, tempGame.getIdgame());
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				int i = 1;
+				rowcount++;
+				RosterForPrint rfp = new RosterForPrint();
+				rfp.setJerseynumber(rs.getString("jerseynumber"));
+				rfp.setLastname(rs.getString(i++));
+				rfp.setFirstname(rs.getString(i++));
+				rfp.setCepinfo(rs.getString("cepinfo"));
+				templist.add(rfp);
+
+
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			db.free();
+		}
+		db.free();
+		rfplist=templist;
+
+
+
+		if (homeaway.equals("H")){
+			rfplisthome=carryover;
+		} else {
+			rfplistaway=carryover;
+		}
+
+
+		return rfplist;
+	}
+
+	public List<RosterForPrint> getRosterofCoachesforPrintPlayoffs(String homeaway,Integer livegame, String gamedate) {
+
+		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
+		List<RosterForPrint> templist = new ArrayList<RosterForPrint>();
+		List<RosterForPrint> carryover = new ArrayList<RosterForPrint>();
+		Integer rowcount = 0;
+
+		try {
+
+			PreparedStatement ps = db.prepareStatement("call scaha.getRosterofCoachesforPrintbyIDForPlayoffs(?,?,?)");
+
+			ps.setInt(1, livegame);
+			ps.setString(2, gamedate);
+			if (homeaway.equals("H")){
+				ps.setString(3, "home");
+			} else {
+				ps.setString(3, "away");
+			}
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				int i = 1;
+				rowcount++;
+				RosterForPrint rfp = new RosterForPrint();
+				rfp.setJerseynumber(rs.getString("jerseynumber"));
+				rfp.setLastname(rs.getString(i++));
+				rfp.setFirstname(rs.getString(i++));
+				rfp.setCepinfo(rs.getString("cepinfo"));
+				templist.add(rfp);
+
+
+			}
+
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			db.free();
+		}
+		db.free();
+		rfplist=templist;
+
+
+
+		if (homeaway.equals("H")){
+			rfplisthome=carryover;
+		} else {
+			rfplistaway=carryover;
+		}
+
+
+		return rfplist;
+	}
+
     public void loadLivegame(Integer gameid){
  
     	LiveGameList lgl = scaha.getScahaLiveGameList();
