@@ -183,7 +183,7 @@ public class printallscahagamesBean implements Serializable{
     				String status = rs.getString("status");
     				String scoresheet = rs.getString("scoresheet");
     				Integer hometeamid = rs.getInt("idteamhome");
-    				Integer awayteamid = rs.getInt("idteamhome");
+    				Integer awayteamid = rs.getInt("idteamaway");
     				Integer homefontsize = 24;
     				if (hometeam.length()>15){
     					homefontsize = 18;
