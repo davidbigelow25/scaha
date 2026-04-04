@@ -32,7 +32,7 @@
 				<f:facet name="heading">
 					<h:outputText value="SCAHA Schedule/Standings"/> 
 		        </f:facet> 
-				
+
 				<b:panelGrid colSpans="1,3,2,2,2,2" id="panelgrid">
 					<h:outputText value=" " />
 					<b:selectOneMenu value="#{scoreboardBean.selectedseasonid}" onchange="ajax:scoreboardBean.onSeasonChange()" update="@form">
@@ -55,12 +55,14 @@
 						    </b:commandButton>
 						    
 				</b:panelGrid>
+
 				#{scoreboardBean.refreshScoreboard()}
 				<b:panelGrid colSpans="12" id="notegrid">
 					<h:outputText value="Note: Standings listed do not reflect all the tie-breaker rules correctly.
 					Final standings for the playoffs will be determined by the SCAHA Statistician."/>
 				</b:panelGrid>
-				<b:panel id="panelstandings" collapsible="false" look="primary" 
+
+				<b:panel id="panelstandings" collapsible="false" look="primary"
 					large-screen="full-width"
 			    	medium-screen="full-width"
 			    	small-screen="one-third"
@@ -221,7 +223,7 @@
 				        </b:dataTableColumn>
 						<b:dataTableColumn styleClass="mtrxColumn">
 				            <f:facet name="header">
-						         <h:outputText value="Score" />
+						        <h:outputText value="Score" />
 						    </f:facet>
 				            <h:outputText value="#{ (game.statetag == 'Scheduled' ? '--' : game.getHomescore()) }" />
 				        </b:dataTableColumn>
