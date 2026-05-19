@@ -122,7 +122,7 @@ public class loiBean implements Serializable, MailableObject {
     	getClubID();
     	isClubHighSchool();
     	
-		//will need to load player profile information for displaying loi
+		//will ned to load player profile information for displaying loi
 		HttpServletRequest hsr = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     	
     	if(hsr.getParameter("playerid") != null)

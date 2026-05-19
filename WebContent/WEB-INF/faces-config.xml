@@ -217,5 +217,20 @@
 		<managed-bean-class>com.scaha.beans.playerStatsBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
-	
+	<managed-bean>
+		<managed-bean-name>invoiceBean</managed-bean-name>
+		<managed-bean-class>com.scaha.beans.invoiceBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>invoiceTeamBean</managed-bean-name>
+		<managed-bean-class>com.scaha.beans.invoiceTeamBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>invoicePlayerBean</managed-bean-name>
+		<managed-bean-class>com.scaha.beans.invoicePlayerBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+
 </faces-config>

@@ -142,6 +142,7 @@
  					
  					<b:navBar brand="SCAHA Statistician" inverse="false" position="top" sticky="false" fluid="true">
 							<b:navbarLinks>
+								<b:navLink value="Invoices" href="invoicesummary.xhtml"></b:navLink>
 								<b:navLink iconAwesome="trophy" value="Playoffs" href="playoffscentraleditor.xhtml"></b:navLink>
 								<b:navLink value="Review SCAHA Games" href="reviewscahagames.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>
 				                <b:navLink value="Review Exhibition Requests" href="approveexhibitiongames.xhtml" rendered="#{profileBean.hasRoleList('S-STATS')}"></b:navLink>
@@ -208,6 +209,15 @@
 						<b:navLink value="Delinquency List" href="viewdelinquencylist.xhtml" rendered="#{profileBean.hasRoleList('A-REG')}"></b:navLink>
 						<b:navLink value="Releases" href="confirmrelease.xhtml" rendered="#{profileBean.hasRoleList('S-REG;A-REG;')}"></b:navLink>
 						<b:navLink value="View Failed LOI's" href="viewfailedloilist.xhtml" rendered="#{profileBean.hasRoleList('A-REG')}"></b:navLink>
+					</b:navbarLinks>
+				</b:navBar>
+			</b:column>
+		</b:row>
+		<b:row style="margin-top: 0px !important; margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;" rendered="#{profileBean.hasRoleList('S-TRE')}" >
+			<b:column >
+				<b:navBar brand="SCAHA Statistician" inverse="false" position="top" sticky="false" fluid="true">
+					<b:navbarLinks>
+						<b:navLink value="Invoices" href="invoicesummary.xhtml"></b:navLink>
 					</b:navbarLinks>
 				</b:navBar>
 			</b:column>
