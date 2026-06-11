@@ -191,7 +191,7 @@ public class Profile extends ScahaObject {
 			}
 		
 		} catch (SQLException ex) {
-			LOGGER.info("errored in db.verify call" + _sUser + ex.toString());
+			//LOGGER.info("errored in db.verify call" + _sUser + ex.toString());
 				ex.printStackTrace();
 				db.cleanup();
 				db.free();
@@ -463,7 +463,7 @@ public class Profile extends ScahaObject {
 	}
 
 	public Integer getClubIDForRegistrar(){
-		LOGGER.info("starting gettting club id for registrar");
+		//LOGGER.info("starting gettting club id for registrar");
 		//first lets get club id for the logged in profile
 		ScahaDatabase db = (ScahaDatabase) ContextManager.getDatabase("ScahaDatabase");
 		Integer clubid = 0;
@@ -489,7 +489,7 @@ public class Profile extends ScahaObject {
 		} finally {
 			//
 			// always clean up after yourself..
-			//
+			////
 			db.free();
 		}
 		//LOGGER.info("finished get club for registrar");

@@ -14,6 +14,8 @@ public class InvoicePlayer extends ScahaObject implements Serializable {
 	private String lastName;
 	private double invoiceFee;
 	private String addedDate;
+	private boolean multipleTeams;
+	private String otherTeams;
 
 	public String getFirstName() {
 		return firstName;
@@ -45,6 +47,22 @@ public class InvoicePlayer extends ScahaObject implements Serializable {
 
 	public void setAddedDate(String addedDate) {
 		this.addedDate = addedDate;
+	}
+
+	public boolean isMultipleTeams() {
+		return multipleTeams;
+	}
+
+	public void setMultipleTeams(boolean multipleTeams) {
+		this.multipleTeams = multipleTeams;
+	}
+
+	public String getOtherTeams() {
+		return otherTeams;
+	}
+
+	public void setOtherTeams(String otherTeams) {
+		this.otherTeams = otherTeams;
 	}
 
 	public InvoicePlayer(){

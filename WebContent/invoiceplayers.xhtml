@@ -64,7 +64,18 @@
 
 									#{player.lastName}
 								</b:dataTableColumn>
+								<b:dataTableColumn>
+									<f:facet name="header">
+										Multi-Team
+									</f:facet>
 
+									<h:panelGroup rendered="#{player.multipleTeams}">
+										<span class="label label-warning">
+											Multi-Team <h:outputText
+												value="#{player.otherTeams}" />
+										</span>
+									</h:panelGroup>
+								</b:dataTableColumn>
 								<b:dataTableColumn style="text-align:right">
 									<f:facet name="header">
 										Invoice Fee

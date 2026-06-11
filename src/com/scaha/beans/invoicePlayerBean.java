@@ -107,6 +107,8 @@ public class invoicePlayerBean implements Serializable{
 					dto.setLastName(rs.getString("lname"));
 					dto.setInvoiceFee(rs.getDouble("invoice_fee"));
 					dto.setAddedDate(rs.getString("added"));
+					dto.setMultipleTeams(rs.getBoolean("multiple_teams"));
+					dto.setOtherTeams(rs.getString("other_teams"));
 					tempresult.add(dto);
 
 				}

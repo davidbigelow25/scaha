@@ -376,7 +376,7 @@ public class ProfileBean implements Serializable,  MailableObject  {
 				}
     			
     		} else {
-				LOGGER.info("alerting log in failed" + name);
+				//LOGGER.info("alerting log in failed" + name);
 
 				FacesContext.getCurrentInstance().addMessage(
                         null,
@@ -731,7 +731,7 @@ public boolean isEditPassword() {
 
 
 public void setEditPerson() {
-	LOGGER.info("About to edit person information..");
+	//LOGGER.info("About to edit person information..");
 	//
 	// Initialize everything
 	//
@@ -772,7 +772,7 @@ public void setNotEditPerson() {
 }
 
 public void setEditPassword() {
-	LOGGER.info("About to edit password information..");
+	//LOGGER.info("About to edit password information..");
 	
 	EditPassword = true;
 	EditPerson = false;
@@ -783,7 +783,7 @@ public void setNotEditPassword() {
 }
 
 public void setEditMembers() {
-	LOGGER.info("About to edit Member information..");
+	//LOGGER.info("About to edit Member information..");
 	
 	EditMember = true;
 	AddMember = false;
@@ -794,7 +794,7 @@ public void setNotEditMembers() {
 }
 
 public void setAddMembers() {
-	LOGGER.info("About to Add Member information..");
+	//LOGGER.info("About to Add Member information..");
 	
 	AddMember = true;
 	EditMember = false;
@@ -883,12 +883,12 @@ public void cancelAddMember() {
 			context.addMessage(null, new FacesMessage("Successful", "Your Changes have been successfully posted and saved..."));  
 			this.buildMailBody(ProfileBean.mail_body_chng_profile, pro.getPerson());
 			SendMailSSL mail = new SendMailSSL(this);
-			LOGGER.info("Finished creating mail object for " + pro.getPerson().getsFirstName());
+			//LOGGER.info("Finished creating mail object for " + pro.getPerson().getsFirstName());
 			mail.sendMail();
 		
 		} catch (SQLException e) {
 			
-			LOGGER.info("ERROR IN Profile Change User Attributes PROCESS FOR " + this.getCompleteName());
+			//LOGGER.info("ERROR IN Profile Change User Attributes PROCESS FOR " + this.getCompleteName());
 			e.printStackTrace();
 			db.rollback();
 			db.free();
@@ -937,7 +937,7 @@ public void cancelAddMember() {
 			this.setLive_password(this.new_password);
 			db.free();
 
-			LOGGER.info("Sending New Password e-mail for pro.getUserName()");
+			//LOGGER.info("Sending New Password e-mail for pro.getUserName()");
 			this.buildMailBody(ProfileBean.mail_body_chng_pwd, pro.getPerson());
 			SendMailSSL mail = new SendMailSSL(this);
 			mail.sendMail();
@@ -958,7 +958,7 @@ public void cancelAddMember() {
 			return "Welcome.xhtml?faces-redirect=true";
 			
 		} catch (SQLException e) {
-			LOGGER.info("ERROR IN Profile Change User Attributes PROCESS FOR " + this.getCompleteName());
+			//LOGGER.info("ERROR IN Profile Change User Attributes PROCESS FOR " + this.getCompleteName());
             FacesContext context = FacesContext.getCurrentInstance();  
             context.addMessage("password", new FacesMessage(FacesMessage.SEVERITY_ERROR,"SQL Error", "There was an SQL Error please try again"));  
 			e.printStackTrace();
@@ -1337,7 +1337,7 @@ public int getClubID(){
 			rs.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			LOGGER.info("ERROR IN loading club by profile");
+			//LOGGER.info("ERROR IN loading club by profile");
 			e.printStackTrace();
 		} finally {
 			db.free();
@@ -1514,10 +1514,10 @@ public String createRegistration() {
 			db.free();
 
 			// We want to create a family called the <lastname> family...
-			LOGGER.info("HERE IS WHERE WE SAVE EVERYTHING COLLECTED FROM REGISTRATION..");
-			LOGGER.info("Sending Registration mail here...");
+			//LOGGER.info("HERE IS WHERE WE SAVE EVERYTHING COLLECTED FROM REGISTRATION..");
+			//LOGGER.info("Sending Registration mail here...");
 			SendMailSSL mail = new SendMailSSL(this);
-			LOGGER.info("Finished creating mail object for " + this.getUsername());
+			//LOGGER.info("Finished creating mail object for " + this.getUsername());
 			mail.sendMail();
 			
 			//
@@ -1541,7 +1541,7 @@ public String createRegistration() {
 		
 	} catch (SQLException e) {
 		// TODO Auto-generated catch block
-		LOGGER.info("ERROR IN REGISTRATION PROCESS FOR " + this.getUsername());
+		//LOGGER.info("ERROR IN REGISTRATION PROCESS FOR " + this.getUsername());
 		e.printStackTrace();
 		db.rollback();
 		db.free();
